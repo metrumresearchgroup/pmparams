@@ -2,6 +2,7 @@
 
 export(backTrans_log)
 export(backTrans_logit)
+export(define_param_table)
 export(formatGreekNames)
 export(formatValues)
 export(get95CI)
