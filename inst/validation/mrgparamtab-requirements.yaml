@@ -1,0 +1,15 @@
+PRN-R001:
+  description: parens wraps parentheses around string and vector inputs
+  tests:
+  - MPT-PRN-001
+  - MPT-PRN-002
+PSQ-R001:
+  description: parensSQ wraps brackets around string and vector inputs
+  tests:
+  - MPT-PSQ-001
+  - MPT-PSQ-002
+PSC-R001:
+  description: parensSQ_corr and parensSQ_se wraps brackets around numeric input with appropriate prefix
+  tests:
+  - MPT-PSC-001
+  - MPT-PSC-002
