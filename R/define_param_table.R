@@ -26,9 +26,45 @@
 #'
 #' @param .estimates parameter estimates data.frame
 #' @param .key parameter key
+#' @param ... arguments passed through to methods (currently undefined)
 #'
 #' @export
 define_param_table <- function(.estimates, .key){
+
+  if (inherits(.estimates, "character")){
+    print(paste0("Model path provided: ", .estimates))
+    .estimates <- bbr::read_model(.estimates)
+  }
+
+  if (inherits(.estimates, "bbi_nonmem_model")){
+    .estimates <- bbr::model_summary(.estimates)
+  }
+
+  if (inherits(.estimates, "bbi_nonmem_summary")){
+    .estimates <- bbr::param_estimates(.estimates)
+  }
+
+  if (inherits(.estimates, "data.frame")){
+    if (!("parameter_names" %in% colnames(.estimates))) {
+      stop("Incorrect estimate input type")
+    }
+  } else{
+    stop("Incorrect estimate input type")
+  }
+
+
+  if (inherits(.key, "character")){
+    print(paste0("Model path provided: ", .key))
+    .key <- pmtables::yaml_as_df(.key)
+  }
+
+  if (inherits(.key, "data.frame")){
+    if (!(any(c("name", "abb", "desc", "panel", "trans") %in% colnames(.key)))) {
+      stop("Incorrect parameter key input type")
+    }
+  } else{
+    stop("Incorrect parameter key input type")
+  }
 
   mod_estimates <- .estimates %>%
     removePunc(.column = "parameter_names") %>%
