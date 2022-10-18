@@ -13,3 +13,7 @@ PSC-R001:
   tests:
   - MPT-PSC-001
   - MPT-PSC-002
+ANM-R001:
+  description: asNum converts a variety of input types to numeric
+  tests:
+  - MPT-ANM-001
