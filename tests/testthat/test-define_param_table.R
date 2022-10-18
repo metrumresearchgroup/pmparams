@@ -16,4 +16,8 @@ test_that("define_param_table accurately generates logical columns for transform
   expect_true(newDF$trans[newDF$name == "OMEGA11"] == "lognormalOm" &
                 newDF$LOG[newDF$name == "OMEGA11"] == FALSE &
                 newDF$lognormO[newDF$name == "OMEGA11"] == TRUE)
+
+  expect_true(newDF$trans[newDF$name == "SIGMA11"] == "propErr" &
+                newDF$LOG[newDF$name == "SIGMA11"] == FALSE &
+                newDF$propErr[newDF$name == "SIGMA11"] == TRUE)
 })
