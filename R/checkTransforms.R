@@ -15,7 +15,7 @@
 #' @keywords internal
 #'
 #' @importFrom stringr str_detect str_split fixed
-#' @importFrom dplyr select filter innner_join
+#' @importFrom dplyr select filter inner_join
 #' @importFrom purrr map
 #'
 checkTransforms <- function(df){

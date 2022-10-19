@@ -30,3 +30,11 @@ DRO-R002:
   description: defineRows creates variables with true/false values depending on the type of parameter on each row
   tests:
   - MPT-DRO-002
+CIF-R001:
+  description: get95CI calculates the upper and lower bounds of a 95% confidence interval
+  tests:
+  - MPT-CIF-001
+CIO-R001:
+  description: get90CI calculates the upper and lower bounds of a 90% confidence interval
+  tests:
+  - MPT-CIO-001
