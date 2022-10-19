@@ -1,4 +1,4 @@
-#' Define parameter table
+#' Combine parameter estimates with parameter key
 #'
 #' @description
 #'
