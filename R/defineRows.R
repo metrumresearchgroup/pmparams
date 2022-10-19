@@ -6,8 +6,6 @@
 #' on each row. For instance, an "OMEGA" parameter would be OM ~ TRUE and TH ~ FALSE & S ~ FALSE.
 #'
 #' Similarly, true/false variables are created to indicate the transform selected.
-#' @importFrom stringr str_detect
-#' @importFrom dplyr select filter
 #' @param .df data frame containing parameter estimates & names
 #'
 #' @keywords internal
