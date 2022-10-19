@@ -21,8 +21,6 @@
 #'   - panel=="IOV"  ~ "Interoccasion variance parameters"
 #'   - panel=="RV" ~ "Residual variance"
 #'
-#'   Additional options can be added to `getPanelName` function in `functions-table.R`
-#'
 #' __trans__ = define how the parameter will be transformed. Current options include:
 #'   - "none" -   untransformed parameters, e.g. THETAs or off-diagonals
 #'   - "logTrans" -  THETAs estimated in the log domain

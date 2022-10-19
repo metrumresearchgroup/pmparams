@@ -1,9 +1,9 @@
 
-test_that("define_param_table creates new parameter names without parentheses [MPT-DPT-001]", {
+test_that("define_param_table expected output: creates new parameter names without parentheses [MPT-DPT-001]", {
   expect_equal(newDF$name[newDF$parameter_names == "OMEGA(1,1)"], "OMEGA11")
 })
 
-test_that("define_param_table generates logical columns to indicate parameter type [MPT-DPT-001]", {
+test_that("define_param_table expected output: generates logical columns to indicate parameter type [MPT-DPT-001]", {
   expect_equal(newDF$TH[newDF$parameter_names == "THETA1"], TRUE)
   expect_equal(newDF$OM[newDF$parameter_names == "THETA1"], FALSE)
   expect_equal(newDF$OM[newDF$parameter_names == "OMEGA(1,1)"], TRUE)
@@ -11,7 +11,7 @@ test_that("define_param_table generates logical columns to indicate parameter ty
   expect_equal(newDF$S[newDF$parameter_names == "THETA1"], FALSE)
 })
 
-test_that("define_param_table accurately generates logical columns for transformation [MPT-DPT-001]", {
+test_that("define_param_table expected output:  generates logical columns for transformation [MPT-DPT-001]", {
   expect_true(newDF$trans[newDF$name == "THETA1"] == "logTrans" &
                 newDF$LOG[newDF$name == "THETA1"] == TRUE &
                 newDF$LOGIT[newDF$name == "THETA1"] == FALSE)

@@ -24,8 +24,6 @@ Current options include:
 \item panel=="RV" ~ "Residual variance"
 }
 
-Additional options can be added to \code{getPanelName} function in \code{functions-table.R}
-
 \strong{trans} = define how the parameter will be transformed. Current options include:
 \itemize{
 \item "none" -   untransformed parameters, e.g. THETAs or off-diagonals
