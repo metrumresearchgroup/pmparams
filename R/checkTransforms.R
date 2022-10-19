@@ -13,18 +13,28 @@
 #' @param df data frame of parameter estimates
 #'
 #' @keywords internal
+#'
+#' @importFrom stringr str_detect str_split fixed
+#' @importFrom dplyr select filter innner_join
+#' @importFrom purrr map
+#'
 checkTransforms <- function(df){
+  #if df does not have trans col- return error message
+  if (!("trans" %in% names(df))) {
+    stop("Trans column does not exist in input data")
+  }
   df$transTHETA = NA
-  if(any(str_detect(df$trans, "~"))){
-    df$transTHETA[which(str_detect(df$trans, "~"))] =
-      stringr::str_split(df$trans, fixed("~")) %>% map(trimws) %>% map(2) %>% unlist
+  if(any(stringr::str_detect(df$trans, "~"))){
+    df$transTHETA[which(stringr::str_detect(df$trans, "~"))] =
+      stringr::str_split(df$trans, stringr::fixed("~")) %>% purrr::map(trimws) %>% purrr::map(2) %>% unlist
 
     df = df %>%
-      mutate(trans = case_when(str_detect(trans, "~") ~
-                                 stringr::str_split(trans, fixed("~")) %>% map(trimws) %>% map(1) %>% unlist,
+      dplyr::mutate(trans = dplyr::case_when(stringr::str_detect(trans, "~") ~
+                                 stringr::str_split(trans, stringr::fixed("~")) %>% purrr::map(trimws) %>% purrr::map(1) %>% unlist,
                                TRUE ~ trans),
              transTHETA = estimate[match(transTHETA, parameter_names)]
       )
   }
   return(df)
 }
+
