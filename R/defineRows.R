@@ -6,16 +6,24 @@
 #' on each row. For instance, an "OMEGA" parameter would be OM ~ TRUE and TH ~ FALSE & S ~ FALSE.
 #'
 #' Similarly, true/false variables are created to indicate the transform selected.
-#'
-#' @param .df data frame containing parameter estimataes & names
+#' @importFrom stringr str_detect
+#' @importFrom dplyr select filter
+#' @param .df data frame containing parameter estimates & names
 #'
 #' @keywords internal
 defineRows <- function(.df){
+
+  transList <- c("logTrans", "logitTrans", "lognormalOm", "OmSD", "propErr", "addErr", "none")
+
+  if(nrow(.df %>%  dplyr::filter(stringr::str_detect(trans, paste(transList, collapse="|")))) != nrow(.df)) {
+    print(.df %>% dplyr::filter(!(stringr::str_detect(trans, paste(transList, collapse="|"))))) #make mismatch df
+    stop("Invalid trans value. See ADD LINK for list of valid trans values") # link to what valid values are
+  }
   .df %>%
     dplyr::mutate(
-      TH = stringr::str_detect(name, "TH"),
-      OM = stringr::str_detect(name, "OM"),
-      S = stringr::str_detect(name, "S"),
+      TH = stringr::str_detect(name, "^TH"),
+      OM = stringr::str_detect(name, "^OM"),
+      S = stringr::str_detect(name, "^S"),
       LOG = (trans=="logTrans"),
       LOGIT = (trans=="logitTrans"),
       lognormO = (trans=="lognormalOm"),
@@ -25,3 +33,4 @@ defineRows <- function(.df){
       addErr = (trans=="addErr")
     )
 }
+

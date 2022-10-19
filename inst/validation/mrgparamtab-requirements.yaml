@@ -17,3 +17,16 @@ ANM-R001:
   description: asNum converts a variety of input types to numeric
   tests:
   - MPT-ANM-001
+CTF-R001:
+  description: checkTransformations checks to see if there is a '~' in trans column, replace NA with the value
+  tests:
+  - MPT-CTF-001
+  - MPT-CTF-002
+DRO-R001:
+  description: defineRows gives error if there is an invalid trans value in input data
+  tests:
+  - MPT-DRO-001
+DRO-R002:
+  description: defineRows creates variables with true/false values depending on the type of parameter on each row
+  tests:
+  - MPT-DRO-002

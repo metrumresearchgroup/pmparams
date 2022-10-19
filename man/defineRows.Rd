@@ -7,7 +7,7 @@
 defineRows(.df)
 }
 \arguments{
-\item{.df}{data frame containing parameter estimataes & names}
+\item{.df}{data frame containing parameter estimates & names}
 }
 \description{
 Creates variables with true/false values depending on the type of parameter
