@@ -2,7 +2,7 @@
 % Please edit documentation in R/define_param_table.R
 \name{define_param_table}
 \alias{define_param_table}
-\title{Define parameter table}
+\title{Combine parameter estimates with parameter key}
 \usage{
 define_param_table(.estimates, .key)
 }
@@ -10,6 +10,8 @@ define_param_table(.estimates, .key)
 \item{.estimates}{parameter estimates data.frame}
 
 \item{.key}{parameter key}
+
+\item{...}{arguments passed through to methods (currently undefined)}
 }
 \description{
 Combines model output parameter estimates with information in parameter key. Performs
@@ -33,4 +35,7 @@ This join adds the following columns: \code{abb} (abbreviation), \code{desc} (pa
 With this information provided, a check is performed to determine whether parameters
 with special transformation rules were defined correctly. In addition, a series of
 TRUE/FALSE columns that will be used by subsequent functions.
+}
+\seealso{
+\link[mrgparamtab]{param_key}: Parameter key requirements
 }
