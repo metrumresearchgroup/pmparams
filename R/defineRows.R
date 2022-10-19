@@ -14,9 +14,10 @@
 defineRows <- function(.df){
 
   transList <- c("logTrans", "logitTrans", "lognormalOm", "OmSD", "propErr", "addErr", "none")
+  mismatch <- .df %>% dplyr::filter(!(stringr::str_detect(trans, paste(transList, collapse="|"))))
 
-  if(nrow(.df %>%  dplyr::filter(stringr::str_detect(trans, paste(transList, collapse="|")))) != nrow(.df)) {
-    print(.df %>% dplyr::filter(!(stringr::str_detect(trans, paste(transList, collapse="|"))))) #make mismatch df
+  if(nrow(mismatch) > 0) {
+    print(mismatch) #make mismatch df
     stop("Invalid trans value. See ADD LINK for list of valid trans values") # link to what valid values are
   }
   .df %>%
