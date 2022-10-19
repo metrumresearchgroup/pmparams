@@ -24,6 +24,7 @@ paramKey = dplyr::tribble(
   "SIGMA11", "Proportional", "Variance", "RV", "propErr"
 )
 
+param_path <- system.file("model/nonmem/102", package = "mrgparamtab")
 param_est <- bbr::read_model(system.file("model/nonmem/102", package = "mrgparamtab")) %>%
   bbr::model_summary() %>%
   bbr::param_estimates()

@@ -1,9 +1,9 @@
 
-test_that("define_param_table creates new parameter names without parentheses", {
+test_that("define_param_table creates new parameter names without parentheses [MPT-DPT-001]", {
   expect_equal(newDF$name[newDF$parameter_names == "OMEGA(1,1)"], "OMEGA11")
 })
 
-test_that("define_param_table generates logical columns to indicate parameter type", {
+test_that("define_param_table generates logical columns to indicate parameter type [MPT-DPT-001]", {
   expect_equal(newDF$TH[newDF$parameter_names == "THETA1"], TRUE)
   expect_equal(newDF$OM[newDF$parameter_names == "THETA1"], FALSE)
   expect_equal(newDF$OM[newDF$parameter_names == "OMEGA(1,1)"], TRUE)
@@ -11,7 +11,7 @@ test_that("define_param_table generates logical columns to indicate parameter ty
   expect_equal(newDF$S[newDF$parameter_names == "THETA1"], FALSE)
 })
 
-test_that("define_param_table accurately generates logical columns for transformation", {
+test_that("define_param_table accurately generates logical columns for transformation [MPT-DPT-001]", {
   expect_true(newDF$trans[newDF$name == "THETA1"] == "logTrans" &
                 newDF$LOG[newDF$name == "THETA1"] == TRUE &
                 newDF$LOGIT[newDF$name == "THETA1"] == FALSE)
@@ -24,3 +24,16 @@ test_that("define_param_table accurately generates logical columns for transform
                 newDF$LOG[newDF$name == "SIGMA11"] == FALSE &
                 newDF$propErr[newDF$name == "SIGMA11"] == TRUE)
 })
+
+test_that("define_param_table incorrect estimate input type: no parameter_names column [MPT-DPT-002]",{
+  param_est2 <- param_est
+  colnames(param_est2)[colnames(param_est2) == "parameter_names"] ="no_name"
+  expect_error(capture.output(define_param_table(param_est2, paramKey)))
+})
+
+test_that("define_param_table incorrect paramter key input type: missing column(s) [MPT-DPT-002]",{
+  paramKey2 <- as.data.frame(paramKey)
+  colnames(paramKey2)[colnames(paramKey2) == "panel"] ="no_name"
+  expect_error(capture.output(define_param_table(param_est, paramKey2)))
+})
+
