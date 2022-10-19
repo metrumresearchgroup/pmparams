@@ -54,3 +54,8 @@ GPN-R006:
   description: getPanelName appropriately groups structural model parameters panel
   tests:
   - MPT-GPN-006
+DPT-R001:
+  description: define_param_table combines model output parameter estimates with information in parameter key
+  tests:
+  -MPT-DPT-001
+  -MPT-DPT-002
