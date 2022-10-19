@@ -4,8 +4,18 @@
 \alias{getPanelName}
 \title{Define panel parameters}
 \usage{
-getPanelName(df)
+getPanelName(.df)
 }
 \description{
 Define which parameters should appear under which panel name in the final table.
+
+Panel types include:
+\itemize{
+\item Residual variance
+\item Interindividual covariance parameters
+\item Interindividual variance parameters
+\item Interoccasion variance parameters
+\item Covariate effect parameters
+\item Structural model parameters
+}
 }

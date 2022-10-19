@@ -30,3 +30,27 @@ DRO-R002:
   description: defineRows creates variables with true/false values depending on the type of parameter on each row
   tests:
   - MPT-DRO-002
+GPN-R001:
+  description: getPanelName appropriately groups residual variance panel
+  tests:
+  - MPT-GPN-001
+GPN-R002:
+  description: getPanelName appropriately groups interindividual covariance parameters panel
+  tests:
+  - MPT-GPN-002
+GPN-R003:
+  description: getPanelName appropriately groups interindividual variance parameters panel
+  tests:
+  - MPT-GPN-003
+GPN-R004:
+  description: getPanelName appropriately groups interoccasion variance parameters panel
+  tests:
+  - MPT-GPN-004
+GPN-R005:
+  description: getPanelName appropriately groups covariate effect parameters panel
+  tests:
+  - MPT-GPN-005
+GPN-R006:
+  description: getPanelName appropriately groups structural model parameters panel
+  tests:
+  - MPT-GPN-006
