@@ -4,7 +4,7 @@
 \alias{getpCV}
 \title{Calculate CV\%}
 \usage{
-getpCV(df)
+getpCV(.df)
 }
 \description{
 Calculate CV\%
