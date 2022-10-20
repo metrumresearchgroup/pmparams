@@ -32,6 +32,4 @@
 #'   - "propErr"    - for proportional error terms (coded using SIGMA in $ERROR) - returns est.+CV%
 #'
 #' @name param_key
-#' @export
-
 NULL
