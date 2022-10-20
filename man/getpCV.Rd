@@ -4,7 +4,12 @@
 \alias{getpCV}
 \title{Calculate CV\%}
 \usage{
-getpCV(.df)
+getpCV(.df, .column = "value")
+}
+\arguments{
+\item{.df}{data.frame with combined parameter estimates and parameter key}
+
+\item{.column}{column name to perform calculation on}
 }
 \description{
 Calculate CV\%
