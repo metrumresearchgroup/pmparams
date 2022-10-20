@@ -14,7 +14,7 @@ get90CI(.df, .value = "value", .se = "se")
 \item{df}{data.frame with parameter estimates}
 }
 \description{
-Calculates the upper and lower bound of a 95\% confidence interval, based on the
+Calculates the upper and lower bound of a 90\% confidence interval, based on the
 value and standard error.
 }
 \examples{
