@@ -4,12 +4,24 @@
 #' @param se standard error
 #'
 #' @keywords internal
-lowerCI <- function(est, se){
+lower95CI <- function(est, se){
   est - 1.96*se
 }
 
-#' @rdname lowerCI
+#' @rdname lower95CI
 #' @keywords internal
-upperCI <- function(est, se){
+upper95CI <- function(est, se){
   est + 1.96*se
+}
+
+#' @rdname lower95CI
+#' @keywords internal
+lower90CI <- function(est, se){
+  est - 1.64*se
+}
+
+#' @rdname lower95CI
+#' @keywords internal
+upper90CI <- function(est, se){
+  est + 1.64*se
 }

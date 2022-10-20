@@ -13,8 +13,6 @@
 #' @param df data frame of parameter estimates
 #'
 #' @keywords internal
-#'
-#'
 checkTransforms <- function(df){
   #if df does not have trans col- return error message
   if (!("trans" %in% names(df))) {

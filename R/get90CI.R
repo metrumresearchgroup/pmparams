@@ -1,8 +1,8 @@
-#' Calculate 95% confidence intervals
+#' Calculate 90% confidence intervals
 #'
 #' @description
 #'
-#' Calculates the upper and lower bound of a 95% confidence interval, based on the
+#' Calculates the upper and lower bound of a 90% confidence interval, based on the
 #' value and standard error.
 #'
 #' @param df data.frame with parameter estimates
@@ -15,8 +15,8 @@
 #' get95CI(.df = Theoph_ex, .value = "conc", .se = "stderr")
 #'
 #' @export
-get95CI <- function(.df, .value = "value", .se = "se"){
+get90CI <- function(.df, .value = "value", .se = "se"){
   .df %>%
-    dplyr::mutate(lower = lower95CI(.df[[.value]], .df[[.se]]),
-                  upper = upper95CI(.df[[.value]], .df[[.se]]))
+    dplyr::mutate(lower = lower90CI(.df[[.value]], .df[[.se]]),
+                  upper = upper90CI(.df[[.value]], .df[[.se]]))
 }
