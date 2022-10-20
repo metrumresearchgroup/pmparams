@@ -25,15 +25,33 @@ test_that("define_param_table expected output:  generates logical columns for tr
                 newDF$propErr[newDF$name == "SIGMA11"] == TRUE)
 })
 
-test_that("define_param_table incorrect estimate input type: no parameter_names column [MPT-DPT-002]",{
+test_that("define_param_table incorrect input type: no parameter_names column [MPT-DPT-002]",{
   param_est2 <- param_est
   colnames(param_est2)[colnames(param_est2) == "parameter_names"] ="no_name"
   expect_error(capture.output(define_param_table(param_est2, paramKey)))
 })
 
-test_that("define_param_table incorrect paramter key input type: missing column(s) [MPT-DPT-002]",{
+test_that("define_param_table incorrect input type: missing column(s) [MPT-DPT-002]",{
   paramKey2 <- as.data.frame(paramKey)
   colnames(paramKey2)[colnames(paramKey2) == "panel"] ="no_name"
   expect_error(capture.output(define_param_table(param_est, paramKey2)))
 })
 
+test_that("define_param_table handles multiple estimte input types [MPT-DPT-003]", {
+  pathDF <- define_param_table(param_path, paramKey)
+  expect_equal(pathDF$estimate[pathDF$name == "OMEGA22"], 0.0826922)
+
+  mod_est <- bbr::read_model(system.file("model/nonmem/102", package = "mrgparamtab"))
+  pathDF2 <- define_param_table(mod_est, paramKey)
+  expect_equal(pathDF2$estimate[pathDF2$name == "OMEGA22"], 0.0826922)
+
+  sum_est <- bbr::read_model(system.file("model/nonmem/102", package = "mrgparamtab")) %>%
+    bbr::model_summary()
+  pathDF3 <- define_param_table(sum_est, paramKey)
+  expect_equal(pathDF3$estimate[pathDF3$name == "OMEGA22"], 0.0826922)
+})
+
+test_that("define_param_table handles multiple parameter key input types [MPT-DPT-004]", {
+  pathDF <- define_param_table(param_path, system.file("model/nonmem/pk-parameter-key.yaml", package = "mrgparamtab"))
+  expect_equal(pathDF$estimate[pathDF$name == "OMEGA22"], 0.0826922)
+})

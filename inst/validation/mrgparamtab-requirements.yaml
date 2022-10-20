@@ -65,5 +65,10 @@ GPN-R006:
 DPT-R001:
   description: define_param_table combines model output parameter estimates with information in parameter key
   tests:
-  -MPT-DPT-001
-  -MPT-DPT-002
+  - MPT-DPT-001
+  - MPT-DPT-002
+DPT-R002:
+  description: define_param_table allows a variety of input types for the parameter estimates and parameter key
+  tests:
+  - MPT-DPT-003
+  - MPT-DPT-004
