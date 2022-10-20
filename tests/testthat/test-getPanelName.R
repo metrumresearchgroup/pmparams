@@ -1,7 +1,7 @@
 defpt <- define_param_table(param_est, paramKey)
+gpn <- getPanelName(defpt)
 
 test_that("getPanelName appropriately classifies residual variance panel [MPT-GPN-001]", {
-  gpn <- getPanelName(defpt)
 
   # Residual variance panel
   expect_equal(gpn$type[gpn$panel == "RV"], "Residual variance")
