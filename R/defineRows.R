@@ -6,9 +6,8 @@
 #' on each row. For instance, an "OMEGA" parameter would be OM ~ TRUE and TH ~ FALSE & S ~ FALSE.
 #'
 #' Similarly, true/false variables are created to indicate the transform selected.
-#' @importFrom stringr str_detect
-#' @importFrom dplyr select filter
 #' @param .df data frame containing parameter estimates & names
+#'
 #'
 #' @keywords internal
 defineRows <- function(.df){
@@ -17,8 +16,8 @@ defineRows <- function(.df){
   mismatch <- .df %>% dplyr::filter(!(stringr::str_detect(trans, paste(transList, collapse="|"))))
 
   if(nrow(mismatch) > 0) {
-    print(mismatch) #make mismatch df
-    stop("Invalid trans value. See ADD LINK for list of valid trans values") # link to what valid values are
+    print(mismatch)
+    stop("Invalid transform value. See ?param_key for list of valid transform values") # link to what valid values are
   }
   .df %>%
     dplyr::mutate(

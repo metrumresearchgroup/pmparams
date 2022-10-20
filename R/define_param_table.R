@@ -28,6 +28,7 @@
 #' @param .key parameter key
 #' @param ... arguments passed through to methods (currently undefined)
 #'
+#' @seealso \link[mrgparamtab]{param_key}: Parameter key requirements
 #' @export
 define_param_table <- function(.estimates, .key){
 
@@ -59,11 +60,11 @@ define_param_table <- function(.estimates, .key){
   }
 
   if (inherits(.key, "data.frame")){
-    if (!(any(c("name", "abb", "desc", "panel", "trans") %in% colnames(.key)))) {
-      stop("Incorrect parameter key input type")
+    if (!(all(c("name", "abb", "desc", "panel", "trans") %in% colnames(.key)))) {
+      stop("Incorrect parameter key input type. See ?param_key for list of valid parameter key inputs")
     }
   } else{
-    stop("Incorrect parameter key input type")
+    stop("Incorrect parameter key input type. See ?param_key for list of valid parameter key inputs")
   }
 
   mod_estimates <- .estimates %>%

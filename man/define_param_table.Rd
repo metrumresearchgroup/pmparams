@@ -36,3 +36,6 @@ With this information provided, a check is performed to determine whether parame
 with special transformation rules were defined correctly. In addition, a series of
 TRUE/FALSE columns that will be used by subsequent functions.
 }
+\seealso{
+\link[mrgparamtab]{param_key}: Parameter key requirements
+}

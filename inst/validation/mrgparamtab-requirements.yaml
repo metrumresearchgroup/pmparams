@@ -38,3 +38,32 @@ CIO-R001:
   description: get90CI calculates the upper and lower bounds of a 90% confidence interval
   tests:
   - MPT-CIO-001
+GPN-R001:
+  description: getPanelName appropriately groups residual variance panel
+  tests:
+  - MPT-GPN-001
+GPN-R002:
+  description: getPanelName appropriately groups interindividual covariance parameters panel
+  tests:
+  - MPT-GPN-002
+GPN-R003:
+  description: getPanelName appropriately groups interindividual variance parameters panel
+  tests:
+  - MPT-GPN-003
+GPN-R004:
+  description: getPanelName appropriately groups interoccasion variance parameters panel
+  tests:
+  - MPT-GPN-004
+GPN-R005:
+  description: getPanelName appropriately groups covariate effect parameters panel
+  tests:
+  - MPT-GPN-005
+GPN-R006:
+  description: getPanelName appropriately groups structural model parameters panel
+  tests:
+  - MPT-GPN-006
+DPT-R001:
+  description: define_param_table combines model output parameter estimates with information in parameter key
+  tests:
+  -MPT-DPT-001
+  -MPT-DPT-002
