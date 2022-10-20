@@ -4,7 +4,11 @@
 \alias{getpRSE}
 \title{Calculate \% RSE}
 \usage{
-getpRSE(df)
+getpRSE(
+  .df,
+  .digit = getOption("mrgparamtab.dig"),
+  .maxex = getOption("mrgparamtab.maxex")
+)
 }
 \description{
 Note, this is appropriate when parameters are estimated untransformed or in the log.
