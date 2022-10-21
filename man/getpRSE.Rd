@@ -6,9 +6,23 @@
 \usage{
 getpRSE(
   .df,
+  .value = "value",
+  .se = "se",
+  ...,
   .digit = getOption("mrgparamtab.dig"),
   .maxex = getOption("mrgparamtab.maxex")
 )
+}
+\arguments{
+\item{.df}{data.frame with parameter estimates}
+
+\item{.value}{column name of value of interest}
+
+\item{.se}{column name containing standard error}
+
+\item{.digit}{set significant digits for output (optional)}
+
+\item{.maxex}{set maxex for computation (optional)}
 }
 \description{
 Note, this is appropriate when parameters are estimated untransformed or in the log.
