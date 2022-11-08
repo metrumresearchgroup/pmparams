@@ -11,7 +11,7 @@
 #' @param .maxex set maxex for computation (optional)
 #'
 #' @export
-getpRSE <- function(.df, .value = "value", .se = "se", ...,
+getpRSE <- function(.df, .value = value, .se = se, ...,
                     .digit = getOption("mrgparamtab.dig"),
                     .maxex = getOption("mrgparamtab.maxex")){
 
@@ -19,9 +19,9 @@ getpRSE <- function(.df, .value = "value", .se = "se", ...,
 
   .df %>%
     dplyr::mutate(pRSE = dplyr::case_when(fixed ~ "-",
-                                          TH & LOG ~ pmtables::sig(sqrt(exp(.df[[.se]]^2)-1)*100, .digit, .maxex),
-                                          TH & !LOG & !LOGIT ~ pmtables::sig((.df[[.se]]/abs(.df[[.value]])) * 100, .digit, .maxex),
-                                          diag & !LOG & !LOGIT ~ pmtables::sig((.df[[.se]]/abs(.df[[.value]])) * 100, .digit, .maxex),
+                                          TH & LOG ~ pmtables::sig(sqrt(exp({{.se}}^2)-1)*100, .digit, .maxex),
+                                          TH & !LOG & !LOGIT ~ pmtables::sig(({{.se}}/abs({{.value}})) * 100, .digit, .maxex),
+                                          diag & !LOG & !LOGIT ~ pmtables::sig(({{.se}}/abs({{.value}})) * 100, .digit, .maxex),
                                           TRUE ~ "-"))
   }
 

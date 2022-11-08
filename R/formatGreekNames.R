@@ -4,8 +4,8 @@
 #' Format THETA/OMEGA/SIGMA values to display as greek letters with subscript numbers.
 #'
 #' @export
-formatGreekNames <- function(df){
-  df %>%
+formatGreekNames <- function(.df){
+  .df %>%
     mutate(greekName = name) %>%
     # make column with greek letters and parameter numbers
     separate(greekName,

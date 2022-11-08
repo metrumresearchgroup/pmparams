@@ -17,6 +17,10 @@ ANM-R001:
   description: asNum converts a variety of input types to numeric
   tests:
   - MPT-ANM-001
+ANM-R002:
+  description: getEvenNo returns number if value is even, empty if not even
+  tests:
+  - MPT-ANM-002
 CTF-R001:
   description: checkTransformations checks to see if there is a '~' in trans column, replace NA with the value
   tests:
@@ -72,3 +76,9 @@ DPT-R002:
   tests:
   - MPT-DPT-003
   - MPT-DPT-004
+BQU-R001:
+  description: boot_quantiles calculates quartiles when using bootstrap estimates
+  tests:
+  -MPT-DPT-001
+  -MPT-DPT-002
+

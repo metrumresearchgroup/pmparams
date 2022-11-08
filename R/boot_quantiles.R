@@ -4,24 +4,25 @@
 #' @param prob numeric vector of probabilities with values in [0,1]
 #'
 #' @keywords internal
-qt   <- function(x, prob){
-  unname(quantile(x, probs = prob, na.rm = TRUE))
+#' @rdname qt
+qt   <- function(.x, .prob){
+  unname(quantile(.x, probs = .prob, na.rm = TRUE))
 }
 
 #' @rdname qt
 #' @keywords internal
-med  <- function(x){
-  qt(x, 0.5)
+med  <- function(.x){
+  qt(.x, 0.5)
 }
 
 #' @rdname qt
 #' @keywords internal
-lo  <- function(x){
-  qt(x, 0.025)
+lo  <- function(.x){
+  qt(.x, 0.025)
 }
 
 #' @rdname qt
 #' @keywords internal
-hi  <- function(x){
-  qt(x, 0.975)
+hi  <- function(.x){
+  qt(.x, 0.975)
 }

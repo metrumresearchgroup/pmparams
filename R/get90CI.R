@@ -12,11 +12,12 @@
 #' @examples
 #'
 #' Theoph_ex <- Theoph %>% dplyr::mutate(stderr = conc/10)
-#' get95CI(.df = Theoph_ex, .value = "conc", .se = "stderr")
+#' get95CI(.df = Theoph_ex, .value = conc, .se = stderr)
 #'
 #' @export
-get90CI <- function(.df, .value = "value", .se = "se"){
+get90CI <- function(.df, .value = value, .se = se){
   .df %>%
-    dplyr::mutate(lower = lower90CI(.df[[.value]], .df[[.se]]),
-                  upper = upper90CI(.df[[.value]], .df[[.se]]))
+    dplyr::mutate(lower = lower90CI({{.value}}, {{.se}}),
+                  upper = upper90CI({{.value}}, {{.se}}))
 }
+
