@@ -7,7 +7,7 @@
 asNum(f)
 }
 \arguments{
-\item{f}{character to be converted to numeric ???}
+\item{f}{character variable to be converted to numeric}
 }
 \description{
 Convert to numeric

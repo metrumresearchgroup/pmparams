@@ -7,7 +7,7 @@
 getEvenNo(x)
 }
 \arguments{
-\item{x}{numeric value ???}
+\item{x}{numeric value}
 }
 \description{
 Get even number

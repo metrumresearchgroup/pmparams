@@ -2,10 +2,44 @@
 % Please edit documentation in R/getValueSE.R
 \name{getValueSE}
 \alias{getValueSE}
-\title{Get value of standard error ???}
+\title{Get value of standard error}
 \usage{
-getValueSE(df)
+getValueSE(
+  .df,
+  .estimate = "estimate",
+  .stderr = "stderr",
+  .om = "OM",
+  .diag = "diag",
+  .s = "S",
+  .addErr = "addErr",
+  .random_effect_sd = "random_effect_sd",
+  .digit = getOption("mrgparamtab.dig"),
+  .maxex = getOption("mrgparamtab.maxex")
+)
+}
+\arguments{
+\item{.df}{data.frame with parameter estimates}
+
+\item{.estimate}{column name of estimate}
+
+\item{.stderr}{column name of standard error of estimate (STDERR)}
+
+\item{.om}{column name of OMEGA}
+
+\item{.digit}{set significant digits for output (optional)}
+
+\item{.maxex}{set maxex for computation (optional)}
 }
 \description{
-Get value of standard error ???
+value should have estimate \link{something}:
+
+theta = estimate only                           # use estimate column
+
+omega diagonals = variance \link{\%CV}                # estimate \link{CV from estimate, stderr}
+
+omega off-diagonals = covariance \link{corr coeff}   # estimate \link{random_effect_sd}
+
+sigma diagonal proportional = variance \link{\%CV}    # estimate \link{CV from estimate, stderr}
+
+sigma diagonal additive = variance \link{SD}         # estimate \link{random_effect_sd}
 }

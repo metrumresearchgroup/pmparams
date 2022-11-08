@@ -2,11 +2,11 @@
 % Please edit documentation in R/getCV_propS.R
 \name{getCV_propS}
 \alias{getCV_propS}
-\title{Get CV proportion ???}
+\title{Get CV proportion}
 \usage{
 getCV_propS(v)
 }
 \description{
-Get CV proportion ???
+CV equations from \href{https://ascpt.onlinelibrary.wiley.com/doi/full/10.1002/psp4.12404}{NONMEM Tutorial Part I: Description of Commands and Options, With Simple Examples of Population Analysis}
 }
 \keyword{internal}

@@ -7,13 +7,13 @@
 \alias{hi}
 \title{Calculate quartiles when using bootstrap estimates}
 \usage{
-qt(x, prob)
+qt(.x, .prob)
 
-med(x)
+med(.x)
 
-lo(x)
+lo(.x)
 
-hi(x)
+hi(.x)
 }
 \arguments{
 \item{x}{numeric vector whose sample quantiles are wanted}
