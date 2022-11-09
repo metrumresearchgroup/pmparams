@@ -81,4 +81,21 @@ BQU-R001:
   tests:
   -MPT-DPT-001
   -MPT-DPT-002
-
+GVS-R001:
+  description: getValueSE accurately calculates each parameter's accociated metric
+  tests:
+  -MPT-GVSE-001
+GVS-R002:
+  description: getValueSE digits and maxex options for each parameter's accociated metric
+  tests:
+  -MPT-GVS-002
+  -MPT-GVS-003
+GRS-R001:
+  description: getpRSE accurately calculates % RS
+  tests:
+  -MPT-GRS-001
+GRS-R002:
+  description: getpRSE digits and maxex options for % RSE
+  tests:
+  -MPT-GRS-002
+  -MPT-GRS-003

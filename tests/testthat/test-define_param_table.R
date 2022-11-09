@@ -37,7 +37,7 @@ test_that("define_param_table incorrect input type: missing column(s) [MPT-DPT-0
   expect_error(capture.output(define_param_table(param_est, paramKey2)))
 })
 
-test_that("define_param_table handles multiple estimte input types [MPT-DPT-003]", {
+test_that("define_param_table handles multiple estimate input types [MPT-DPT-003]", {
   pathDF <- define_param_table(param_path, paramKey)
   expect_equal(pathDF$estimate[pathDF$name == "OMEGA22"], 0.0826922)
 
@@ -45,10 +45,12 @@ test_that("define_param_table handles multiple estimte input types [MPT-DPT-003]
   pathDF2 <- define_param_table(mod_est, paramKey)
   expect_equal(pathDF2$estimate[pathDF2$name == "OMEGA22"], 0.0826922)
 
-  sum_est <- bbr::read_model(system.file("model/nonmem/102", package = "mrgparamtab")) %>%
-    bbr::model_summary()
-  pathDF3 <- define_param_table(sum_est, paramKey)
+  pathDF3 <- define_param_table(param_model, paramKey)
   expect_equal(pathDF3$estimate[pathDF3$name == "OMEGA22"], 0.0826922)
+
+  pathDF4 <- define_param_table(param_est, paramKey)
+  expect_equal(pathDF4$estimate[pathDF4$name == "OMEGA22"], 0.0826922)
+
 })
 
 test_that("define_param_table handles multiple parameter key input types [MPT-DPT-004]", {

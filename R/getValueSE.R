@@ -1,4 +1,4 @@
-#' Get value of standard error
+#' Get value or estimate for each model parameter and its associated metric
 #'
 #'@description
 #' value should have estimate [something]:
@@ -22,20 +22,20 @@
 #' @param .maxex set maxex for computation (optional)
 #'
 #' @export
-getValueSE <- function(.df, .estimate = "estimate", .stderr = "stderr",
-                       .om = "OM", .diag = "diag", .s = "S", .addErr = "addErr",
-                       .random_effect_sd = "random_effect_sd",
+getValueSE <- function(.df, .estimate = estimate, .stderr = stderr,
+                       .om = OM, .diag = diag, .s = S, .addErr = addErr,
+                       .random_effect_sd = random_effect_sd,
                        .digit = getOption("mrgparamtab.dig"),
                        .maxex = getOption("mrgparamtab.maxex")){
 
   .digit = ifelse(is.null(.digit), formals(pmtables::sig)$digits, .digit)
 
-  df %>%
-    dplyr::mutate(value = .estimate,
-                  se = .stderr,
-                  corr_SD = case_when(.om & !.diag |
-                            .s & .diag & .addErr ~ pmtables::sig(.random_effect_sd, .digit, .maxex),
-                            TRUE ~ "-")
+  .df %>%
+    mutate(value = {{.estimate}},
+           se = {{.stderr}},
+           corr_SD = case_when({{.om}} & !{{.diag}} |
+                               {{.s}} & {{.diag}} & {{.addErr}} ~ pmtables::sig({{.random_effect_sd}}, .digit, .maxex),
+                               TRUE ~ "-")
     )
 }
 
