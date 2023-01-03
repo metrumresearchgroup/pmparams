@@ -4,13 +4,13 @@
 \alias{checkTransforms}
 \title{Check whether "~" is used to signify the associated THETA}
 \usage{
-checkTransforms(df)
+checkTransforms(.df)
 }
 \arguments{
-\item{df}{data frame of parameter estimates}
+\item{.df}{data frame of parameter estimates}
 }
 \description{
-Checks to see if there is a '~' in df$trans, replace NA with the value.
+Checks to see if there is a '~' in .df$trans, replace NA with the value.
 For example, \link{logitOmSD ~ THETA1} puts "THETA1" in transTHETA.
 
 After, it removes everything after the "~" in the trans column and

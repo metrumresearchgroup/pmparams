@@ -9,7 +9,7 @@
 #' @param .select_cols columns to select for output
 #'
 #' @export
-format_param_table <- function(.df,
+formatParamTable <- function(.df,
                                .select_cols = c("type", "abb", "greek", "desc", "value", "ci", "shrinkage")){
 
  .df %>%

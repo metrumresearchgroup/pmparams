@@ -30,7 +30,7 @@
 #'
 #' @seealso \link[mrgparamtab]{param_key}: Parameter key requirements
 #' @export
-define_param_table <- function(.estimates, .key){
+defineParamTable <- function(.estimates, .key){
 
   if (inherits(.estimates, "character")){
     print(paste0("Model path provided: ", .estimates))

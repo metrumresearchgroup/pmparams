@@ -18,11 +18,6 @@ expGreek(.x, .y)
 
 logitGreek(.x, .y)
 }
-\arguments{
-\item{.x}{greek letter ???}
-
-\item{.y}{greek letter ???}
-}
 \description{
 Greek number helper functions
 }
