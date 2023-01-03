@@ -11,3 +11,4 @@ Define what is in estimate column and what is in square brackets.
 
 Displays 95\% CI to show lower, upper or FIXED and rounds values for display in report
 }
+\keyword{internal}

@@ -4,7 +4,7 @@
 \alias{formatGreekNames}
 \title{Format THETA/OMEGA/SIGMA values}
 \usage{
-formatGreekNames(df)
+formatGreekNames(.df)
 }
 \description{
 Format THETA/OMEGA/SIGMA values to display as greek letters with subscript numbers.

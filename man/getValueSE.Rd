@@ -2,17 +2,17 @@
 % Please edit documentation in R/getValueSE.R
 \name{getValueSE}
 \alias{getValueSE}
-\title{Get value of standard error}
+\title{Get value or estimate for each model parameter and its associated metric}
 \usage{
 getValueSE(
   .df,
-  .estimate = "estimate",
-  .stderr = "stderr",
-  .om = "OM",
-  .diag = "diag",
-  .s = "S",
-  .addErr = "addErr",
-  .random_effect_sd = "random_effect_sd",
+  .estimate = estimate,
+  .stderr = stderr,
+  .om = OM,
+  .diag = diag,
+  .s = S,
+  .addErr = addErr,
+  .random_effect_sd = random_effect_sd,
   .digit = getOption("mrgparamtab.dig"),
   .maxex = getOption("mrgparamtab.maxex")
 )
