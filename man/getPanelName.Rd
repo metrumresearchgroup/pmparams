@@ -19,3 +19,4 @@ Panel types include:
 \item Structural model parameters
 }
 }
+\keyword{internal}

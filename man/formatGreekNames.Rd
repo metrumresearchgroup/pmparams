@@ -9,3 +9,4 @@ formatGreekNames(.df)
 \description{
 Format THETA/OMEGA/SIGMA values to display as greek letters with subscript numbers.
 }
+\keyword{internal}

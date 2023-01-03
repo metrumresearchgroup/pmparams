@@ -11,7 +11,7 @@
 #' - Covariate effect parameters
 #' - Structural model parameters
 #'
-#' @export
+#' @keywords internal
 getPanelName = function(.df){
   .df %>%
     dplyr::mutate(

@@ -53,10 +53,17 @@ define_param_table <- function(.estimates, .key){
     stop("Incorrect estimate input type")
   }
 
-
   if (inherits(.key, "character")){
-    print(paste0("Model path provided: ", .key))
-    .key <- pmtables::yaml_as_df(.key)
+    print(paste0("Parameter table yaml path provided: ", .key))
+    y1l <- yaml::yaml.load_file(.key)
+
+    .key <- dplyr::tibble(
+      name = names(y1l),
+      abb = unlist(y1l)[grepl('abb',names(unlist(y1l)),fixed=T)],
+      desc = unlist(y1l)[grepl('desc',names(unlist(y1l)),fixed=T)],
+      panel = unlist(y1l)[grepl('panel',names(unlist(y1l)),fixed=T)],
+      trans = unlist(y1l)[grepl('trans',names(unlist(y1l)),fixed=T)]
+    )
   }
 
   if (inherits(.key, "data.frame")){
