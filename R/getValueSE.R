@@ -12,30 +12,25 @@
 #'   sigma diagonal proportional = variance [%CV]    # estimate [CV from estimate, stderr]
 #'
 #'   sigma diagonal additive = variance [SD]         # estimate [random_effect_sd]
-
 #'
 #' @param .df data.frame with parameter estimates
-#' @param .estimate column name of estimate
-#' @param .stderr column name of standard error of estimate (STDERR)
-#' @param .om column name of OMEGA
-#' @param .digit set significant digits for output (optional)
-#' @param .maxex set maxex for computation (optional)
+#' @param .digit set the number of significant digits
+#' @param .maxex set the number of maxex
 #'
 #' @export
-getValueSE <- function(.df, .estimate = estimate, .stderr = stderr,
-                       .om = OM, .diag = diag, .s = S, .addErr = addErr,
-                       .random_effect_sd = random_effect_sd,
+getValueSE <- function(.df,
                        .digit = getOption("mrgparamtab.dig"),
                        .maxex = getOption("mrgparamtab.maxex")){
 
   .digit = ifelse(is.null(.digit), formals(pmtables::sig)$digits, .digit)
 
   .df %>%
-    mutate(value = {{.estimate}},
-           se = {{.stderr}},
-           corr_SD = case_when({{.om}} & !{{.diag}} |
-                               {{.s}} & {{.diag}} & {{.addErr}} ~ pmtables::sig({{.random_effect_sd}}, .digit, .maxex),
-                               TRUE ~ "-")
+    dplyr::mutate(
+      value = estimate,
+      se = stderr,
+      corr_SD = dplyr::case_when(
+        OM & !diag | S & diag & addErr ~ pmtables::sig(random_effect_sd, .digit, .maxex),
+        TRUE ~ "-")
     )
 }
 

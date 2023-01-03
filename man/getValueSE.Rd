@@ -6,13 +6,6 @@
 \usage{
 getValueSE(
   .df,
-  .estimate = estimate,
-  .stderr = stderr,
-  .om = OM,
-  .diag = diag,
-  .s = S,
-  .addErr = addErr,
-  .random_effect_sd = random_effect_sd,
   .digit = getOption("mrgparamtab.dig"),
   .maxex = getOption("mrgparamtab.maxex")
 )
@@ -20,15 +13,9 @@ getValueSE(
 \arguments{
 \item{.df}{data.frame with parameter estimates}
 
-\item{.estimate}{column name of estimate}
+\item{.digit}{set the number of significant digits}
 
-\item{.stderr}{column name of standard error of estimate (STDERR)}
-
-\item{.om}{column name of OMEGA}
-
-\item{.digit}{set significant digits for output (optional)}
-
-\item{.maxex}{set maxex for computation (optional)}
+\item{.maxex}{set the number of maxex}
 }
 \description{
 value should have estimate \link{something}:

@@ -6,8 +6,8 @@
 \usage{
 getpRSE(
   .df,
-  .value = value,
-  .se = se,
+  .value = "value",
+  .se = "se",
   ...,
   .digit = getOption("mrgparamtab.dig"),
   .maxex = getOption("mrgparamtab.maxex")
