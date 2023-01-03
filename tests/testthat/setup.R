@@ -26,8 +26,10 @@ paramKey = dplyr::tribble(
 
 param_path <- system.file("model/nonmem/102", package = "mrgparamtab")
 param_est <- bbr::read_model(system.file("model/nonmem/102", package = "mrgparamtab")) %>%
-  bbr::model_summary() %>%
-  bbr::param_estimates()
+             bbr::model_summary() %>%
+             bbr::param_estimates()
+param_model <- bbr::read_model(system.file("model/nonmem/102", package = "mrgparamtab")) %>%
+               bbr::model_summary()
 
 newDF <- define_param_table(.estimates = param_est, .key = paramKey)
 

@@ -1,10 +1,10 @@
-#' Calculate CV%
-#'
-#' @export
-getpCV <- function(df){
-  df %>%
-    mutate(cv = case_when(diag & OM & lognormO ~ sig(getCV_lognormO(value)),
-                          #diag & OM & logitOsd ~ sig(getSD_logitO(.mean=transTHETA, .var = value)),
-                          diag & S & propErr ~ sig(getCV_propS(value)),
-                          TRUE ~ "-"))
+#' @keywords internal
+getpCV <- function(.df){
+  .df %>%
+    dplyr::mutate(
+      cv = dplyr::case_when(
+        diag & OM & lognormO ~ pmtables::sig(getCV_lognormO(value)),
+        diag & S & propErr ~ pmtables::sig(getCV_propS(value)),
+        TRUE ~ "-")
+      )
 }

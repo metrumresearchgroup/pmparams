@@ -2,10 +2,31 @@
 % Please edit documentation in R/getValueSE.R
 \name{getValueSE}
 \alias{getValueSE}
-\title{Get value of standard error ???}
+\title{Get value or estimate for each model parameter and its associated metric}
 \usage{
-getValueSE(df)
+getValueSE(
+  .df,
+  .digit = getOption("mrgparamtab.dig"),
+  .maxex = getOption("mrgparamtab.maxex")
+)
+}
+\arguments{
+\item{.df}{data.frame with parameter estimates}
+
+\item{.digit}{set the number of significant digits}
+
+\item{.maxex}{set the number of maxex}
 }
 \description{
-Get value of standard error ???
+value should have estimate \link{something}:
+
+theta = estimate only                           # use estimate column
+
+omega diagonals = variance \link{\%CV}                # estimate \link{CV from estimate, stderr}
+
+omega off-diagonals = covariance \link{corr coeff}   # estimate \link{random_effect_sd}
+
+sigma diagonal proportional = variance \link{\%CV}    # estimate \link{CV from estimate, stderr}
+
+sigma diagonal additive = variance \link{SD}         # estimate \link{random_effect_sd}
 }

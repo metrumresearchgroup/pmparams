@@ -1,8 +1,4 @@
 #' Greek number helper functions
-#'
-#' @param .x greek letter ???
-#' @param .y greek letter ???
-#'
 #' @keywords internal
 mathMode <- function(.x){
   glue::glue("$<<.x>>$", .open = "<<", .close  = ">>")

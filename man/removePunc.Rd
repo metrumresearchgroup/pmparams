@@ -11,10 +11,4 @@ The model output for parameter estimates include punctuation in the parameter
 names, such as \code{OMEGA(1,1)}. Often it is desirable to have the name as
 \code{OMEGA11} instead.
 }
-\examples{
-
-df_ex <- dplyr::tribble(~ parameter_names, "THETA1", "OMEGA(1,1)", "OMEGA(2,2)")
-removePunc(df_ex, "parameter_names")
-
-}
 \keyword{internal}
