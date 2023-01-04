@@ -31,5 +31,5 @@ param_est <- bbr::read_model(system.file("model/nonmem/102", package = "mrgparam
 param_model <- bbr::read_model(system.file("model/nonmem/102", package = "mrgparamtab")) %>%
                bbr::model_summary()
 
-newDF <- define_param_table(.estimates = param_est, .key = paramKey)
+newDF <- defineParamTable(.estimates = param_est, .key = paramKey)
 
