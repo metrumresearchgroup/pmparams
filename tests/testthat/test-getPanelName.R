@@ -1,4 +1,4 @@
-defpt <- define_param_table(param_est, paramKey)
+defpt <- defineParamTable(param_est, paramKey)
 gpn <- getPanelName(defpt)
 
 test_that("getPanelName appropriately classifies residual variance panel [MPT-GPN-001]", {
@@ -55,3 +55,4 @@ test_that("getPanelName appropriately classifies structural model parameters pan
 
   expect_equal(unique(gpn4$type[gpn4$panel=="struct"]), "Structural model parameters")
 })
+

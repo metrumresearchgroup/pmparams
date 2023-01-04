@@ -65,9 +65,6 @@ test_that("defineParamTable handles multiple parameter key input types [MPT-DPT-
   expect_equal(pathDF$estimate[pathDF$name == "OMEGA22"], 0.0826922)
 })
 
-#fix throws warning message
 test_that("defineParamTable incorrect parameter key input type: Only abb, desc, panel and trans arguments will be used, all others ignored [MPT-DPT-005]", {
-  #pathDF <- defineParamTable(param_path, system.file("model/nonmem/pk-parameter-key-both.yaml", package = "mrgparamtab"))
-  #expect_equal(pathDF$estimate[pathDF$name == "THETA5"], 1.28631)
   expect_warning(capture.output(defineParamTable(param_path, system.file("model/nonmem/pk-parameter-key-both.yaml", package = "mrgparamtab"))))
 })
