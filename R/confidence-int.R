@@ -7,11 +7,11 @@
 #' @keywords internal
 lowerCI <- function(.est, .se, .ci){
   if (.ci == 90) {
-    .est - 1.64*.se
+   .est =  .est - 1.64*.se
   }
 
   if (.ci == 95) {
-    .est - 1.96*.se
+    .est = .est - 1.96*.se
   }
 
   return(.est)
@@ -21,11 +21,11 @@ lowerCI <- function(.est, .se, .ci){
 #' @keywords internal
 upperCI <- function(.est, .se, .ci){
   if (.ci == 90) {
-    .est + 1.64*.se
+    .est = .est + 1.64*.se
   }
 
   if (.ci == 95) {
-    .est + 1.96*.se
+    .est = .est + 1.96*.se
   }
 
   return(.est)

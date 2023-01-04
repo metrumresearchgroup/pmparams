@@ -35,11 +35,11 @@ DRO-R002:
   tests:
   - MPT-DRO-002
 CIF-R001:
-  description: get95CI calculates the upper and lower bounds of a 95% confidence interval
+  description: getCI calculates the upper and lower bounds of a 95% confidence interval
   tests:
   - MPT-CIF-001
 CIO-R001:
-  description: get90CI calculates the upper and lower bounds of a 90% confidence interval
+  description: getCI calculates the upper and lower bounds of a 90% confidence interval
   tests:
   - MPT-CIO-001
 GPN-R001:
