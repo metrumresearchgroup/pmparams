@@ -2,7 +2,7 @@
 #'
 #' @description
 #'
-#' Calculates the upper and lower bound of a 90% confidence interval, based on the
+#' Calculates the upper and lower bound of a 90% or 95% confidence interval, based on the
 #' value and standard error.
 #'
 #' @param .df data.frame with parameter estimates

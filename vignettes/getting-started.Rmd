@@ -1,0 +1,208 @@
+---
+title: "Getting Started with mrgparamtab"
+author: "Michael McDermott"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{getting-started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introduction
+
+Generating clear, well-formatted parameter tables for your NONMEM® model is an important part of reporting your model results, but it is often a tedious, time-consuming process. Here we show how to quickly and simply create parameter tables by leveraging a few intuitive functions designed to:
+
+- Read in your model parameters from various NONMEM® output files
+- Describe your model parameters in a YAML file
+- Back-transform any parameters estimated in other domains (e.g., log- or logit-transformed variables)
+- Calculate additional summary statistics (e.g., 95% confidence intervals, coefficient of variation (CV), etc.)
+
+# Setup
+
+```{r load packages, results = 'hide', message=FALSE, warning=FALSE}
+library(mrgparamtab)
+library(tidyverse)
+library(bbr)
+```
+
+`mrgparamtab` requires two inputs: a data.frame containing parameter estimates and a parameter key, ideally in yaml format. 
+
+## Parameter key
+
+The parameter key informs R how to interpret your model parameter values. `mrgparamtab` requires four arguments for each parameter type:
+
+- `abb`: abbreviation for model parameter (we use latex coding)
+- `desc`: parameter description to appear
+- `panel`: the table panel the parameter should appear under
+- `trans`: definition of how the parameter should be transformed
+
+For example:
+
+```{r, eval=FALSE}
+THETA1:
+  abb: "KA (1/h)"
+  desc: "First order absorption rate constant"
+  panel: struct
+  trans: logTrans
+```
+
+We provide some built-in options for the `panel` and `trans` arguments, but you can expand these if needed.
+
+We chose to describe all model parameters in a `pk-parameter-key.yaml` YAML file. The advantage is that, depending how your model development progressed, you can potentially use the same parameter key for the base model, final model and bootstrap model parameter tables.
+
+### Panel
+
+Note that there are a finite number of options included by default (see below) but you can include additional panels as needed.
+
+- “struct” ~ Structural model parameters
+- “cov” ~ Covariate effect parameters
+- “IIV” (and a diagonal omega) ~ Interindividual variance parameters
+- “IOV” (and a diagonal omega) ~ Interoccasion variance parameters
+- Off-diagonal omegas have the panel name ~ Interindividual covariance parameters
+panel == “RV” ~ Residual variance
+
+# Format the parameters for the report
+
+To generate a report-ready table we pass the parameter estimates and parameter key through a series of functions that:
+
+- Join the parameter key information
+- Perform some house-keeping based on the new parameter key information
+- Calculate the 95% confidence interval
+- Format the values for the report
+
+```{r, include=FALSE}
+
+estimates <- bbr::read_model(system.file("model/nonmem/102", package = "mrgparamtab")) %>%
+             bbr::model_summary() %>%
+             bbr::param_estimates()
+
+paramKey <- system.file("model/nonmem/pk-parameter-key-new.yaml", package = "mrgparamtab")
+
+```
+
+
+```{r}
+param_df <- 
+  defineParamTable(.estimates = estimates, .key = paramKey) %>% 
+  getValueSE() %>% 
+  getCI() %>% # add argument .ci = 95 or 90 to change confidence interval, default is 95% 
+  formatParamTable() %>% 
+  as.data.frame()
+
+param_df
+```
+
+## Functions used to format the parameters
+
+Provided below is a quick description for each of the functions used above:
+
+- `defineParamTable()` requires both the parameter estimates and parameter key as inputs. The information is combined from both, such that only the parameters found in the estimates data.frame will remain. It then checks whether parameters with special transformation rules were defined correctly. For example, for logit transformed variables, the code expects to see the trans (transform) column including the associated THETA value separated with a tilde symbol, e.g., logitOmSD ~ THETA3.
+- `getValueSE()` determines a value (or estimate) for each model parameter and it's associated metric.
+- `get95CI()` calculates the upper and lower values of the 95% confidence intervals (CIs).
+- `formatParamTable()` formats the parameters ready for the final table. This potentially includes back transforming parameters and their CIs, rounding parameters using pmtables::sig, and combining columns. 
+
+
+# Internal meeting information
+
+## Updated parameter key format
+
+Removed the letter headers and replaced them with the name of the parameter. 
+This leaves 4 arguments for the user to specify:
+
+- `abb`: abbreviation for model parameter (we use latex coding)
+- `desc`: parameter description to appear
+- `panel`: the table panel the parameter should appear under
+- `trans`: definition of how the parameter should be transformed
+
+The new format looks as such:
+
+```{r, eval=FALSE}
+THETA1:
+  abb: "KA (1/h)"
+  desc: "First order absorption rate constant"
+  panel: struct
+  trans: logTrans
+```
+
+NOTE: While documentation will suggest users set up the parameter key as shown above,
+the package supports the prior format as well, in addition to the parameter key input as 
+a tibble.
+
+## Exported functions
+
+Current functions available to the user include:
+- defineParamTable()
+- getCI()
+- getValueSE()
+- getpRSE()
+- formatParamTable()
+
+## defineParamTable()
+
+### Description
+
+`defineParamTable()` actions:
+
+- runs this function `removePunc(.column = "parameter_names")`
+- joins parameter estimates & parameter key (can provide path/data.frame for either)
+- runs `checkTransforms()` & `defineRows()`
+- performs check that all critical information from parameter key is provided
+
+QUESTION: Will the user ever need to independently run `checkTransforms()` or `defineRows()`?
+
+## getCI()
+
+### Description
+
+`getCI()` actions:
+
+- mutates columns to a data.frame for the upper and lower bound of a 90% or 95% confidence interval
+- user can specify which type of confidence interval, default is 95%
+
+QUESTION: Should default value be 95%?
+
+## getValueSE()
+
+### Description
+
+`getValueSE()` actions:
+
+- gets a value or estimate for each model parameter and its associated metric
+- user has optional arguments for `.digit` and `.maxex` for `pmtables::sig()` function
+- significant digits will be `pmtables::sig()` default if no arguments provided
+
+## getpRSE()
+
+### Notes
+
+- user has optional arguments for `.digit` and `.maxex` for `pmtables::sig()` function
+- significant digits will be `pmtables::sig()` default if no arguments provided
+
+QUESTION: Will the user want to call `getpRSE()` independently or inside `formatValues()`
+
+## getpCV()
+
+### Notes
+
+- called within `formatValues()`
+
+QUESTION: Will the user need to call `getpCV()` outside of `formatValues()`?
+
+## formatParamTable()
+
+### Description
+
+`formatParamTable()` actions:
+
+- runs `formatValues()`, `formatGreekNames()` & `getPanelName()`
+- selects desired columns
+- user can specify but default columns are: `c("type", "abb", "greek", "desc", "value", "ci", "shrinkage")`
+
+QUESTION: Will any of `formatValues()`, `formatGreekNames()` or `getPanelName()` need to be run independently?
