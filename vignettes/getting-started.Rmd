@@ -138,7 +138,8 @@ a tibble.
 ## Exported functions
 
 Current functions available to the user include:
-- defineParamTable()
+
+- defineParamTable() 
 - getCI()
 - getValueSE()
 - getpRSE()
