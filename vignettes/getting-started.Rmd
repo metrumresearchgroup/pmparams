@@ -87,6 +87,24 @@ paramKey <- system.file("model/nonmem/pk-parameter-key-new.yaml", package = "mrg
 
 ```
 
+Previously would run:
+
+```{r, eval=FALSE}
+param_df <- estimates
+  mutate(name = gsub("[[:punct:]]", "", parameter_names)) %>% 
+  inner_join(paramKey, by = "name")  %>%    
+  checkTransforms() %>%       
+  defineRows() %>%            
+  getValueSE() %>%            
+  get95CI() %>%               
+  formatValues() %>%          
+  formatGreekNames() %>%      
+  getPanelName() %>%          
+  dplyr::select(abb, greek, desc, value, ci, shrinkage, type) %>%
+  as.data.frame()
+```
+
+With `mrgparamtab` would run:
 
 ```{r}
 param_df <- 
@@ -139,11 +157,7 @@ a tibble.
 
 Current functions available to the user include:
 
-- defineParamTable() 
-- getCI()
-- getValueSE()
-- getpRSE()
-- formatParamTable()
+![Exported functions](../man/figures/test.png){width=75%}
 
 ## defineParamTable()
 
