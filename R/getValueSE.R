@@ -1,4 +1,4 @@
-#' Get value or estimate for each model parameter and its associated metric
+#' Determine a value (or estimate) for each model parameter and it’s associated metric
 #'
 #'@description
 #' value should have estimate [something]:

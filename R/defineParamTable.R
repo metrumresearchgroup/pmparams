@@ -57,6 +57,10 @@ defineParamTable <- function(.estimates, .key){
     print(paste0("Parameter table yaml path provided: ", .key))
     y1l <- yaml::yaml.load_file(.key)
 
+    if (!all(names(y1l[[1]]) %in% c("abb", "desc", "panel", "trans"))) {
+      warning("Only abb, desc, panel and trans arguments will be used, all others ignored")
+    }
+
     .key <- dplyr::tibble(
       name = names(y1l),
       abb = unlist(y1l)[grepl('abb',names(unlist(y1l)),fixed=T)],

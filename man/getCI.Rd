@@ -16,7 +16,7 @@ getCI(.df, .value = "value", .se = "se", .ci = 95)
 \item{.ci}{specify 90 or 95 percent confidence interval (default 95\%)}
 }
 \description{
-Calculates the upper and lower bound of a 90\% confidence interval, based on the
+Calculates the upper and lower bound of a 90\% or 95\% confidence interval, based on the
 value and standard error.
 }
 \examples{
