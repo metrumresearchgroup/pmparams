@@ -17,12 +17,8 @@
 #' @param .digit set the number of significant digits
 #' @param .maxex set the number of maxex
 #'
-#' @export
-getValueSE <- function(.df,
-                       .digit = getOption("mrgparamtab.dig"),
-                       .maxex = getOption("mrgparamtab.maxex")){
-
-  .digit = ifelse(is.null(.digit), formals(pmtables::sig)$digits, .digit)
+#' @keywords internal
+getValueSE <- function(.df, .digit, .maxex){
 
   .df %>%
     dplyr::mutate(

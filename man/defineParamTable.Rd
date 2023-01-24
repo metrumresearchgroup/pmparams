@@ -4,7 +4,12 @@
 \alias{defineParamTable}
 \title{Combine parameter estimates with parameter key}
 \usage{
-defineParamTable(.estimates, .key)
+defineParamTable(
+  .estimates,
+  .key,
+  .digit = getOption("mrgparamtab.dig"),
+  .maxex = getOption("mrgparamtab.maxex")
+)
 }
 \arguments{
 \item{.estimates}{parameter estimates data.frame}

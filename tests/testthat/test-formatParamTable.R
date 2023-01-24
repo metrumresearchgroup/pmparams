@@ -1,6 +1,5 @@
 newDF2 <- newDF %>%
-  getCI(.value = "estimate", .se = "stderr") %>%
-  getValueSE()
+  getCI(.value = "estimate", .se = "stderr")
 
 newDF3 <- newDF2 %>%
   formatParamTable()

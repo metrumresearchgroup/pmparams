@@ -1,7 +1,7 @@
 pathDF <- defineParamTable(.est = param_est, .key = paramKey)
 
 test_that("getValueSE accurately calculates each parameter's accociated metric [MPT-GVS-001]", {
-  param_df1 <- getValueSE(.df = pathDF)
+  param_df1 <- getValueSE(.df = pathDF, .digit = 3, .maxex = NULL)
   expect_equal(param_df1$value, pathDF$estimate)
   expect_equal(param_df1$se, pathDF$stderr)
 
@@ -14,6 +14,6 @@ test_that("getValueSE accurately calculates each parameter's accociated metric [
 })
 
 test_that("getValueSE digits and maxex options for each parameter's accociated metric  [MPT-GVS-003]", {
-  param_df2 <- getValueSE(.df = pathDF,  .digit = 3)
+  param_df2 <- getValueSE(.df = pathDF, .digit = 3, .maxex = NULL)
   expect_equal(nchar(param_df2$corr_SD[9]), 5)
 })

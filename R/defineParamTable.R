@@ -30,7 +30,12 @@
 #'
 #' @seealso \link[mrgparamtab]{param_key}: Parameter key requirements
 #' @export
-defineParamTable <- function(.estimates, .key){
+defineParamTable <- function(.estimates,
+                             .key,
+                             .digit = getOption("mrgparamtab.dig"),
+                             .maxex = getOption("mrgparamtab.maxex")){
+
+  .digit = ifelse(is.null(.digit), formals(pmtables::sig)$digits, .digit)
 
   if (inherits(.estimates, "character")){
     print(paste0("Model path provided: ", .estimates))
@@ -82,7 +87,8 @@ defineParamTable <- function(.estimates, .key){
     removePunc(.column = "parameter_names") %>%
     dplyr::inner_join(.key, by = "name") %>%
     checkTransforms() %>%
-    defineRows()
+    defineRows() %>%
+    getValueSE(.digit, .maxex)
 
   return(mod_estimates)
 }
