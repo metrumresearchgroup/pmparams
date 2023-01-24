@@ -68,3 +68,10 @@ test_that("defineParamTable handles multiple parameter key input types [MPT-DPT-
 test_that("defineParamTable incorrect parameter key input type: Only abb, desc, panel and trans arguments will be used, all others ignored [MPT-DPT-005]", {
   expect_warning(capture.output(defineParamTable(param_path, system.file("model/nonmem/pk-parameter-key-both.yaml", package = "mrgparamtab"))))
 })
+
+test_that("defineParamTable allows user to control number of significant digits in output", {
+  df <- defineParamTable(.estimates = param_est, .key = paramKey, .digit = 1)
+  expect_equal(df$corr_SD[7], "0.5")
+  df <- defineParamTable(.estimates = param_est, .key = paramKey, .digit = 4)
+  expect_equal(df$corr_SD[7], "0.5109")
+})

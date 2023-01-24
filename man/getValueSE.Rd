@@ -2,13 +2,9 @@
 % Please edit documentation in R/getValueSE.R
 \name{getValueSE}
 \alias{getValueSE}
-\title{Get value or estimate for each model parameter and its associated metric}
+\title{Determine a value (or estimate) for each model parameter and it’s associated metric}
 \usage{
-getValueSE(
-  .df,
-  .digit = getOption("mrgparamtab.dig"),
-  .maxex = getOption("mrgparamtab.maxex")
-)
+getValueSE(.df, .digit, .maxex)
 }
 \arguments{
 \item{.df}{data.frame with parameter estimates}
@@ -30,3 +26,4 @@ sigma diagonal proportional = variance \link{\%CV}    # estimate \link{CV from e
 
 sigma diagonal additive = variance \link{SD}         # estimate \link{random_effect_sd}
 }
+\keyword{internal}
