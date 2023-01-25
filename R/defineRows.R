@@ -13,7 +13,7 @@
 defineRows <- function(.df){
 
   transList <- c("logTrans", "logitTrans", "lognormalOm", "OmSD", "propErr", "addErr", "none")
-  mismatch <- .df %>% dplyr::filter(!(stringr::str_detect(trans, paste(transList, collapse="|"))))
+  mismatch <- .df %>% dplyr::filter(!(stringr::str_detect(.df$trans, paste(transList, collapse="|"))))
 
   if(nrow(mismatch) > 0) {
     print(mismatch)

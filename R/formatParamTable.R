@@ -27,29 +27,29 @@ formatParamTable <- function(.df,
                              .select_cols = c("type", "abb", "greek", "desc", "value", "ci", "shrinkage"),
                              .prse = FALSE){
 
-all <- c("all", "All", "ALL")
-if (.select_cols %in% all & .prse == FALSE){
-  .df %>%
-    formatValues() %>%
-    formatGreekNames() %>%
-    getPanelName() %>%
-    dplyr::select(-"pRSE")
-} else if (.select_cols %in% all & .prse == TRUE){
-  .df %>%
-    formatValues() %>%
-    formatGreekNames() %>%
-    getPanelName()
-} else if (!(.select_cols %in% all) & .prse == FALSE){
-  .df %>%
-    formatValues() %>%
-    formatGreekNames() %>%
-    getPanelName() %>%
-    dplyr::select(all_of(.select_cols))
-} else {
-  .df %>%
-    formatValues() %>%
-    formatGreekNames() %>%
-    getPanelName() %>%
-    dplyr::select(all_of(append(.select_cols, "pRSE")))
-}
+  all <- c("all", "All", "ALL")
+  if (.select_cols %in% all & .prse == FALSE){
+    .df %>%
+      formatValues() %>%
+      formatGreekNames() %>%
+      getPanelName() %>%
+      dplyr::select(-"pRSE")
+  } else if (.select_cols %in% all & .prse == TRUE){
+    .df %>%
+      formatValues() %>%
+      formatGreekNames() %>%
+      getPanelName()
+  } else if (!(.select_cols %in% all) & .prse == FALSE){
+    .df %>%
+      formatValues() %>%
+      formatGreekNames() %>%
+      getPanelName() %>%
+      dplyr::select(.select_cols)
+  } else {
+    .df %>%
+      formatValues() %>%
+      formatGreekNames() %>%
+      getPanelName() %>%
+      dplyr::select(append(.select_cols, "pRSE"))
+  }
 }

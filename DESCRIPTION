@@ -23,6 +23,7 @@ Imports:
     bbr,
     dplyr (>= 0.5.0),
     magrittr,
+    pmtables,
     rlang,
     stats,
     stringr

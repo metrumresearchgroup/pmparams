@@ -1,6 +1,11 @@
 #' Calculate % RSE
 #'
 #' @description
+
+
+#' Calculate % RSE
+#'
+#' @description
 #' Note, this is appropriate when parameters are estimated untransformed or in the log.
 #' It may not be appropriate if any other transformations (such as logit) were used
 #'
@@ -10,7 +15,7 @@
 #' @param .digit set significant digits for output (optional)
 #' @param .maxex set maxex for computation (optional)
 #'
-#' @export
+#' @keywords internal
 getpRSE <- function(.df, .value = "value", .se = "se", ...,
                     .digit = getOption("mrgparamtab.dig"),
                     .maxex = getOption("mrgparamtab.maxex")){
@@ -23,5 +28,4 @@ getpRSE <- function(.df, .value = "value", .se = "se", ...,
                                           TH & !LOG & !LOGIT ~ pmtables::sig((.df[[.se]]/abs(.df[[.value]])) * 100, .digit, .maxex),
                                           diag & !LOG & !LOGIT ~ pmtables::sig((.df[[.se]]/abs(.df[[.value]])) * 100, .digit, .maxex),
                                           TRUE ~ "-"))
-  }
-
+}
