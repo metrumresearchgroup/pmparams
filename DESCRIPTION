@@ -19,7 +19,7 @@ Authors@R:
              role = c("aut"),
              email = "graceo@metrumrg.com"),
 Description: `mrgparamtab` is a library written in R that generates clear,
-well-formatted parameter tables to report NONMEM® model results.
+well-formatted parameter tables to report NONMEM model results.
 Imports:
     bbr,
     dplyr (>= 0.5.0),
