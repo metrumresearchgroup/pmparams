@@ -10,7 +10,7 @@
 #' @param .digit set significant digits for output (optional)
 #' @param .maxex set maxex for computation (optional)
 #'
-#' @export
+#' @keywords internal
 getpRSE <- function(.df, .value = "value", .se = "se", ...,
                     .digit = getOption("mrgparamtab.dig"),
                     .maxex = getOption("mrgparamtab.maxex")){

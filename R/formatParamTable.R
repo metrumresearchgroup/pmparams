@@ -12,16 +12,36 @@
 #' 4. Select columns for final tables.
 #'
 #' @param .df parameter estimates with modifications ready for formatting
-#' @param .select_cols columns to select for output
+#' @param .select_cols columns to select for output. Default selects "type", "abb", "greek", "desc", "value", "ci", "shrinkage". To return all columns, specify "all" for .select_cols.
 #'
 #' @export
 formatParamTable <- function(.df,
-                               .select_cols = c("type", "abb", "greek", "desc", "value", "ci", "shrinkage")){
+                             .select_cols = c("type", "abb", "greek", "desc", "value", "ci", "shrinkage"),
+                             .prse = FALSE){
 
- .df %>%
-   formatValues() %>%
-   formatGreekNames() %>%
-   getPanelName() %>%
-   dplyr::select(.select_cols)
-
+all <- c("all", "All", "ALL")
+if (.select_cols %in% all & .prse == FALSE){
+  .df %>%
+    formatValues() %>%
+    formatGreekNames() %>%
+    getPanelName() %>%
+    dplyr::select(-pRSE)
+} else if (.select_cols %in% all & .prse == TRUE){
+  .df %>%
+    formatValues() %>%
+    formatGreekNames() %>%
+    getPanelName()
+} else if (!(.select_cols %in% all) & .prse == FALSE){
+  .df %>%
+    formatValues() %>%
+    formatGreekNames() %>%
+    getPanelName() %>%
+    dplyr::select(all_of(.select_cols))
+} else {
+  .df %>%
+    formatValues() %>%
+    formatGreekNames() %>%
+    getPanelName() %>%
+    dplyr::select(all_of(append(.select_cols, "pRSE")))
+}
 }
