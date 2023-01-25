@@ -109,7 +109,6 @@ With `mrgparamtab` would run:
 ```{r}
 param_df <- 
   defineParamTable(.estimates = estimates, .key = paramKey) %>% 
-  getValueSE() %>% 
   getCI() %>% # add argument .ci = 95 or 90 to change confidence interval, default is 95% 
   formatParamTable() %>% 
   as.data.frame()
@@ -121,9 +120,8 @@ param_df
 
 Provided below is a quick description for each of the functions used above:
 
-- `defineParamTable()` requires both the parameter estimates and parameter key as inputs. The information is combined from both, such that only the parameters found in the estimates data.frame will remain. It then checks whether parameters with special transformation rules were defined correctly. For example, for logit transformed variables, the code expects to see the trans (transform) column including the associated THETA value separated with a tilde symbol, e.g., logitOmSD ~ THETA3.
-- `getValueSE()` determines a value (or estimate) for each model parameter and it's associated metric.
-- `get95CI()` calculates the upper and lower values of the 95% confidence intervals (CIs).
+- `defineParamTable()` requires both the parameter estimates and parameter key as inputs. The information is combined from both, such that only the parameters found in the estimates data.frame will remain. It then checks whether parameters with special transformation rules were defined correctly. For example, for logit transformed variables, the code expects to see the trans (transform) column including the associated THETA value separated with a tilde symbol, e.g., logitOmSD ~ THETA3. It then determines a value (or estimate) for each model parameter and it's associated metric.
+- `getCI()` calculates the upper and lower values of the confidence interval (CI). Default is 95% CI. 
 - `formatParamTable()` formats the parameters ready for the final table. This potentially includes back transforming parameters and their CIs, rounding parameters using pmtables::sig, and combining columns. 
 
 
@@ -167,10 +165,9 @@ Current functions available to the user include:
 
 - runs this function `removePunc(.column = "parameter_names")`
 - joins parameter estimates & parameter key (can provide path/data.frame for either)
-- runs `checkTransforms()` & `defineRows()`
+- runs `checkTransforms()`, `defineRows()`,& `getValueSE`
 - performs check that all critical information from parameter key is provided
 
-QUESTION: Will the user ever need to independently run `checkTransforms()` or `defineRows()`?
 
 ## getCI()
 
@@ -180,8 +177,21 @@ QUESTION: Will the user ever need to independently run `checkTransforms()` or `d
 
 - mutates columns to a data.frame for the upper and lower bound of a 90% or 95% confidence interval
 - user can specify which type of confidence interval, default is 95%
+- If a user wants to use a CI that is NOT 90% or 95%, they will need to provide that CI's z-score in the `.zed` argument
 
-QUESTION: Should default value be 95%?
+## formatParamTable()
+
+### Description
+
+`formatParamTable()` actions:
+
+- runs `formatValues()`, `formatGreekNames()` & `getPanelName()`
+- selects desired columns
+- user can specify desired columns but default columns are: `c("type", "abb", "greek", "desc", "value", "ci", "shrinkage")`
+- user can output all columns by specifying `.select_col` = "all"
+- user can specify if they want to output the `pRSE` column. Default does not output `pRSE` column
+
+# INTERNAL FUNCTIONS- Keep notes for now; remove later
 
 ## getValueSE()
 
@@ -210,14 +220,3 @@ QUESTION: Will the user want to call `getpRSE()` independently or inside `format
 
 QUESTION: Will the user need to call `getpCV()` outside of `formatValues()`?
 
-## formatParamTable()
-
-### Description
-
-`formatParamTable()` actions:
-
-- runs `formatValues()`, `formatGreekNames()` & `getPanelName()`
-- selects desired columns
-- user can specify but default columns are: `c("type", "abb", "greek", "desc", "value", "ci", "shrinkage")`
-
-QUESTION: Will any of `formatValues()`, `formatGreekNames()` or `getPanelName()` need to be run independently?
