@@ -2,7 +2,7 @@
 % Please edit documentation in R/getValueSE.R
 \name{getValueSE}
 \alias{getValueSE}
-\title{Get value or estimate for each model parameter and its associated metric}
+\title{Determine a value (or estimate) for each model parameter and it’s associated metric}
 \usage{
 getValueSE(
   .df,

@@ -17,4 +17,12 @@ formatParamTable(
 \description{
 Format parameter estimate values and output selected columns to be shown in
 the parameter table.
+
+There are four main steps of this function:
+\enumerate{
+\item When necessary, back transform parameters and their CIs, round parameters using pmtables::sig, and combine columns.
+\item Format the THETA/OMEGA/SIGMA values to display as greek letters in Latex, with subscript numbers, and where necessary, the transformation applied to that parameter.
+\item Determine which panel of the final table the parameter should be displayed in. This is informed by the panel argument you defined in your parameter key. Note that there are a finite number of options included by default (see below) but you can include additional panels as needed.
+\item Select columns for final tables.
+}
 }
