@@ -100,3 +100,9 @@ GRS-R002:
   tests:
   -MPT-GRS-002
   -MPT-GRS-003
+FPT-R001:
+  description: formatParamTable creates final table with specified column outputs
+  tests:
+  -MPT-FPT-001
+  -MPT-FPT-002
+  -MPT-FPT-003
