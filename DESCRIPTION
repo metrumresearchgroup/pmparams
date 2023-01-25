@@ -1,10 +1,10 @@
 Package: mrgparamtab
-Title: What the Package Does (One Line, Title Case)
+Title: R package for parameter tables
 Version: 0.0.0.9000
 Authors@R: 
     c(person(given = "Seth",
              family = "Green",
-             role = c("aut"),
+             role = c("cre"),
              email = "sethg@metrumrg.com"),
       person(given = "Katherine",
              family = "Kay",
@@ -17,13 +17,13 @@ Authors@R:
       person(given = "Grace",
              family = "O'Brien",
              role = c("aut"),
-             email = "graceo@metrumrg.com"),
-Description: `mrgparamtab` is a library written in R that generates clear,
-well-formatted parameter tables to report NONMEM model results.
+             email = "graceo@metrumrg.com"))
+Description: `mrgparamtab` is a library written in R that generates clear, well-formatted parameter tables to report NONMEM model results.
 Imports:
     bbr,
     dplyr (>= 0.5.0),
     magrittr,
+    rlang,
     stats,
     stringr
 License: `use_mit_license()`

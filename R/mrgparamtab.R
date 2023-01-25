@@ -12,5 +12,7 @@
 #'* Calculate additional summary statistics (e.g., 95% confidence intervals, coefficient of variation (CV), etc.)
 #'
 #' @importFrom magrittr %>%
+#' @importFrom rlang .data :=
+#'
 #' @keywords internal
 NULL

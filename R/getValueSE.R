@@ -17,17 +17,13 @@
 #' @param .digit set the number of significant digits
 #' @param .maxex set the number of maxex
 #'
-#' @export
-getValueSE <- function(.df,
-                       .digit = getOption("mrgparamtab.dig"),
-                       .maxex = getOption("mrgparamtab.maxex")){
-
-  .digit = ifelse(is.null(.digit), formals(pmtables::sig)$digits, .digit)
+#' @keywords internal
+getValueSE <- function(.df, .digit, .maxex){
 
   .df %>%
     dplyr::mutate(
-      value = estimate,
-      se = stderr,
+      value = .df$estimate,
+      se = .df$stderr,
       corr_SD = dplyr::case_when(
         OM & !diag | S & diag & addErr ~ pmtables::sig(random_effect_sd, .digit, .maxex),
         TRUE ~ "-")

@@ -15,14 +15,14 @@ formatValues <- function(.df,
     backTrans_logit() %>%
     getpCV() %>%
     dplyr::mutate(
-      ci = paste0(pmtables::sig(lower, .digit, .maxex), ', ', pmtables::sig(upper, .digit, .maxex)),
-      ci = dplyr::if_else(fixed, "FIXED", ci),
+      ci = paste0(pmtables::sig(.df$lower, .digit, .maxex), ', ', pmtables::sig(.df$upper, .digit, .maxex)),
+      ci = dplyr::if_else(.df$fixed, "FIXED", ci),
       sd = dplyr::case_when(
         diag & OM & Osd ~ pmtables::sig(random_effect_sd),
         diag & OM & logitOsd ~ pmtables::sig(getSD_logitO(.mean=transTHETA, .var = value)),
         TRUE ~ "-"
         ),
-      value = pmtables::sig(value, .digit, .maxex),
+      value = pmtables::sig(.df$value, .digit, .maxex),
       value = dplyr::case_when(
         diag & OM & Osd | diag & OM & logitOsd ~ glue::glue("{value} {parensSQ_se(sd)}"),
         diag & OM | diag & S & propErr ~ glue::glue("{value} {parensSQ_CV(cv)}"),

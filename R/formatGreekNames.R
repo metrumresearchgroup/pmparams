@@ -7,7 +7,7 @@
 formatGreekNames <- function(.df){
 
   .df %>%
-    dplyr::mutate(greekName = name) %>%
+    dplyr::mutate(greekName = .df$name) %>%
     # make column with greek letters and parameter numbers
     tidyr::separate(
       greekName,
@@ -19,7 +19,7 @@ formatGreekNames <- function(.df){
       into = c("text2", "num2"),
       sep = "A"
     ) %>%
-    dplyr::select(-num, -text2) %>%
+    dplyr::select(-"num", -"text2") %>%
     dplyr::mutate(
       text = dplyr::case_when(
         OM ~ "Omega",

@@ -3,5 +3,5 @@
 export(defineParamTable)
 export(formatParamTable)
 export(getCI)
-export(getValueSE)
 export(getpRSE)
+importFrom(magrittr,"%>%")
