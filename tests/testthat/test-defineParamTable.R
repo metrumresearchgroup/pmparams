@@ -68,3 +68,24 @@ test_that("defineParamTable handles multiple parameter key input types [MPT-DPT-
 test_that("defineParamTable incorrect parameter key input type: Only abb, desc, panel and trans arguments will be used, all others ignored [MPT-DPT-005]", {
   expect_warning(capture.output(defineParamTable(param_path, system.file("model/nonmem/pk-parameter-key-both.yaml", package = "mrgparamtab"))))
 })
+
+test_that("defineParamTable generates correct corr_SD [MPT-DPT-005]", {
+  expect_true(all(newDF$estimate == newDF$value))
+  expect_true(all(newDF$stderr == newDF$se))
+  expect_true(newDF$corr_SD[7] == "0.511")
+  expect_true(newDF$corr_SD[1] == "-")
+  expect_true(newDF$corr_SD[6] == "-")
+})
+
+test_that("defineParamTable generates the confidence intervals for various inputs [MPT-DPT-006]", {
+  newDF_ci95 <- defineParamTable(.estimates = param_est, .key = paramKey, .ci = 95, .zed = NULL)
+  newDF_ci90 <- defineParamTable(.estimates = param_est, .key = paramKey, .ci = 90, .zed = NULL)
+
+  expect_equal(newDF_ci90$lower[1], 0.33047798)
+  expect_equal(newDF_ci90$upper[2], 4.1640688)
+
+  expect_equal(newDF_ci95$lower[4], 4.1721829)
+  expect_equal(newDF_ci95$upper[7], 0.108133732)
+})
+
+

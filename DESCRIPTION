@@ -26,11 +26,19 @@ Imports:
     pmtables,
     rlang,
     stats,
-    stringr
-License: `use_mit_license()`
+    stringr,
+    glue,
+    logitnorm,
+    purrr,
+    tidyr,
+    yaml
+License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1
 Suggests: 
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    knitr
 Config/testthat/edition: 3
+VignetteBuilder: 
+    knitr

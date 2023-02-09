@@ -21,12 +21,4 @@ getCI(.df, .value = "value", .se = "se", .ci = 95, .zed = NULL)
 Calculates the upper and lower bound of a 90\% or 95\% confidence interval, based on the
 value and standard error.
 }
-\examples{
-
-Theoph_ex <- Theoph \%>\% dplyr::mutate(stderr = conc/10)
-getCI(.df = Theoph_ex, .value = "conc", .se = "stderr", .ci = 95)
-
-getCI(.df = Theoph_ex, .value = "conc", .se = "stderr", .ci = 80, .zed = 1.282)
-
-}
 \keyword{internal}

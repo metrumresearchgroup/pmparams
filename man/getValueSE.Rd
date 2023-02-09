@@ -10,16 +10,16 @@ getValueSE(.df)
 \item{.df}{data.frame with parameter estimates}
 }
 \description{
-value should have estimate \link{something}:
+value should have estimate (something):
 
 theta = estimate only                           # use estimate column
 
-omega diagonals = variance \link{\%CV}                # estimate \link{CV from estimate, stderr}
+omega diagonals = variance (\%CV)                # estimate (CV from estimate, stderr)
 
-omega off-diagonals = covariance \link{corr coeff}   # estimate \link{random_effect_sd}
+omega off-diagonals = covariance (corr coeff)   # estimate (random_effect_sd)
 
-sigma diagonal proportional = variance \link{\%CV}    # estimate \link{CV from estimate, stderr}
+sigma diagonal proportional = variance (\%CV)    # estimate (CV from estimate, stderr)
 
-sigma diagonal additive = variance \link{SD}         # estimate \link{random_effect_sd}
+sigma diagonal additive = variance (SD)         # estimate (random_effect_sd)
 }
 \keyword{internal}

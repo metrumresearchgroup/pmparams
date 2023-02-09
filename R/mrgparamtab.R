@@ -15,4 +15,19 @@
 #' @importFrom rlang .data :=
 #'
 #' @keywords internal
-NULL
+globalVariables(
+  c(
+    "ci",
+    "estimate",
+    "fixed",
+    "greekName",
+    "lower",
+    "name",
+    "parameter_names",
+    "trans",
+    "transTHETA",
+    "type_f",
+    "upper",
+    "value"
+  )
+)

@@ -18,6 +18,10 @@ formatParamTable(
 \item{.select_cols}{columns to select for output. Default selects "type", "abb", "greek", "desc", "value", "ci", "shrinkage". To return all columns, specify "all" for .select_cols.}
 
 \item{.prse}{output pRSE. Default is FALSE.}
+
+\item{.digit}{set significant digits for output (optional)}
+
+\item{.maxex}{set maxex for computation (optional)}
 }
 \description{
 Format parameter estimate values and output selected columns to be shown in

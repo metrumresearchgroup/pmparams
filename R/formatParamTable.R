@@ -22,6 +22,9 @@
 #' @param .df parameter estimates with modifications ready for formatting
 #' @param .select_cols columns to select for output. Default selects "type", "abb", "greek", "desc", "value", "ci", "shrinkage". To return all columns, specify "all" for .select_cols.
 #' @param .prse output pRSE. Default is FALSE.
+#' @param .digit set significant digits for output (optional)
+#' @param .maxex set maxex for computation (optional)
+#'
 #' @export
 formatParamTable <- function(.df,
                              .select_cols = c("type", "abb", "greek", "desc", "value", "ci", "shrinkage"),
