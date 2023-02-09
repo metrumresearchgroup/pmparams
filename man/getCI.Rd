@@ -29,3 +29,4 @@ getCI(.df = Theoph_ex, .value = "conc", .se = "stderr", .ci = 95)
 getCI(.df = Theoph_ex, .value = "conc", .se = "stderr", .ci = 80, .zed = 1.282)
 
 }
+\keyword{internal}

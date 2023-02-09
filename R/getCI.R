@@ -17,7 +17,7 @@
 #'
 #' getCI(.df = Theoph_ex, .value = "conc", .se = "stderr", .ci = 80, .zed = 1.282)
 #'
-#' @export
+#' @keywords internal
 getCI <- function(.df, .value = "value", .se = "se", .ci = 95, .zed = NULL){
 
   .df <- grouped_warn_ungroup(.df, as.character(match.call()[[1]]))

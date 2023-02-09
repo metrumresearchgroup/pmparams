@@ -29,5 +29,5 @@ getPanelName = function(.df){
                          panel=="cov" ~ 2,
                          panel=="struct" ~ 1)
     ) %>%
-    dplyr::arrange(.df$type_f)
+    dplyr::arrange(type_f)
 }

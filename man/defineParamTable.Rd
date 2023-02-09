@@ -4,12 +4,16 @@
 \alias{defineParamTable}
 \title{Combine parameter estimates with parameter key}
 \usage{
-defineParamTable(.estimates, .key)
+defineParamTable(.estimates, .key, .ci = 95, .zed = NULL)
 }
 \arguments{
 \item{.estimates}{parameter estimates data.frame}
 
 \item{.key}{parameter key}
+
+\item{.ci}{specify 90 or 95 percent confidence interval (default 95\%)}
+
+\item{.zed}{z-score for the specified confidence interval. Only needed for confidence intervals that are NOT 90 or 95 percent}
 
 \item{...}{arguments passed through to methods (currently undefined)}
 }

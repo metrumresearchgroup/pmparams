@@ -25,31 +25,29 @@
 #' @export
 formatParamTable <- function(.df,
                              .select_cols = c("type", "abb", "greek", "desc", "value", "ci", "shrinkage"),
-                             .prse = FALSE){
+                             .prse = FALSE,
+                             .digit = getOption("mrgparamtab.dig"),
+                             .maxex = getOption("mrgparamtab.maxex")){
 
-  all <- c("all", "All", "ALL")
-  if (.select_cols %in% all & .prse == FALSE){
-    .df %>%
-      formatValues() %>%
-      formatGreekNames() %>%
-      getPanelName() %>%
-      dplyr::select(-"pRSE")
-  } else if (.select_cols %in% all & .prse == TRUE){
-    .df %>%
-      formatValues() %>%
-      formatGreekNames() %>%
-      getPanelName()
-  } else if (!(.select_cols %in% all) & .prse == FALSE){
-    .df %>%
-      formatValues() %>%
-      formatGreekNames() %>%
-      getPanelName() %>%
-      dplyr::select(.select_cols)
-  } else {
-    .df %>%
-      formatValues() %>%
-      formatGreekNames() %>%
-      getPanelName() %>%
-      dplyr::select(append(.select_cols, "pRSE"))
+  .digit = ifelse(is.null(.digit), formals(pmtables::sig)$digits, .digit)
+
+  if (.prse == TRUE) {
+    .df <- .df %>% getpRSE()
+    .select_cols <- append(.select_cols, "pRSE")
   }
+
+  .df_out <-
+    .df %>%
+    formatValues(.digit = .digit, .maxex = .maxex) %>%
+    formatGreekNames() %>%
+    getPanelName()
+
+  if (any(tolower(.select_cols) == "all")) {
+    return(.df_out %>% as.data.frame())
+  } else {
+    return(.df_out %>%
+      dplyr::select(.select_cols) %>%
+      as.data.frame())
+  }
+
 }

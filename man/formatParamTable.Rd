@@ -7,7 +7,9 @@
 formatParamTable(
   .df,
   .select_cols = c("type", "abb", "greek", "desc", "value", "ci", "shrinkage"),
-  .prse = FALSE
+  .prse = FALSE,
+  .digit = getOption("mrgparamtab.dig"),
+  .maxex = getOption("mrgparamtab.maxex")
 )
 }
 \arguments{

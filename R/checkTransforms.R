@@ -24,10 +24,10 @@ checkTransforms <- function(.df){
       stringr::str_split(.df$trans, stringr::fixed("~")) %>% purrr::map(trimws) %>% purrr::map(2) %>% unlist
 
     .df = .df %>%
-      dplyr::mutate(trans = dplyr::case_when(stringr::str_detect(.df$trans, "~") ~
-                                 stringr::str_split(.df$trans, stringr::fixed("~")) %>% purrr::map(trimws) %>% purrr::map(1) %>% unlist,
+      dplyr::mutate(trans = dplyr::case_when(stringr::str_detect(trans, "~") ~
+                                 stringr::str_split(trans, stringr::fixed("~")) %>% purrr::map(trimws) %>% purrr::map(1) %>% unlist,
                                TRUE ~ trans),
-             transTHETA = .df$estimate[match(.df$transTHETA, .df$parameter_names)]
+             transTHETA = estimate[match(transTHETA, parameter_names)]
       )
   }
   return(.df)

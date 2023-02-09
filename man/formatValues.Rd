@@ -4,11 +4,7 @@
 \alias{formatValues}
 \title{Define how values are to be displayed}
 \usage{
-formatValues(
-  .df,
-  .digit = getOption("mrgparamtab.dig"),
-  .maxex = getOption("mrgparamtab.maxex")
-)
+formatValues(.df, .digit, .maxex)
 }
 \description{
 Define what is in estimate column and what is in square brackets.

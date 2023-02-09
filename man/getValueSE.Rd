@@ -4,14 +4,10 @@
 \alias{getValueSE}
 \title{Determine a value (or estimate) for each model parameter and it’s associated metric}
 \usage{
-getValueSE(.df, .digit, .maxex)
+getValueSE(.df)
 }
 \arguments{
 \item{.df}{data.frame with parameter estimates}
-
-\item{.digit}{set the number of significant digits}
-
-\item{.maxex}{set the number of maxex}
 }
 \description{
 value should have estimate \link{something}:

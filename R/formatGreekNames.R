@@ -7,15 +7,15 @@
 formatGreekNames <- function(.df){
 
   .df %>%
-    dplyr::mutate(greekName = .df$name) %>%
+    dplyr::mutate(greekName = name) %>%
     # make column with greek letters and parameter numbers
     tidyr::separate(
-      .df$greekName,
+      greekName,
       into = c("text", "num"),
       sep = "(?<=[A-Za-z])(?=[0-9])"
     ) %>%
     tidyr::separate(
-      .df$parameter_names,
+      parameter_names,
       into = c("text2", "num2"),
       sep = "A"
     ) %>%

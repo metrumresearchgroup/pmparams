@@ -13,7 +13,7 @@
 defineRows <- function(.df){
 
   transList <- c("logTrans", "logitTrans", "lognormalOm", "OmSD", "propErr", "addErr", "none")
-  mismatch <- .df %>% dplyr::filter(!(stringr::str_detect(.df$trans, paste(transList, collapse="|"))))
+  mismatch <- .df %>% dplyr::filter(!(stringr::str_detect(trans, paste(transList, collapse="|"))))
 
   if(nrow(mismatch) > 0) {
     print(mismatch)
@@ -21,16 +21,16 @@ defineRows <- function(.df){
   }
   .df %>%
     dplyr::mutate(
-      TH = stringr::str_detect(.df$name, "^TH"),
-      OM = stringr::str_detect(.df$name, "^OM"),
-      S = stringr::str_detect(.df$name, "^S"),
-      LOG = (.df$trans=="logTrans"),
-      LOGIT = (.df$trans=="logitTrans"),
-      lognormO = (.df$trans=="lognormalOm"),
-      Osd = (.df$trans=="OmSD"),
-      logitOsd = (.df$trans=="logitOmSD"),
-      propErr = (.df$trans=="propErr"),
-      addErr = (.df$trans=="addErr")
+      TH = stringr::str_detect(name, "^TH"),
+      OM = stringr::str_detect(name, "^OM"),
+      S = stringr::str_detect(name, "^S"),
+      LOG = (trans=="logTrans"),
+      LOGIT = (trans=="logitTrans"),
+      lognormO = (trans=="lognormalOm"),
+      Osd = (trans=="OmSD"),
+      logitOsd = (trans=="logitOmSD"),
+      propErr = (trans=="propErr"),
+      addErr = (trans=="addErr")
     )
 }
 
