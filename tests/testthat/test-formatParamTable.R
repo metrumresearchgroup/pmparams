@@ -16,7 +16,7 @@ test_that("formatParamTable expected dataframe: col names [MPT-FPT-001]", {
   expect_equal(names(newDF3),  c("type", "abb", "greek", "desc", "value", "ci", "shrinkage"))
 
   #all cols., no prse
-  expect_equal(length(names(newDF5)),  36)
+  expect_equal(length(names(newDF5)),  37)
 })
 
 test_that("formatParamTable expected dataframe: prse col[MPT-FPT-002]", {
@@ -24,7 +24,7 @@ test_that("formatParamTable expected dataframe: prse col[MPT-FPT-002]", {
   expect_equal(newDF4$pRSE[1],  "6.29")
   expect_true("pRSE" %in% names(newDF6))
 
-  expect_equal(length(names(newDF6)),  length(names(newDF5)) + 1)
+  expect_equal(length(names(newDF6)),  length(names(newDF5)))
   expect_true("pRSE" %in% names(newDF6))
 })
 

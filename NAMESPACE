@@ -5,4 +5,3 @@ export(formatParamTable)
 importFrom(magrittr,"%>%")
 importFrom(rlang,":=")
 importFrom(rlang,.data)
-
