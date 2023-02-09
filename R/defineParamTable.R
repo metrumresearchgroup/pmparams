@@ -33,6 +33,7 @@
 #' @export
 defineParamTable <- function(.estimates, .key, .ci = 95, .zed = NULL){
 
+
   if (inherits(.estimates, "character")){
     print(paste0("Model path provided: ", .estimates))
     .estimates <- bbr::read_model(.estimates)

@@ -12,6 +12,7 @@ formatValues <- function(.df,
     backTrans_log() %>%
     backTrans_logit() %>%
     getpCV() %>%
+    getpRSE() %>%
     dplyr::mutate(
       ci = paste0(pmtables::sig(lower, .digit, .maxex), ', ', pmtables::sig(upper, .digit, .maxex)),
       ci = dplyr::if_else(fixed, "FIXED", ci),
