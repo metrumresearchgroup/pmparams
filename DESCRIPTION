@@ -31,7 +31,8 @@ Imports:
     logitnorm,
     purrr,
     tidyr,
-    yaml
+    yaml,
+    here
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

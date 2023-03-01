@@ -1,6 +1,7 @@
 library(dplyr)
 library(testthat)
 library(mrgparamtab)
+library(here)
 
 skip_if_no_bbi <- function(.test_name) {
   # if bbi_version() can't find bbi, it returns ""
@@ -32,9 +33,13 @@ paramKey = dplyr::tribble(
 )
 
 param_path <- system.file("model/nonmem/102", package = "mrgparamtab")
+
 param_est <- bbr::read_model(system.file("model/nonmem/102", package = "mrgparamtab")) %>%
              bbr::model_summary() %>%
              bbr::param_estimates()
+write.csv(param_est, here::here("inst", "model", "nonmem", "param_est.csv"))
+param_est <- read.csv(here::here("inst", "model", "nonmem", "param_est.csv"))
+
 param_model <- bbr::read_model(system.file("model/nonmem/102", package = "mrgparamtab")) %>%
                bbr::model_summary()
 
