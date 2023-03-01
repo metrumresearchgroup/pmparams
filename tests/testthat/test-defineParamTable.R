@@ -38,6 +38,7 @@ test_that("defineParamTable incorrect input type: missing column(s) [MPT-DPT-002
 })
 
 test_that("defineParamTable handles multiple estimate input types [MPT-DPT-003]", {
+  skip_if_no_bbi()
   pathDF <- defineParamTable(param_path, paramKey)
   expect_equal(pathDF$estimate[pathDF$name == "OMEGA22"], 0.0826922)
 
