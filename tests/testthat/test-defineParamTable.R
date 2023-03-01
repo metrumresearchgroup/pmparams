@@ -38,7 +38,7 @@ test_that("defineParamTable incorrect input type: missing column(s) [MPT-DPT-002
 })
 
 test_that("defineParamTable handles multiple estimate input types [MPT-DPT-003]", {
-  skip_if_no_bbi()
+  skip_if_no_bbi("MPT-DPT-003")
   pathDF <- defineParamTable(param_path, paramKey)
   expect_equal(pathDF$estimate[pathDF$name == "OMEGA22"], 0.0826922)
 
@@ -49,7 +49,7 @@ test_that("defineParamTable handles multiple estimate input types [MPT-DPT-003]"
   pathDF3 <- defineParamTable(param_model, paramKey)
   expect_equal(pathDF3$estimate[pathDF3$name == "OMEGA22"], 0.0826922)
 
-  pathDF4 <- defineParamTable(param_est, paramKey)
+  pathDF4 <- defineParamTable(param_model %>% bbr::model_summary(), paramKey)
   expect_equal(pathDF4$estimate[pathDF4$name == "OMEGA22"], 0.0826922)
 
 })
