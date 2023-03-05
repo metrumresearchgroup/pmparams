@@ -55,11 +55,13 @@ test_that("defineParamTable handles multiple estimate input types [MPT-DPT-003]"
 })
 
 test_that("defineParamTable handles multiple parameter key input types [MPT-DPT-004]", {
+  skip_if_no_bbi("MPT-DPT-004")
   pathDF <- defineParamTable(param_path, system.file("model/nonmem/pk-parameter-key-new.yaml", package = "mrgparamtab"))
   expect_equal(pathDF$estimate[pathDF$name == "OMEGA22"], 0.0826922)
 })
 
 test_that("defineParamTable handles multiple parameter key input types [MPT-DPT-004]", {
+  skip_if_no_bbi("MPT-DPT-004")
   key_file <- system.file("model/nonmem/pk-parameter-key.yaml", package = "mrgparamtab")
   key_df <- pmtables::yaml_as_df(key_file)
   pathDF <- defineParamTable(param_path, key_df)
