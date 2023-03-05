@@ -35,11 +35,11 @@ DRO-R002:
   tests:
   - MPT-DRO-002
 CIF-R001:
-  description: getCI calculates the upper and lower bounds of a 95% confidence interval
+  description: getCI calculates the upper and lower bounds of default 95% confidence interval
   tests:
   - MPT-CIF-001
 CIO-R001:
-  description: getCI calculates the upper and lower bounds of a 90% confidence interval
+  description: getCI calculates the upper and lower bounds of a defined confidence interval
   tests:
   - MPT-CIO-001
 GPN-R001:
@@ -77,6 +77,7 @@ DPT-R002:
   - MPT-DPT-003
   - MPT-DPT-004
   - MPT-DPT-005
+  - MPT-DPT-006
 BQU-R001:
   description: boot_quantiles calculates quartiles when using bootstrap estimates
   tests:
@@ -106,3 +107,4 @@ FPT-R001:
   -MPT-FPT-001
   -MPT-FPT-002
   -MPT-FPT-003
+  -MPT-FPT-004
