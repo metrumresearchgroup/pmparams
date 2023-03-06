@@ -25,6 +25,9 @@ getpRSE(
 \item{.maxex}{set maxex for computation (optional)}
 }
 \description{
+Calculate \% RSE
+
 Note, this is appropriate when parameters are estimated untransformed or in the log.
 It may not be appropriate if any other transformations (such as logit) were used
 }
+\keyword{internal}

@@ -4,19 +4,16 @@
 \alias{defineParamTable}
 \title{Combine parameter estimates with parameter key}
 \usage{
-defineParamTable(
-  .estimates,
-  .key,
-  .digit = getOption("mrgparamtab.dig"),
-  .maxex = getOption("mrgparamtab.maxex")
-)
+defineParamTable(.estimates, .key, .ci = 95, .zed = NULL)
 }
 \arguments{
 \item{.estimates}{parameter estimates data.frame}
 
 \item{.key}{parameter key}
 
-\item{...}{arguments passed through to methods (currently undefined)}
+\item{.ci}{specify 90 or 95 percent confidence interval (default 95\%)}
+
+\item{.zed}{z-score for the specified confidence interval. Only needed for confidence intervals that are NOT 90 or 95 percent}
 }
 \description{
 Combines model output parameter estimates with information in parameter key. Performs

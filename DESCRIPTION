@@ -1,20 +1,45 @@
 Package: mrgparamtab
-Title: What the Package Does (One Line, Title Case)
+Title: R package for parameter tables
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+    c(person(given = "Seth",
+             family = "Green",
+             role = c("cre"),
+             email = "sethg@metrumrg.com"),
+      person(given = "Katherine",
+             family = "Kay",
+             role = c("aut"),
+             email = "katherinek@metrumrg.com"),
+      person(given = "Michael",
+             family = "McDermott",
+             role = c("aut"),
+             email = "michaelmg@metrumrg.com"),
+      person(given = "Grace",
+             family = "O'Brien",
+             role = c("aut"),
+             email = "graceo@metrumrg.com"))
+Description: `mrgparamtab` is a library written in R that generates clear, well-formatted parameter tables to report NONMEM model results.
 Imports:
-    dplyr (>= 0.5.0),
-    stats,
     bbr,
-    stringr
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+    dplyr (>= 0.5.0),
+    magrittr,
+    pmtables,
+    rlang,
+    stats,
+    stringr,
+    glue,
+    logitnorm,
+    purrr,
+    tidyr,
+    yaml,
+    here
+License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1
 Suggests: 
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    knitr
 Config/testthat/edition: 3
+VignetteBuilder: 
+    knitr

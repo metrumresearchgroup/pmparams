@@ -38,6 +38,7 @@ test_that("defineParamTable incorrect input type: missing column(s) [MPT-DPT-002
 })
 
 test_that("defineParamTable handles multiple estimate input types [MPT-DPT-003]", {
+  skip_if_no_bbi("MPT-DPT-003")
   pathDF <- defineParamTable(param_path, paramKey)
   expect_equal(pathDF$estimate[pathDF$name == "OMEGA22"], 0.0826922)
 
@@ -48,17 +49,19 @@ test_that("defineParamTable handles multiple estimate input types [MPT-DPT-003]"
   pathDF3 <- defineParamTable(param_model, paramKey)
   expect_equal(pathDF3$estimate[pathDF3$name == "OMEGA22"], 0.0826922)
 
-  pathDF4 <- defineParamTable(param_est, paramKey)
+  pathDF4 <- defineParamTable(param_model %>% bbr::model_summary(), paramKey)
   expect_equal(pathDF4$estimate[pathDF4$name == "OMEGA22"], 0.0826922)
 
 })
 
 test_that("defineParamTable handles multiple parameter key input types [MPT-DPT-004]", {
+  skip_if_no_bbi("MPT-DPT-004")
   pathDF <- defineParamTable(param_path, system.file("model/nonmem/pk-parameter-key-new.yaml", package = "mrgparamtab"))
   expect_equal(pathDF$estimate[pathDF$name == "OMEGA22"], 0.0826922)
 })
 
 test_that("defineParamTable handles multiple parameter key input types [MPT-DPT-004]", {
+  skip_if_no_bbi("MPT-DPT-004")
   key_file <- system.file("model/nonmem/pk-parameter-key.yaml", package = "mrgparamtab")
   key_df <- pmtables::yaml_as_df(key_file)
   pathDF <- defineParamTable(param_path, key_df)
@@ -66,12 +69,27 @@ test_that("defineParamTable handles multiple parameter key input types [MPT-DPT-
 })
 
 test_that("defineParamTable incorrect parameter key input type: Only abb, desc, panel and trans arguments will be used, all others ignored [MPT-DPT-005]", {
+  skip_if_no_bbi("MPT-DPT-005")
   expect_warning(capture.output(defineParamTable(param_path, system.file("model/nonmem/pk-parameter-key-both.yaml", package = "mrgparamtab"))))
 })
 
-test_that("defineParamTable allows user to control number of significant digits in output", {
-  df <- defineParamTable(.estimates = param_est, .key = paramKey, .digit = 1)
-  expect_equal(df$corr_SD[7], "0.5")
-  df <- defineParamTable(.estimates = param_est, .key = paramKey, .digit = 4)
-  expect_equal(df$corr_SD[7], "0.5109")
+test_that("defineParamTable generates correct corr_SD [MPT-DPT-005]", {
+  expect_true(all(newDF$estimate == newDF$value))
+  expect_true(all(newDF$stderr == newDF$se))
+  expect_true(newDF$corr_SD[7] == "0.511")
+  expect_true(newDF$corr_SD[1] == "-")
+  expect_true(newDF$corr_SD[6] == "-")
 })
+
+test_that("defineParamTable generates the confidence intervals for various inputs [MPT-DPT-006]", {
+  newDF_ci95 <- defineParamTable(.estimates = param_est, .key = paramKey, .ci = 95, .zed = NULL)
+  newDF_ci90 <- defineParamTable(.estimates = param_est, .key = paramKey, .ci = 90, .zed = NULL)
+
+  expect_equal(newDF_ci90$lower[1], 0.33047798)
+  expect_equal(newDF_ci90$upper[2], 4.1640688)
+
+  expect_equal(newDF_ci95$lower[4], 4.1721829)
+  expect_equal(newDF_ci95$upper[7], 0.108133732)
+})
+
+

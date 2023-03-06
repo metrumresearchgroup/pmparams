@@ -2,5 +2,6 @@
 
 export(defineParamTable)
 export(formatParamTable)
-export(getCI)
-export(getpRSE)
+importFrom(magrittr,"%>%")
+importFrom(rlang,":=")
+importFrom(rlang,.data)

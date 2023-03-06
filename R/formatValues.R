@@ -5,10 +5,8 @@
 #'
 #' @keywords internal
 formatValues <- function(.df,
-                         .digit = getOption("mrgparamtab.dig"),
-                         .maxex = getOption("mrgparamtab.maxex")){
-
-  .digit = ifelse(is.null(.digit), formals(pmtables::sig)$digits, .digit)
+                         .digit,
+                         .maxex){
 
   .df %>%
     backTrans_log() %>%
@@ -22,7 +20,7 @@ formatValues <- function(.df,
         diag & OM & Osd ~ pmtables::sig(random_effect_sd),
         diag & OM & logitOsd ~ pmtables::sig(getSD_logitO(.mean=transTHETA, .var = value)),
         TRUE ~ "-"
-        ),
+      ),
       value = pmtables::sig(value, .digit, .maxex),
       value = dplyr::case_when(
         diag & OM & Osd | diag & OM & logitOsd ~ glue::glue("{value} {parensSQ_se(sd)}"),
@@ -32,5 +30,5 @@ formatValues <- function(.df,
         !diag & S ~ glue::glue("{value} {parensSQ_corr(corr_SD)}"),
         TRUE ~ value),
       shrinkage = dplyr::case_when(is.na(shrinkage) ~ "-", TRUE ~ pmtables::sig(shrinkage))
-      )
+    )
 }

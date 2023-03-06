@@ -10,14 +10,8 @@
 #' @param .se column name with standard errors
 #' @param .ci specify 90 or 95 percent confidence interval (default 95%)
 #' @param .zed z-score for the specified confidence interval. Only needed for confidence intervals that are NOT 90 or 95 percent
-#' @examples
 #'
-#' Theoph_ex <- Theoph %>% dplyr::mutate(stderr = conc/10)
-#' getCI(.df = Theoph_ex, .value = "conc", .se = "stderr", .ci = 95)
-#'
-#' getCI(.df = Theoph_ex, .value = "conc", .se = "stderr", .ci = 80, .zed = 1.282)
-#'
-#' @export
+#' @keywords internal
 getCI <- function(.df, .value = "value", .se = "se", .ci = 95, .zed = NULL){
 
   .df <- grouped_warn_ungroup(.df, as.character(match.call()[[1]]))

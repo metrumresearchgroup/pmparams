@@ -2,6 +2,13 @@ library(dplyr)
 library(testthat)
 library(mrgparamtab)
 
+skip_if_no_bbi <- function(.test_name) {
+  # if bbi_version() can't find bbi, it returns ""
+  if (!nzchar(bbr::bbi_version())) {
+    testthat::skip(paste(.test_name, "needs bbi installed"))
+  }
+}
+
 paramKey = dplyr::tribble(
   ~name, ~abb, ~desc, ~panel, ~trans,
   "THETA1",  "KA (1/h)", "First order absorption rate constant",   "struct", "logTrans",
@@ -25,11 +32,14 @@ paramKey = dplyr::tribble(
 )
 
 param_path <- system.file("model/nonmem/102", package = "mrgparamtab")
-param_est <- bbr::read_model(system.file("model/nonmem/102", package = "mrgparamtab")) %>%
-             bbr::model_summary() %>%
-             bbr::param_estimates()
-param_model <- bbr::read_model(system.file("model/nonmem/102", package = "mrgparamtab")) %>%
-               bbr::model_summary()
 
-newDF <- defineParamTable(.estimates = param_est, .key = paramKey)
+# param_est <- bbr::read_model(system.file("model/nonmem/102", package = "mrgparamtab")) %>%
+#              bbr::model_summary() %>%
+#              bbr::param_estimates()
+# write.csv(param_est, here::here("inst", "model", "nonmem", "param_est.csv"))
+param_est <- read.csv(system.file("model/nonmem/param_est.csv", package = "mrgparamtab"))
+
+param_model <- bbr::read_model(system.file("model/nonmem/102", package = "mrgparamtab"))
+
+newDF <- defineParamTable(.estimates = param_est, .key = paramKey, .ci = 95, .zed = NULL)
 
