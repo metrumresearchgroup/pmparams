@@ -4,7 +4,7 @@
 \alias{getCI}
 \title{Calculate 90\% or 95\% confidence intervals}
 \usage{
-getCI(.df, .value = "value", .se = "se", .ci = 95, .zed = NULL)
+getCI(.df, .value = "value", .se = "se", .ci = 95, .zscore = NULL)
 }
 \arguments{
 \item{.df}{data.frame with parameter estimates}
@@ -15,7 +15,7 @@ getCI(.df, .value = "value", .se = "se", .ci = 95, .zed = NULL)
 
 \item{.ci}{specify 90 or 95 percent confidence interval (default 95\%)}
 
-\item{.zed}{z-score for the specified confidence interval. Only needed for confidence intervals that are NOT 90 or 95 percent}
+\item{.zscore}{z-score for the specified confidence interval. Only needed for confidence intervals that are NOT 90 or 95 percent}
 }
 \description{
 Calculates the upper and lower bound of a 90\% or 95\% confidence interval, based on the

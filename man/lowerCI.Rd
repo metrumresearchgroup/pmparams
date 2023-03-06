@@ -5,9 +5,9 @@
 \alias{upperCI}
 \title{Confidence interval bounds}
 \usage{
-lowerCI(.est, .se, .ci, .zed = NULL)
+lowerCI(.est, .se, .ci, .zscore = NULL)
 
-upperCI(.est, .se, .ci, .zed = NULL)
+upperCI(.est, .se, .ci, .zscore = NULL)
 }
 \arguments{
 \item{.est}{parameter estimates}

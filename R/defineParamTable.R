@@ -31,11 +31,11 @@
 #' @param .estimates parameter estimates data.frame or path to model
 #' @param .key parameter key
 #' @param .ci specify confidence interval (default 95%)
-#' @param .zed z-score for the specified confidence interval. Only needed for confidence intervals that are NOT 90 or 95 percent
+#' @param .zscore z-score for the specified confidence interval. Only needed for confidence intervals that are NOT 90 or 95 percent
 #'
 #' @seealso \link[mrgparamtab]{param_key}: Parameter key requirements
 #' @export
-defineParamTable <- function(.estimates, .key, .ci = 95, .zed = NULL){
+defineParamTable <- function(.estimates, .key, .ci = 95, .zscore = NULL){
 
 
   if (inherits(.estimates, "character")){
@@ -90,7 +90,7 @@ defineParamTable <- function(.estimates, .key, .ci = 95, .zed = NULL){
     checkTransforms() %>%
     defineRows() %>%
     getValueSE() %>%
-    getCI(.ci = .ci, .zed = .zed)
+    getCI(.ci = .ci, .zscore = .zscore)
 
   return(mod_estimates)
 }
