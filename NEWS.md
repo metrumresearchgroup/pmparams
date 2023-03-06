@@ -2,6 +2,6 @@
 
 ## New features and changes
 
-- `defineParamTable`: Combines model output parameter estimates with information in parameter key. Performs some formatting of this combined data.frame.
+- `defineParamTable`: Combines model output parameter estimates with information in parameter key. Performs some formatting of this combined data.frame (#34).
 
-- `formatParamTable`: Estimate values and output selected columns to be shown in the parameter table.
+- `formatParamTable`: Estimate values and output selected columns to be shown in the parameter table (#34).
