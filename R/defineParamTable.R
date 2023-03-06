@@ -19,7 +19,6 @@
 #' A `dplyr::inner_join` is used so that only parameters in the model output are kept
 #' in the table. This was done so that, if your base and final model used the same structural
 #' THETAs and random parameters, the same parameter key could be used for both.
-#'
 #' This join adds the following columns: `abb` (abbreviation), `desc` (parameter description),
 #' `panel`, `trans` (transformation).
 #'
