@@ -1,4 +1,4 @@
-test_that("getpCV accurately calculates CV%", {
+test_that("getpCV accurately calculates CV% [MPT-PCV-001]", {
   pCV_DF <- getpCV(newDF) %>% select(cv)
   expect_equal(pCV_DF$cv[12], "20.0")
   expect_equal(pCV_DF$cv[4], "-")

@@ -108,3 +108,19 @@ FPT-R001:
   -MPT-FPT-002
   -MPT-FPT-003
   -MPT-FPT-004
+CVL-001:
+  description: getCV_lognorm0 accurately calculates CV lognorm
+  tests:
+  -MPT-CVL-001
+CVP-001:
+  description: getCV_propS accurately calculates proportion CV
+  tests:
+  -MPT-CVP-001
+PCV-001:
+  description: getpCV accurately calculates CV%
+  tests:
+  -MPT-PCV-001
+RPC-001:
+  description: removePunc removes paranetheses from string vector
+  tests:
+  -MPT-RPC-001
