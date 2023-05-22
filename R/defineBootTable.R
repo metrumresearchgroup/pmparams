@@ -24,23 +24,19 @@
 #' with special transformation rules were defined correctly. In addition, a series of
 #' TRUE/FALSE columns that will be used by subsequent functions.
 #'
-#' @param .estimates parameter estimates data.frame
+#' @param .boot_estimates parameter boot estimates data.frame- maybe add additional input options
 #' @param .key parameter key
 #' @param .ci specify 90 or 95 percent confidence interval (default 95%)
 #' @param .zed z-score for the specified confidence interval. Only needed for confidence intervals that are NOT 90 or 95 percent
 #'
 #' @seealso \link[mrgparamtab]{param_key}: Parameter key requirements
 #' @export
-defineParamTable <- function(.boot, .key, .ci = 95, .zed = NULL){
+defineBootTable <- function(.boot_estimates, .key, .ci = 95, .zed = NULL){
 
-  #boot types
-  .boot <- "inst/model/nonmem/boot/data/boot-106.csv"
-  .key <- paramKey
-    .estimates <- newDF
   #input options:
   #option 1: csv generated from boot-collect.R
   if (inherits(.boot, "character")){
-    .boot <- readr::read_csv(.boot)
+    .boot <- readr::read_csv(.boot_estimates)
   }
 
 # parameter key types
@@ -70,36 +66,27 @@ defineParamTable <- function(.boot, .key, .ci = 95, .zed = NULL){
   }
 
 #clean up boot
-bootParam = .boot %>%
+.bootParam = .boot %>%
     bbr::param_estimates_compare() %>%
-    rename(estimate = `50%`, lower = `2.5%`, upper = `97.5%`) %>%
-    mutate(name = gsub("[[:punct:]]", "", parameter_names)) %>%
-    inner_join(.key, by = "name")
+    dplyr::rename(estimate = "50%", lower = "2.5%", upper = "97.5%") %>%
+    dplyr::mutate(name = gsub("[[:punct:]]", "", parameter_names)) %>%
+  dplyr::inner_join(.key, by = "name")
 
-#join with original strpa
-boot_df <- bootParam %>%
-  left_join(.estimates %>%
-              #param_estimates() %>%
-              mutate(name = gsub("[[:punct:]]", "", parameter_names)) %>% select(parameter_names, fixed),
-            by = "parameter_names") %>%
-  mutate(value = estimate) %>%
+#join with key
+.boot_df <- .bootParam %>%
+  dplyr::left_join(.estimates %>%
+                #param_estimates() %>%
+                dplyr::mutate(name = gsub("[[:punct:]]", "", parameter_names)) %>% select(parameter_names, fixed),
+                by = "parameter_names") %>%
+  dplyr::mutate(value = estimate) %>%
   checkTransforms() %>%
   defineRows() %>%
   backTrans_log() %>%
   backTrans_logit() %>%
   formatValues_boot() %>%
-  dplyr::select(abb, desc, boot_value, boot_ci)
-boot_df
+  dplyr::select("abb", "desc", "boot_value", "boot_ci")
 
-bootParam = left_join(param_df, boot_df, by = c("abb", "desc"))
+.boot_df
+#return(.boot_df)
 
-  boot_estimates <- .boot %>%
-    removePunc(.column = "parameter_names") %>%
-    dplyr::inner_join(.key, by = "name") %>%
-    checkTransforms() %>%
-    defineRows() %>%
-    getValueSE() %>%
-    getCI(.ci = .ci, .zed = .zed)
-
-  return(boot_estimates)
 }

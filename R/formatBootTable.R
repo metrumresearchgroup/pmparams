@@ -19,38 +19,46 @@
 #' 4. Select columns for final tables.
 #'
 #'
-#' @param .df parameter estimates with modifications ready for formatting
-#' @param .select_cols columns to select for output. Default selects "type", "abb", "greek", "desc", "value", "ci", "shrinkage". To return all columns, specify "all" for .select_cols.
-#' @param .prse output pRSE. Default is FALSE.
+#' @param .boot_df boot parameter estimates with modifications ready for formatting
+#' @param .param_df parameter estimates with modifications ready for formatting
 #' @param .digit set significant digits for output (optional)
 #' @param .maxex set maxex for computation (optional)
 #'
 #' @export
-formatBootTable <- function(.df,
-                             .select_cols = c("type", "abb", "greek", "desc", "value", "ci", "shrinkage"),
-                             .prse = FALSE,
+formatBootTable <- function(.boot_df,
+                            .param_df,
+                           #  .select_cols = c("type", "abb", "greek", "desc", "value", "ci", "shrinkage"),
+                            # .prse = FALSE,
                              .digit = getOption("mrgparamtab.dig"),
                              .maxex = getOption("mrgparamtab.maxex")){
 
   .digit = ifelse(is.null(.digit), formals(pmtables::sig)$digits, .digit)
 
-  if (.prse == TRUE) {
-    .df <- .df %>% getpRSE()
-    .select_cols <- append(.select_cols, "pRSE")
-  }
+  # if (.prse == TRUE) {
+  #   .df <- .df %>% getpRSE()
+  #   .select_cols <- append(.select_cols, "pRSE")
+  # }
 
-  .df_out <-
-    .df %>%
-    formatValues(.digit = .digit, .maxex = .maxex) %>%
-    formatGreekNames() %>%
-    getPanelName()
+  .bootParam = dplyr::left_join(.param_df, .boot_df, by = c("abb", "desc"))
 
-  if (any(tolower(.select_cols) == "all")) {
-    return(.df_out %>% as.data.frame())
-  } else {
-    return(.df_out %>%
-             dplyr::select(.select_cols) %>%
-             as.data.frame())
-  }
+  .boot_estimates <- .bootParam %>%
+    removePunc(.column = "parameter_names") %>%
+    dplyr::inner_join(.key, by = "name") %>%
+    checkTransforms() %>%
+    defineRows() %>%
+    getValueSE() %>%
+    getCI()
+
+  return(.boot_estimates)
+
+  # if (any(tolower(.select_cols) == "all")) {
+  #   return(.df_out %>% as.data.frame())
+  # } else {
+  #   return(.df_out %>%
+  #            dplyr::select(.select_cols) %>%
+  #            as.data.frame())
+  # }
 
 }
+
+
