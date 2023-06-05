@@ -25,18 +25,19 @@
 #' TRUE/FALSE columns that will be used by subsequent functions.
 #'
 #' @param .boot_estimates parameter boot estimates data.frame- maybe add additional input options
+#' @param .nonboot_estimates non-bootstrap final model - either path to file or model_summary
 #' @param .key parameter key
-#' @param .ci specify 90 or 95 percent confidence interval (default 95%)
-#' @param .zed z-score for the specified confidence interval. Only needed for confidence intervals that are NOT 90 or 95 percent
 #'
 #' @seealso \link[mrgparamtab]{param_key}: Parameter key requirements
 #' @export
-defineBootTable <- function(.boot_estimates, .key, .ci = 95, .zed = NULL){
+defineBootTable <- function(.boot_estimates, .nonboot_estimates, .key){
 
   #input options:
   #option 1: csv generated from boot-collect.R
-  if (inherits(.boot, "character")){
+  if (inherits(.boot_estimates, "character")){
     .boot <- readr::read_csv(.boot_estimates)
+  } else {
+    .boot <- .boot_estimates
   }
 
 # parameter key types
@@ -65,6 +66,14 @@ defineBootTable <- function(.boot_estimates, .key, .ci = 95, .zed = NULL){
     stop("Incorrect parameter key input type. See ?param_key for list of valid parameter key inputs")
   }
 
+  if(inherits(.nonboot_estimates, "character")){
+    .nonboot_estimates <- bbr::read_model(here::here(nonboot_param_est_path)) %>%
+      bbr::model_summary() %>%
+      bbr::param_estimates()
+  } else {
+    .nonboot_estimates <- .nonboot_estimates
+  }
+
 #clean up boot
 .bootParam = .boot %>%
     bbr::param_estimates_compare() %>%
@@ -74,7 +83,7 @@ defineBootTable <- function(.boot_estimates, .key, .ci = 95, .zed = NULL){
 
 #join with key
 .boot_df <- .bootParam %>%
-  dplyr::left_join(.estimates %>%
+  dplyr::left_join(.nonboot_estimates %>%
                 #param_estimates() %>%
                 dplyr::mutate(name = gsub("[[:punct:]]", "", parameter_names)) %>% select(parameter_names, fixed),
                 by = "parameter_names") %>%
@@ -82,9 +91,7 @@ defineBootTable <- function(.boot_estimates, .key, .ci = 95, .zed = NULL){
   checkTransforms() %>%
   defineRows() %>%
   backTrans_log() %>%
-  backTrans_logit() %>%
-  formatValues_boot() %>%
-  dplyr::select("abb", "desc", "boot_value", "boot_ci")
+  backTrans_logit()
 
 .boot_df
 #return(.boot_df)

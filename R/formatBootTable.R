@@ -39,17 +39,15 @@ formatBootTable <- function(.boot_df,
   #   .select_cols <- append(.select_cols, "pRSE")
   # }
 
-  .bootParam = dplyr::left_join(.param_df, .boot_df, by = c("abb", "desc"))
+  .boot_df <- .boot_df %>%
+    formatValues_boot() %>%
+    dplyr::select(abb, desc, boot_value, boot_ci)
 
-  .boot_estimates <- .bootParam %>%
-    removePunc(.column = "parameter_names") %>%
-    dplyr::inner_join(.key, by = "name") %>%
-    checkTransforms() %>%
-    defineRows() %>%
-    getValueSE() %>%
-    getCI()
+  .boot_df <- .param_df %>%
+    dplyr::left_join(.boot_df, by = c("abb", "dsc"))
 
-  return(.boot_estimates)
+  .boot_df
+  #return(.boot_estimates)
 
   # if (any(tolower(.select_cols) == "all")) {
   #   return(.df_out %>% as.data.frame())
