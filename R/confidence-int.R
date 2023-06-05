@@ -5,7 +5,7 @@
 #' @param .ci confidence interval type
 #'
 #' @keywords internal
-lowerCI <- function(.est, .se, .ci, .zed = NULL){
+lowerCI <- function(.est, .se, .ci, .zscore = NULL){
   if (.ci == 90) {
    .est =  .est - 1.64*.se
   }
@@ -14,8 +14,8 @@ lowerCI <- function(.est, .se, .ci, .zed = NULL){
     .est = .est - 1.96*.se
   }
 
-  if (!(.ci %in% c(90,95)) & !is.null(.zed)) {
-    .est = .est -.zed*.se
+  if (!(.ci %in% c(90,95)) & !is.null(.zscore)) {
+    .est = .est -.zscore*.se
   }
 
   return(.est)
@@ -23,7 +23,7 @@ lowerCI <- function(.est, .se, .ci, .zed = NULL){
 
 #' @rdname lowerCI
 #' @keywords internal
-upperCI <- function(.est, .se, .ci, .zed = NULL){
+upperCI <- function(.est, .se, .ci, .zscore = NULL){
   if (.ci == 90) {
     .est = .est + 1.64*.se
   }
@@ -32,8 +32,8 @@ upperCI <- function(.est, .se, .ci, .zed = NULL){
     .est = .est + 1.96*.se
   }
 
-  if (!(.ci %in% c(90,95)) & !is.null(.zed)) {
-    .est = .est + .zed*.se
+  if (!(.ci %in% c(90,95)) & !is.null(.zscore)) {
+    .est = .est + .zscore*.se
   }
 
   return(.est)

@@ -13,7 +13,7 @@ formatParamTable(
 )
 }
 \arguments{
-\item{.df}{parameter estimates with modifications ready for formatting}
+\item{.df}{parameter estimates with modifications ready for formatting, outputted from the \code{defineParamTable} function}
 
 \item{.select_cols}{columns to select for output. Default selects "type", "abb", "greek", "desc", "value", "ci", "shrinkage". To return all columns, specify "all" for .select_cols.}
 
@@ -27,13 +27,15 @@ formatParamTable(
 Format parameter estimate values and output selected columns to be shown in
 the parameter table.
 
-There are four main steps of this function:
+This function does the following:
 \enumerate{
 \item When necessary, back transform parameters and their CIs, round parameters using pmtables::sig, and combine columns.
 \item Format the THETA/OMEGA/SIGMA values to display as greek letters in Latex, with subscript numbers, and where necessary, the transformation applied to that parameter.
 \item Determine which panel of the final table the parameter should be displayed in. This is informed by the panel argument you defined in your parameter key. Note that there are a finite number of options included by default (see below) but you can include additional panels as needed.
-Panel types include:
+\item Select columns for final tables.
 }
+
+Panel types include:
 \itemize{
 \item Residual variance
 \item Interindividual covariance parameters
@@ -41,8 +43,5 @@ Panel types include:
 \item Interoccasion variance parameters
 \item Covariate effect parameters
 \item Structural model parameters
-}
-\enumerate{
-\item Select columns for final tables.
 }
 }

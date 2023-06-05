@@ -41,5 +41,5 @@ param_est <- read.csv(system.file("model/nonmem/param_est.csv", package = "mrgpa
 
 param_model <- bbr::read_model(system.file("model/nonmem/102", package = "mrgparamtab"))
 
-newDF <- defineParamTable(.estimates = param_est, .key = paramKey, .ci = 95, .zed = NULL)
+newDF <- defineParamTable(.estimates = param_est, .key = paramKey, .ci = 95, .zscore = NULL)
 

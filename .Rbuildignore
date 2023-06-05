@@ -1,3 +1,6 @@
 ^mrgparamtab\.Rproj$
 ^\.Rproj\.user$
 ^.drone.yml$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

@@ -5,33 +5,37 @@
 #' Combines model output parameter estimates with information in parameter key. Performs
 #' some formatting of this combined data.frame.
 #'
-#' Expected input is a data.frame with parameter estimates, with the columns:
+#' Expected input is parameter key yaml and:
+#' - Path to model OR
+#' - Data.frame with parameter estimates, with the columns:
 #' `parameter_names`, `estimate`, `stderr`, `random_effect_sd`, `random_effect_sdse`,
 #' `fixed`, `diag`, `shrinkage`.
 #'
-#' Some `parameter_names` have punctuation such as `OMEGA(1,1)`. A new column is
+#' This function does the following:
+#' 1. Remove punctuation from columns, as needed. Some `parameter_names` have punctuation such as `OMEGA(1,1)`. A new column is
 #' added without punctuation, such as `OMEGA11`.
 #'
-#' Following this, parameter details from the parameter key are joined to the parameter estimates.
+#' 2. Join parameter details from the parameter key to the parameter estimates.
 #' A `dplyr::inner_join` is used so that only parameters in the model output are kept
 #' in the table. This was done so that, if your base and final model used the same structural
 #' THETAs and random parameters, the same parameter key could be used for both.
-#'
 #' This join adds the following columns: `abb` (abbreviation), `desc` (parameter description),
 #' `panel`, `trans` (transformation).
 #'
-#' With this information provided, a check is performed to determine whether parameters
-#' with special transformation rules were defined correctly. In addition, a series of
+#' 3. Perform check to determine whether parameters with special transformation rules were defined correctly. In addition, a series of
 #' TRUE/FALSE columns that will be used by subsequent functions.
 #'
-#' @param .estimates parameter estimates data.frame
+#' 4. Calculate upper and lower bound of a defined confidence interval, based on the
+#' value and standard error.
+#'
+#' @param .estimates parameter estimates data.frame or path to model
 #' @param .key parameter key
-#' @param .ci specify 90 or 95 percent confidence interval (default 95%)
-#' @param .zed z-score for the specified confidence interval. Only needed for confidence intervals that are NOT 90 or 95 percent
+#' @param .ci specify confidence interval (default 95%)
+#' @param .zscore z-score for the specified confidence interval. Only needed for confidence intervals that are NOT 90 or 95 percent
 #'
 #' @seealso \link[mrgparamtab]{param_key}: Parameter key requirements
 #' @export
-defineParamTable <- function(.estimates, .key, .ci = 95, .zed = NULL){
+defineParamTable <- function(.estimates, .key, .ci = 95, .zscore = NULL){
 
 
   if (inherits(.estimates, "character")){
@@ -86,7 +90,7 @@ defineParamTable <- function(.estimates, .key, .ci = 95, .zed = NULL){
     checkTransforms() %>%
     defineRows() %>%
     getValueSE() %>%
-    getCI(.ci = .ci, .zed = .zed)
+    getCI(.ci = .ci, .zscore = .zscore)
 
   return(mod_estimates)
 }

@@ -4,39 +4,44 @@
 \alias{defineParamTable}
 \title{Combine parameter estimates with parameter key}
 \usage{
-defineParamTable(.estimates, .key, .ci = 95, .zed = NULL)
+defineParamTable(.estimates, .key, .ci = 95, .zscore = NULL)
 }
 \arguments{
-\item{.estimates}{parameter estimates data.frame}
+\item{.estimates}{parameter estimates data.frame or path to model}
 
 \item{.key}{parameter key}
 
-\item{.ci}{specify 90 or 95 percent confidence interval (default 95\%)}
+\item{.ci}{specify confidence interval (default 95\%)}
 
-\item{.zed}{z-score for the specified confidence interval. Only needed for confidence intervals that are NOT 90 or 95 percent}
+\item{.zscore}{z-score for the specified confidence interval. Only needed for confidence intervals that are NOT 90 or 95 percent}
 }
 \description{
 Combines model output parameter estimates with information in parameter key. Performs
 some formatting of this combined data.frame.
 
-Expected input is a data.frame with parameter estimates, with the columns:
+Expected input is parameter key yaml and:
+\itemize{
+\item Path to model OR
+\item Data.frame with parameter estimates, with the columns:
 \code{parameter_names}, \code{estimate}, \code{stderr}, \code{random_effect_sd}, \code{random_effect_sdse},
 \code{fixed}, \code{diag}, \code{shrinkage}.
+}
 
-Some \code{parameter_names} have punctuation such as \code{OMEGA(1,1)}. A new column is
+This function does the following:
+\enumerate{
+\item Remove punctuation from columns, as needed. Some \code{parameter_names} have punctuation such as \code{OMEGA(1,1)}. A new column is
 added without punctuation, such as \code{OMEGA11}.
-
-Following this, parameter details from the parameter key are joined to the parameter estimates.
+\item Join parameter details from the parameter key to the parameter estimates.
 A \code{dplyr::inner_join} is used so that only parameters in the model output are kept
 in the table. This was done so that, if your base and final model used the same structural
 THETAs and random parameters, the same parameter key could be used for both.
-
 This join adds the following columns: \code{abb} (abbreviation), \code{desc} (parameter description),
 \code{panel}, \code{trans} (transformation).
-
-With this information provided, a check is performed to determine whether parameters
-with special transformation rules were defined correctly. In addition, a series of
+\item Perform check to determine whether parameters with special transformation rules were defined correctly. In addition, a series of
 TRUE/FALSE columns that will be used by subsequent functions.
+\item Calculate upper and lower bound of a defined confidence interval, based on the
+value and standard error.
+}
 }
 \seealso{
 \link[mrgparamtab]{param_key}: Parameter key requirements

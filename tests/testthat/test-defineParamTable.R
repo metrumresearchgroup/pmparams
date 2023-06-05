@@ -82,8 +82,8 @@ test_that("defineParamTable generates correct corr_SD [MPT-DPT-005]", {
 })
 
 test_that("defineParamTable generates the confidence intervals for various inputs [MPT-DPT-006]", {
-  newDF_ci95 <- defineParamTable(.estimates = param_est, .key = paramKey, .ci = 95, .zed = NULL)
-  newDF_ci90 <- defineParamTable(.estimates = param_est, .key = paramKey, .ci = 90, .zed = NULL)
+  newDF_ci95 <- defineParamTable(.estimates = param_est, .key = paramKey, .ci = 95, .zscore = NULL)
+  newDF_ci90 <- defineParamTable(.estimates = param_est, .key = paramKey, .ci = 90, .zscore = NULL)
 
   expect_equal(newDF_ci90$lower[1], 0.33047798)
   expect_equal(newDF_ci90$upper[2], 4.1640688)
