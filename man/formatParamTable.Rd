@@ -13,7 +13,7 @@ formatParamTable(
 )
 }
 \arguments{
-\item{.df}{parameter estimates with modifications ready for formatting}
+\item{.df}{parameter estimates output from \code{defineParamTable} with modifications ready for formatting}
 
 \item{.select_cols}{columns to select for output. Default selects "type", "abb", "greek", "desc", "value", "ci", "shrinkage". To return all columns, specify "all" for .select_cols.}
 

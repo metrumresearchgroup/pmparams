@@ -33,29 +33,25 @@ paramKey = dplyr::tribble(
 
 #Data for testing param table (no boot)
 
-param_path <- system.file("model/nonmem/102", package = "mrgparamtab")
+paramPath <- system.file("model/nonmem/102", package = "mrgparamtab")
+paramEst <- utils::read.csv(system.file("model/nonmem/param_est.csv", package = "mrgparamtab"))
+paramModel <- bbr::read_model(system.file("model/nonmem/102", package = "mrgparamtab"))
 
-# param_est <- bbr::read_model(system.file("model/nonmem/102", package = "mrgparamtab")) %>%
-#              bbr::model_summary() %>%
-#              bbr::param_estimates()
-# write.csv(param_est, here::here("inst", "model", "nonmem", "param_est.csv"))
-param_est <- read.csv(system.file("model/nonmem/param_est.csv", package = "mrgparamtab"))
-param_model <- bbr::read_model(system.file("model/nonmem/102", package = "mrgparamtab"))
-
-newDF <- defineParamTable(.estimates = param_est, .key = paramKey, .ci = 95, .zed = NULL)
-
+newDF <- defineParamTable(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
 
 #Data for testing boot param table
-boot_param_est_path <- system.file("model/nonmem/boot/data/boot-106.csv", package = "mrgparamtab")
-boot_param_est <- read.csv(system.file("model/nonmem/boot/data/boot-106.csv", package = "mrgparamtab"))
-nonboot_param_est_path <- system.file("model/nonmem/106", package = "mrgparamtab")
-#nonboot_param_est <- read.csv(system.file("model/nonmem/nonboot_param_est.csv", package = "mrgparamtab"))
+boot_paraEstPath <- system.file("model/nonmem/boot/data/boot-106.csv", package = "mrgparamtab")
+boot_paramEst <- utils::read.csv(system.file("model/nonmem/boot/data/boot-106.csv", package = "mrgparamtab"))
 
-nonboot_param_est <- bbr::read_model(here::here(nonboot_param_est_path)) %>%
-                          bbr::model_summary() %>%
-                          bbr::param_estimates()
-# write.csv(nonboot_param_est, here::here("inst", "model", "nonmem", "nonboot_param_est.csv"))
+nonboot_paramEstPath <- system.file("model/nonmem/106", package = "mrgparamtab")
+nonboot_paramEst <- utils::read.csv(system.file("model/nonmem/nonboot_param_est.csv", package = "mrgparamtab"))
 
-nonboot_param_est <- read.csv(system.file(system.file("model/nonmem/nonboot_param_est.csv", package = "mrgparamtab")))
+newbootDF <- mrgparamtab::defineBootTable(.boot_estimates =boot_paramEst, .nonboot_estimates = nonboot_paramEst, .key = paramKey)
+formatBootDF <- mrgparamtab::formatBootTable(.boot_df = newbootDF)
 
-newbootDF <- mrgparamtab::defineBootTable(.boot_estimates =boot_param_est, .nonboot_estimates = nonboot_param_est, .key = paramKey)
+#final output
+nonbootDF <- mrgparamtab::defineParamTable(.estimates = nonboot_paramEst, .key = paramKey)
+formatnonbootDF <- nonboot_DF %>% mrgparamtab::formatParamTable()
+
+
+bootParam <-  left_join(formatnonbootDF, formatBootDF, by = c("abb", "desc"))

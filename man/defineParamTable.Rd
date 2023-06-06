@@ -4,16 +4,16 @@
 \alias{defineParamTable}
 \title{Combine parameter estimates with parameter key}
 \usage{
-defineParamTable(.estimates, .key, .ci = 95, .zed = NULL)
+defineParamTable(.estimates, .key, .ci = 95, .zscore = NULL)
 }
 \arguments{
-\item{.estimates}{parameter estimates data.frame}
+\item{.estimates}{path to model directory, bbr NONMEM model, or data.frame of parameter estimates}
 
-\item{.key}{parameter key}
+\item{.key}{path to parameter key or data.frame of parameter key}
 
-\item{.ci}{specify 90 or 95 percent confidence interval (default 95\%)}
+\item{.ci}{confidence interval (default 95\%)}
 
-\item{.zed}{z-score for the specified confidence interval. Only needed for confidence intervals that are NOT 90 or 95 percent}
+\item{.zscore}{z-score for the specified confidence interval. Only needed for confidence intervals that are NOT 90 or 95 percent}
 }
 \description{
 Combines model output parameter estimates with information in parameter key. Performs

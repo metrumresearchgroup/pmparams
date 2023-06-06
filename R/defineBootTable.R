@@ -1,24 +1,28 @@
-#' Combine bootstrap estimates with parameter key
+#' Combine bootstrap estimates with non-bootstrap estimates and parameter key
 #'
 #' @description
 #'
-#' Combines model output parameter estimates with information in parameter key. Performs
+#' Combines boot strap estimates and non boot strap estimates with information in parameter key. Performs
 #' some formatting of this combined data.frame.
+#' There are two main steps of this function:
 #'
-#' Expected input is a data.frame with parameter estimates, with the columns:
-#' `parameter_names`, `estimate`, `stderr`, `random_effect_sd`, `random_effect_sdse`,
-#' `fixed`, `diag`, `shrinkage`.
+#' 1. Run `bbr::param_estimates_compare` to extract summary quantiles, the 5th, 50th, and 95th, of the
+#' bootstrap estimates for each model parameter.
 #'
 #' Some `parameter_names` have punctuation such as `OMEGA(1,1)`. A new column is
 #' added without punctuation, such as `OMEGA11`.
 #'
-#' Following this, parameter details from the parameter key are joined to the parameter estimates.
+#' Following this, parameter details from the parameter key are joined to the boot strap parameter estimates.
 #' A `dplyr::inner_join` is used so that only parameters in the model output are kept
 #' in the table. This was done so that, if your base and final model used the same structural
 #' THETAs and random parameters, the same parameter key could be used for both.
 #'
 #' This join adds the following columns: `abb` (abbreviation), `desc` (parameter description),
 #' `panel`, `trans` (transformation).
+#'
+#' 2. Reformat non-bootstrap estimates and left join onto combined bootstrap estimates and parameter key data.frame.
+#' Expected input is a data.frame with parameter estimates, with the columns:
+#' `parameter_names`, `estimate`.
 #'
 #' With this information provided, a check is performed to determine whether parameters
 #' with special transformation rules were defined correctly. In addition, a series of
@@ -32,44 +36,24 @@
 #' @export
 defineBootTable <- function(.boot_estimates, .nonboot_estimates, .key){
 
-  #input options:
-  #option 1: csv generated from boot-collect.R
+  #path to boot estimates
   if (inherits(.boot_estimates, "character")){
     .boot <- readr::read_csv(.boot_estimates)
+  #data.frame of boot estimates
   } else {
     .boot <- .boot_estimates
   }
 
 # parameter key types
-  if (inherits(.key, "character")){
-    print(paste0("Parameter table yaml path provided: ", .key))
-    y1l <- yaml::yaml.load_file(.key)
+  .key <- loadParamKey(.key)
 
-    if (!all(names(y1l[[1]]) %in% c("abb", "desc", "panel", "trans"))) {
-      warning("Only abb, desc, panel and trans arguments will be used, all others ignored")
-    }
 
-    .key <- dplyr::tibble(
-      name = names(y1l),
-      abb = unlist(y1l)[grepl('abb',names(unlist(y1l)),fixed=T)],
-      desc = unlist(y1l)[grepl('desc',names(unlist(y1l)),fixed=T)],
-      panel = unlist(y1l)[grepl('panel',names(unlist(y1l)),fixed=T)],
-      trans = unlist(y1l)[grepl('trans',names(unlist(y1l)),fixed=T)]
-    )
-  }
-
-  if (inherits(.key, "data.frame")){
-    if (!(all(c("name", "abb", "desc", "panel", "trans") %in% colnames(.key)))) {
-      stop("Incorrect parameter key input type. See ?param_key for list of valid parameter key inputs")
-    }
-  } else{
-    stop("Incorrect parameter key input type. See ?param_key for list of valid parameter key inputs")
-  }
-
+  #path to nonboot estimates
   if(inherits(.nonboot_estimates, "character")){
-    .nonboot_estimates <- bbr::read_model(here::here(nonboot_param_est_path)) %>%
+    .nonboot_estimates <- bbr::read_model(here::here(.nonboot_estimates)) %>%
       bbr::model_summary() %>%
       bbr::param_estimates()
+  #data.frame of nonboot estimates
   } else {
     .nonboot_estimates <- .nonboot_estimates
   }
@@ -79,13 +63,13 @@ defineBootTable <- function(.boot_estimates, .nonboot_estimates, .key){
     bbr::param_estimates_compare() %>%
     dplyr::rename(estimate = "50%", lower = "2.5%", upper = "97.5%") %>%
     dplyr::mutate(name = gsub("[[:punct:]]", "", parameter_names)) %>%
-  dplyr::inner_join(.key, by = "name")
+    dplyr::inner_join(.key, by = "name")
 
 #join with key
 .boot_df <- .bootParam %>%
   dplyr::left_join(.nonboot_estimates %>%
-                #param_estimates() %>%
-                dplyr::mutate(name = gsub("[[:punct:]]", "", parameter_names)) %>% select(parameter_names, fixed),
+                dplyr::mutate(name = gsub("[[:punct:]]", "", parameter_names)) %>%
+                dplyr::select(parameter_names, fixed),
                 by = "parameter_names") %>%
   dplyr::mutate(value = estimate) %>%
   checkTransforms() %>%

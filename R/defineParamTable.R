@@ -24,61 +24,37 @@
 #' with special transformation rules were defined correctly. In addition, a series of
 #' TRUE/FALSE columns that will be used by subsequent functions.
 #'
-#' @param .estimates parameter estimates data.frame
-#' @param .key parameter key
-#' @param .ci specify 90 or 95 percent confidence interval (default 95%)
-#' @param .zed z-score for the specified confidence interval. Only needed for confidence intervals that are NOT 90 or 95 percent
+#' @param .estimates path to model directory, bbr NONMEM model, or data.frame of parameter estimates
+#' @param .key path to parameter key or data.frame of parameter key
+#' @param .ci confidence interval (default 95%)
+#' @param .zscore z-score for the specified confidence interval. Only needed for confidence intervals that are NOT 90 or 95 percent
 #'
 #' @seealso \link[mrgparamtab]{param_key}: Parameter key requirements
+#'
+#' @example
+#'
+#'
+#'paramPath <- system.file("model/nonmem/102", package = "mrgparamtab")
+#'paramModel <- bbr::read_model(system.file("model/nonmem/102", package = "mrgparamtab"))
+#'paramEst <- utils::read.csv(system.file("model/nonmem/param_est.csv", package = "mrgparamtab"))
+#'
+#'The following three `defineParamTable` commands should all render identical data.frames:
+#'
+#'defineParamTable(.estimates = paramPath, .key = paramKey, .ci = 95, .zscore = NULL)
+#'defineParamTable(.estimates = paramModel, .key = paramKey, .ci = 95, .zscore = NULL)
+#'defineParamTable(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
+#'
+#'To choose a confidence interval that is not 95 or 90, look up z-score and add as function parameter
+#'
+#'defineParamTable(.estimates = paramEst, .key = paramKey, .ci = 82, .zscore = 0.915)
+#'
 #' @export
-defineParamTable <- function(.estimates, .key, .ci = 95, .zed = NULL){
+defineParamTable <- function(.estimates, .key, .ci = 95, .zscore = NULL){
 
 
-  if (inherits(.estimates, "character")){
-    print(paste0("Model path provided: ", .estimates))
-    .estimates <- bbr::read_model(.estimates)
-  }
+  .estimates <- loadParamEstimates(.estimates)
 
-  if (inherits(.estimates, "bbi_nonmem_model")){
-    .estimates <- bbr::model_summary(.estimates)
-  }
-
-  if (inherits(.estimates, "bbi_nonmem_summary")){
-    .estimates <- bbr::param_estimates(.estimates)
-  }
-
-  if (inherits(.estimates, "data.frame")){
-    if (!("parameter_names" %in% colnames(.estimates))) {
-      stop("Incorrect estimate input type")
-    }
-  } else{
-    stop("Incorrect estimate input type")
-  }
-
-  if (inherits(.key, "character")){
-    print(paste0("Parameter table yaml path provided: ", .key))
-    y1l <- yaml::yaml.load_file(.key)
-
-    if (!all(names(y1l[[1]]) %in% c("abb", "desc", "panel", "trans"))) {
-      warning("Only abb, desc, panel and trans arguments will be used, all others ignored")
-    }
-
-    .key <- dplyr::tibble(
-      name = names(y1l),
-      abb = unlist(y1l)[grepl('abb',names(unlist(y1l)),fixed=T)],
-      desc = unlist(y1l)[grepl('desc',names(unlist(y1l)),fixed=T)],
-      panel = unlist(y1l)[grepl('panel',names(unlist(y1l)),fixed=T)],
-      trans = unlist(y1l)[grepl('trans',names(unlist(y1l)),fixed=T)]
-    )
-  }
-
-  if (inherits(.key, "data.frame")){
-    if (!(all(c("name", "abb", "desc", "panel", "trans") %in% colnames(.key)))) {
-      stop("Incorrect parameter key input type. See ?param_key for list of valid parameter key inputs")
-    }
-  } else{
-    stop("Incorrect parameter key input type. See ?param_key for list of valid parameter key inputs")
-  }
+  .key <- loadParamKey(.key)
 
   mod_estimates <- .estimates %>%
     removePunc(.column = "parameter_names") %>%
@@ -86,7 +62,7 @@ defineParamTable <- function(.estimates, .key, .ci = 95, .zed = NULL){
     checkTransforms() %>%
     defineRows() %>%
     getValueSE() %>%
-    getCI(.ci = .ci, .zed = .zed)
+    getCI(.ci = .ci, .zscore = .zscore)
 
   return(mod_estimates)
 }
