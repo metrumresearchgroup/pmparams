@@ -1,4 +1,4 @@
-defpt <- defineParamTable(param_est, paramKey)
+defpt <- defineParamTable(paramEst, paramKey)
 gpn <- getPanelName(defpt)
 
 test_that("getPanelName appropriately classifies residual variance panel [MPT-GPN-001]", {

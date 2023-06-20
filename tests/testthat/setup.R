@@ -51,7 +51,7 @@ formatBootDF <- mrgparamtab::formatBootTable(.boot_df = newbootDF)
 
 #final output
 nonbootDF <- mrgparamtab::defineParamTable(.estimates = nonboot_paramEst, .key = paramKey)
-formatnonbootDF <- nonboot_DF %>% mrgparamtab::formatParamTable()
+formatnonbootDF <- nonbootDF %>% mrgparamtab::formatParamTable()
 
 
 bootParam <-  left_join(formatnonbootDF, formatBootDF, by = c("abb", "desc"))

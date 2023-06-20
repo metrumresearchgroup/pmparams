@@ -18,12 +18,11 @@
 #' - Structural model parameters
 #' 4. Select columns for final tables.
 #'
-#'
 #' @param .df parameter estimates output from `defineParamTable` with modifications ready for formatting
 #' @param .select_cols columns to select for output. Default selects "type", "abb", "greek", "desc", "value", "ci", "shrinkage". To return all columns, specify "all" for .select_cols.
 #' @param .prse output pRSE. Default is FALSE.
-#' @param .digit set significant digits for output (optional)
-#' @param .maxex set maxex for computation (optional)
+#' @param .digit set significant digits for output (optional). Default is three digits.
+#' @param .maxex set maxex for computation (optional). Default is NULL.
 #'
 #' @example
 #' Using output from `defineParamTable` (defineOut),

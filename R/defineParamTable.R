@@ -32,21 +32,17 @@
 #' @seealso \link[mrgparamtab]{param_key}: Parameter key requirements
 #'
 #' @example
+#' paramPath <- system.file("model/nonmem/102", package = "mrgparamtab")
+#' paramModel <- bbr::read_model(system.file("model/nonmem/102", package = "mrgparamtab"))
+#' paramEst <- utils::read.csv(system.file("model/nonmem/param_est.csv", package = "mrgparamtab"))
 #'
+#' The following three commands should all render identical data.frames:
+#' defineParamTable(.estimates = paramPath, .key = paramKey, .ci = 95, .zscore = NULL)
+#' defineParamTable(.estimates = paramModel, .key = paramKey, .ci = 95, .zscore = NULL)
+#' defineParamTable(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
 #'
-#'paramPath <- system.file("model/nonmem/102", package = "mrgparamtab")
-#'paramModel <- bbr::read_model(system.file("model/nonmem/102", package = "mrgparamtab"))
-#'paramEst <- utils::read.csv(system.file("model/nonmem/param_est.csv", package = "mrgparamtab"))
-#'
-#'The following three `defineParamTable` commands should all render identical data.frames:
-#'
-#'defineParamTable(.estimates = paramPath, .key = paramKey, .ci = 95, .zscore = NULL)
-#'defineParamTable(.estimates = paramModel, .key = paramKey, .ci = 95, .zscore = NULL)
-#'defineParamTable(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
-#'
-#'To choose a confidence interval that is not 95 or 90, look up z-score and add as function parameter
-#'
-#'defineParamTable(.estimates = paramEst, .key = paramKey, .ci = 82, .zscore = 0.915)
+#' To choose a confidence interval that is not 95 or 90, look up z-score and add as function parameter
+#' defineParamTable(.estimates = paramEst, .key = paramKey, .ci = 82, .zscore = 0.915)
 #'
 #' @export
 defineParamTable <- function(.estimates, .key, .ci = 95, .zscore = NULL){

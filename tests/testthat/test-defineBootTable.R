@@ -27,21 +27,21 @@ test_that("defineBootTable expected output:  generates logical columns for trans
 })
 
 test_that("defineBootTable incorrect input type: no parameter_names column [MPT-DBT-002]",{
-  boot_param_est2 <- boot_param_est
-  colnames(boot_param_est2)[colnames(boot_param_est2) == "run"] ="no_name"
-  expect_error(capture.output(defineBootTable(boot_param_est2, paramKey)))
+  boot_paramEst2 <- boot_paramEst
+  colnames(boot_paramEst2)[colnames(boot_paramEst2) == "run"] ="no_name"
+  expect_error(capture.output(defineBootTable(boot_paramEst2, paramKey)))
 })
 
 test_that("defineBootTable incorrect input type: missing column(s) [MPT-DBT-002]",{
   paramKey2 <- as.data.frame(paramKey)
   colnames(paramKey2)[colnames(paramKey2) == "panel"] ="no_name"
-  expect_error(capture.output(defineBootTable(param_est, paramKey2)))
+  expect_error(capture.output(defineBootTable(paramEst, paramKey2)))
 })
 
 #boot estimates
 test_that("defineBootTable handles multiple estimate input types [MPT-DBT-003]", {
   skip_if_no_bbi("MPT-DPT-003")
-  pathnewbootDF <-defineBootTable(.boot_estimates =boot_param_est, .nonboot_estimates = nonboot_param_est, .key = paramKey)
+  pathnewbootDF <-defineBootTable(.boot_estimates =boot_paramEst, .nonboot_estimates = nonboot_paramEst, .key = paramKey)
   expect_equal(pathnewbootDF$estimate[pathnewbootDF$name == "OMEGA22"], 0.0821058)
 #
 #   mod_est <- bbr::read_model(system.file("model/nonmem/102", package = "mrgparamtab"))
@@ -58,8 +58,8 @@ test_that("defineBootTable handles multiple estimate input types [MPT-DBT-003]",
 
 test_that("defineBootTable handles multiple parameter key input types [MPT-DBT-004]", {
   skip_if_no_bbi("MPT-DPT-004")
-  pathDF <- defineBootTable(.boot_estimates =boot_param_est,
-                            .nonboot_estimates = nonboot_param_est,
+  pathDF <- defineBootTable(.boot_estimates =boot_paramEst,
+                            .nonboot_estimates = nonboot_paramEst,
                             .key = system.file("model/nonmem/pk-parameter-key-new.yaml", package = "mrgparamtab"))
   expect_equal(pathDF$estimate[pathDF$name == "OMEGA22"],  0.0821058)
 })
@@ -68,16 +68,16 @@ test_that("defineBootTable handles multiple parameter key input types [MPT-DBT-0
   skip_if_no_bbi("MPT-DPT-004")
   key_file <- system.file("model/nonmem/pk-parameter-key.yaml", package = "mrgparamtab")
   key_df <- pmtables::yaml_as_df(key_file)
-  pathDF <- defineBootTable(.boot_estimates =boot_param_est,
-                            .nonboot_estimates = nonboot_param_est,
+  pathDF <- defineBootTable(.boot_estimates =boot_paramEst,
+                            .nonboot_estimates = nonboot_paramEst,
                             .key = key_df)
   expect_equal(pathDF$estimate[pathDF$name == "OMEGA22"], 0.0821058)
 })
 
 test_that("defineBootTable incorrect parameter key input type: Only abb, desc, panel and trans arguments will be used, all others ignored [MPT-DBT-005]", {
   skip_if_no_bbi("MPT-DPT-005")
-  expect_warning(capture.output(defineBootTable(.boot_estimates =boot_param_est,
-                                                .nonboot_estimates = nonboot_param_est,
+  expect_warning(capture.output(defineBootTable(.boot_estimates =boot_paramEst,
+                                                .nonboot_estimates = nonboot_paramEst,
                                                 .key = system.file("model/nonmem/pk-parameter-key-both.yaml", package = "mrgparamtab"))))
 })
 
@@ -91,8 +91,8 @@ test_that("defineBootTable incorrect parameter key input type: Only abb, desc, p
 # })
 #
 # test_that("defineBootTable generates the confidence intervals for various inputs [MPT-DBT-006]", {
-#   newbootDF <-defineBootTable(.boot_estimates =boot_param_est, .nonboot_estimates = nonboot_param_est, .key = paramKey)
-#   nonboot_DF <- defineParamTable(.estimates = nonboot_param_est, .key = paramKey)
+#   newbootDF <-defineBootTable(.boot_estimates =boot_paramEst, .nonboot_estimates = nonboot_paramEst, .key = paramKey)
+#   nonboot_DF <- defineParamTable(.estimates = nonboot_paramEst, .key = paramKey)
 #   expect_equal(newbootDF$lower[1], 0.33047798)
 #   expect_equal(newbootDF_ci90$upper[2], 4.1640688)
 #   nonboot_DF$lower[1]
