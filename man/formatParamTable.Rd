@@ -15,13 +15,13 @@ formatParamTable(
 \arguments{
 \item{.df}{parameter estimates output from \code{defineParamTable} with modifications ready for formatting}
 
-\item{.select_cols}{columns to select for output. Default selects "type", "abb", "greek", "desc", "value", "ci", "shrinkage". To return all columns, specify "all" for .select_cols.}
+\item{.select_cols}{columns to select for output. Default selects "type", "abb", "greek", "desc", "value", "ci", "shrinkage". To return all columns, specify "all" for .select_cols}
 
-\item{.prse}{output pRSE. Default is FALSE.}
+\item{.prse}{output pRSE. Default is FALSE}
 
-\item{.digit}{set significant digits for output (optional)}
+\item{.digit}{set significant digits for output (optional). Default is three digits}
 
-\item{.maxex}{set maxex for computation (optional)}
+\item{.maxex}{set maxex for computation (optional). Default is NULL}
 }
 \description{
 Format parameter estimate values and output selected columns to be shown in
@@ -45,4 +45,14 @@ Panel types include:
 \enumerate{
 \item Select columns for final tables.
 }
+}
+\examples{
+
+Using output from `defineParamTable` (defineOut),
+
+formatParamTable(.df = defineOut)
+
+To include all columns:
+
+formatParamTable(.df = defineOut, .select_cols="all")
 }

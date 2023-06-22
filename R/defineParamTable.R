@@ -26,17 +26,18 @@
 #'
 #' @param .estimates path to model directory, bbr NONMEM model, or data.frame of parameter estimates
 #' @param .key path to parameter key or data.frame of parameter key
-#' @param .ci confidence interval (default 95%)
+#' @param .ci confidence interval. Default is 95
 #' @param .zscore z-score for the specified confidence interval. Only needed for confidence intervals that are NOT 90 or 95 percent
 #'
 #' @seealso \link[mrgparamtab]{param_key}: Parameter key requirements
 #'
-#' @example
+#' @examples
+#'
 #' paramPath <- system.file("model/nonmem/102", package = "mrgparamtab")
 #' paramModel <- bbr::read_model(system.file("model/nonmem/102", package = "mrgparamtab"))
 #' paramEst <- utils::read.csv(system.file("model/nonmem/param_est.csv", package = "mrgparamtab"))
 #'
-#' The following three commands should all render identical data.frames:
+#' The following three commands will render identical data.frames:
 #' defineParamTable(.estimates = paramPath, .key = paramKey, .ci = 95, .zscore = NULL)
 #' defineParamTable(.estimates = paramModel, .key = paramKey, .ci = 95, .zscore = NULL)
 #' defineParamTable(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)

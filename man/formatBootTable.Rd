@@ -16,13 +16,23 @@ formatBootTable(
 
 \item{.select_cols}{columns to select for output. Default selects "abb", "desc", "boot_value", "boot_ci". To return all columns, specify "all" for .select_cols.}
 
-\item{.digit}{set significant digits for output (optional)}
+\item{.digit}{set significant digits for output (optional). Default is three digits}
 
-\item{.maxex}{set maxex for computation (optional)}
+\item{.maxex}{set maxex for computation (optional). Default is NULL}
 }
 \description{
 Format bootstrap parameter estimate values and output selected columns to be shown in
 the bootstrap parameter table.
 
-Left join with data.frame with the formatted output of non-bootstrap parameter estimates
+Left join this output bootstrap data.frame with the formatted output of non-bootstrap parameter estimates
+}
+\examples{
+
+Using output from `defineBootTable` (defineBootOut),
+
+formatBootTable(.df = defineBootOut)
+
+To include all columns:
+
+formatBootTable(.df = defineBootOut, .select_cols="all")
 }

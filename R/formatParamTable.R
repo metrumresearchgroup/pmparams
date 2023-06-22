@@ -19,19 +19,20 @@
 #' 4. Select columns for final tables.
 #'
 #' @param .df parameter estimates output from `defineParamTable` with modifications ready for formatting
-#' @param .select_cols columns to select for output. Default selects "type", "abb", "greek", "desc", "value", "ci", "shrinkage". To return all columns, specify "all" for .select_cols.
-#' @param .prse output pRSE. Default is FALSE.
-#' @param .digit set significant digits for output (optional). Default is three digits.
-#' @param .maxex set maxex for computation (optional). Default is NULL.
+#' @param .select_cols columns to select for output. Default selects "type", "abb", "greek", "desc", "value", "ci", "shrinkage". To return all columns, specify "all" for .select_cols
+#' @param .prse output pRSE. Default is FALSE
+#' @param .digit set significant digits for output (optional). Default is three digits
+#' @param .maxex set maxex for computation (optional). Default is NULL
 #'
-#' @example
+#' @examples
+#'
 #' Using output from `defineParamTable` (defineOut),
 #'
-#'formatParamTable(.df = defineOut)
+#' formatParamTable(.df = defineOut)
 #'
-#'To include all columns:
+#' To include all columns:
 #'
-#'formatParamTable(.df = defineOut, .select_cols="all")
+#' formatParamTable(.df = defineOut, .select_cols="all")
 #' @export
 formatParamTable <- function(.df,
                              .select_cols = c("type", "abb", "greek", "desc", "value", "ci", "shrinkage"),

@@ -7,11 +7,11 @@
 defineBootTable(.boot_estimates, .nonboot_estimates, .key)
 }
 \arguments{
-\item{.boot_estimates}{parameter boot estimates data.frame- maybe add additional input options}
+\item{.boot_estimates}{parameter boot estimates- either path to file or data.frame}
 
-\item{.nonboot_estimates}{non-bootstrap final model - either path to file or model_summary}
+\item{.nonboot_estimates}{non-bootstrap final model - either path to file or bbr model_summary}
 
-\item{.key}{parameter key}
+\item{.key}{parameter key- either path to file or data.frame}
 }
 \description{
 Combines boot strap estimates and non boot strap estimates with information in parameter key. Performs
@@ -41,6 +41,16 @@ Expected input is a data.frame with parameter estimates, with the columns:
 With this information provided, a check is performed to determine whether parameters
 with special transformation rules were defined correctly. In addition, a series of
 TRUE/FALSE columns that will be used by subsequent functions.
+}
+\examples{
+
+boot_paramEstPath <- system.file("model/nonmem/boot/data/boot-106.csv", package = "mrgparamtab")
+nonboot_paramEstPath <- system.file("model/nonmem/106", package = "mrgparamtab")
+
+defineBootTable(.boot_estimates = boot_paramEstPath,
+               .nonboot_estimates = nonboot_paramEstPath,
+               .key = paramKey)
+
 }
 \seealso{
 \link[mrgparamtab]{param_key}: Parameter key requirements

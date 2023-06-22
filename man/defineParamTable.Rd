@@ -11,7 +11,7 @@ defineParamTable(.estimates, .key, .ci = 95, .zscore = NULL)
 
 \item{.key}{path to parameter key or data.frame of parameter key}
 
-\item{.ci}{confidence interval (default 95\%)}
+\item{.ci}{confidence interval. Default is 95}
 
 \item{.zscore}{z-score for the specified confidence interval. Only needed for confidence intervals that are NOT 90 or 95 percent}
 }
@@ -37,6 +37,21 @@ This join adds the following columns: \code{abb} (abbreviation), \code{desc} (pa
 With this information provided, a check is performed to determine whether parameters
 with special transformation rules were defined correctly. In addition, a series of
 TRUE/FALSE columns that will be used by subsequent functions.
+}
+\examples{
+
+paramPath <- system.file("model/nonmem/102", package = "mrgparamtab")
+paramModel <- bbr::read_model(system.file("model/nonmem/102", package = "mrgparamtab"))
+paramEst <- utils::read.csv(system.file("model/nonmem/param_est.csv", package = "mrgparamtab"))
+
+The following three commands will render identical data.frames:
+defineParamTable(.estimates = paramPath, .key = paramKey, .ci = 95, .zscore = NULL)
+defineParamTable(.estimates = paramModel, .key = paramKey, .ci = 95, .zscore = NULL)
+defineParamTable(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
+
+To choose a confidence interval that is not 95 or 90, look up z-score and add as function parameter
+defineParamTable(.estimates = paramEst, .key = paramKey, .ci = 82, .zscore = 0.915)
+
 }
 \seealso{
 \link[mrgparamtab]{param_key}: Parameter key requirements

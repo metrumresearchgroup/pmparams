@@ -38,21 +38,17 @@ test_that("defineBootTable incorrect input type: missing column(s) [MPT-DBT-002]
   expect_error(capture.output(defineBootTable(paramEst, paramKey2)))
 })
 
-#boot estimates
 test_that("defineBootTable handles multiple estimate input types [MPT-DBT-003]", {
   skip_if_no_bbi("MPT-DPT-003")
   pathnewbootDF <-defineBootTable(.boot_estimates =boot_paramEst, .nonboot_estimates = nonboot_paramEst, .key = paramKey)
   expect_equal(pathnewbootDF$estimate[pathnewbootDF$name == "OMEGA22"], 0.0821058)
-#
-#   mod_est <- bbr::read_model(system.file("model/nonmem/102", package = "mrgparamtab"))
-#   pathDF2 <- defineBootTable(.boot_estimates = mod_est, .nonboot_estimates = mod_est, .key = paramKey)
-#   expect_equal(pathDF2$estimate[pathDF2$name == "OMEGA22"], 0.0826922)
-#
-#   pathDF3 <- defineBootTable(.boot_estimates =param_model, .nonboot_estimates = param_model, .key = paramKey)
-#   expect_equal(pathDF3$estimate[pathDF3$name == "OMEGA22"], 0.0826922)
-#
-#   pathDF4 <- defineBootTable(param_model %>% bbr::model_summary(), paramKey)
-#   expect_equal(pathDF4$estimate[pathDF4$name == "OMEGA22"], 0.0826922)
+
+  mod_est <- bbr::read_model(system.file("model/nonmem/106", package = "mrgparamtab"))
+  pathDF2 <- defineBootTable(.boot_estimates = boot_paramEstPath, .nonboot_estimates = nonboot_paramEstPath, .key = paramKey)
+  expect_equal(pathDF2$estimate[pathDF2$name == "OMEGA22"], 0.0821058)
+
+  pathDF3 <- defineBootTable(.boot_estimates =boot_paramEst, .nonboot_estimates = mod_est, .key = paramKey)
+  expect_equal(pathDF3$estimate[pathDF3$name == "OMEGA22"], 0.0821058)
 
 })
 
@@ -81,23 +77,15 @@ test_that("defineBootTable incorrect parameter key input type: Only abb, desc, p
                                                 .key = system.file("model/nonmem/pk-parameter-key-both.yaml", package = "mrgparamtab"))))
 })
 
-#for boot, estimates do not equal values////
+# #for boot, estimates do not equal values////
 # test_that("defineBootTable generates correct corr_SD [MPT-DBT-005]", {
 #   expect_true(all(newbootDF$estimate == newbootDF$value))
-#   expect_true(all(newbootDF$stderr == newbootDF$se))
-#   expect_true(newDF$corr_SD[7] == "0.511")
-#   expect_true(newDF$corr_SD[1] == "-")
-#   expect_true(newDF$corr_SD[6] == "-")
 # })
-#
-# test_that("defineBootTable generates the confidence intervals for various inputs [MPT-DBT-006]", {
-#   newbootDF <-defineBootTable(.boot_estimates =boot_paramEst, .nonboot_estimates = nonboot_paramEst, .key = paramKey)
-#   nonboot_DF <- defineParamTable(.estimates = nonboot_paramEst, .key = paramKey)
-#   expect_equal(newbootDF$lower[1], 0.33047798)
-#   expect_equal(newbootDF_ci90$upper[2], 4.1640688)
-#   nonboot_DF$lower[1]
-#   expect_equal(newbootDF_ci95$lower[4], 4.1721829)
-#   expect_equal(newbootDF_ci95$upper[7], 0.108133732)
-# })
+
+test_that("defineBootTable generates the confidence intervals for various inputs [MPT-DBT-006]", {
+  newbootDF <-defineBootTable(.boot_estimates =boot_paramEst, .nonboot_estimates = nonboot_paramEst, .key = paramKey)
+  expect_equal(newbootDF$lower[1], 1.3880675)
+  expect_equal(newbootDF$upper[2], 65.053174)
+})
 
 

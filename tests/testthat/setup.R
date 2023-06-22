@@ -40,7 +40,7 @@ paramModel <- bbr::read_model(system.file("model/nonmem/102", package = "mrgpara
 newDF <- defineParamTable(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
 
 #Data for testing boot param table
-boot_paraEstPath <- system.file("model/nonmem/boot/data/boot-106.csv", package = "mrgparamtab")
+boot_paramEstPath <- system.file("model/nonmem/boot/data/boot-106.csv", package = "mrgparamtab")
 boot_paramEst <- utils::read.csv(system.file("model/nonmem/boot/data/boot-106.csv", package = "mrgparamtab"))
 
 nonboot_paramEstPath <- system.file("model/nonmem/106", package = "mrgparamtab")

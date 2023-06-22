@@ -28,9 +28,18 @@
 #' with special transformation rules were defined correctly. In addition, a series of
 #' TRUE/FALSE columns that will be used by subsequent functions.
 #'
-#' @param .boot_estimates parameter boot estimates data.frame- maybe add additional input options
-#' @param .nonboot_estimates non-bootstrap final model - either path to file or model_summary
-#' @param .key parameter key
+#' @param .boot_estimates parameter boot estimates- either path to file or data.frame
+#' @param .nonboot_estimates non-bootstrap final model - either path to file or bbr model_summary
+#' @param .key parameter key- either path to file or data.frame
+#'
+#' @examples
+#'
+#' boot_paramEstPath <- system.file("model/nonmem/boot/data/boot-106.csv", package = "mrgparamtab")
+#' nonboot_paramEstPath <- system.file("model/nonmem/106", package = "mrgparamtab")
+#'
+#' defineBootTable(.boot_estimates = boot_paramEstPath,
+#'                .nonboot_estimates = nonboot_paramEstPath,
+#'                .key = paramKey)
 #'
 #' @seealso \link[mrgparamtab]{param_key}: Parameter key requirements
 #' @export
@@ -48,15 +57,16 @@ defineBootTable <- function(.boot_estimates, .nonboot_estimates, .key){
   .key <- loadParamKey(.key)
 
 
-  #path to nonboot estimates
-  if(inherits(.nonboot_estimates, "character")){
-    .nonboot_estimates <- bbr::read_model(here::here(.nonboot_estimates)) %>%
-      bbr::model_summary() %>%
-      bbr::param_estimates()
-  #data.frame of nonboot estimates
-  } else {
-    .nonboot_estimates <- .nonboot_estimates
-  }
+  .nonboot_estimates <- loadParamEstimates(.nonboot_estimates)
+  # #path to nonboot estimates
+  # if(inherits(.nonboot_estimates, "character")){
+  #   .nonboot_estimates <- bbr::read_model(here::here(.nonboot_estimates)) %>%
+  #     bbr::model_summary() %>%
+  #     bbr::param_estimates()
+  # #data.frame of nonboot estimates
+  # } else {
+  #   .nonboot_estimates <- .nonboot_estimates
+  # }
 
 #clean up boot
 .bootParam = .boot %>%
@@ -65,7 +75,7 @@ defineBootTable <- function(.boot_estimates, .nonboot_estimates, .key){
     dplyr::mutate(name = gsub("[[:punct:]]", "", parameter_names)) %>%
     dplyr::inner_join(.key, by = "name")
 
-#join with key
+#join with nonboot estimates
 .boot_df <- .bootParam %>%
   dplyr::left_join(.nonboot_estimates %>%
                 dplyr::mutate(name = gsub("[[:punct:]]", "", parameter_names)) %>%
@@ -78,6 +88,5 @@ defineBootTable <- function(.boot_estimates, .nonboot_estimates, .key){
   backTrans_logit()
 
 .boot_df
-#return(.boot_df)
 
 }
