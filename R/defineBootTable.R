@@ -34,12 +34,14 @@
 #'
 #' @examples
 #'
-#' boot_paramEstPath <- system.file("model/nonmem/boot/data/boot-106.csv", package = "mrgparamtab")
-#' nonboot_paramEstPath <- system.file("model/nonmem/106", package = "mrgparamtab")
+#' boot_paramEst <- utils::read.csv(system.file("model/nonmem/boot/data/boot-106.csv",
+#'                                  package = "mrgparamtab"))
+#' nonboot_paramEst <- utils::read.csv(system.file("model/nonmem/nonboot_param_est.csv",
+#'                                     package = "mrgparamtab"))
 #' paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "mrgparamtab")
 #'
-#' defineBootTable(.boot_estimates = boot_paramEstPath,
-#'                .nonboot_estimates = nonboot_paramEstPath,
+#' defineBootTable(.boot_estimates = boot_paramEst,
+#'                .nonboot_estimates = nonboot_paramEst,
 #'                .key = paramKey)
 #'
 #' @seealso \link[mrgparamtab]{param_key}: Parameter key requirements
