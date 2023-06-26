@@ -46,6 +46,7 @@ TRUE/FALSE columns that will be used by subsequent functions.
 
 boot_paramEstPath <- system.file("model/nonmem/boot/data/boot-106.csv", package = "mrgparamtab")
 nonboot_paramEstPath <- system.file("model/nonmem/106", package = "mrgparamtab")
+paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "mrgparamtab")
 
 defineBootTable(.boot_estimates = boot_paramEstPath,
                .nonboot_estimates = nonboot_paramEstPath,

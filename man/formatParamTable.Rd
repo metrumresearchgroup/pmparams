@@ -48,11 +48,14 @@ Panel types include:
 }
 \examples{
 
-Using output from `defineParamTable` (defineOut),
+#Using output from `defineParamTable` (defineOut),
+paramEst <- utils::read.csv(system.file("model/nonmem/param_est.csv", package = "mrgparamtab"))
+paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "mrgparamtab")
+defineOut <- defineParamTable(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
 
 formatParamTable(.df = defineOut)
 
-To include all columns:
+#To include all columns:
 
 formatParamTable(.df = defineOut, .select_cols="all")
 }

@@ -43,13 +43,14 @@ TRUE/FALSE columns that will be used by subsequent functions.
 paramPath <- system.file("model/nonmem/102", package = "mrgparamtab")
 paramModel <- bbr::read_model(system.file("model/nonmem/102", package = "mrgparamtab"))
 paramEst <- utils::read.csv(system.file("model/nonmem/param_est.csv", package = "mrgparamtab"))
+paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "mrgparamtab")
 
-The following three commands will render identical data.frames:
+#The following three commands will render identical data.frames:
 defineParamTable(.estimates = paramPath, .key = paramKey, .ci = 95, .zscore = NULL)
 defineParamTable(.estimates = paramModel, .key = paramKey, .ci = 95, .zscore = NULL)
 defineParamTable(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
 
-To choose a confidence interval that is not 95 or 90, look up z-score and add as function parameter
+#To choose a confidence interval that is not 95 or 90, look up z-score and add as function parameter
 defineParamTable(.estimates = paramEst, .key = paramKey, .ci = 82, .zscore = 0.915)
 
 }
