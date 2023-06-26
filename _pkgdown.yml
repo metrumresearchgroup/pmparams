@@ -1,0 +1,18 @@
+url: ~
+title: mrgparamtab
+template:
+  params:
+    bootswatch: flatly
+reference:
+  - title: Create parameter key
+    desc: Requirements for parameter key
+    contents:
+    - param_key
+  - title: Define parameter table
+    desc: Combines model output parameter estimates with information in parameter key. Performs some formatting of this combined data.frame.
+    contents:
+    - defineParamTable
+  - title: Format parameter table
+    desc: Estimate values and output selected columns to be shown in the parameter table.
+    contents:
+    - formatParamTable
