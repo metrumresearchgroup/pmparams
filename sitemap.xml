@@ -10,6 +10,9 @@
     <loc>/index.html</loc>
   </url>
   <url>
+    <loc>/news/index.html</loc>
+  </url>
+  <url>
     <loc>/reference/asNum.html</loc>
   </url>
   <url>
@@ -22,10 +25,16 @@
     <loc>/reference/checkTransforms.html</loc>
   </url>
   <url>
+    <loc>/reference/defineBootTable.html</loc>
+  </url>
+  <url>
     <loc>/reference/defineParamTable.html</loc>
   </url>
   <url>
     <loc>/reference/defineRows.html</loc>
+  </url>
+  <url>
+    <loc>/reference/formatBootTable.html</loc>
   </url>
   <url>
     <loc>/reference/formatGreekNames.html</loc>
@@ -35,6 +44,9 @@
   </url>
   <url>
     <loc>/reference/formatValues.html</loc>
+  </url>
+  <url>
+    <loc>/reference/formatValuesBoot.html</loc>
   </url>
   <url>
     <loc>/reference/getCI.html</loc>
@@ -62,6 +74,12 @@
   </url>
   <url>
     <loc>/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>/reference/loadParamEstimates.html</loc>
+  </url>
+  <url>
+    <loc>/reference/loadParamKey.html</loc>
   </url>
   <url>
     <loc>/reference/lowerCI.html</loc>

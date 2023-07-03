@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>R package for parameter tables • mrgparamtab</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -22,7 +22,7 @@
     
 
     <div class="container template-home">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
@@ -42,8 +42,18 @@
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
+<li>
+  <a href="news/index.html">Changelog</a>
+</li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://ghe.metrumrg.com/software-incubator/mrgparamtab" class="external-link">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -55,10 +65,43 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div class="section level1">
-<div class="page-header"><h1 id="mrgparamtab">mrgparamtab<a class="anchor" aria-label="anchor" href="#mrgparamtab"></a>
-</h1></div>
+
+<div class="section level2">
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h2>
+<p>mrgparamtab helps define and format parameter tables.</p>
+<p>An example parameter table script highlighting <code>mrgparamtab</code> functions to create a parameter table can be found <a href="https://github.com/metrumresearchgroup/expo1-nonmem-foce/blob/main/script/pk-final-model-table.R" class="external-link">here</a>.</p>
+<p>An example parameter table script highlighting <code>mrgparamtab</code> functions to create a bootstrap parameter table can be found <a href="https://github.com/metrumresearchgroup/expo1-nonmem-foce/blob/main/script/pk-final-model-table-boot.R" class="external-link">here</a>.</p>
 </div>
+<div class="section level2">
+<h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
+</h2>
+<p>Public documentation of all functions is hosted at <a href="https://metrumresearchgroup.github.io/mrgparamtab/" class="external-link uri">https://metrumresearchgroup.github.io/mrgparamtab/</a></p>
+</div>
+<div class="section level2">
+<h2 id="development">Development<a class="anchor" aria-label="anchor" href="#development"></a>
+</h2>
+<p><code>mrgparamtab</code> uses <a href="https://github.com/metrumresearchgroup/pkgr" class="external-link">pkgr</a> to manage development dependencies and <a href="https://rstudio.github.io/renv/" class="external-link">renv</a> to provide isolation. To replicate this environment,</p>
+<ol style="list-style-type: decimal">
+<li><p>clone the repo</p></li>
+<li><p>install pkgr</p></li>
+<li>
+<p>open package in an R session and run <code>renv::init(bare = TRUE)</code></p>
+<ul>
+<li>install <code>renv</code> &gt; 0.8.3-4 into default <code><a href="https://rdrr.io/r/base/libPaths.html" class="external-link">.libPaths()</a></code> if not already installed</li>
+</ul>
+</li>
+<li><p>run <code>pkgr install</code> in terminal within package directory</p></li>
+<li><p>restart session</p></li>
+</ol>
+<p>Then, launch R with the repo as the working directory (open the project in RStudio). renv will activate and find the project library.</p>
+</div>
+<div class="section level2">
+<h2 id="getting-help">Getting help<a class="anchor" aria-label="anchor" href="#getting-help"></a>
+</h2>
+<p>If you encounter a clear bug, please file an issue with a minimal reproducible example on <a href="https://github.com/mrgparamtab/issues" class="external-link">mrgparamtab</a>.</p>
+</div>
+
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
