@@ -25,28 +25,28 @@
     <loc>/reference/checkTransforms.html</loc>
   </url>
   <url>
-    <loc>/reference/defineBootTable.html</loc>
-  </url>
-  <url>
-    <loc>/reference/defineParamTable.html</loc>
-  </url>
-  <url>
     <loc>/reference/defineRows.html</loc>
   </url>
   <url>
-    <loc>/reference/formatBootTable.html</loc>
+    <loc>/reference/define_boot_table.html</loc>
+  </url>
+  <url>
+    <loc>/reference/define_param_table.html</loc>
   </url>
   <url>
     <loc>/reference/formatGreekNames.html</loc>
-  </url>
-  <url>
-    <loc>/reference/formatParamTable.html</loc>
   </url>
   <url>
     <loc>/reference/formatValues.html</loc>
   </url>
   <url>
     <loc>/reference/formatValuesBoot.html</loc>
+  </url>
+  <url>
+    <loc>/reference/format_boot_table.html</loc>
+  </url>
+  <url>
+    <loc>/reference/format_param_table.html</loc>
   </url>
   <url>
     <loc>/reference/getCI.html</loc>
