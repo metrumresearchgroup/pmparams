@@ -40,13 +40,13 @@
 #'                                     package = "mrgparamtab"))
 #' paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "mrgparamtab")
 #'
-#' defineBootTable(.boot_estimates = boot_paramEst,
+#' define_boot_table(.boot_estimates = boot_paramEst,
 #'                .nonboot_estimates = nonboot_paramEst,
 #'                .key = paramKey)
 #'
 #' @seealso \link[mrgparamtab]{param_key}: Parameter key requirements
 #' @export
-defineBootTable <- function(.boot_estimates, .nonboot_estimates, .key){
+define_boot_table <- function(.boot_estimates, .nonboot_estimates, .key){
 
   #path to boot estimates
   if (inherits(.boot_estimates, "character")){

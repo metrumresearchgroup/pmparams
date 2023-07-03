@@ -16,16 +16,16 @@ reference:
   - title: Define parameter table
     desc: Combine model output parameter estimates with information in parameter key. Perform some formatting of this combined data.frame.
     contents:
-    - defineParamTable
+    - define_param_table
   - title: Format parameter table
     desc: Estimate values and output selected columns to be shown in the parameter table.
     contents:
-    - formatParamTable
+    - format_param_table
   - title: Define boot parameter table
     desc: Combine bootstrap estimates with non-bootstrap estimates and parameter key. Perform some formatting of this combined data.frame.
     contents:
-    - defineBootTable
+    - define_boot_table
   - title: Format boot parameter table
     desc: Format bootstrap parameter estimate values and output selected columns to be shown in the bootstrap parameter table.
     contents:
-    - formatBootTable
+    - format_boot_table

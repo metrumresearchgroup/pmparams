@@ -67,12 +67,12 @@ GPN-R006:
   tests:
   - MPT-GPN-006
 DPT-R001:
-  description: defineParamTable combines model output parameter estimates with information in parameter key
+  description: define_param_table combines model output parameter estimates with information in parameter key
   tests:
   - MPT-DPT-001
   - MPT-DPT-002
 DPT-R002:
-  description: defineParamTable allows a variety of input types for the parameter estimates and parameter key
+  description: define_param_table allows a variety of input types for the parameter estimates and parameter key
   tests:
   - MPT-DPT-003
   - MPT-DPT-004
@@ -102,7 +102,7 @@ GRS-R002:
   -MPT-GRS-002
   -MPT-GRS-003
 FPT-R001:
-  description: formatParamTable creates final table with specified column outputs
+  description: format_param_table creates final table with specified column outputs
   tests:
   -MPT-FPT-001
   -MPT-FPT-002
@@ -125,19 +125,19 @@ RPC-001:
   tests:
   -MPT-RPC-001
 DBT-R001:
-  description: defineBootTable combines boot parameter estimates with information in parameter key
+  description: define_boot_table combines boot parameter estimates with information in parameter key
   tests:
   - MPT-DBT-001
   - MPT-DBT-002
 DBT-R002:
-  description: defineBootTable allows a variety of input types for the boot estimates, parameter estimates, and parameter key
+  description: define_boot_table allows a variety of input types for the boot estimates, parameter estimates, and parameter key
   tests:
   - MPT-DBT-003
   - MPT-DBT-004
   - MPT-DBT-005
   - MPT-DBT-006
 FBT-R001:
-  description: formatBootTable creates final table with specified column outputs
+  description: format_boot_table creates final table with specified column outputs
   tests:
   -MPT-FPT-001
   -MPT-FPT-002

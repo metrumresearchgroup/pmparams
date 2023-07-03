@@ -18,7 +18,7 @@
 #' - Structural model parameters
 #' 4. Select columns for final tables.
 #'
-#' @param .df parameter estimates output from `defineParamTable` with modifications ready for formatting
+#' @param .df parameter estimates output from `define_param_table` with modifications ready for formatting
 #' @param .select_cols columns to select for output. Default selects "type", "abb", "greek", "desc", "value", "ci", "shrinkage". To return all columns, specify "all" for .select_cols
 #' @param .prse output pRSE. Default is FALSE
 #' @param .digit set significant digits for output (optional). Default is three digits
@@ -26,18 +26,18 @@
 #'
 #' @examples
 #'
-#' #Using output from `defineParamTable` (defineOut),
+#' #Using output from `define_param_table` (defineOut),
 #' paramEst <- utils::read.csv(system.file("model/nonmem/param_est.csv", package = "mrgparamtab"))
 #' paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "mrgparamtab")
-#' defineOut <- defineParamTable(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
+#' defineOut <- define_param_table(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
 #'
-#' formatParamTable(.df = defineOut)
+#' format_param_table(.df = defineOut)
 #'
 #' #To include all columns:
 #'
-#' formatParamTable(.df = defineOut, .select_cols="all")
+#' format_param_table(.df = defineOut, .select_cols="all")
 #' @export
-formatParamTable <- function(.df,
+format_param_table <- function(.df,
                              .select_cols = c("type", "abb", "greek", "desc", "value", "ci", "shrinkage"),
                              .prse = FALSE,
                              .digit = getOption("mrgparamtab.dig"),

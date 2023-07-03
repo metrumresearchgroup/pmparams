@@ -37,7 +37,7 @@ paramPath <- system.file("model/nonmem/102", package = "mrgparamtab")
 paramEst <- utils::read.csv(system.file("model/nonmem/param_est.csv", package = "mrgparamtab"))
 paramModel <- bbr::read_model(system.file("model/nonmem/102", package = "mrgparamtab"))
 
-newDF <- defineParamTable(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
+newDF <- define_param_table(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
 
 #Data for testing boot param table
 boot_paramEstPath <- system.file("model/nonmem/boot/data/boot-106.csv", package = "mrgparamtab")
@@ -46,12 +46,12 @@ boot_paramEst <- utils::read.csv(system.file("model/nonmem/boot/data/boot-106.cs
 nonboot_paramEstPath <- system.file("model/nonmem/106", package = "mrgparamtab")
 nonboot_paramEst <- utils::read.csv(system.file("model/nonmem/nonboot_param_est.csv", package = "mrgparamtab"))
 
-newbootDF <- mrgparamtab::defineBootTable(.boot_estimates =boot_paramEst, .nonboot_estimates = nonboot_paramEst, .key = paramKey)
-formatBootDF <- mrgparamtab::formatBootTable(.boot_df = newbootDF)
+newbootDF <- mrgparamtab::define_boot_table(.boot_estimates =boot_paramEst, .nonboot_estimates = nonboot_paramEst, .key = paramKey)
+formatBootDF <- mrgparamtab::format_boot_table(.boot_df = newbootDF)
 
 #final output
-nonbootDF <- mrgparamtab::defineParamTable(.estimates = nonboot_paramEst, .key = paramKey)
-formatnonbootDF <- nonbootDF %>% mrgparamtab::formatParamTable()
+nonbootDF <- mrgparamtab::define_param_table(.estimates = nonboot_paramEst, .key = paramKey)
+formatnonbootDF <- nonbootDF %>% mrgparamtab::format_param_table()
 
 
 bootParam <-  left_join(formatnonbootDF, formatBootDF, by = c("abb", "desc"))
