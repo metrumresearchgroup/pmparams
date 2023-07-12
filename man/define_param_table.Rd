@@ -40,8 +40,8 @@ TRUE/FALSE columns that will be used by subsequent functions.
 }
 \examples{
 
-paramEst <- utils::read.csv(system.file("model/nonmem/param_est.csv", package = "mrgparamtab"))
-paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "mrgparamtab")
+paramEst <- utils::read.csv(system.file("model/nonmem/param_est.csv", package = "pmparams"))
+paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
 
 define_param_table(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
 
@@ -50,5 +50,5 @@ define_param_table(.estimates = paramEst, .key = paramKey, .ci = 82, .zscore = 0
 
 }
 \seealso{
-\link[mrgparamtab]{param_key}: Parameter key requirements
+\link[pmparams]{param_key}: Parameter key requirements
 }

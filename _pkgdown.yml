@@ -1,5 +1,5 @@
 url: ~
-title: mrgparamtab
+title: pmparams
 template:
   params:
     bootswatch: flatly
@@ -7,7 +7,7 @@ navbar:
   type: inverse
   right:
   - icon: fa-github fa-lg
-    href: https://ghe.metrumrg.com/software-incubator/mrgparamtab
+    href: https://ghe.metrumrg.com/software-incubator/pmparams
 reference:
   - title: Create parameter key
     desc: Requirements for parameter key

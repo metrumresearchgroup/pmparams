@@ -3,24 +3,24 @@
 
 ## Overview
 
-mrgparamtab helps define and format parameter tables.
+pmparams helps define and format parameter tables.
 
-An example parameter table script highlighting `mrgparamtab` functions
+An example parameter table script highlighting `pmparams` functions
 to create a parameter table can be found
 [here](https://github.com/metrumresearchgroup/expo1-nonmem-foce/blob/main/script/pk-final-model-table.R).
 
-An example parameter table script highlighting `mrgparamtab` functions
+An example parameter table script highlighting `pmparams` functions
 to create a bootstrap parameter table can be found
 [here](https://github.com/metrumresearchgroup/expo1-nonmem-foce/blob/main/script/pk-final-model-table-boot.R).
 
 ## Documentation
 
 Public documentation of all functions is hosted at
-<https://metrumresearchgroup.github.io/mrgparamtab/>
+<https://metrumresearchgroup.github.io/pmparams/>
 
 ## Development
 
-`mrgparamtab` uses [pkgr](https://github.com/metrumresearchgroup/pkgr)
+`pmparams` uses [pkgr](https://github.com/metrumresearchgroup/pkgr)
 to manage development dependencies and
 [renv](https://rstudio.github.io/renv/) to provide isolation. To
 replicate this environment,
@@ -45,4 +45,4 @@ in RStudio). renv will activate and find the project library.
 
 If you encounter a clear bug, please file an issue with a minimal
 reproducible example on
-[mrgparamtab](https://github.com/mrgparamtab/issues).
+[pmparams](https://github.com/pmparams/issues).

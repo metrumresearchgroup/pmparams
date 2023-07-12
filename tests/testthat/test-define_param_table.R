@@ -42,7 +42,7 @@ test_that("define_param_table handles multiple estimate input types [MPT-DPT-003
   pathDF <- define_param_table(paramPath, paramKey)
   expect_equal(pathDF$estimate[pathDF$name == "OMEGA22"], 0.0826922)
 
-  mod_est <- bbr::read_model(system.file("model/nonmem/102", package = "mrgparamtab"))
+  mod_est <- bbr::read_model(system.file("model/nonmem/102", package = "pmparams"))
   pathDF2 <- define_param_table(mod_est, paramKey)
   expect_equal(pathDF2$estimate[pathDF2$name == "OMEGA22"], 0.0826922)
 
@@ -56,13 +56,13 @@ test_that("define_param_table handles multiple estimate input types [MPT-DPT-003
 
 test_that("define_param_table handles multiple parameter key input types [MPT-DPT-004]", {
   skip_if_no_bbi("MPT-DPT-004")
-  pathDF <- define_param_table(paramPath, system.file("model/nonmem/pk-parameter-key-new.yaml", package = "mrgparamtab"))
+  pathDF <- define_param_table(paramPath, system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams"))
   expect_equal(pathDF$estimate[pathDF$name == "OMEGA22"], 0.0826922)
 })
 
 test_that("define_param_table handles multiple parameter key input types [MPT-DPT-004]", {
   skip_if_no_bbi("MPT-DPT-004")
-  key_file <- system.file("model/nonmem/pk-parameter-key.yaml", package = "mrgparamtab")
+  key_file <- system.file("model/nonmem/pk-parameter-key.yaml", package = "pmparams")
   key_df <- pmtables::yaml_as_df(key_file)
   pathDF <- define_param_table(paramPath, key_df)
   expect_equal(pathDF$estimate[pathDF$name == "OMEGA22"], 0.0826922)
@@ -70,7 +70,7 @@ test_that("define_param_table handles multiple parameter key input types [MPT-DP
 
 test_that("define_param_table incorrect parameter key input type: Only abb, desc, panel and trans arguments will be used, all others ignored [MPT-DPT-005]", {
   skip_if_no_bbi("MPT-DPT-005")
-  expect_warning(capture.output(define_param_table(paramPath, system.file("model/nonmem/pk-parameter-key-both.yaml", package = "mrgparamtab"))))
+  expect_warning(capture.output(define_param_table(paramPath, system.file("model/nonmem/pk-parameter-key-both.yaml", package = "pmparams"))))
 })
 
 test_that("define_param_table generates correct corr_SD [MPT-DPT-005]", {

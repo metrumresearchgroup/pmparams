@@ -43,7 +43,7 @@ test_that("define_boot_table handles multiple estimate input types [MPT-DBT-003]
   pathnewbootDF <-define_boot_table(.boot_estimates =boot_paramEst, .nonboot_estimates = nonboot_paramEst, .key = paramKey)
   expect_equal(pathnewbootDF$estimate[pathnewbootDF$name == "OMEGA22"], 0.0821058)
 
-  mod_est <- bbr::read_model(system.file("model/nonmem/106", package = "mrgparamtab"))
+  mod_est <- bbr::read_model(system.file("model/nonmem/106", package = "pmparams"))
   pathDF2 <- define_boot_table(.boot_estimates = boot_paramEstPath, .nonboot_estimates = nonboot_paramEstPath, .key = paramKey)
   expect_equal(pathDF2$estimate[pathDF2$name == "OMEGA22"], 0.0821058)
 
@@ -56,13 +56,13 @@ test_that("define_boot_table handles multiple parameter key input types [MPT-DBT
   skip_if_no_bbi("MPT-DPT-004")
   pathDF <- define_boot_table(.boot_estimates =boot_paramEst,
                             .nonboot_estimates = nonboot_paramEst,
-                            .key = system.file("model/nonmem/pk-parameter-key-new.yaml", package = "mrgparamtab"))
+                            .key = system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams"))
   expect_equal(pathDF$estimate[pathDF$name == "OMEGA22"],  0.0821058)
 })
 
 test_that("define_boot_table handles multiple parameter key input types [MPT-DBT-004]", {
   skip_if_no_bbi("MPT-DPT-004")
-  key_file <- system.file("model/nonmem/pk-parameter-key.yaml", package = "mrgparamtab")
+  key_file <- system.file("model/nonmem/pk-parameter-key.yaml", package = "pmparams")
   key_df <- pmtables::yaml_as_df(key_file)
   pathDF <- define_boot_table(.boot_estimates =boot_paramEst,
                             .nonboot_estimates = nonboot_paramEst,
@@ -74,7 +74,7 @@ test_that("define_boot_table incorrect parameter key input type: Only abb, desc,
   skip_if_no_bbi("MPT-DPT-005")
   expect_warning(capture.output(define_boot_table(.boot_estimates =boot_paramEst,
                                                 .nonboot_estimates = nonboot_paramEst,
-                                                .key = system.file("model/nonmem/pk-parameter-key-both.yaml", package = "mrgparamtab"))))
+                                                .key = system.file("model/nonmem/pk-parameter-key-both.yaml", package = "pmparams"))))
 })
 
 # #for boot, estimates do not equal values////

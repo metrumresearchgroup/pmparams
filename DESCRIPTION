@@ -1,4 +1,4 @@
-Package: mrgparamtab
+Package: pmparams
 Title: R package for parameter tables
 Version: 0.0.0.9000
 Authors@R: 
@@ -18,7 +18,7 @@ Authors@R:
              family = "O'Brien",
              role = c("aut"),
              email = "graceo@metrumrg.com"))
-Description: `mrgparamtab` is a library written in R that generates clear, well-formatted parameter tables to report NONMEM model results.
+Description: `pmparams` is a library written in R that generates clear, well-formatted parameter tables to report NONMEM model results.
 Imports:
     bbr,
     dplyr (>= 0.5.0),

@@ -17,8 +17,8 @@
 #'
 #' @keywords internal
 getpRSE <- function(.df, .value = "value", .se = "se", ...,
-                    .digit = getOption("mrgparamtab.dig"),
-                    .maxex = getOption("mrgparamtab.maxex")){
+                    .digit = getOption("pmparams.dig"),
+                    .maxex = getOption("pmparams.maxex")){
 
   .digit = ifelse(is.null(.digit), formals(pmtables::sig)$digits, .digit)
 

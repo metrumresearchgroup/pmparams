@@ -1,4 +1,4 @@
-# mrgparamtab 0.0.0.9000
+# pmparams 0.0.0.9000
 
 ## New features and changes
 
@@ -6,7 +6,7 @@
 
 - `format_param_table`: Estimate values and output selected columns to be shown in the parameter table (#34).
 
-# mrgparamtab 0.0.1.0
+# pmparams 0.0.1.0
 
 ## New features and changes
 

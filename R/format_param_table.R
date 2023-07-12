@@ -27,8 +27,8 @@
 #' @examples
 #'
 #' #Using output from `define_param_table` (defineOut),
-#' paramEst <- utils::read.csv(system.file("model/nonmem/param_est.csv", package = "mrgparamtab"))
-#' paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "mrgparamtab")
+#' paramEst <- utils::read.csv(system.file("model/nonmem/param_est.csv", package = "pmparams"))
+#' paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
 #' defineOut <- define_param_table(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
 #'
 #' format_param_table(.df = defineOut)
@@ -40,8 +40,8 @@
 format_param_table <- function(.df,
                              .select_cols = c("type", "abb", "greek", "desc", "value", "ci", "shrinkage"),
                              .prse = FALSE,
-                             .digit = getOption("mrgparamtab.dig"),
-                             .maxex = getOption("mrgparamtab.maxex")){
+                             .digit = getOption("pmparams.dig"),
+                             .maxex = getOption("pmparams.maxex")){
 
   .digit = ifelse(is.null(.digit), formals(pmtables::sig)$digits, .digit)
 

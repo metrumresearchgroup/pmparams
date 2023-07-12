@@ -7,8 +7,8 @@
 format_boot_table(
   .boot_df,
   .select_cols = c("abb", "desc", "boot_value", "boot_ci"),
-  .digit = getOption("mrgparamtab.dig"),
-  .maxex = getOption("mrgparamtab.maxex")
+  .digit = getOption("pmparams.dig"),
+  .maxex = getOption("pmparams.maxex")
 )
 }
 \arguments{
@@ -30,10 +30,10 @@ Left join this output bootstrap data.frame with the formatted output of non-boot
 
 #Using output from `define_boot_table` (defineBootOut),
 boot_paramEst <- utils::read.csv(system.file("model/nonmem/boot/data/boot-106.csv",
-                                 package = "mrgparamtab"))
+                                 package = "pmparams"))
 nonboot_paramEst <- utils::read.csv(system.file("model/nonmem/nonboot_param_est.csv",
-                                    package = "mrgparamtab"))
-paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "mrgparamtab")
+                                    package = "pmparams"))
+paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
 
 defineBootOut <- define_boot_table(.boot_estimates = boot_paramEst,
                .nonboot_estimates = nonboot_paramEst,

@@ -29,12 +29,12 @@
 #' @param .ci confidence interval. Default is 95
 #' @param .zscore z-score for the specified confidence interval. Only needed for confidence intervals that are NOT 90 or 95 percent
 #'
-#' @seealso \link[mrgparamtab]{param_key}: Parameter key requirements
+#' @seealso \link[pmparams]{param_key}: Parameter key requirements
 #'
 #' @examples
 #'
-#' paramEst <- utils::read.csv(system.file("model/nonmem/param_est.csv", package = "mrgparamtab"))
-#' paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "mrgparamtab")
+#' paramEst <- utils::read.csv(system.file("model/nonmem/param_est.csv", package = "pmparams"))
+#' paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
 #'
 #' define_param_table(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
 #'

@@ -45,10 +45,10 @@ TRUE/FALSE columns that will be used by subsequent functions.
 \examples{
 
 boot_paramEst <- utils::read.csv(system.file("model/nonmem/boot/data/boot-106.csv",
-                                 package = "mrgparamtab"))
+                                 package = "pmparams"))
 nonboot_paramEst <- utils::read.csv(system.file("model/nonmem/nonboot_param_est.csv",
-                                    package = "mrgparamtab"))
-paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "mrgparamtab")
+                                    package = "pmparams"))
+paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
 
 define_boot_table(.boot_estimates = boot_paramEst,
                .nonboot_estimates = nonboot_paramEst,
@@ -56,5 +56,5 @@ define_boot_table(.boot_estimates = boot_paramEst,
 
 }
 \seealso{
-\link[mrgparamtab]{param_key}: Parameter key requirements
+\link[pmparams]{param_key}: Parameter key requirements
 }

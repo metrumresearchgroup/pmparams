@@ -1,6 +1,6 @@
 library(dplyr)
 library(testthat)
-library(mrgparamtab)
+library(pmparams)
 
 skip_if_no_bbi <- function(.test_name) {
   # if bbi_version() can't find bbi, it returns ""
@@ -33,25 +33,25 @@ paramKey = dplyr::tribble(
 
 #Data for testing param table (no boot)
 
-paramPath <- system.file("model/nonmem/102", package = "mrgparamtab")
-paramEst <- utils::read.csv(system.file("model/nonmem/param_est.csv", package = "mrgparamtab"))
-paramModel <- bbr::read_model(system.file("model/nonmem/102", package = "mrgparamtab"))
+paramPath <- system.file("model/nonmem/102", package = "pmparams")
+paramEst <- utils::read.csv(system.file("model/nonmem/param_est.csv", package = "pmparams"))
+paramModel <- bbr::read_model(system.file("model/nonmem/102", package = "pmparams"))
 
 newDF <- define_param_table(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
 
 #Data for testing boot param table
-boot_paramEstPath <- system.file("model/nonmem/boot/data/boot-106.csv", package = "mrgparamtab")
-boot_paramEst <- utils::read.csv(system.file("model/nonmem/boot/data/boot-106.csv", package = "mrgparamtab"))
+boot_paramEstPath <- system.file("model/nonmem/boot/data/boot-106.csv", package = "pmparams")
+boot_paramEst <- utils::read.csv(system.file("model/nonmem/boot/data/boot-106.csv", package = "pmparams"))
 
-nonboot_paramEstPath <- system.file("model/nonmem/106", package = "mrgparamtab")
-nonboot_paramEst <- utils::read.csv(system.file("model/nonmem/nonboot_param_est.csv", package = "mrgparamtab"))
+nonboot_paramEstPath <- system.file("model/nonmem/106", package = "pmparams")
+nonboot_paramEst <- utils::read.csv(system.file("model/nonmem/nonboot_param_est.csv", package = "pmparams"))
 
-newbootDF <- mrgparamtab::define_boot_table(.boot_estimates =boot_paramEst, .nonboot_estimates = nonboot_paramEst, .key = paramKey)
-formatBootDF <- mrgparamtab::format_boot_table(.boot_df = newbootDF)
+newbootDF <- pmparams::define_boot_table(.boot_estimates =boot_paramEst, .nonboot_estimates = nonboot_paramEst, .key = paramKey)
+formatBootDF <- pmparams::format_boot_table(.boot_df = newbootDF)
 
 #final output
-nonbootDF <- mrgparamtab::define_param_table(.estimates = nonboot_paramEst, .key = paramKey)
-formatnonbootDF <- nonbootDF %>% mrgparamtab::format_param_table()
+nonbootDF <- pmparams::define_param_table(.estimates = nonboot_paramEst, .key = paramKey)
+formatnonbootDF <- nonbootDF %>% pmparams::format_param_table()
 
 
 bootParam <-  left_join(formatnonbootDF, formatBootDF, by = c("abb", "desc"))
