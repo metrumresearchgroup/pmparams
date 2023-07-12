@@ -88,13 +88,13 @@
     <loc>/reference/mathMode.html</loc>
   </url>
   <url>
-    <loc>/reference/mrgparamtab.html</loc>
-  </url>
-  <url>
     <loc>/reference/param_key.html</loc>
   </url>
   <url>
     <loc>/reference/parens.html</loc>
+  </url>
+  <url>
+    <loc>/reference/pmparams.html</loc>
   </url>
   <url>
     <loc>/reference/removePunc.html</loc>
