@@ -25,15 +25,13 @@ Imports:
     magrittr,
     pmtables,
     rlang,
-    stats,
     stringr,
     glue,
     logitnorm,
     purrr,
     tidyr,
     yaml,
-    readr,
-    here
+    readr
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
