@@ -6,5 +6,6 @@ getpCV <- function(.df){
         diag & OM & lognormO ~ pmtables::sig(getCV_lognormO(value)),
         diag & S & propErr ~ pmtables::sig(getCV_propS(value)),
         TRUE ~ "-")
-      )
+      ) %>%
+    suppressWarnings()
 }

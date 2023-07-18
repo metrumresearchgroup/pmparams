@@ -4,7 +4,7 @@
 \alias{param_key}
 \title{Parameter key requirements}
 \description{
-The parameter key file used in the mrgparamtab function must contain the following columns:
+The parameter key file used in the pmparams function must contain the following columns:
 
 \strong{name} = THETA, OMEGA, SIGMA
 

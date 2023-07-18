@@ -9,8 +9,8 @@ getpRSE(
   .value = "value",
   .se = "se",
   ...,
-  .digit = getOption("mrgparamtab.dig"),
-  .maxex = getOption("mrgparamtab.maxex")
+  .digit = getOption("pmparams.dig"),
+  .maxex = getOption("pmparams.maxex")
 )
 }
 \arguments{

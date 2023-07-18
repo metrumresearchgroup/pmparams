@@ -2,7 +2,7 @@
 #'
 #' @description
 #'
-#' The parameter key file used in the mrgparamtab function must contain the following columns:
+#' The parameter key file used in the pmparams function must contain the following columns:
 #'
 #' __name__ = THETA, OMEGA, SIGMA
 #'

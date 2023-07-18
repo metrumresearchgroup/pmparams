@@ -1,18 +1,31 @@
 url: ~
-title: mrgparamtab
+title: pmparams
 template:
   params:
     bootswatch: flatly
+navbar:
+  type: inverse
+  right:
+  - icon: fa-github fa-lg
+    href: https://ghe.metrumrg.com/software-incubator/pmparams
 reference:
   - title: Create parameter key
     desc: Requirements for parameter key
     contents:
     - param_key
   - title: Define parameter table
-    desc: Combines model output parameter estimates with information in parameter key. Performs some formatting of this combined data.frame.
+    desc: Combine model output parameter estimates with information in parameter key. Perform some formatting of this combined data.frame.
     contents:
-    - defineParamTable
+    - define_param_table
   - title: Format parameter table
     desc: Estimate values and output selected columns to be shown in the parameter table.
     contents:
-    - formatParamTable
+    - format_param_table
+  - title: Define boot parameter table
+    desc: Combine bootstrap estimates with non-bootstrap estimates and parameter key. Perform some formatting of this combined data.frame.
+    contents:
+    - define_boot_table
+  - title: Format boot parameter table
+    desc: Format bootstrap parameter estimate values and output selected columns to be shown in the bootstrap parameter table.
+    contents:
+    - format_boot_table

@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/reference/test_package.html#special-files
 
 library(testthat)
-library(mrgparamtab)
+library(pmparams)
 
-test_check("mrgparamtab")
+test_check("pmparams")
