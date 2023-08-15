@@ -2,13 +2,9 @@ Package: pmparams
 Title: R package for parameter tables
 Version: 0.0.0.9000
 Authors@R: 
-    c(person(given = "Seth",
-             family = "Green",
-             role = c("cre"),
-             email = "sethg@metrumrg.com"),
-      person(given = "Katherine",
+      c(person(given = "Katherine",
              family = "Kay",
-             role = c("aut"),
+             role = c("crea"),
              email = "katherinek@metrumrg.com"),
       person(given = "Michael",
              family = "McDermott",
