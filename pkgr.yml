@@ -1,0 +1,16 @@
+Version: 1
+
+Descriptions:
+  - DESCRIPTION
+
+Packages:
+  - devtools
+  - pkgdown
+
+Repos:
+  - CRAN: https://cran.rstudio.com
+  - bbr: https://s3.amazonaws.com/mpn.metworx.dev/releases/bbr/latest_tag
+  - pmtables: https://s3.amazonaws.com/mpn.metworx.dev/releases/pmtables/latest_tag
+
+Lockfile:
+  Type: renv
