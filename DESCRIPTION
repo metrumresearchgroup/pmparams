@@ -15,6 +15,8 @@ Authors@R:
              role = c("aut"),
              email = "graceo@metrumrg.com"))
 Description: `pmparams` is a library written in R that generates clear, well-formatted parameter tables to report NONMEM model results.
+URL: https://github.com/metrumresearchgroup/pmparams
+BugReports: https://github.com/metrumresearchgroup/pmparams/issues
 Imports:
     bbr,
     dplyr (>= 0.5.0),
