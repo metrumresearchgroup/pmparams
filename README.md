@@ -3,15 +3,10 @@
 
 ## Overview
 
-pmparams helps define and format parameter tables.
-
-An example parameter table script highlighting `pmparams` functions
-to create a parameter table can be found
-[here](https://github.com/metrumresearchgroup/expo1-nonmem-foce/blob/main/script/pk-final-model-table.R).
-
-An example parameter table script highlighting `pmparams` functions
-to create a bootstrap parameter table can be found
-[here](https://github.com/metrumresearchgroup/expo1-nonmem-foce/blob/main/script/pk-final-model-table-boot.R).
+`pmparams` helps define and format parameter tables. Example code
+demonstrating the package as part of an analysis workflow will soon be
+available in our [MeRGE Expo 1
+repository](https://github.com/metrumresearchgroup/expo1-nonmem-foce/).
 
 ## Documentation
 
@@ -20,8 +15,8 @@ Public documentation of all functions is hosted at
 
 ## Development
 
-`pmparams` uses [pkgr](https://github.com/metrumresearchgroup/pkgr)
-to manage development dependencies and
+`pmparams` uses [pkgr](https://github.com/metrumresearchgroup/pkgr) to
+manage development dependencies and
 [renv](https://rstudio.github.io/renv/) to provide isolation. To
 replicate this environment,
 
@@ -44,5 +39,4 @@ in RStudio). renv will activate and find the project library.
 ## Getting help
 
 If you encounter a clear bug, please file an issue with a minimal
-reproducible example on
-[pmparams](https://github.com/pmparams/issues).
+reproducible example on [pmparams](https://github.com/pmparams/issues).
