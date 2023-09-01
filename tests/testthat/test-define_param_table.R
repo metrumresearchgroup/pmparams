@@ -56,8 +56,20 @@ test_that("define_param_table handles multiple estimate input types [MPT-DPT-003
 
 test_that("define_param_table handles multiple parameter key input types [MPT-DPT-004]", {
   skip_if_no_bbi("MPT-DPT-004")
-  pathDF <- define_param_table(paramPath, system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams"))
+  paramKeyPath <- system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
+  paramKeyPath_old <- system.file("model/nonmem/pk-parameter-key.yaml", package = "pmparams")
+
+  pathDF <- define_param_table(paramPath, paramKeyPath)
+  pathDF_old <- define_param_table(paramPath, paramKeyPath_old)
+
+  DF <- define_param_table(paramPath, pmtables::yaml_as_df(paramKeyPath))
+  DF_old <- define_param_table(paramPath, pmtables::yaml_as_df(paramKeyPath_old))
+
   expect_equal(pathDF$estimate[pathDF$name == "OMEGA22"], 0.0826922)
+  expect_equal(pathDF_old$estimate[pathDF_old$name == "OMEGA22"], 0.0826922)
+  expect_equal(as.data.frame(pathDF), as.data.frame(pathDF_old))
+  expect_equal(as.data.frame(pathDF), as.data.frame(DF))
+  expect_equal(as.data.frame(pathDF), as.data.frame(DF_old))
 })
 
 test_that("define_param_table handles multiple parameter key input types [MPT-DPT-004]", {
