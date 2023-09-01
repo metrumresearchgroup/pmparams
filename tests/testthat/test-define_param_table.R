@@ -1,9 +1,9 @@
 
-test_that("define_param_table expected output: creates new parameter names without parentheses [MPT-DPT-001]", {
+test_that("define_param_table expected output: creates new parameter names without parentheses", {
   expect_equal(newDF$name[newDF$parameter_names == "OMEGA(1,1)"], "OMEGA11")
 })
 
-test_that("define_param_table expected output: generates logical columns to indicate parameter type [MPT-DPT-001]", {
+test_that("define_param_table expected output: generates logical columns to indicate parameter type", {
   expect_equal(newDF$TH[newDF$parameter_names == "THETA1"], TRUE)
   expect_equal(newDF$OM[newDF$parameter_names == "THETA1"], FALSE)
   expect_equal(newDF$OM[newDF$parameter_names == "OMEGA(1,1)"], TRUE)
@@ -11,7 +11,7 @@ test_that("define_param_table expected output: generates logical columns to indi
   expect_equal(newDF$S[newDF$parameter_names == "THETA1"], FALSE)
 })
 
-test_that("define_param_table expected output:  generates logical columns for transformation [MPT-DPT-001]", {
+test_that("define_param_table expected output:  generates logical columns for transformation", {
   expect_true(newDF$trans[newDF$name == "THETA1"] == "logTrans" &
                 newDF$LOG[newDF$name == "THETA1"] == TRUE &
                 newDF$LOGIT[newDF$name == "THETA1"] == FALSE)
@@ -25,19 +25,19 @@ test_that("define_param_table expected output:  generates logical columns for tr
                 newDF$propErr[newDF$name == "SIGMA11"] == TRUE)
 })
 
-test_that("define_param_table incorrect input type: no parameter_names column [MPT-DPT-002]",{
+test_that("define_param_table incorrect input type: no parameter_names column",{
   paramEst2 <- paramEst
   colnames(paramEst2)[colnames(paramEst2) == "parameter_names"] ="no_name"
   expect_error(capture.output(define_param_table(paramEst2, paramKey)))
 })
 
-test_that("define_param_table incorrect input type: missing column(s) [MPT-DPT-002]",{
+test_that("define_param_table incorrect input type: missing column(s)",{
   paramKey2 <- as.data.frame(paramKey)
   colnames(paramKey2)[colnames(paramKey2) == "panel"] ="no_name"
   expect_error(capture.output(define_param_table(paramEst, paramKey2)))
 })
 
-test_that("define_param_table handles multiple estimate input types [MPT-DPT-003]", {
+test_that("define_param_table handles multiple estimate input types", {
   skip_if_no_bbi("MPT-DPT-003")
   pathDF <- define_param_table(paramPath, paramKey)
   expect_equal(pathDF$estimate[pathDF$name == "OMEGA22"], 0.0826922)
@@ -54,7 +54,7 @@ test_that("define_param_table handles multiple estimate input types [MPT-DPT-003
 
 })
 
-test_that("define_param_table handles multiple parameter key input types [MPT-DPT-004]", {
+test_that("define_param_table handles multiple parameter key input types", {
   skip_if_no_bbi("MPT-DPT-004")
   paramKeyPath <- system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
   paramKeyPath_old <- system.file("model/nonmem/pk-parameter-key.yaml", package = "pmparams")
@@ -72,7 +72,7 @@ test_that("define_param_table handles multiple parameter key input types [MPT-DP
   expect_equal(as.data.frame(pathDF), as.data.frame(DF_old))
 })
 
-test_that("define_param_table handles multiple parameter key input types [MPT-DPT-004]", {
+test_that("define_param_table handles multiple parameter key input types", {
   skip_if_no_bbi("MPT-DPT-004")
   key_file <- system.file("model/nonmem/pk-parameter-key.yaml", package = "pmparams")
   key_df <- pmtables::yaml_as_df(key_file)
@@ -80,12 +80,12 @@ test_that("define_param_table handles multiple parameter key input types [MPT-DP
   expect_equal(pathDF$estimate[pathDF$name == "OMEGA22"], 0.0826922)
 })
 
-test_that("define_param_table incorrect parameter key input type: Only abb, desc, panel and trans arguments will be used, all others ignored [MPT-DPT-005]", {
+test_that("define_param_table incorrect parameter key input type: Only abb, desc, panel and trans arguments will be used, all others ignored", {
   skip_if_no_bbi("MPT-DPT-005")
   expect_warning(capture.output(define_param_table(paramPath, system.file("model/nonmem/pk-parameter-key-both.yaml", package = "pmparams"))))
 })
 
-test_that("define_param_table generates correct corr_SD [MPT-DPT-005]", {
+test_that("define_param_table generates correct corr_SD", {
   expect_true(all(newDF$estimate == newDF$value))
   expect_true(all(newDF$stderr == newDF$se))
   expect_true(newDF$corr_SD[7] == "0.511")
@@ -93,7 +93,7 @@ test_that("define_param_table generates correct corr_SD [MPT-DPT-005]", {
   expect_true(newDF$corr_SD[6] == "-")
 })
 
-test_that("define_param_table generates the confidence intervals for various inputs [MPT-DPT-006]", {
+test_that("define_param_table generates the confidence intervals for various inputs", {
   newDF_ci95 <- define_param_table(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
   newDF_ci90 <- define_param_table(.estimates = paramEst, .key = paramKey, .ci = 90, .zscore = NULL)
 
