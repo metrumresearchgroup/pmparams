@@ -2,9 +2,10 @@
 #'
 #' @description
 #'
-#' The parameter key file used in the pmparams function must contain the following columns:
+#' The parameter key used in the pmparams functions can either be a yaml or data frame.
+#' It must contain the following:
 #'
-#' __name__ = THETA, OMEGA, SIGMA
+#' __name__ or __yaml variable__= THETA, OMEGA, SIGMA. See further @examples below.
 #'
 #' __abb__ = abbreviation you want to appear in the parameter table (use latex coding)
 #'
@@ -30,6 +31,33 @@
 #'   - "logitOmSD"  - for omegas using logit transform - returns estimate & SD (calculated with logitnorm package); this option requires you provide the associated THETA separated with a "~"; e.g. "logitOmSD ~ THETA3"
 #'   - "addErr"     - for additive error terms (coded using SIGMA in $ERROR) - returns est.+ SD
 #'   - "propErr"    - for proportional error terms (coded using SIGMA in $ERROR) - returns est.+CV%
+#'
+#' @examples
+#'
+#' #Example of parameter key yaml:
+#' #It must contain parameter names as variables with abb, desc, panel, and trans columns.
+#'
+#' # THETA1
+#' # abb: "KA (1/h)"
+#' # desc: "First order absorption rate constant"
+#' # panel: struct
+#' # trans: logTrans
+#'
+#' # THETA2
+#' # abb: "V2/F (L)"
+#' # desc: "Apparent central volume"
+#' # panel: struct
+#' # trans: logTrans
+#'
+#' #Example of parameter key data frame:
+#' #It must contain parameter names, abb, desc, panel, and trans columns.
+#'
+#' paramKey = tribble(
+#' ~name, ~abb, ~desc, ~panel, ~trans,
+#' "THETA1",  "KA (1/h)", "First order absorption rate constant",   "struct", "logTrans",
+#' "THETA2", "V2/F (L)",  "Apparent central volume",                "struct", "logTrans")
+#' paramKey
+#'
 #'
 #' @name param_key
 NULL

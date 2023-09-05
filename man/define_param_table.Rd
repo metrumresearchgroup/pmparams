@@ -9,7 +9,7 @@ define_param_table(.estimates, .key, .ci = 95, .zscore = NULL)
 \arguments{
 \item{.estimates}{path to model directory, bbr NONMEM model, or data.frame of parameter estimates}
 
-\item{.key}{path to parameter key or data.frame of parameter key}
+\item{.key}{path to parameter key or data.frame of parameter key. Described in more detail in \link{?param_key}}
 
 \item{.ci}{confidence interval. Default is 95}
 

@@ -23,9 +23,9 @@
 #'
 #' defineBootOut <- define_boot_table(.boot_estimates = boot_paramEst,
 #'                .nonboot_estimates = nonboot_paramEst,
-#'                .key = paramKey)
+#'                .key = paramKey) %>% head()
 #'
-#' format_boot_table(.boot_df = defineBootOut)
+#' format_boot_table(.boot_df = defineBootOut) %>% head()
 #'
 #' #To include all columns:
 #'

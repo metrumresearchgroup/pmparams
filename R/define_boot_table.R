@@ -30,7 +30,7 @@
 #'
 #' @param .boot_estimates parameter boot estimates- either path to file or data.frame
 #' @param .nonboot_estimates non-bootstrap final model - either path to file or bbr model_summary
-#' @param .key parameter key- either path to file or data.frame
+#' @param .key path to parameter key or data.frame of parameter key. Described in more detail in [?param_key]
 #'
 #' @examples
 #'

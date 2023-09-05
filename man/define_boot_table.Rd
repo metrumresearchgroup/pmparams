@@ -11,7 +11,7 @@ define_boot_table(.boot_estimates, .nonboot_estimates, .key)
 
 \item{.nonboot_estimates}{non-bootstrap final model - either path to file or bbr model_summary}
 
-\item{.key}{parameter key- either path to file or data.frame}
+\item{.key}{path to parameter key or data.frame of parameter key. Described in more detail in \link{?param_key}}
 }
 \description{
 Combines boot strap estimates and non boot strap estimates with information in parameter key. Performs
