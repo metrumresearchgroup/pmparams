@@ -2,7 +2,7 @@
 #'
 #' @description
 #' Loads parameter key by providing parameter key path  or data frame of parameter key.
-#' Checks that parameter key contains the following columns for each unique parameter: abb, desc, panel, trans.
+#' Checks that parameter key contains the following columns: name, abb, desc, panel, trans.
 #'
 #' @param .key path to parameter key or data.frame of parameter key
 #'
@@ -13,49 +13,25 @@ loadParamKey <- function(.key){
     print(paste0("Parameter table yaml path provided: ", .key))
     y1l <- yaml::yaml.load_file(.key)
 
-    #legacy parameter key with alphabetical names
-    if (any(grepl("name", names(y1l[[1]]))) == TRUE){
-
-      if (!all(names(y1l[[1]]) %in% c("name", "abb", "desc", "panel", "trans"))) {
-        warning("Only name, abb, desc, panel and trans arguments will be used, all others ignored")
-      }
-
-      .key <- dplyr::tibble(
-        name = unlist(y1l)[grepl('name',names(unlist(y1l)),fixed=T)],
-        abb = unlist(y1l)[grepl('abb',names(unlist(y1l)),fixed=T)],
-        desc = unlist(y1l)[grepl('desc',names(unlist(y1l)),fixed=T)],
-        panel = unlist(y1l)[grepl('panel',names(unlist(y1l)),fixed=T)],
-        trans = unlist(y1l)[grepl('trans',names(unlist(y1l)),fixed=T)]
-      )
-    } else {
-      #new parameter key with parameter names
-      if (!all(names(y1l[[1]]) %in% c("abb", "desc", "panel", "trans"))) {
-        warning("Only abb, desc, panel and trans arguments will be used, all others ignored")
-      }
-
-      .key <- dplyr::tibble(
-        name = names(y1l),
-        abb = unlist(y1l)[grepl('abb',names(unlist(y1l)),fixed=T)],
-        desc = unlist(y1l)[grepl('desc',names(unlist(y1l)),fixed=T)],
-        panel = unlist(y1l)[grepl('panel',names(unlist(y1l)),fixed=T)],
-        trans = unlist(y1l)[grepl('trans',names(unlist(y1l)),fixed=T)]
-      )
+    if (!all(names(y1l[[1]]) %in% c("abb", "desc", "panel", "trans"))) {
+      warning("Only abb, desc, panel and trans arguments will be used, all others ignored")
     }
 
+    .key <- dplyr::tibble(
+      name = names(y1l),
+      abb = unlist(y1l)[grepl('abb',names(unlist(y1l)),fixed=T)],
+      desc = unlist(y1l)[grepl('desc',names(unlist(y1l)),fixed=T)],
+      panel = unlist(y1l)[grepl('panel',names(unlist(y1l)),fixed=T)],
+      trans = unlist(y1l)[grepl('trans',names(unlist(y1l)),fixed=T)]
+    )
   }
 
   if (inherits(.key, "data.frame")){
-
-    if (any(grepl("name", colnames(.key))) == TRUE){
-      .key <- .key %>% select(-.row)
-    } else {
-      colnames(.key)[colnames(.key)== ".row"] <- "name"
-    }
-
-    if (!(all(c("name","abb", "desc", "panel", "trans") %in% colnames(.key)))) {
+    if (!(all(c("name", "abb", "desc", "panel", "trans") %in% colnames(.key)))) {
       stop("Incorrect parameter key input type. See ?param_key for list of valid parameter key inputs")
-      }
-
+    }
+  } else{
+    stop("Incorrect parameter key input type. See ?param_key for list of valid parameter key inputs")
   }
 
   .key
