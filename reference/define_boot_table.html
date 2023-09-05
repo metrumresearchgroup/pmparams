@@ -105,13 +105,9 @@ TRUE/FALSE columns that will be used by subsequent functions.</p>
 
 
 <dt>.key</dt>
-<dd><p>path to parameter key or data.frame of parameter key. Described in more detail in ?param_key</p></dd>
+<dd><p>path to parameter key or data.frame of parameter key. Described in more detail in <a href="param_key.html">param_key</a></p></dd>
 
 </dl></div>
-    <div id="see-also">
-    <h2>See also</h2>
-    <div class="dont-index"><p><a href="param_key.html">param_key</a>: Parameter key requirements</p></div>
-    </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
@@ -124,72 +120,36 @@ TRUE/FALSE columns that will be used by subsequent functions.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">define_boot_table</span><span class="op">(</span>.boot_estimates <span class="op">=</span> <span class="va">boot_paramEst</span>,</span></span>
 <span class="r-in"><span>               .nonboot_estimates <span class="op">=</span> <span class="va">nonboot_paramEst</span>,</span></span>
-<span class="r-in"><span>               .key <span class="op">=</span> <span class="va">paramKey</span><span class="op">)</span></span></span>
+<span class="r-in"><span>               .key <span class="op">=</span> <span class="va">paramKey</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Parameter table yaml path provided: /data/pmparams/inst/model/nonmem/pk-parameter-key-new.yaml"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    parameter_names    estimate       lower       upper    name          abb</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1           THETA1  0.44880350  1.38806751  1.78221206  THETA1     KA (1/h)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2           THETA2  4.11949000 58.28377484 65.05317419  THETA2     V2/F (L)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3           THETA3  1.17220500  3.06673660  3.41684975  THETA3   CL/F (L/h)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4           THETA4  4.20983500 64.99289784 69.82682512  THETA4     V3/F (L)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5           THETA5  1.28442500  3.37292139  3.86409016  THETA5    Q/F (L/h)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6           THETA6  0.48368700  0.40819383  0.55820400  THETA6  CL/F ~ eGFR</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7           THETA7 -0.03861535 -0.16724268  0.08782413  THETA7   CL/F ~ Age</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8           THETA8  0.42044750  0.29365133  0.58652035  THETA8   CL/F ~ ALB</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9       SIGMA.1.1.  0.03996855  0.03760094  0.04238123 SIGMA11 Proportional</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10      OMEGA.1.1.  0.21791200  0.12965965  0.33063635 OMEGA11       IIV-KA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11      OMEGA.2.1.  0.06564225  0.03282125  0.10749465 OMEGA21      V2/F-KA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12      OMEGA.2.2.  0.08210580  0.06432011  0.10123122 OMEGA22     IIV-V2/F</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13      OMEGA.3.1.  0.12131700  0.08049071  0.17341253 OMEGA31      CL/F-KA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14      OMEGA.3.2.  0.06963290  0.05252801  0.08823306 OMEGA32    CL/F-V2/F</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15      OMEGA.3.3.  0.11213300  0.08956925  0.14029418 OMEGA33     IIV-CL/F</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                     desc  panel       trans fixed       value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   First order absorption rate constant struct    logTrans FALSE  1.56643682</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                Apparent central volume struct    logTrans FALSE 61.52785506</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                     Apparent clearance struct    logTrans FALSE  3.22910497</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4             Apparent peripheral volume struct    logTrans FALSE 67.34542690</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  Apparent intercompartmental clearance struct    logTrans FALSE  3.61259012</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                    eGFR effect on CL/F    cov        none FALSE  0.48368700</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7                     Age effect on CL/F    cov        none FALSE -0.03861535</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8           Serum albumin effect on CL/F    cov        none FALSE  0.42044750</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9                               Variance     RV     propErr    NA  0.03996855</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10                Variance of absorption    IIV lognormalOm    NA  0.21791200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11               Covariance of V2/F - KA    IIV        none    NA  0.06564225</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12            Variance of central volume    IIV lognormalOm    NA  0.08210580</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13               Covariance of CL/F - KA    IIV        none    NA  0.12131700</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14             Covariance of CL/F - V2/F    IIV        none    NA  0.06963290</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15                 Variance of clearance    IIV lognormalOm    NA  0.11213300</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    transTHETA    TH    OM     S   LOG LOGIT lognormO   Osd logitOsd propErr</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1          NA  TRUE FALSE FALSE  TRUE FALSE    FALSE FALSE    FALSE   FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2          NA  TRUE FALSE FALSE  TRUE FALSE    FALSE FALSE    FALSE   FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3          NA  TRUE FALSE FALSE  TRUE FALSE    FALSE FALSE    FALSE   FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4          NA  TRUE FALSE FALSE  TRUE FALSE    FALSE FALSE    FALSE   FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5          NA  TRUE FALSE FALSE  TRUE FALSE    FALSE FALSE    FALSE   FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6          NA  TRUE FALSE FALSE FALSE FALSE    FALSE FALSE    FALSE   FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7          NA  TRUE FALSE FALSE FALSE FALSE    FALSE FALSE    FALSE   FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8          NA  TRUE FALSE FALSE FALSE FALSE    FALSE FALSE    FALSE   FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9          NA FALSE FALSE  TRUE FALSE FALSE    FALSE FALSE    FALSE    TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10         NA FALSE  TRUE FALSE FALSE FALSE     TRUE FALSE    FALSE   FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11         NA FALSE  TRUE FALSE FALSE FALSE    FALSE FALSE    FALSE   FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12         NA FALSE  TRUE FALSE FALSE FALSE     TRUE FALSE    FALSE   FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13         NA FALSE  TRUE FALSE FALSE FALSE    FALSE FALSE    FALSE   FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14         NA FALSE  TRUE FALSE FALSE FALSE    FALSE FALSE    FALSE   FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15         NA FALSE  TRUE FALSE FALSE FALSE     TRUE FALSE    FALSE   FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    addErr</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7   FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9   FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10  FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11  FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12  FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13  FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14  FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   parameter_names  estimate      lower     upper   name         abb</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          THETA1 0.4488035  1.3880675  1.782212 THETA1    KA (1/h)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2          THETA2 4.1194900 58.2837748 65.053174 THETA2    V2/F (L)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3          THETA3 1.1722050  3.0667366  3.416850 THETA3  CL/F (L/h)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4          THETA4 4.2098350 64.9928978 69.826825 THETA4    V3/F (L)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5          THETA5 1.2844250  3.3729214  3.864090 THETA5   Q/F (L/h)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6          THETA6 0.4836870  0.4081938  0.558204 THETA6 CL/F ~ eGFR</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                    desc  panel    trans fixed     value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  First order absorption rate constant struct logTrans FALSE  1.566437</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2               Apparent central volume struct logTrans FALSE 61.527855</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                    Apparent clearance struct logTrans FALSE  3.229105</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4            Apparent peripheral volume struct logTrans FALSE 67.345427</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 Apparent intercompartmental clearance struct logTrans FALSE  3.612590</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                   eGFR effect on CL/F    cov     none FALSE  0.483687</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   transTHETA   TH    OM     S   LOG LOGIT lognormO   Osd logitOsd propErr</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1         NA TRUE FALSE FALSE  TRUE FALSE    FALSE FALSE    FALSE   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2         NA TRUE FALSE FALSE  TRUE FALSE    FALSE FALSE    FALSE   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3         NA TRUE FALSE FALSE  TRUE FALSE    FALSE FALSE    FALSE   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4         NA TRUE FALSE FALSE  TRUE FALSE    FALSE FALSE    FALSE   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5         NA TRUE FALSE FALSE  TRUE FALSE    FALSE FALSE    FALSE   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6         NA TRUE FALSE FALSE FALSE FALSE    FALSE FALSE    FALSE   FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   addErr</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  FALSE</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
