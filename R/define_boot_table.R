@@ -30,7 +30,7 @@
 #'
 #' @param .boot_estimates parameter boot estimates- either path to file or data.frame
 #' @param .nonboot_estimates non-bootstrap final model - either path to file or bbr model_summary
-#' @param .key path to parameter key or data.frame of parameter key. Described in more detail in [?param_key]
+#' @param .key path to parameter key or data.frame of parameter key. Described in more detail in \link[pmparams]{param_key}
 #'
 #' @examples
 #'
@@ -42,9 +42,8 @@
 #'
 #' define_boot_table(.boot_estimates = boot_paramEst,
 #'                .nonboot_estimates = nonboot_paramEst,
-#'                .key = paramKey)
+#'                .key = paramKey) %>% head()
 #'
-#' @seealso \link[pmparams]{param_key}: Parameter key requirements
 #' @export
 define_boot_table <- function(.boot_estimates, .nonboot_estimates, .key){
 
