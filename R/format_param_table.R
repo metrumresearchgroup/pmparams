@@ -31,11 +31,11 @@
 #' paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
 #' defineOut <- define_param_table(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
 #'
-#' format_param_table(.df = defineOut) %>% head()
+#' format_param_table(.df = defineOut)
 #'
 #' #To include all columns:
 #'
-#' format_param_table(.df = defineOut, .select_cols="all") %>% head()
+#' format_param_table(.df = defineOut, .select_cols="all")
 #' @export
 format_param_table <- function(.df,
                              .select_cols = c("type", "abb", "greek", "desc", "value", "ci", "shrinkage"),

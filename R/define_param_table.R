@@ -34,10 +34,10 @@
 #' paramEst <- utils::read.csv(system.file("model/nonmem/param_est.csv", package = "pmparams"))
 #' paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
 #'
-#' define_param_table(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL) %>% head()
+#' define_param_table(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
 #'
 #' #To choose a confidence interval that is not 95 or 90, look up z-score and add as function parameter
-#' define_param_table(.estimates = paramEst, .key = paramKey, .ci = 82, .zscore = 0.915) %>% head()
+#' define_param_table(.estimates = paramEst, .key = paramKey, .ci = 82, .zscore = 0.915)
 #'
 #' @export
 define_param_table <- function(.estimates, .key, .ci = 95, .zscore = NULL){

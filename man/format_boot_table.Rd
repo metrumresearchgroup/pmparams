@@ -37,9 +37,9 @@ paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pm
 
 defineBootOut <- define_boot_table(.boot_estimates = boot_paramEst,
                .nonboot_estimates = nonboot_paramEst,
-               .key = paramKey) \%>\% head()
+               .key = paramKey)
 
-format_boot_table(.boot_df = defineBootOut) \%>\% head()
+format_boot_table(.boot_df = defineBootOut)
 
 #To include all columns:
 

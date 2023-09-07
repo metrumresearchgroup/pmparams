@@ -52,6 +52,6 @@ paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pm
 
 define_boot_table(.boot_estimates = boot_paramEst,
                .nonboot_estimates = nonboot_paramEst,
-               .key = paramKey) \%>\% head()
+               .key = paramKey)
 
 }

@@ -42,7 +42,7 @@
 #'
 #' define_boot_table(.boot_estimates = boot_paramEst,
 #'                .nonboot_estimates = nonboot_paramEst,
-#'                .key = paramKey) %>% head()
+#'                .key = paramKey)
 #'
 #' @export
 define_boot_table <- function(.boot_estimates, .nonboot_estimates, .key){

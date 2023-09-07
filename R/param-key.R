@@ -5,7 +5,7 @@
 #' The parameter key used in the pmparams functions can either be a yaml or data frame.
 #' It must contain the following:
 #'
-#' __name__ or __yaml variable__= THETA, OMEGA, SIGMA. See further @examples below.
+#' __name__ or __yaml variable__= THETA, OMEGA, SIGMA. See examples below.
 #'
 #' __abb__ = abbreviation you want to appear in the parameter table (use latex coding)
 #'
@@ -52,7 +52,7 @@
 #' #Example of parameter key data frame:
 #' #It must contain parameter names, abb, desc, panel, and trans columns.
 #'
-#' paramKey = tribble(
+#' paramKey = dplyr::tribble(
 #' ~name, ~abb, ~desc, ~panel, ~trans,
 #' "THETA1",  "KA (1/h)", "First order absorption rate constant",   "struct", "logTrans",
 #' "THETA2", "V2/F (L)",  "Apparent central volume",                "struct", "logTrans")
