@@ -111,68 +111,142 @@ TRUE/FALSE columns that will be used by subsequent functions.</p>
 <span class="r-in"><span><span class="va">paramEst</span> <span class="op">&lt;-</span> <span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"model/nonmem/param_est.csv"</span>, package <span class="op">=</span> <span class="st">"pmparams"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">paramKey</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"model/nonmem/pk-parameter-key-new.yaml"</span>, package <span class="op">=</span> <span class="st">"pmparams"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">define_param_table</span><span class="op">(</span>.estimates <span class="op">=</span> <span class="va">paramEst</span>, .key <span class="op">=</span> <span class="va">paramKey</span>, .ci <span class="op">=</span> <span class="fl">95</span>, .zscore <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">define_param_table</span><span class="op">(</span>.estimates <span class="op">=</span> <span class="va">paramEst</span>, .key <span class="op">=</span> <span class="va">paramKey</span>, .ci <span class="op">=</span> <span class="fl">95</span>, .zscore <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Parameter table yaml path provided: /data/pmparams/inst/model/nonmem/pk-parameter-key-new.yaml"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   X.1 X parameter_names estimate    stderr random_effect_sd random_effect_sdse</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   1 1          THETA1 0.433592 0.0628744               NA                 NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   2 2          THETA2 4.118760 0.0276273               NA                 NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   3 3          THETA3 1.115030 0.0328475               NA                 NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   4 4          THETA4 4.209910 0.0192485               NA                 NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   5 5          THETA5 1.286310 0.0354262               NA                 NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   6 6      OMEGA(1,1) 0.220606 0.0529799         0.469687          0.0563992</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   fixed diag shrinkage    name        abb                                  desc</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 FALSE   NA        NA  THETA1   KA (1/h)  First order absorption rate constant</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 FALSE   NA        NA  THETA2   V2/F (L)               Apparent central volume</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 FALSE   NA        NA  THETA3 CL/F (L/h)                    Apparent clearance</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 FALSE   NA        NA  THETA4   V3/F (L)            Apparent peripheral volume</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 FALSE   NA        NA  THETA5  Q/F (L/h) Apparent intercompartmental clearance</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 FALSE TRUE   17.8988 OMEGA11     IIV-KA                Variance of absorption</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    panel       trans transTHETA    TH    OM     S   LOG LOGIT lognormO   Osd</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 struct    logTrans         NA  TRUE FALSE FALSE  TRUE FALSE    FALSE FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 struct    logTrans         NA  TRUE FALSE FALSE  TRUE FALSE    FALSE FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 struct    logTrans         NA  TRUE FALSE FALSE  TRUE FALSE    FALSE FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 struct    logTrans         NA  TRUE FALSE FALSE  TRUE FALSE    FALSE FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 struct    logTrans         NA  TRUE FALSE FALSE  TRUE FALSE    FALSE FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    IIV lognormalOm         NA FALSE  TRUE FALSE FALSE FALSE     TRUE FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   logitOsd propErr addErr    value        se corr_SD     lower     upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    FALSE   FALSE  FALSE 0.433592 0.0628744       - 0.3103582 0.5568258</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    FALSE   FALSE  FALSE 4.118760 0.0276273       - 4.0646105 4.1729095</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    FALSE   FALSE  FALSE 1.115030 0.0328475       - 1.0506489 1.1794111</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    FALSE   FALSE  FALSE 4.209910 0.0192485       - 4.1721829 4.2476371</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    FALSE   FALSE  FALSE 1.286310 0.0354262       - 1.2168746 1.3557454</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    FALSE   FALSE  FALSE 0.220606 0.0529799       - 0.1167654 0.3244466</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    X.1  X parameter_names  estimate     stderr random_effect_sd</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    1  1          THETA1 0.4335920 0.06287440               NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    2  2          THETA2 4.1187600 0.02762730               NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    3  3          THETA3 1.1150300 0.03284750               NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    4  4          THETA4 4.2099100 0.01924850               NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    5  5          THETA5 1.2863100 0.03542620               NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    6  6      OMEGA(1,1) 0.2206060 0.05297990         0.469687</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    7  7      OMEGA(2,1) 0.0690088 0.01996170         0.510933</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8    8  8      OMEGA(2,2) 0.0826922 0.00982547         0.287563</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9    9  9      OMEGA(3,1) 0.1340090 0.02358740         0.693796</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  10 10      OMEGA(3,2) 0.0735027 0.01054810         0.621554</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11  11 11      OMEGA(3,3) 0.1691160 0.01972890         0.411237</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12  12 12      SIGMA(1,1) 0.0399167 0.00122595         0.199792</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    random_effect_sdse fixed  diag shrinkage    name          abb</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                  NA FALSE    NA        NA  THETA1     KA (1/h)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                  NA FALSE    NA        NA  THETA2     V2/F (L)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                  NA FALSE    NA        NA  THETA3   CL/F (L/h)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                  NA FALSE    NA        NA  THETA4     V3/F (L)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                  NA FALSE    NA        NA  THETA5    Q/F (L/h)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6          0.05639920 FALSE  TRUE 17.898800 OMEGA11       IIV-KA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7          0.09746980 FALSE FALSE        NA OMEGA21      V2/F-KA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8          0.01708410 FALSE  TRUE  6.023220 OMEGA22     IIV-V2/F</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9          0.06860550 FALSE FALSE        NA OMEGA31      CL/F-KA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10         0.05238880 FALSE FALSE        NA OMEGA32    CL/F-V2/F</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11         0.02398730 FALSE  TRUE  0.587219 OMEGA33     IIV-CL/F</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12         0.00306807 FALSE  TRUE  5.275370 SIGMA11 Proportional</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                     desc  panel       trans transTHETA    TH</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   First order absorption rate constant struct    logTrans         NA  TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                Apparent central volume struct    logTrans         NA  TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                     Apparent clearance struct    logTrans         NA  TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4             Apparent peripheral volume struct    logTrans         NA  TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  Apparent intercompartmental clearance struct    logTrans         NA  TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                 Variance of absorption    IIV lognormalOm         NA FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                Covariance of V2/F - KA    IIV        none         NA FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8             Variance of central volume    IIV lognormalOm         NA FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9                Covariance of CL/F - KA    IIV        none         NA FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10             Covariance of CL/F - V2/F    IIV        none         NA FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11                 Variance of clearance    IIV lognormalOm         NA FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12                              Variance     RV     propErr         NA FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       OM     S   LOG LOGIT lognormO   Osd logitOsd propErr addErr     value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  FALSE FALSE  TRUE FALSE    FALSE FALSE    FALSE   FALSE  FALSE 0.4335920</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  FALSE FALSE  TRUE FALSE    FALSE FALSE    FALSE   FALSE  FALSE 4.1187600</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  FALSE FALSE  TRUE FALSE    FALSE FALSE    FALSE   FALSE  FALSE 1.1150300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  FALSE FALSE  TRUE FALSE    FALSE FALSE    FALSE   FALSE  FALSE 4.2099100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  FALSE FALSE  TRUE FALSE    FALSE FALSE    FALSE   FALSE  FALSE 1.2863100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   TRUE FALSE FALSE FALSE     TRUE FALSE    FALSE   FALSE  FALSE 0.2206060</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7   TRUE FALSE FALSE FALSE    FALSE FALSE    FALSE   FALSE  FALSE 0.0690088</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   TRUE FALSE FALSE FALSE     TRUE FALSE    FALSE   FALSE  FALSE 0.0826922</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9   TRUE FALSE FALSE FALSE    FALSE FALSE    FALSE   FALSE  FALSE 0.1340090</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  TRUE FALSE FALSE FALSE    FALSE FALSE    FALSE   FALSE  FALSE 0.0735027</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11  TRUE FALSE FALSE FALSE     TRUE FALSE    FALSE   FALSE  FALSE 0.1691160</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 FALSE  TRUE FALSE FALSE    FALSE FALSE    FALSE    TRUE  FALSE 0.0399167</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            se corr_SD      lower      upper</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.06287440       - 0.31035818 0.55682582</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.02762730       - 4.06461049 4.17290951</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.03284750       - 1.05064890 1.17941110</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.01924850       - 4.17218294 4.24763706</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.03542620       - 1.21687465 1.35574535</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.05297990       - 0.11676540 0.32444660</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.01996170   0.511 0.02988387 0.10813373</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.00982547       - 0.06343428 0.10195012</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.02358740   0.694 0.08777770 0.18024030</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.01054810   0.622 0.05282842 0.09417698</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 0.01972890       - 0.13044736 0.20778464</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 0.00122595       - 0.03751384 0.04231956</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">#To choose a confidence interval that is not 95 or 90, look up z-score and add as function parameter</span></span></span>
-<span class="r-in"><span><span class="fu">define_param_table</span><span class="op">(</span>.estimates <span class="op">=</span> <span class="va">paramEst</span>, .key <span class="op">=</span> <span class="va">paramKey</span>, .ci <span class="op">=</span> <span class="fl">82</span>, .zscore <span class="op">=</span> <span class="fl">0.915</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">define_param_table</span><span class="op">(</span>.estimates <span class="op">=</span> <span class="va">paramEst</span>, .key <span class="op">=</span> <span class="va">paramKey</span>, .ci <span class="op">=</span> <span class="fl">82</span>, .zscore <span class="op">=</span> <span class="fl">0.915</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Parameter table yaml path provided: /data/pmparams/inst/model/nonmem/pk-parameter-key-new.yaml"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   X.1 X parameter_names estimate    stderr random_effect_sd random_effect_sdse</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   1 1          THETA1 0.433592 0.0628744               NA                 NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   2 2          THETA2 4.118760 0.0276273               NA                 NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   3 3          THETA3 1.115030 0.0328475               NA                 NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   4 4          THETA4 4.209910 0.0192485               NA                 NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   5 5          THETA5 1.286310 0.0354262               NA                 NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   6 6      OMEGA(1,1) 0.220606 0.0529799         0.469687          0.0563992</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   fixed diag shrinkage    name        abb                                  desc</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 FALSE   NA        NA  THETA1   KA (1/h)  First order absorption rate constant</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 FALSE   NA        NA  THETA2   V2/F (L)               Apparent central volume</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 FALSE   NA        NA  THETA3 CL/F (L/h)                    Apparent clearance</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 FALSE   NA        NA  THETA4   V3/F (L)            Apparent peripheral volume</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 FALSE   NA        NA  THETA5  Q/F (L/h) Apparent intercompartmental clearance</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 FALSE TRUE   17.8988 OMEGA11     IIV-KA                Variance of absorption</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    panel       trans transTHETA    TH    OM     S   LOG LOGIT lognormO   Osd</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 struct    logTrans         NA  TRUE FALSE FALSE  TRUE FALSE    FALSE FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 struct    logTrans         NA  TRUE FALSE FALSE  TRUE FALSE    FALSE FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 struct    logTrans         NA  TRUE FALSE FALSE  TRUE FALSE    FALSE FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 struct    logTrans         NA  TRUE FALSE FALSE  TRUE FALSE    FALSE FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 struct    logTrans         NA  TRUE FALSE FALSE  TRUE FALSE    FALSE FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    IIV lognormalOm         NA FALSE  TRUE FALSE FALSE FALSE     TRUE FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   logitOsd propErr addErr    value        se corr_SD     lower     upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    FALSE   FALSE  FALSE 0.433592 0.0628744       - 0.3760619 0.4911221</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    FALSE   FALSE  FALSE 4.118760 0.0276273       - 4.0934810 4.1440390</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    FALSE   FALSE  FALSE 1.115030 0.0328475       - 1.0849745 1.1450855</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    FALSE   FALSE  FALSE 4.209910 0.0192485       - 4.1922976 4.2275224</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    FALSE   FALSE  FALSE 1.286310 0.0354262       - 1.2538950 1.3187250</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    FALSE   FALSE  FALSE 0.220606 0.0529799       - 0.1721294 0.2690826</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    X.1  X parameter_names  estimate     stderr random_effect_sd</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    1  1          THETA1 0.4335920 0.06287440               NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    2  2          THETA2 4.1187600 0.02762730               NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    3  3          THETA3 1.1150300 0.03284750               NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    4  4          THETA4 4.2099100 0.01924850               NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    5  5          THETA5 1.2863100 0.03542620               NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    6  6      OMEGA(1,1) 0.2206060 0.05297990         0.469687</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    7  7      OMEGA(2,1) 0.0690088 0.01996170         0.510933</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8    8  8      OMEGA(2,2) 0.0826922 0.00982547         0.287563</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9    9  9      OMEGA(3,1) 0.1340090 0.02358740         0.693796</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  10 10      OMEGA(3,2) 0.0735027 0.01054810         0.621554</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11  11 11      OMEGA(3,3) 0.1691160 0.01972890         0.411237</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12  12 12      SIGMA(1,1) 0.0399167 0.00122595         0.199792</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    random_effect_sdse fixed  diag shrinkage    name          abb</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                  NA FALSE    NA        NA  THETA1     KA (1/h)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                  NA FALSE    NA        NA  THETA2     V2/F (L)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                  NA FALSE    NA        NA  THETA3   CL/F (L/h)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                  NA FALSE    NA        NA  THETA4     V3/F (L)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                  NA FALSE    NA        NA  THETA5    Q/F (L/h)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6          0.05639920 FALSE  TRUE 17.898800 OMEGA11       IIV-KA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7          0.09746980 FALSE FALSE        NA OMEGA21      V2/F-KA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8          0.01708410 FALSE  TRUE  6.023220 OMEGA22     IIV-V2/F</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9          0.06860550 FALSE FALSE        NA OMEGA31      CL/F-KA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10         0.05238880 FALSE FALSE        NA OMEGA32    CL/F-V2/F</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11         0.02398730 FALSE  TRUE  0.587219 OMEGA33     IIV-CL/F</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12         0.00306807 FALSE  TRUE  5.275370 SIGMA11 Proportional</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                     desc  panel       trans transTHETA    TH</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   First order absorption rate constant struct    logTrans         NA  TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                Apparent central volume struct    logTrans         NA  TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                     Apparent clearance struct    logTrans         NA  TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4             Apparent peripheral volume struct    logTrans         NA  TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  Apparent intercompartmental clearance struct    logTrans         NA  TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                 Variance of absorption    IIV lognormalOm         NA FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                Covariance of V2/F - KA    IIV        none         NA FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8             Variance of central volume    IIV lognormalOm         NA FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9                Covariance of CL/F - KA    IIV        none         NA FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10             Covariance of CL/F - V2/F    IIV        none         NA FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11                 Variance of clearance    IIV lognormalOm         NA FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12                              Variance     RV     propErr         NA FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       OM     S   LOG LOGIT lognormO   Osd logitOsd propErr addErr     value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  FALSE FALSE  TRUE FALSE    FALSE FALSE    FALSE   FALSE  FALSE 0.4335920</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  FALSE FALSE  TRUE FALSE    FALSE FALSE    FALSE   FALSE  FALSE 4.1187600</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  FALSE FALSE  TRUE FALSE    FALSE FALSE    FALSE   FALSE  FALSE 1.1150300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  FALSE FALSE  TRUE FALSE    FALSE FALSE    FALSE   FALSE  FALSE 4.2099100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  FALSE FALSE  TRUE FALSE    FALSE FALSE    FALSE   FALSE  FALSE 1.2863100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   TRUE FALSE FALSE FALSE     TRUE FALSE    FALSE   FALSE  FALSE 0.2206060</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7   TRUE FALSE FALSE FALSE    FALSE FALSE    FALSE   FALSE  FALSE 0.0690088</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   TRUE FALSE FALSE FALSE     TRUE FALSE    FALSE   FALSE  FALSE 0.0826922</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9   TRUE FALSE FALSE FALSE    FALSE FALSE    FALSE   FALSE  FALSE 0.1340090</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  TRUE FALSE FALSE FALSE    FALSE FALSE    FALSE   FALSE  FALSE 0.0735027</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11  TRUE FALSE FALSE FALSE     TRUE FALSE    FALSE   FALSE  FALSE 0.1691160</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 FALSE  TRUE FALSE FALSE    FALSE FALSE    FALSE    TRUE  FALSE 0.0399167</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            se corr_SD      lower      upper</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.06287440       - 0.37606192 0.49112208</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.02762730       - 4.09348102 4.14403898</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.03284750       - 1.08497454 1.14508546</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.01924850       - 4.19229762 4.22752238</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.03542620       - 1.25389503 1.31872497</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.05297990       - 0.17212939 0.26908261</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.01996170   0.511 0.05074384 0.08727376</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.00982547       - 0.07370189 0.09168251</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.02358740   0.694 0.11242653 0.15559147</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.01054810   0.622 0.06385119 0.08315421</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 0.01972890       - 0.15106406 0.18716794</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 0.00122595       - 0.03879496 0.04103844</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
