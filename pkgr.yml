@@ -6,13 +6,11 @@ Descriptions:
 Packages:
   - devtools
   - pkgdown
-  - mpn.scorecard
 
 Repos:
   - CRAN: https://cran.rstudio.com
   - bbr: https://s3.amazonaws.com/mpn.metworx.dev/releases/bbr/latest_tag
   - pmtables: https://s3.amazonaws.com/mpn.metworx.dev/releases/pmtables/latest_tag
-  - scorecard: https://s3.amazonaws.com/mpn.metworx.dev/releases/mpn.scorecard/0.1.0
 
 Lockfile:
   Type: renv
