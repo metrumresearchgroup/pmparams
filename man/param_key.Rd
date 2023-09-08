@@ -37,31 +37,33 @@ Current options include:
 \item "propErr"    - for proportional error terms (coded using SIGMA in $ERROR) - returns est.+CV\%
 }
 }
+\section{YAML Example}{
+Example of YAML syntax for parameter key file
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{THETA1
+  abb: "KA (1/h)"
+  desc: "First order absorption rate constant"
+  panel: struct
+  trans: logTrans
+
+THETA2
+  abb: "V2/F (L)"
+  desc: "Apparent central volume"
+  panel: struct
+  trans: logTrans
+}\if{html}{\out{</div>}}
+}
+
 \examples{
 
-#Example of parameter key yaml:
-#It must contain parameter names as variables with abb, desc, panel, and trans columns.
-
-# THETA1
-# abb: "KA (1/h)"
-# desc: "First order absorption rate constant"
-# panel: struct
-# trans: logTrans
-
-# THETA2
-# abb: "V2/F (L)"
-# desc: "Apparent central volume"
-# panel: struct
-# trans: logTrans
-
-#Example of parameter key data frame:
-#It must contain parameter names, abb, desc, panel, and trans columns.
+# Example of parameter key data frame:
+# It must contain parameter names, abb, desc, panel, and trans columns.
 
 paramKey = dplyr::tribble(
-~name, ~abb, ~desc, ~panel, ~trans,
-"THETA1",  "KA (1/h)", "First order absorption rate constant",   "struct", "logTrans",
-"THETA2", "V2/F (L)",  "Apparent central volume",                "struct", "logTrans")
+  ~name, ~abb, ~desc, ~panel, ~trans,
+  "THETA1",  "KA (1/h)", "First order absorption rate constant",   "struct", "logTrans",
+  "THETA2", "V2/F (L)",  "Apparent central volume",                "struct", "logTrans"
+)
 paramKey
-
 
 }
