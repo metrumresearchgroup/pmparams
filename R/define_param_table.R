@@ -25,11 +25,9 @@
 #' TRUE/FALSE columns that will be used by subsequent functions.
 #'
 #' @param .estimates path to model directory, bbr NONMEM model, or data.frame of parameter estimates
-#' @param .key path to parameter key or data.frame of parameter key
+#' @param .key path to parameter key or data.frame of parameter key. Described in more detail in \link[pmparams]{param_key}
 #' @param .ci confidence interval. Default is 95
 #' @param .zscore z-score for the specified confidence interval. Only needed for confidence intervals that are NOT 90 or 95 percent
-#'
-#' @seealso \link[pmparams]{param_key}: Parameter key requirements
 #'
 #' @examples
 #'

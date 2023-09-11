@@ -4,9 +4,10 @@
 \alias{param_key}
 \title{Parameter key requirements}
 \description{
-The parameter key file used in the pmparams function must contain the following columns:
+The parameter key used in the pmparams functions can either be a yaml or data frame.
+It must contain the following:
 
-\strong{name} = THETA, OMEGA, SIGMA
+\strong{name} or \strong{yaml variable}= THETA, OMEGA, SIGMA. See examples below.
 
 \strong{abb} = abbreviation you want to appear in the parameter table (use latex coding)
 
@@ -35,4 +36,34 @@ Current options include:
 \item "addErr"     - for additive error terms (coded using SIGMA in $ERROR) - returns est.+ SD
 \item "propErr"    - for proportional error terms (coded using SIGMA in $ERROR) - returns est.+CV\%
 }
+}
+\section{YAML Example}{
+Example of YAML syntax for parameter key file
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{THETA1
+  abb: "KA (1/h)"
+  desc: "First order absorption rate constant"
+  panel: struct
+  trans: logTrans
+
+THETA2
+  abb: "V2/F (L)"
+  desc: "Apparent central volume"
+  panel: struct
+  trans: logTrans
+}\if{html}{\out{</div>}}
+}
+
+\examples{
+
+# Example of parameter key data frame:
+# It must contain parameter names, abb, desc, panel, and trans columns.
+
+paramKey = dplyr::tribble(
+  ~name, ~abb, ~desc, ~panel, ~trans,
+  "THETA1",  "KA (1/h)", "First order absorption rate constant",   "struct", "logTrans",
+  "THETA2", "V2/F (L)",  "Apparent central volume",                "struct", "logTrans"
+)
+paramKey
+
 }

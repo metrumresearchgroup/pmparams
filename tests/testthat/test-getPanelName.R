@@ -1,21 +1,21 @@
 defpt <- define_param_table(paramEst, paramKey)
 gpn <- getPanelName(defpt)
 
-test_that("getPanelName appropriately classifies residual variance panel [MPT-GPN-001]", {
+test_that("getPanelName appropriately classifies residual variance panel", {
 
   # Residual variance panel
   expect_equal(gpn$type[gpn$panel == "RV"], "Residual variance")
   expect_equal(gpn$type_f[gpn$panel == "RV"], 6)
 })
 
-test_that("getPanelName appropriately classifies interindividual covariance parameters panel [MPT-GPN-002]", {
+test_that("getPanelName appropriately classifies interindividual covariance parameters panel", {
 
   # Interindividual covariance parameters
   expect_equal(unique(gpn$type[gpn$OM == TRUE & gpn$diag == FALSE]), "Interindividual covariance parameters")
   expect_equal(unique(gpn$type_f[gpn$OM == TRUE & gpn$diag == FALSE]), 5)
 })
 
-test_that("getPanelName appropriately classifies interindividual variance parameters panel [MPT-GPN-003]", {
+test_that("getPanelName appropriately classifies interindividual variance parameters panel", {
 
   # Interindividual variance parameters
   expect_equal(unique(gpn$type[gpn$OM == TRUE & gpn$diag == TRUE & gpn$panel=="IIV"]),
@@ -23,7 +23,7 @@ test_that("getPanelName appropriately classifies interindividual variance parame
   expect_equal(unique(gpn$type_f[gpn$OM == TRUE & gpn$diag == TRUE & gpn$panel=="IIV"]), 3)
 })
 
-test_that("getPanelName appropriately classifies interoccasion variance parameters panel [MPT-GPN-004]", {
+test_that("getPanelName appropriately classifies interoccasion variance parameters panel", {
 
   # Interoccasion variance parameters
   defpt2 <- defpt
@@ -36,7 +36,7 @@ test_that("getPanelName appropriately classifies interoccasion variance paramete
                "Interoccasion variance parameters")
 })
 
-test_that("getPanelName appropriately classifies covariate effect parameters panel [MPT-GPN-005]", {
+test_that("getPanelName appropriately classifies covariate effect parameters panel", {
 
   # Covariate effect parameters
   defpt3 <- defpt
@@ -46,7 +46,7 @@ test_that("getPanelName appropriately classifies covariate effect parameters pan
   expect_equal(unique(gpn3$type[gpn3$panel=="cov"]), "Covariate effect parameters")
 })
 
-test_that("getPanelName appropriately classifies structural model parameters panel [MPT-GPN-006]", {
+test_that("getPanelName appropriately classifies structural model parameters panel", {
 
   # Structural model parameters
   defpt4 <- defpt

@@ -11,7 +11,7 @@ newDF6 <- newDF %>%
   format_param_table(.select_cols = "all", .prse = TRUE)
 
 
-test_that("format_param_table expected dataframe: col names [MPT-FPT-001]", {
+test_that("format_param_table expected dataframe: col names", {
   #default cols., no prse
   expect_equal(names(newDF3),  c("type", "abb", "greek", "desc", "value", "ci", "shrinkage"))
 
@@ -19,7 +19,7 @@ test_that("format_param_table expected dataframe: col names [MPT-FPT-001]", {
   expect_equal(length(names(newDF5)),  39) #check this
 })
 
-test_that("format_param_table expected dataframe: prse col[MPT-FPT-002]", {
+test_that("format_param_table expected dataframe: prse col", {
   #default cols., prse
   expect_equal(newDF4$pRSE[1],  "6.29")
   expect_true("pRSE" %in% names(newDF6))
@@ -29,7 +29,7 @@ test_that("format_param_table expected dataframe: prse col[MPT-FPT-002]", {
 })
 
 
-test_that("format_param_table continuous columns expected ouput: CI back transforms [MPT-FPT-003]", {
+test_that("format_param_table continuous columns expected ouput: CI back transforms]", {
   newDF_log1 <- newDF %>%
     dplyr::mutate(
       ci = paste0(pmtables::sig(lower), ", ", pmtables::sig(upper))
@@ -38,7 +38,7 @@ test_that("format_param_table continuous columns expected ouput: CI back transfo
   expect_equal(newDF_log1$ci[5], "1.22, 1.36")
 })
 
-test_that("format_param_table continuous columns expected ouput: shrinkage [MPT-FPT-003]", {
+test_that("format_param_table continuous columns expected ouput: shrinkage", {
   newDF_shrink <- newDF %>%
     dplyr::mutate(
       shrinkage = if_else(is.na(shrinkage), "-",
@@ -51,7 +51,7 @@ test_that("format_param_table continuous columns expected ouput: shrinkage [MPT-
   expect_equal(newDF_shrink$shrinkage[8], "6.02")
 })
 
-test_that("format_param_table continuous columns expected ouput: value [MPT-FPT-004]", {
+test_that("format_param_table continuous columns expected ouput: value", {
   expect_equal(newDF3$value[1], "1.54")
   expect_equal(newDF3$value[6], "0.221 [CV\\%=49.7]")
 })

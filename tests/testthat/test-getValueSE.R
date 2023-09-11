@@ -1,5 +1,5 @@
 
-test_that("getValueSE accurately calculates each parameter's accociated metric [MPT-GVS-001]", {
+test_that("getValueSE accurately calculates each parameter's accociated metric", {
   param_df1 <- getValueSE(.df = newDF)
   expect_equal(param_df1$value, newDF$estimate)
   expect_equal(param_df1$se, newDF$stderr)
@@ -12,7 +12,7 @@ test_that("getValueSE accurately calculates each parameter's accociated metric [
 
 })
 
-test_that("getValueSE digits and maxex options for each parameter's accociated metric  [MPT-GVS-003]", {
+test_that("getValueSE digits and maxex options for each parameter's accociated metric", {
   param_df2 <- getValueSE(.df = newDF)
   expect_equal(nchar(param_df2$corr_SD[9]), 5)
 })
