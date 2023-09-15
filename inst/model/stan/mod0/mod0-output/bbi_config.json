@@ -1,0 +1,13 @@
+{
+  "output_dir": "/data/bbr-stan-testing/model/stan/expo/mod0/mod0-output",
+  "data_path": "../mod0-standata.json",
+  "model_md5": "2b439ac799c8a1bdac5a3620b3baea52",
+  "data_md5": "7fc5a7585f743ddf7cf1ec6a07100298",
+  "standata_script_md5": "cac3d8aa9f0ea26132beea62bbb0e52d",
+  "stanargs_md5": "e7488708da99e6715131e612ac18698c",
+  "init_script_md5": "9656c6d7c6954c0d22a19bff88df03ac",
+  "configuration": {
+    "cmdstan_version": "2.33.1",
+    "cmdstanr_version": "0.5.3"
+  }
+}
