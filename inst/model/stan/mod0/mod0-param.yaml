@@ -1,12 +1,20 @@
 EMAX:
   abb: $\theta_3$
   desc: Maximal tooth length
+  panel: x
+  trans: none
 ED50:
   abb: $\theta_2$
   desc: Dose yielding half of the maximal effect
+  panel: y
+  trans: none
 E0:
   abb: $\theta_1$
   desc: Tooth length at a dose of 0
+  panel: z
+  trans: none
 SIGMA:
   abb: $\sigma$
   desc: Residual standard deviation
+  panel: zz
+  trans: none

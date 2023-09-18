@@ -55,3 +55,10 @@ formatnonbootDF <- nonbootDF %>% pmparams::format_param_table()
 
 
 bootParam <-  left_join(formatnonbootDF, formatBootDF, by = c("abb", "desc"))
+
+#bayes
+fit0 <- readr::read_rds(here::here("inst", "model", "stan", "mod0", "mod0-output", "fit0_draws.RDS"))
+bayes_key <- here::here("inst", "model", "stan", "mod0", "mod0-param.yaml")
+
+bayesDF <- define_param_table_bayes(.estimates = fit0, .key = bayes_key)
+

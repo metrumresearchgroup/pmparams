@@ -1,88 +1,137 @@
-#' Combine parameter estimates with parameter key
+#' Combine parameter estimates with parameter key for bayes model
 #'
 #' @description
 #'
 #' Combines model output parameter estimates with information in parameter key. Performs
 #' some formatting of this combined data.frame.
 #'
-#' Expected input is a data.frame with parameter estimates, with the columns:
-#' `parameter_names`, `estimate`, `stderr`, `random_effect_sd`, `random_effect_sdse`,
-#' `fixed`, `diag`, `shrinkage`.
-#'
-#' Some `parameter_names` have punctuation such as `OMEGA(1,1)`. A new column is
-#' added without punctuation, such as `OMEGA11`.
-#'
-#' Following this, parameter details from the parameter key are joined to the parameter estimates.
-#' A `dplyr::inner_join` is used so that only parameters in the model output are kept
-#' in the table. This was done so that, if your base and final model used the same structural
-#' THETAs and random parameters, the same parameter key could be used for both.
-#'
-#' This join adds the following columns: `abb` (abbreviation), `desc` (parameter description),
-#' `panel`, `trans` (transformation).
-#'
-#' With this information provided, a check is performed to determine whether parameters
-#' with special transformation rules were defined correctly. In addition, a series of
-#' TRUE/FALSE columns that will be used by subsequent functions.
-#'
 #' @param .estimates data.frame of parameter estimates
 #' @param .key path to parameter key or data.frame of parameter key. Described in more detail in \link[pmparams]{param_key}
 #' @param .select_param parameters to summarize. Default is all parameters in the parameter key
-#' @param .summary_stat summary statistics. Default is median, standard deviation, 2.5% and 97.5% CI
+#' @param .summary_stat summary statistics. Default is median, standard deviation. Potential summary statistics include: mean, median, standard deviation, mad
+#' @param .ci confidence interval. Default is 0.95.
 #' @param .software type of software used to. Default is stan
 #'
-#' @examples
-#'
-#' paramEst <- utils::read.csv(system.file("model/nonmem/param_est.csv", package = "pmparams"))
-#' paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
-#'
-#' define_param_table(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
-#'
-#' #To choose a confidence interval that is not 95 or 90, look up z-score and add as function parameter
-#' define_param_table(.estimates = paramEst, .key = paramKey, .ci = 82, .zscore = 0.915)
-#'
 #' @export
-define_param_table_bayes <- function(.estimates, .key, .select_param = "all", .summary_stat, .software = "stan"){
+define_param_table_bayes <- function(.estimates, .key, .select_param = "all", .summary_stat = c("median", "sd"), .ci = 95, .software = "stan"){
 
-  fit0 <- readr::read_rds(here::here("inst", "model", "stan", "mod0", "mod0-output", "fit0_draws.RDS"))
-  .key <- here::here("inst", "model", "stan", "mod0", "mod0-param.yaml")
-  .estimates <- fit0
-  y1l <- yaml::yaml.load_file(.key)
+  # fit0 <- readr::read_rds(here::here("inst", "model", "stan", "mod0", "mod0-output", "fit0_draws.RDS"))
+  # .key <- here::here("inst", "model", "stan", "mod0", "mod0-param.yaml")
+  # .estimates <- fit0
+  # .select_param <- c("emax", "sigma")
+  # .summary_stat <- c("median", "sd", "mad", "mean")
+  # .ci <- 95
+
+  .key_yaml <- yaml::yaml.load_file(.key)
   .key <- loadParamKey(.key)
-  .select_param <- c("emax", "sigma")
-  .summary_stat <- c("median", "sd", "ci2.5", "ci97.5")
 
-  names(y1l) <- toupper(names(y1l))
-  names(.estimates) <- toupper(names(.estimates))
+  names(.key_yaml) <- tolower(names(.key_yaml))
+  names(.estimates) <- tolower(names(.estimates))
+  .summary_stat <- tolower(.summary_stat)
 
-  if (.select_param == "all"){ #warning message- fix
-    .select_param <- names(y1l)
-  } else {
-    .select_param <- toupper(.select_param)
+  if (!all(.summary_stat %in% c("mean", "median", "sd", "mad"))){
+    stop("Summary statistic provided is not supported by pmarams. See ?define_param_table_bayes for supported summary statistics")
   }
 
-  .estimates1<- .estimates %>%
-    dplyr::select(all_of(.select_param)) #warning message- fix
+  if (any(.select_param == "all")){
+    .select_param <- names(.key_yaml)
+  } else {
+    .select_param <- tolower(.select_param)
+  }
 
-  mod_estimates <- .estimates1 %>%
-    mutate_all(across(.select_param), mean = mean())
-  #removePunc(.column = "parameter_names") %>%
-  dplyr::inner_join(.key, by = "name") %>%
-    checkTransforms() %>%
-    defineRows() %>%
-    getValueSE() %>%
-    getCI(.ci = .ci, .zscore = .zscore)
+  if (!all(.key$name %in% names(.estimates))){
+    warning(paste0("There are parameters in parameter key or `.select_param` argument that are not in parameters in data.frame of parameter estimates.
+                   The following parameters will be dropped: ",
+                   .key %>% filter(!(.key$name %in% names(.estimates))) %>% pull(name) %>% as.data.frame()
+                   ))
+  }
+
+  .estimates1 <- .estimates %>%
+    dplyr::select(any_of(.select_param)) %>%
+    tidyr::pivot_longer(cols = everything()) #suppress warning?
+
+  .estimates2 <- .estimates1 %>%
+    group_by(name) %>%
+    mutate(
+      mean = mean(value, na.rm = TRUE),
+      median = median(value, na.rm = TRUE),
+      sd = sd(value, na.rm = TRUE),
+      #mad_temp = abs(value - mean),
+      #madx = sum(mad_temp)/length(name),
+      mad = posterior::mad(value) #ask about mad calculation here
+    ) %>%
+    dplyr::distinct(name, mean, median, sd, mad) %>%
+    ungroup()
 
 
-  .summary_stat1 <-
-    .estimates1 %>%
-    sapply(median) %>%
-    as.data.frame()
+  fit1 <-  fit0 %>% dplyr::select(all_of(.select_param))
 
-  # want this at thend
-  # A tibble: 2 × 12
-  # variable mean  median sd    mad   q5    q95   rhat  ess_bulk ess_tail abb           desc
-  # <chr>    <chr> <chr>  <chr> <chr> <chr> <chr> <chr>    <num>    <num> <chr>         <chr>
-  #   1 emax     98.6  98.8   1.08  1.02  96.5  99.9  1.00     3065.    2082. "$\\theta_3$" Maximal tooth length
-  # 2 sigma    10.4  10.4   0.226 0.221 10.0  10.7  1.00     8538.    2761. "$\\sigma$"   Residual standard deviation
+  #fix ci
+  if (.ci < 1){
+    .ci <- .ci
+  } else {
+    .ci <- .ci/100
+  }
+
+  low_ci = 1- .ci
+
+  ci_list <- list()
+
+  for (j in .select_param){
+
+    ci_list[[noquote(j)]] <- fit1 %>%
+      posterior::extract_variable_matrix(variable = paste0(j)) %>%
+      posterior::quantile2(probs = c(low_ci, .ci))
+  }
+
+  #if length of ci > 1 will need to do multiple lists for those corresponding confidence intervals
+
+  ci_estimates <- do.call(cbind, ci_list) %>%
+    t() %>%
+    as.data.frame() %>%
+    tibble::rownames_to_column("name")
+
+  # mod_estimates_auto <- fit0 %>%
+  #   dplyr::select(all_of(tolower(.select_param))) %>%
+  #   posterior::summarise_draws() %>%
+  #   dplyr::rename(name = variable) %>%
+  #   dplyr::mutate(name = toupper(name)) %>%
+  #   dplyr::left_join(.key, by = "name") %>%
+  #   dplyr::mutate(software = .software)
+
+  mod_estimates <- .estimates2 %>%
+    dplyr::left_join(ci_estimates, by = "name") %>%
+    dplyr::left_join(.key, by = "name") %>%
+    dplyr::mutate(software = .software)
+
   return(mod_estimates)
 }
+
+#scratch
+#summary_list <- list()
+# for (i in .summary_stat){
+#   noquote_i <- noquote(i)
+#   if (i %in% c("median", "mean", "sd")){
+#     summary_list[[noquote_i]] <- sapply(.estimates1, noquote_i, na.rm=TRUE)
+#   }
+
+# if (grepl("CI", i)){
+# i = "ci2.5"
+# ii = as.numeric(stringr::str_remove(i, "ci"))/100
+# se <- .estimates1 %>%
+#       tidyr::pivot_longer(cols = everything()) %>%
+#       mutate(
+#             se = (sd(value)/sqrt(length((value))))
+#             )
+#
+# summary_list[[noquote_i]] <- getCI(se, .ci = 95)
+#
+# }
+
+#  }
+# mod_estimates <- do.call(cbind, summary_list) %>%
+#   as.data.frame() %>%
+#   tibble::rownames_to_column("name") %>%
+#   dplyr::left_join(.key, by = "name") %>%
+#   dplyr::mutate(software = .software)
+# mod_estimates
