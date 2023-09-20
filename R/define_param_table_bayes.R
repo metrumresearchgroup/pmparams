@@ -10,7 +10,7 @@
 #' @param .select_param parameters to summarize. Default is all parameters in the parameter key
 #' @param .summary_stat summary statistics. Default is median, standard deviation. Potential summary statistics include: mean, median, standard deviation, mad
 #' @param .ci confidence interval. Default is 0.95.
-#' @param .software type of software used to. Default is stan
+#' @param .software type of software used to generate estimates. Default is stan
 #'
 #' @export
 define_param_table_bayes <- function(.estimates, .key, .select_param = "all", .summary_stat = c("median", "sd"), .ci = 95, .software = "stan"){
@@ -18,25 +18,29 @@ define_param_table_bayes <- function(.estimates, .key, .select_param = "all", .s
   # fit0 <- readr::read_rds(here::here("inst", "model", "stan", "mod0", "mod0-output", "fit0_draws.RDS"))
   # .key <- here::here("inst", "model", "stan", "mod0", "mod0-param.yaml")
   # .estimates <- fit0
-  # .select_param <- c("emax", "sigma")
+  # .select_param <- "all"
   # .summary_stat <- c("median", "sd", "mad", "mean")
   # .ci <- 95
+  # .software = "stan"
 
   .key_yaml <- yaml::yaml.load_file(.key)
   .key <- loadParamKey(.key)
 
+  #lower case
+  .key <- .key %>%  dplyr::mutate(name = tolower(name))
   names(.key_yaml) <- tolower(names(.key_yaml))
   names(.estimates) <- tolower(names(.estimates))
   .summary_stat <- tolower(.summary_stat)
+  .select_param <- tolower(.select_param)
 
   if (!all(.summary_stat %in% c("mean", "median", "sd", "mad"))){
     stop("Summary statistic provided is not supported by pmarams. See ?define_param_table_bayes for supported summary statistics")
   }
 
   if (any(.select_param == "all")){
-    .select_param <- names(.key_yaml)
+    .select_param <- .key %>% filter(.key$name %in% names(.estimates)) %>% pull(name)
   } else {
-    .select_param <- tolower(.select_param)
+    .select_param <- .key %>% filter(.select_param %in% names(.estimates)) %>% pull(name)
   }
 
   if (!all(.key$name %in% names(.estimates))){
@@ -48,7 +52,8 @@ define_param_table_bayes <- function(.estimates, .key, .select_param = "all", .s
 
   .estimates1 <- .estimates %>%
     dplyr::select(any_of(.select_param)) %>%
-    tidyr::pivot_longer(cols = everything()) #suppress warning?
+    tidyr::pivot_longer(cols = everything()) %>%
+    suppressWarnings()
 
   .estimates2 <- .estimates1 %>%
     group_by(name) %>%
@@ -64,7 +69,7 @@ define_param_table_bayes <- function(.estimates, .key, .select_param = "all", .s
     ungroup()
 
 
-  fit1 <-  fit0 %>% dplyr::select(all_of(.select_param))
+  fit1 <-  fit0 %>% dplyr::select(any_of(.select_param)) %>% suppressWarnings()
 
   #fix ci
   if (.ci < 1){
