@@ -38,7 +38,7 @@ paramEst <- utils::read.csv(system.file("model/nonmem/param_est.csv", package = 
 paramModel <- bbr::read_model(system.file("model/nonmem/102", package = "pmparams"))
 
 newDF <- define_param_table(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
-
+format_param_table(newDF)
 #Data for testing boot param table
 boot_paramEstPath <- system.file("model/nonmem/boot/data/boot-106.csv", package = "pmparams")
 boot_paramEst <- utils::read.csv(system.file("model/nonmem/boot/data/boot-106.csv", package = "pmparams"))
@@ -57,6 +57,10 @@ formatnonbootDF <- nonbootDF %>% pmparams::format_param_table()
 bootParam <-  left_join(formatnonbootDF, formatBootDF, by = c("abb", "desc"))
 
 #bayes
+#mod0 <- bbr::read_model(here::here("inst", "model", "stan",'mod0'))
+#fit0 <- bbr::submit_model(mod0, .overwrite = TRUE) #Error in loadNamespace(x) : there is no package called ‘cmdstanr’
+#fit <- fit0 %>% posterior::as_draws_df()
+
 fit0 <- readr::read_rds(here::here("inst", "model", "stan", "mod0", "mod0-output", "fit0_draws.RDS"))
 bayes_key <- here::here("inst", "model", "stan", "mod0", "mod0-param.yaml")
 

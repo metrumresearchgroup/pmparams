@@ -10,10 +10,13 @@
 #' @param .select_param parameters to summarize. Default is all parameters in the parameter key
 #' @param .summary_stat summary statistics. Default is median, standard deviation. Potential summary statistics include: mean, median, standard deviation, mad
 #' @param .ci confidence interval. Default is 0.95.
-#' @param .software type of software used to generate estimates. Default is stan
 #'
 #' @export
-define_param_table_bayes <- function(.estimates, .key, .select_param = "all", .summary_stat = c("median", "sd"), .ci = 95, .software = "stan"){
+define_param_table_bayes <- function(.estimates,
+                                     .key,
+                                     .select_param = "all",
+                                     .summary_stat = c("median", "sd"),
+                                     .ci = 95){
 
   # fit0 <- readr::read_rds(here::here("inst", "model", "stan", "mod0", "mod0-output", "fit0_draws.RDS"))
   # .key <- here::here("inst", "model", "stan", "mod0", "mod0-param.yaml")
@@ -21,7 +24,6 @@ define_param_table_bayes <- function(.estimates, .key, .select_param = "all", .s
   # .select_param <- "all"
   # .summary_stat <- c("median", "sd", "mad", "mean")
   # .ci <- 95
-  # .software = "stan"
 
   .key_yaml <- yaml::yaml.load_file(.key)
   .key <- loadParamKey(.key)
@@ -78,7 +80,8 @@ define_param_table_bayes <- function(.estimates, .key, .select_param = "all", .s
     .ci <- .ci/100
   }
 
-  low_ci = 1- .ci
+  low_ci = (1- .ci)/2
+  high_ci = 1-low_ci
 
   ci_list <- list()
 
@@ -86,57 +89,43 @@ define_param_table_bayes <- function(.estimates, .key, .select_param = "all", .s
 
     ci_list[[noquote(j)]] <- fit1 %>%
       posterior::extract_variable_matrix(variable = paste0(j)) %>%
-      posterior::quantile2(probs = c(low_ci, .ci))
+      posterior::quantile2(probs = c(low_ci, high_ci)) #check this
   }
 
   #if length of ci > 1 will need to do multiple lists for those corresponding confidence intervals
 
-  ci_estimates <- do.call(cbind, ci_list) %>%
+  ci_estimates0 <- do.call(cbind, ci_list) %>%
     t() %>%
     as.data.frame() %>%
     tibble::rownames_to_column("name")
 
-  # mod_estimates_auto <- fit0 %>%
-  #   dplyr::select(all_of(tolower(.select_param))) %>%
-  #   posterior::summarise_draws() %>%
-  #   dplyr::rename(name = variable) %>%
-  #   dplyr::mutate(name = toupper(name)) %>%
-  #   dplyr::left_join(.key, by = "name") %>%
-  #   dplyr::mutate(software = .software)
+  ci_estimates1 <- ci_estimates0[grepl("q",colnames(ci_estimates0))]
+
+  ci_estimates2 <- ci_estimates1 %>%
+    tidyr::pivot_longer(everything())  %>%
+    dplyr::distinct(name) %>%
+    dplyr::mutate(
+      num_name = as.numeric(gsub("q", "", name)),
+      new_name = if_else(num_name == min(num_name), "lower", "upper")
+    ) %>%
+    dplyr::select(name, new_name) %>%
+    tidyr::pivot_wider(names_from = new_name, values_from = name)
+
+  ci_estimates <- ci_estimates0 %>%
+    dplyr::rename(lower = ci_estimates2$lower, upper = ci_estimates2$upper)
 
   mod_estimates <- .estimates2 %>%
     dplyr::left_join(ci_estimates, by = "name") %>%
-    dplyr::left_join(.key, by = "name") %>%
-    dplyr::mutate(software = .software)
+    dplyr::left_join(.key, by = "name")
 
   return(mod_estimates)
 }
 
-#scratch
-#summary_list <- list()
-# for (i in .summary_stat){
-#   noquote_i <- noquote(i)
-#   if (i %in% c("median", "mean", "sd")){
-#     summary_list[[noquote_i]] <- sapply(.estimates1, noquote_i, na.rm=TRUE)
-#   }
-
-# if (grepl("CI", i)){
-# i = "ci2.5"
-# ii = as.numeric(stringr::str_remove(i, "ci"))/100
-# se <- .estimates1 %>%
-#       tidyr::pivot_longer(cols = everything()) %>%
-#       mutate(
-#             se = (sd(value)/sqrt(length((value))))
-#             )
-#
-# summary_list[[noquote_i]] <- getCI(se, .ci = 95)
-#
-# }
-
-#  }
-# mod_estimates <- do.call(cbind, summary_list) %>%
-#   as.data.frame() %>%
-#   tibble::rownames_to_column("name") %>%
+#scratch- delete
+# mod_estimates_auto <- fit0 %>%
+#   dplyr::select(all_of(tolower(.select_param))) %>%
+#   posterior::summarise_draws() %>%
+#   dplyr::rename(name = variable) %>%
+#   dplyr::mutate(name = toupper(name)) %>%
 #   dplyr::left_join(.key, by = "name") %>%
 #   dplyr::mutate(software = .software)
-# mod_estimates
