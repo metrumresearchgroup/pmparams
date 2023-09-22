@@ -24,17 +24,29 @@ format_param_table <- function(.df,
 
   .digit = ifelse(is.null(.digit), formals(pmtables::sig)$digits, .digit)
 
+  .df_out <-
+    .df %>%
+    formatBootValues(.digit = .digit, .maxex = .maxex) %>%
+    formatGreekNames() %>%
+    getPanelName()
 
+  if (any(tolower(.select_cols) == "all")) {
+    return(.df_out %>% as.data.frame())
+  } else {
+    return(.df_out %>%
+             dplyr::select(.select_cols) %>%
+             as.data.frame())
+  }
 
 
   .df1 <- .df %>%
     dplyr::mutate(
-        ci = paste0(pmtables::sig(low, .digit, .maxex), ', ', pmtables::sig(high, .digit, .maxex))
+        ci = paste0(pmtables::sig(lower, .digit, .maxex), ', ', pmtables::sig(upper, .digit, .maxex))
     ) %>%
-    select(-low, -high)
+    select(-lower, -upper)
 
-  if (unique(.df$software) == "nonmem"){
-    #Add here transformations- similar to regular parameter table transformations?
+  if (.iiv_param == "var-cov"){
+    #just follow what is in nonmem reg
     .df_out <- .df1 #%>%
       #formatValues(.digit = .digit, .maxex = .maxex, .model_type = "bayes")
   } else {

@@ -18,12 +18,12 @@ define_param_table_bayes <- function(.estimates,
                                      .summary_stat = c("median", "sd"),
                                      .ci = 95){
 
-  # fit0 <- readr::read_rds(here::here("inst", "model", "stan", "mod0", "mod0-output", "fit0_draws.RDS"))
-  # .key <- here::here("inst", "model", "stan", "mod0", "mod0-param.yaml")
-  # .estimates <- fit0
-  # .select_param <- "all"
-  # .summary_stat <- c("median", "sd", "mad", "mean")
-  # .ci <- 95
+  fit0 <- readr::read_rds(here::here("inst", "model", "stan", "mod0", "mod0-output", "fit0_draws.RDS"))
+  .key <- here::here("inst", "model", "stan", "mod0", "mod0-param.yaml")
+  .estimates <- fit0
+  .select_param <- "all"
+  .summary_stat <- c("median", "sd")
+  .ci <- 95
 
   .key_yaml <- yaml::yaml.load_file(.key)
   .key <- loadParamKey(.key)
@@ -40,15 +40,15 @@ define_param_table_bayes <- function(.estimates,
   }
 
   if (any(.select_param == "all")){
-    .select_param <- .key %>% filter(.key$name %in% names(.estimates)) %>% pull(name)
+    .select_param <- .key %>% dplyr::filter(.key$name %in% names(.estimates)) %>% dplyr::pull(name)
   } else {
-    .select_param <- .key %>% filter(.select_param %in% names(.estimates)) %>% pull(name)
+    .select_param <- .key %>% dplyr::filter(.select_param %in% names(.estimates)) %>% dplyr::pull(name)
   }
 
   if (!all(.key$name %in% names(.estimates))){
     warning(paste0("There are parameters in parameter key or `.select_param` argument that are not in parameters in data.frame of parameter estimates.
                    The following parameters will be dropped: ",
-                   .key %>% filter(!(.key$name %in% names(.estimates))) %>% pull(name) %>% as.data.frame()
+                   .key %>% filter(!(.key$name %in% names(.estimates))) %>% dplyr::pull(name) %>% as.data.frame()
                    ))
   }
 
@@ -58,22 +58,20 @@ define_param_table_bayes <- function(.estimates,
     suppressWarnings()
 
   .estimates2 <- .estimates1 %>%
-    group_by(name) %>%
-    mutate(
+    dplyr::group_by(name) %>%
+    dplyr::mutate(
       mean = mean(value, na.rm = TRUE),
       median = median(value, na.rm = TRUE),
       sd = sd(value, na.rm = TRUE),
-      #mad_temp = abs(value - mean),
-      #madx = sum(mad_temp)/length(name),
-      mad = posterior::mad(value) #ask about mad calculation here
+      mad = posterior::mad(value)
     ) %>%
-    dplyr::distinct(name, mean, median, sd, mad) %>%
-    ungroup()
+    dplyr::select(name, any_of(.select_param))
+    dplyr::distinct(name, any_of(.summary_stat)) %>%
+    dplyr::ungroup()
 
 
   fit1 <-  fit0 %>% dplyr::select(any_of(.select_param)) %>% suppressWarnings()
 
-  #fix ci
   if (.ci < 1){
     .ci <- .ci
   } else {
@@ -92,8 +90,6 @@ define_param_table_bayes <- function(.estimates,
       posterior::quantile2(probs = c(low_ci, high_ci)) #check this
   }
 
-  #if length of ci > 1 will need to do multiple lists for those corresponding confidence intervals
-
   ci_estimates0 <- do.call(cbind, ci_list) %>%
     t() %>%
     as.data.frame() %>%
@@ -106,7 +102,7 @@ define_param_table_bayes <- function(.estimates,
     dplyr::distinct(name) %>%
     dplyr::mutate(
       num_name = as.numeric(gsub("q", "", name)),
-      new_name = if_else(num_name == min(num_name), "lower", "upper")
+      new_name = dplyr::if_else(num_name == min(num_name), "lower", "upper")
     ) %>%
     dplyr::select(name, new_name) %>%
     tidyr::pivot_wider(names_from = new_name, values_from = name)
@@ -116,7 +112,9 @@ define_param_table_bayes <- function(.estimates,
 
   mod_estimates <- .estimates2 %>%
     dplyr::left_join(ci_estimates, by = "name") %>%
-    dplyr::left_join(.key, by = "name")
+    dplyr::left_join(.key, by = "name") %>%
+    checkTransforms() %>%
+    defineRows()
 
   return(mod_estimates)
 }
