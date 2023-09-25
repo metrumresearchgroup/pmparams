@@ -26,7 +26,7 @@ format_param_table <- function(.df,
 
   .df_out <-
     .df %>%
-    formatBootValues(.digit = .digit, .maxex = .maxex) %>%
+    formatValuesBayes(.digit = .digit, .maxex = .maxex) %>%
     formatGreekNames() %>%
     getPanelName()
 
@@ -54,12 +54,18 @@ format_param_table <- function(.df,
   }
 
 
+  .df_out <-
+    .df %>%
+    formatValues(.digit = .digit, .maxex = .maxex) %>%
+    formatGreekNames() %>%
+    getPanelName()
+
   if (any(tolower(.select_cols) == "all")) {
     return(.df_out %>% as.data.frame())
   } else {
     return(.df_out %>%
-      dplyr::select(.select_cols) %>%
-      as.data.frame())
+             dplyr::select(.select_cols) %>%
+             as.data.frame())
   }
 
 }

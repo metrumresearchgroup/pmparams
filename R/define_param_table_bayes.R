@@ -18,12 +18,12 @@ define_param_table_bayes <- function(.estimates,
                                      .summary_stat = c("median", "sd"),
                                      .ci = 95){
 
-  fit0 <- readr::read_rds(here::here("inst", "model", "stan", "mod0", "mod0-output", "fit0_draws.RDS"))
-  .key <- here::here("inst", "model", "stan", "mod0", "mod0-param.yaml")
-  .estimates <- fit0
-  .select_param <- "all"
-  .summary_stat <- c("median", "sd")
-  .ci <- 95
+  # fit0 <- readr::read_rds(here::here("inst", "model", "stan", "mod0", "mod0-output", "fit0_draws.RDS"))
+  # .key <- here::here("inst", "model", "stan", "mod0", "mod0-param.yaml")
+  # .estimates <- fit0
+  # .select_param <- "all"
+  # .summary_stat <- c("median", "sd")
+  # .ci <- 95
 
   .key_yaml <- yaml::yaml.load_file(.key)
   .key <- loadParamKey(.key)
@@ -65,8 +65,8 @@ define_param_table_bayes <- function(.estimates,
       sd = sd(value, na.rm = TRUE),
       mad = posterior::mad(value)
     ) %>%
-    dplyr::select(name, any_of(.select_param))
-    dplyr::distinct(name, any_of(.summary_stat)) %>%
+    dplyr::select(name, any_of(.summary_stat)) %>%
+    dplyr::distinct() %>%
     dplyr::ungroup()
 
 
