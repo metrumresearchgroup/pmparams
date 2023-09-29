@@ -34,7 +34,8 @@ transformed parameters {
   e0 = tv_e0 + omega_e0 * eta_e0;
   
   for (i in 1:N) {
-    mu[i] = e0[ID[i]] + (emax-e0[ID[i]])*pow(Conc[i]/100,gamma) / (pow(ec50[ID[i]]/100,gamma) + pow(Conc[i]/100,gamma));
+    mu[i] = e0[ID[i]] + (emax-e0[ID[i]])*pow(Conc[i]/100,gamma) / 
+               (pow(ec50[ID[i]]/100,gamma) + pow(Conc[i]/100,gamma));
   }
   
 }
@@ -59,9 +60,6 @@ model {
 }
 
 generated quantities {
-  // Calculate penalized log-likelihood as
-  // \sum_{j=1}^{n_i} dnorm(y_{ij} | mu_{ij}, sigma) + dmvnorm(eta)
-
   vector[N] simdv_obs;
   vector[N] simdv_new;
 
@@ -82,7 +80,8 @@ generated quantities {
     }
     
     for (i in 1:N) {
-      mu_new[i] = e0_new[ID[i]] + (emax-e0_new[ID[i]])*pow(Conc[i]/100,gamma) / (pow(ec50_new[ID[i]]/100,gamma) + pow(Conc[i]/100,gamma));
+      mu_new[i] = e0_new[ID[i]] + (emax-e0_new[ID[i]])*pow(Conc[i]/100,gamma) / 
+                            (pow(ec50_new[ID[i]]/100,gamma) + pow(Conc[i]/100,gamma));
       simdv_new[i] = normal_rng(mu_new[i] , sigma);
     }
   }

@@ -2,6 +2,7 @@
 
 export(define_boot_table)
 export(define_param_table)
+export(define_param_table_bayes)
 export(format_boot_table)
 export(format_param_table)
 importFrom(magrittr,"%>%")
