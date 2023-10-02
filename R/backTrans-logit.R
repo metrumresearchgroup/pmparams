@@ -11,5 +11,5 @@ backTrans_logit <- function(.df){
       value = dplyr::case_when(LOGIT ~ exp(value)/(1+exp(value)), TRUE ~ value),
       lower = dplyr::case_when(LOGIT ~ exp(lower)/(1+exp(lower)), TRUE ~ lower),
       upper = dplyr::case_when(LOGIT ~ exp(upper)/(1+exp(upper)), TRUE ~ upper)
-    )
+      )
 }

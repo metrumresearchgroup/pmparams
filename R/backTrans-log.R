@@ -12,5 +12,5 @@ backTrans_log <- function(.df){
       value = dplyr::case_when(LOG ~ exp(value), TRUE ~ value),
       lower = dplyr::case_when(LOG ~ exp(lower), TRUE ~ lower),
       upper = dplyr::case_when(LOG ~ exp(upper), TRUE ~ upper)
-    )
+      )
 }
