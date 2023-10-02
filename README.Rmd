@@ -4,6 +4,11 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+<br>
+
+# pmparams <a href='https:/metrumresearchgroup.github.io/pmparams'><img src='man/figures/logo.png' align="right" width="135px"/></a>
+
+
 ## Overview 
 `pmparams` helps define and format parameter tables. Example code demonstrating the package as part of an analysis workflow will soon be available in our [MeRGE Expo 1 repository](https://github.com/metrumresearchgroup/expo1-nonmem-foce/).
 

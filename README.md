@@ -1,6 +1,10 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+<br>
+
+# pmparams <a href='https:/metrumresearchgroup.github.io/pmparams'><img src='man/figures/logo.png' align="right" width="135px"/></a>
+
 ## Overview
 
 `pmparams` helps define and format parameter tables. Example code
