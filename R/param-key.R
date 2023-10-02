@@ -19,11 +19,8 @@
 #'   - panel=="cov" ~ "Covariate effect parameters"
 #'   - panel=="IIV" ~ "Interindividual covariance parameters" (off-diagonals << function takes care of this)
 #'   - panel=="IIV" ~ "Interindividual variance parameters" (diagonals << function takes care of this)
-#'   - panel=="IIV-sd-corr" ~ "Interindividual standard deviation parameters" (off-diagonals << function takes care of this)
-#'   - panel=="IIV-sd-corr" ~ "Interindividual correlation parameters" (diagonals << function takes care of this)
 #'   - panel=="IOV"  ~ "Interoccasion variance parameters"
 #'   - panel=="RV" ~ "Residual variance"
-#'   - panel=="RUV-sd" ~ "Residual standard deviation"
 #'
 #' __trans__ = define how the parameter will be transformed. Current options include:
 #'   - "none" -   untransformed parameters, e.g. THETAs or off-diagonals

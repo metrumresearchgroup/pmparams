@@ -11,4 +11,4 @@ removePunc <- function(.df, .column){
   modDF <- .df %>%
     dplyr::mutate(name = gsub("[[:punct:]]", "", .df[[.column]]))
   return(modDF)
-}
+  }

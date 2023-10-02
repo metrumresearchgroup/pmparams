@@ -4,7 +4,7 @@
 \alias{backTrans_log}
 \title{Back transform parameters estimated in the log domain}
 \usage{
-backTrans_log(.df)
+backTrans_log(.df, .col_list = c("value", "lower", "upper"))
 }
 \description{
 Make sure any other calculations, such as CI (and pRSE) are

@@ -4,7 +4,7 @@
 \alias{backTrans_logit}
 \title{Back transform parameters estimated in the logit domain}
 \usage{
-backTrans_logit(.df)
+backTrans_logit(.df, .col_list = c("value", "lower", "upper"))
 }
 \description{
 Make sure any other calculations, such as CI (and pRSE) are

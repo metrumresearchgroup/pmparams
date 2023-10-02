@@ -5,19 +5,11 @@
 #' done before back-calculating these values.
 #'
 #' @keywords internal
-backTrans_logit <- function(.df, .col_list = c("value", "lower", "upper")){
-  for (i in 1:length(.col_list)){
-    .col_name <- rlang::sym(.col_list[i])
-    out <- .df %>%
-      dplyr::mutate(
-        !!.col_name := dplyr::case_when(LOGIT ~ exp(!!.col_name)/(1+exp(!!.col_name)), TRUE ~ !!.col_name)
-      ) %>%
-      dplyr::select(name, .col_name)
-
-    .df2 <- .df %>%
-      dplyr::select(-.col_name) %>%
-      dplyr::left_join(out, by = "name")
-  }
-  .df2 <- .df2[names(.df)]
-  .df2
+backTrans_logit <- function(.df){
+  .df %>%
+    dplyr::mutate(
+      value = dplyr::case_when(LOGIT ~ exp(value)/(1+exp(value)), TRUE ~ value),
+      lower = dplyr::case_when(LOGIT ~ exp(lower)/(1+exp(lower)), TRUE ~ lower),
+      upper = dplyr::case_when(LOGIT ~ exp(upper)/(1+exp(upper)), TRUE ~ upper)
+    )
 }

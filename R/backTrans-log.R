@@ -6,19 +6,11 @@
 #'
 #' @keywords internal
 
-backTrans_log <- function(.df, .col_list = c("value", "lower", "upper")){
-  for (i in 1:length(.col_list)){
-    .col_name <- rlang::sym(.col_list[i])
-    out <- .df %>%
-      dplyr::mutate(
-        !!.col_name := dplyr::case_when(LOG ~ exp(!!.col_name), TRUE ~ !!.col_name)
-      ) %>%
-      dplyr::select(name, .col_name)
-
-    .df2 <- .df %>%
-      dplyr::select(-.col_name) %>%
-      dplyr::left_join(out, by = "name")
-  }
-  .df2 <- .df2[names(.df)]
-  .df2
+backTrans_log <- function(.df){
+  .df %>%
+    dplyr::mutate(
+      value = dplyr::case_when(LOG ~ exp(value), TRUE ~ value),
+      lower = dplyr::case_when(LOG ~ exp(lower), TRUE ~ lower),
+      upper = dplyr::case_when(LOG ~ exp(upper), TRUE ~ upper)
+    )
 }

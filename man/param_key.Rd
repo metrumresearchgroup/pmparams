@@ -21,8 +21,11 @@ Current options include:
 \item panel=="cov" ~ "Covariate effect parameters"
 \item panel=="IIV" ~ "Interindividual covariance parameters" (off-diagonals << function takes care of this)
 \item panel=="IIV" ~ "Interindividual variance parameters" (diagonals << function takes care of this)
+\item panel=="IIV-sd-corr" ~ "Interindividual standard deviation parameters" (off-diagonals << function takes care of this)
+\item panel=="IIV-sd-corr" ~ "Interindividual correlation parameters" (diagonals << function takes care of this)
 \item panel=="IOV"  ~ "Interoccasion variance parameters"
 \item panel=="RV" ~ "Residual variance"
+\item panel=="RUV-sd" ~ "Residual standard deviation"
 }
 
 \strong{trans} = define how the parameter will be transformed. Current options include:
