@@ -5,7 +5,6 @@
 #' done before back-calculating these values.
 #'
 #' @keywords internal
-
 backTrans_log <- function(.df){
   .df %>%
     dplyr::mutate(

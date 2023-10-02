@@ -6,8 +6,6 @@ Descriptions:
 Packages:
   - devtools
   - pkgdown
-  - bbr.bayes
-  - tidybayes
 
 Repos:
   - CRAN: https://cran.rstudio.com
