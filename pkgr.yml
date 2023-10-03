@@ -8,6 +8,7 @@ Packages:
   - pkgdown
   - bbr.bayes
   - tidybayes
+  - here
 
 Repos:
   - CRAN: https://cran.rstudio.com

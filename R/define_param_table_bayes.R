@@ -70,7 +70,9 @@ define_param_table_bayes <- function(.estimates,
     dplyr::ungroup()
 
 
-  fit1 <-  fit0 %>% dplyr::select(any_of(.select_param)) %>% suppressWarnings()
+  fit1 <-  .estimates %>%
+    dplyr::select(any_of(.select_param)) %>%
+    suppressWarnings()
 
   if (.ci < 1){
     .ci <- .ci
@@ -120,10 +122,9 @@ define_param_table_bayes <- function(.estimates,
 }
 
 #scratch- delete
-# mod_estimates_auto <- fit0 %>%
+# mod_estimates_auto <- .estimates %>%
 #   dplyr::select(all_of(tolower(.select_param))) %>%
 #   posterior::summarise_draws() %>%
 #   dplyr::rename(name = variable) %>%
 #   dplyr::mutate(name = toupper(name)) %>%
-#   dplyr::left_join(.key, by = "name") %>%
-#   dplyr::mutate(software = .software)
+#   dplyr::left_join(.key, by = "name")

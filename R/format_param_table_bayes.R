@@ -17,7 +17,7 @@ format_param_table <- function(.df,
                              .digit = getOption("pmparams.dig"),
                              .maxex = getOption("pmparams.maxex")){
 
-  .df <- define_param_table_bayes(.estimates = fit0, .key = bayes_key)
+  .df <- define_param_table_bayes(.estimates = fit0_draws, .key = bayes_key)
   .select_cols = "all"
   .digit = getOption("pmparams.dig")
   .maxex = getOption("pmparams.maxex")
