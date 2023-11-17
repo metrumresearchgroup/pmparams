@@ -1,9 +1,13 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-<br>
-
 # pmparams <a href='https:/metrumresearchgroup.github.io/pmparams'><img src='man/figures/logo.png' align="right" width="135px"/></a>
+
+<!-- badges: start -->
+
+[![Build
+Status](https://github-drone.metrumrg.com/api/badges/metrumresearchgroup/pmparams/status.svg)](https://github-drone.metrumrg.com/metrumresearchgroup/pmparams)
+<!-- badges: end -->
 
 ## Overview
 
