@@ -45,9 +45,15 @@ format_param_table <- function(.df,
 
   .digit = ifelse(is.null(.digit), formals(pmtables::sig)$digits, .digit)
 
+  .ci_level <- .df %>% distinct(ci_level) %>% pull(ci_level)
+  .ci_final_nam <- paste0("ci_", .ci_level)
+  .select_cols <- append(.select_cols[.select_cols !="ci"], .ci_final_nam)
+
   if (.prse == TRUE) {
     .df <- .df %>% getpRSE()
     .select_cols <- append(.select_cols, "pRSE")
+  } else {
+    .df <- .df
   }
 
   .df_out <-
@@ -56,12 +62,17 @@ format_param_table <- function(.df,
     formatGreekNames() %>%
     getPanelName()
 
+  .df_out[[paste0("ci_", .ci_level)]] <-  .df_out$ci
+
   if (any(tolower(.select_cols) == "all")) {
-    return(.df_out %>% as.data.frame())
+    return(.df_out %>% dplyr::select(-ci) %>% as.data.frame())
   } else {
     return(.df_out %>%
       dplyr::select(.select_cols) %>%
       as.data.frame())
   }
+
+
+
 
 }

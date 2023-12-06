@@ -10,13 +10,14 @@ newDF5 <- newDF %>%
 newDF6 <- newDF %>%
   format_param_table(.select_cols = "all", .prse = TRUE)
 
+ci_name <- newDF %>% distinct(ci_level) %>% pull(ci_level)
 
 test_that("format_param_table expected dataframe: col names", {
   #default cols., no prse
-  expect_equal(names(newDF3),  c("type", "abb", "greek", "desc", "value", "ci", "shrinkage"))
+  expect_equal(names(newDF3),  c("type", "abb", "greek", "desc", "value", "shrinkage", paste0("ci_", ci_name)))
 
   #all cols., no prse
-  expect_equal(length(names(newDF5)),  39) #check this
+  expect_equal(length(names(newDF5)),  40)
 })
 
 test_that("format_param_table expected dataframe: prse col", {
