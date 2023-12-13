@@ -45,7 +45,7 @@ format_param_table <- function(.df,
 
   .digit = ifelse(is.null(.digit), formals(pmtables::sig)$digits, .digit)
 
-  .ci_level <- .df %>% distinct(ci_level) %>% pull(ci_level)
+  .ci_level <- .df %>% dplyr::distinct(ci_level) %>% dplyr::pull(ci_level)
   .ci_final_nam <- paste0("ci_", .ci_level)
   .select_cols <- append(.select_cols[.select_cols !="ci"], .ci_final_nam)
 
