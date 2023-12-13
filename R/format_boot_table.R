@@ -36,6 +36,8 @@ format_boot_table <- function(.boot_df,
                             .digit = getOption("pmparams.dig"),
                             .maxex = getOption("pmparams.maxex")){
 
+  .select_cols <- append(.select_cols[.select_cols !="boot_ci"], "boot_ci_95")
+
   .digit = ifelse(is.null(.digit), formals(pmtables::sig)$digits, .digit)
 
   .df_out <- .boot_df %>%
