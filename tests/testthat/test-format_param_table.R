@@ -16,7 +16,7 @@ test_that("format_param_table expected dataframe: col names", {
   expect_equal(names(newDF3),  c("type", "abb", "greek", "desc", "value", "ci", "shrinkage"))
 
   #all cols., no prse
-  expect_equal(length(names(newDF5)),  39) #check this
+  expect_equal(length(names(newDF5)),  40)
 })
 
 test_that("format_param_table expected dataframe: prse col", {
@@ -54,5 +54,10 @@ test_that("format_param_table continuous columns expected ouput: shrinkage", {
 test_that("format_param_table continuous columns expected ouput: value", {
   expect_equal(newDF3$value[1], "1.54")
   expect_equal(newDF3$value[6], "0.221 [CV\\%=49.7]")
+})
+
+test_that("format_param_table expected dataframe: respects yaml key order", {
+  expect_equal(unname(unlist(param_yaml))[grepl('desc',names(unlist(param_yaml)),fixed=T) & unlist(param_yaml) %in% newDF3$desc],
+               newDF3$desc)
 })
 
