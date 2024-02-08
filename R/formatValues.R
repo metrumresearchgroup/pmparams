@@ -25,6 +25,7 @@ formatValues <- function(.df,
       value = dplyr::case_when(
         diag & OM & Osd | diag & OM & logitOsd ~ glue::glue("{value} {parensSQ_se(sd)}"),
         diag & OM | diag & S & propErr ~ glue::glue("{value} {parensSQ_CV(cv)}"),
+        diag & OM | diag & S & addErrLogDV ~ glue::glue("{value} {parensSQ_CV(cv)}"),
         !diag & OM ~ glue::glue("{value} {parensSQ_corr(corr_SD)}"),
         diag & S & addErr ~ glue::glue("{value} {parensSQ_se(corr_SD)}"),
         !diag & S ~ glue::glue("{value} {parensSQ_corr(corr_SD)}"),

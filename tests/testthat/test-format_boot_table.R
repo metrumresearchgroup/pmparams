@@ -10,7 +10,7 @@ test_that("format_boot_table expected dataframe: col names", {
   expect_equal(names(newDF3),  c("abb", "desc", "boot_value", "boot_ci"))
 
   #all cols
-  expect_equal(length(names(newDF5)),  24)
+  expect_equal(length(names(newDF5)),  25)
 })
 
 
