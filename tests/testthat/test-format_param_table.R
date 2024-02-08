@@ -29,7 +29,7 @@ test_that("format_param_table expected dataframe: prse col", {
 })
 
 
-test_that("format_param_table continuous columns expected ouput: CI back transforms]", {
+test_that("format_param_table continuous columns expected ouput: CI back transforms", {
   newDF_log1 <- newDF %>%
     dplyr::mutate(
       ci = paste0(pmtables::sig(lower), ", ", pmtables::sig(upper))
@@ -56,3 +56,18 @@ test_that("format_param_table continuous columns expected ouput: value", {
   expect_equal(newDF3$value[6], "0.221 [CV\\%=49.7]")
 })
 
+test_that("format_param_table continuous columns expected ouput: CI back transforms for addErrLogDV", {
+  key_file <- system.file("model/nonmem/pk-parameter-key.yaml", package = "pmparams")
+  key_df <- pmtables::yaml_as_df(key_file) %>%
+    filter(.row != "gg") %>%
+    dplyr::add_row(.row = "gg", name = "SIGMA11", abb = "Lognormal residual error", desc = "Variance", panel = "RV", trans = "addErrLogDV")
+
+  newDF4 <- define_param_table(.estimates = paramEst, .key = key_df, .ci = 95, .zscore = NULL)
+
+  newDF5 <- newDF4%>% format_param_table()
+
+  expected_cv =  pmtables::sig(sqrt(exp(newDF4$value[newDF4$addErrLogDV == TRUE]) - 1) * 100)
+  expected_value = paste0(pmtables::sig(newDF4$value[newDF4$addErrLogDV == TRUE]), " [CV\\%=", expected_cv, "]")
+
+  expect_equal(newDF5$value[newDF5$abb == "Lognormal residual error"], expected_value)
+})
