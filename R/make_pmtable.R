@@ -99,14 +99,12 @@ if (.pmtype %in% c("full", "fixed", "fixed structural", "fixed covariate")){
 }
 
 if (is.null(.notes)){
-  pm_tab2 <- pm_tab1 %>%
-    pmtables::stable()
+  pm_tab2 <- pm_tab1
 
 } else {
   pm_tab2 <- pm_tab1 %>%
         pmtables::st_notes(.notes) %>%
-        pmtables::st_notes_detach(width = .width, type = "minipage") %>%
-        pmtables::stable()
+        pmtables::st_notes_detach(width = .width, type = "minipage")
 }
 
 return(pm_tab2)
