@@ -5,7 +5,7 @@ test_that("make_pmtable incorrect input type: invalid .pmtype",{
 
 test_that("make_pmtable pmtable commands: st_panel", {
   pm_tibble1 <- make_pmtable(.df = newFormatDF, .pmtype = "full")
-  expect_equal(unname(unlist(pm_tibble$panel$col)), "type")
+  expect_equal(unname(unlist(pm_tibble1$panel$col)), "type")
 })
 
 test_that("make_pmtable pmtable commands: make cols blank", {
@@ -18,7 +18,7 @@ test_that("make_pmtable pmtable commands: make cols blank", {
 
 test_that("make_pmtable pmtable commands: rename cols", {
   pm_tibble3 <- make_pmtable(.df = newFormatDF, .pmtype = "fixed structural")
-  expect_equal(unname(unlist(pm_tibble1$cols_rename)), "value")
+  expect_equal(unname(unlist(pm_tibble3$cols_rename)), "value")
 
   pm_tibble4 <- make_pmtable(.df = newFormatDF, .pmtype = "random")
   expect_equal(unname(unlist(pm_tibble4$cols_rename)), c("value", "shrinkage"))
@@ -35,11 +35,14 @@ test_that("make_pmtable pmtable commands: notes", {
 })
 
 test_that("make_pmtable pmtable commands: args", {
+  pm_tibble5 <- make_pmtable(.df = newFormatDF, .pmtype = "fixed", .notes = c("note 1", "note2"))
   expect_equal(unlist(pm_tibble5$args), NULL)
 })
 
 
 test_that("make_pmtable correctly filters with .pmtype", {
+  pm_tibble4 <- make_pmtable(.df = newFormatDF, .pmtype = "random")
+  pm_tibble5 <- make_pmtable(.df = newFormatDF, .pmtype = "fixed", .notes = c("note 1", "note2"))
 
   #random
   expect_equal(
