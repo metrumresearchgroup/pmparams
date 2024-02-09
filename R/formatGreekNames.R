@@ -23,7 +23,7 @@ formatGreekNames <- function(.df){
     dplyr::mutate(
       text = dplyr::case_when(
         OM ~ "Omega",
-        S ~ "Sigma",
+        S & !THETAERR ~ "Sigma",
         TRUE ~ tolower(text)),
       greek = dplyr::case_when(
         TH & LOG ~ expGreek(text, num2),

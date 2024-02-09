@@ -55,3 +55,8 @@ formatnonbootDF <- nonbootDF %>% pmparams::format_param_table()
 
 
 bootParam <-  left_join(formatnonbootDF, formatBootDF, by = c("abb", "desc"))
+
+#testing theta error block
+theta_err = paramEst %>% as.data.frame() %>% mutate(parameter_names = if_else(parameter_names == "SIGMA(1,1)", "THETA(1,1)", parameter_names))
+theta_err_key = paramKey %>% mutate(name = if_else(name == "SIGMA11", "THETA11", name))
+theta_err_df1 <- define_param_table(.estimates = theta_err, .key = theta_err_key, .ci = 95, .zscore = NULL)
