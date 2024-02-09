@@ -7,16 +7,15 @@ newDF4 <- newDF %>%
 newDF5 <- newDF %>%
   format_param_table(.select_cols = "all")
 
-newDF6 <- newDF %>%
-  format_param_table(.select_cols = "all", .prse = TRUE)
-
+newDF6 <- theta_err_df1 %>%
+  format_param_table(.select_cols = "all")
 
 test_that("format_param_table expected dataframe: col names", {
   #default cols., no prse
   expect_equal(names(newDF3),  c("type", "abb", "greek", "desc", "value", "ci", "shrinkage"))
 
   #all cols., no prse
-  expect_equal(length(names(newDF5)),  39) #check this
+  expect_equal(length(names(newDF5)),  40)
 })
 
 test_that("format_param_table expected dataframe: prse col", {
@@ -54,5 +53,10 @@ test_that("format_param_table continuous columns expected ouput: shrinkage", {
 test_that("format_param_table continuous columns expected ouput: value", {
   expect_equal(newDF3$value[1], "1.54")
   expect_equal(newDF3$value[6], "0.221 [CV\\%=49.7]")
+})
+
+test_that("format_param_table continuous columns expected ouput: greek", {
+  expect_equal(newDF5$greek[newDF5$S & !newDF5$THETAERR], "$\\Sigma_{(1,1)}$")
+  expect_equal(newDF6$greek[newDF6$S & newDF6$THETAERR], "$\\theta_{(1,1)}$")
 })
 

@@ -92,4 +92,8 @@ test_that("define_param_table generates the confidence intervals for various inp
   expect_equal(newDF_ci95$upper[7], 0.108133732)
 })
 
+test_that("define_param_table message if using theta error block", {
+  expect_message(define_param_table(.estimates = theta_err, .key = theta_err_key, .ci = 95, .zscore = NULL))
+})
+
 
