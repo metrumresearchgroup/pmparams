@@ -12,7 +12,7 @@ format_boot_table(
 )
 }
 \arguments{
-\item{.boot_df}{parameter estimates output from \code{define_boot_table} with modifications ready for formatting}
+\item{.boot_df}{parameter estimates output from \code{\link{define_boot_table()}} with modifications ready for formatting}
 
 \item{.select_cols}{columns to select for output. Default selects "abb", "desc", "boot_value", "boot_ci". To return all columns, specify "all" for .select_cols.}
 

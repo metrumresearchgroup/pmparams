@@ -48,8 +48,8 @@ test_that("make_pmtable correctly filters with .pmtype", {
   expect_equal(
     pm_tibble4$data %>%
       filter(
-        stringr::str_detect(greek, "Omega") |
-          stringr::str_detect(type, "Resid")
+        stringr::str_detect(pm_tibble4$data$greek, "Omega") |
+          stringr::str_detect(pm_tibble4$data$type, "Resid")
       ) %>%
       nrow(),
     nrow(pm_tibble4$data)

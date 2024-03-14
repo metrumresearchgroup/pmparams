@@ -67,7 +67,7 @@ if (.pmtype == "full"){
 
 } else if (.pmtype == "fixed covariate") {
   pm_tab0 <- .df0 %>%
-    dplyr::filter(stringr::str_detect(type, "Covariate"))
+    dplyr::filter(stringr::str_detect(type, "effect"))
 
 } else if (.pmtype == "random") {
 
@@ -88,12 +88,19 @@ if (.pmtype %in% c("full", "fixed", "fixed structural", "fixed covariate")){
     pmtables::st_panel("type") %>%
     pmtables::st_blank("abb", "greek", "desc") %>%
     pmtables::st_rename("Estimate" = "value")
-} else {
+} else if (.pmtype == "random"){
   pm_tab1 <- pm_tab0 %>%
     dplyr::select(-desc) %>%
     pmtables::st_new() %>%
     pmtables::st_panel("type") %>%
     pmtables::st_blank("abb", "greek") %>%
+    pmtables::st_rename("Estimate" = "value",
+                        "Shrinkage (\\%)" = "shrinkage")
+} else {
+  pm_tab1 <- pm_tab0 %>%
+    pmtables::st_new() %>%
+    pmtables::st_panel("type") %>%
+    pmtables::st_blank("abb", "greek", "desc") %>%
     pmtables::st_rename("Estimate" = "value",
                         "Shrinkage (\\%)" = "shrinkage")
 }
@@ -104,7 +111,7 @@ if (is.null(.notes)){
 } else {
   pm_tab2 <- pm_tab1 %>%
         pmtables::st_notes(.notes) %>%
-        pmtables::st_notes_detach(width = .width, type = "minipage")
+        pmtables::st_notes_detach(width = .width)
 }
 
 return(pm_tab2)

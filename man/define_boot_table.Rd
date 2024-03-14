@@ -11,32 +11,29 @@ define_boot_table(.boot_estimates, .nonboot_estimates, .key)
 
 \item{.nonboot_estimates}{non-bootstrap final model - either path to file or bbr model_summary}
 
-\item{.key}{path to parameter key or data.frame of parameter key. Described in more detail in \link[pmparams]{param_key}}
+\item{.key}{path to parameter key or data.frame of parameter key. Described in more detail in \code{\link{param_key()}}}
 }
 \description{
 Combines boot strap estimates and non boot strap estimates with information in parameter key. Performs
 some formatting of this combined data.frame.
 There are two main steps of this function:
-\enumerate{
-\item Run \code{bbr::param_estimates_compare} to extract summary quantiles, the 5th, 50th, and 95th, of the
+
+1.Run \code{bbr::param_estimates_compare} to extract summary quantiles, the 5th, 50th, and 95th, of the
 bootstrap estimates for each model parameter.
-}
-
-Some \code{parameter_names} have punctuation such as \code{OMEGA(1,1)}. A new column is
+\itemize{
+\item Some \code{parameter_names} have punctuation such as \code{OMEGA(1,1)}. A new column is
 added without punctuation, such as \code{OMEGA11}.
-
-Following this, parameter details from the parameter key are joined to the boot strap parameter estimates.
+\item Following this, parameter details from the parameter key are joined to the boot strap parameter estimates.
 A \code{dplyr::inner_join} is used so that only parameters in the model output are kept
 in the table. This was done so that, if your base and final model used the same structural
 THETAs and random parameters, the same parameter key could be used for both.
-
-This join adds the following columns: \code{abb} (abbreviation), \code{desc} (parameter description),
+\item This join adds the following columns: \code{abb} (abbreviation), \code{desc} (parameter description),
 \code{panel}, \code{trans} (transformation).
-\enumerate{
-\item Reformat non-bootstrap estimates and left join onto combined bootstrap estimates and parameter key data.frame.
+}
+
+2.Reformat non-bootstrap estimates and left join onto combined bootstrap estimates and parameter key data.frame.
 Expected input is a data.frame with parameter estimates, with the columns:
 \code{parameter_names}, \code{estimate}.
-}
 
 With this information provided, a check is performed to determine whether parameters
 with special transformation rules were defined correctly. In addition, a series of

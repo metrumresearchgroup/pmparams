@@ -1,0 +1,154 @@
+---
+title: "Getting Started with pmparams"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{getting-started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+#writeLines("Version: 1.0", con = "temp.Rproj")
+```
+
+# Introduction
+
+This vignette takes the user through some basic scenarios for defining, formatting, and making parameter tables using `pmparams`. For more information how to effectively integrate `pmparams` into your workflow, visit the 
+<a href="https://merge.metrumrg.com/expo/expo1-nonmem-foce/posts/parameter-tables.html" target="_blank">
+MeRGE Expo: Parameter Tables </a>.
+
+```{r setup_interactive, include=FALSE}
+if (interactive() || isTRUE(getOption('knitr.in.progress'))) {
+  devtools::load_all()
+  Sys.setenv('pmparams_SHINY_DEV_LOAD_PATH' = rprojroot::find_rstudio_root_file())
+}
+```
+
+```{r load packages, results = 'hide', message=FALSE, warning=FALSE}
+library(pmparams)
+library(dplyr)
+library(yaml)
+library(pmtables)
+```
+
+# Data requirements
+
+## Parameter key
+
+We begin by creating a parameter key that tells R how to interpret you parameter values. Our code require four arguments for each parameter:
+
+* abb - abbreviation for model parameter (we use latex coding)
+* desc - parameter description to appear
+* panel - the table panel the parameter should appear under
+* trans - definition of how the parameter should be transformed
+
+If you have a model that uses theta in the $ERROR block, make sure that the theta section's panel is "RV" so that `pmparams` functions can properly identify it. 
+
+It is recommended to use a parameter key yaml, but `pmparams` works for parameter key tibbles. 
+
+A more detailed walk-through of generating the parameter key is available here: <a href="https://merge.metrumrg.com/expo/expo1-nonmem-foce/posts/parameter-key.html" target="_blank">
+MeRGE Expo: Creating a Parameter Key </a>. 
+
+```{r, message = FALSE}
+paramKeyPath <- system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
+paramKey <- yaml::yaml.load_file(paramKeyPath)
+head(unlist(paramKey))
+```
+
+## Parameter estimates
+
+`pmparams` allows for different parameter estimate input types:
+* path to model directory
+* bbr NONMEM model
+* data.frame of parameter estimates
+
+For this example, we will use the path to the model directory.
+```{r, message = FALSE}
+paramEstimatePath <- system.file("model/nonmem/102", package = "pmparams")
+```
+
+
+# Define parameter table
+
+We will now join parameter estimates and parameter key. Note: this is an inner_join, so only parameters included in the model output and parameter key will be kept in the table. This was done so that, if your base and final model used the same structural THETAs and random parameters, the same parameter key could be used for both. The additional covariate THETAs defined in the parameter key YAML would simply be ignored when creating the base model parameter table.
+
+Additionally, `define_param_table` performs checks and calculates confidence intervals.
+
+```{r}
+df1 <- define_param_table(.estimates = paramEstimatePath,
+                          .key = paramKeyPath)
+
+head(df1)
+```
+
+# Format parameter table
+
+Now, we perform some house-keeping based on the new parameter key information, calculate any summary statistics (the 95% confidence intervals are calculated by default), and format the values for the report using `format_param_table`.
+```{r}
+df2 <- format_param_table(df1)
+```
+
+Usually `define_param_table` and `format_param_table` are run together in a single call like this:
+
+```{r}
+df2 <- define_param_table(.estimates = paramEstimatePath,
+                          .key = paramKeyPath) %>% 
+        format_param_table()
+  
+
+head(df2)
+```
+
+# Make parameter table
+
+We leverage `make_pmtable` to generate fixed effects and random effects parameter tables
+
+```{r}
+tableList <- list()
+
+#fixed footnotes
+footNote1 <- "Abbreviations: CI = confidence intervals; SE = standard error"
+footNote2 <- "Confidence intervals = estimate $\\pm$ 1.96 $\\cdot$ SE"
+
+#random footnotes
+footNote3 <- "Abbreviations: CI = confidence intervals; Corr = Correlation coefficient; CV = coefficient of variation; SD = standard deviation; SE = standard error"
+footNote4 <- "CV\\% of log-normal omegas = sqrt(exp(estimate) - 1) $\\cdot$ 100" 
+footNote5 <- "CV\\% of sigma = sqrt(estimate) $\\cdot$ 100"
+```
+
+```{r}
+##fixed
+tableList$fixed <- make_pmtable(df2, .pmtype = "fixed", .notes = c(footNote1, footNote2))
+
+# tableList$fixed %>% 
+#   stable() %>% 
+#   pmtables::st_as_image()
+```
+
+```{r}
+##random
+tableList$random <- make_pmtable(df2, .pmtype = "random", .notes = c(footNote3, footNote4, footNote5))
+
+tableList$random %>% 
+  stable() %>% 
+  st_asis()
+```
+
+If you want to add or overwrite pre-defined `pmtables` argument, simply pipe onto the `make_pmtable` tibble:
+```{r,results = 'asis'}
+tableList$random <- make_pmtable(df2, .pmtype = "random", .notes = c(footNote3, footNote4, footNote5))
+tableList$random %>% 
+  st_panel("abb") %>% 
+  st_select(-"type", -"greek") %>% 
+  stable() %>% 
+  st_asis()
+```
+
+# Other functions
+`pmparams` exports two functions for appending bootstrap estimates to parameter tables. See the 
+<a href="https://metrumresearchgroup.github.io/pmparams/vignettes/making-bootstrap-parameter-tables.html" 
+target="_blank">Reference Log</a> for more details.
