@@ -6,21 +6,21 @@
 #' some formatting of this combined data.frame.
 #' There are two main steps of this function:
 #'
-#' 1. Run `bbr::param_estimates_compare` to extract summary quantiles, the 5th, 50th, and 95th, of the
+#'1.Run `bbr::param_estimates_compare` to extract summary quantiles, the 5th, 50th, and 95th, of the
 #' bootstrap estimates for each model parameter.
 #'
-#' Some `parameter_names` have punctuation such as `OMEGA(1,1)`. A new column is
+#' - Some `parameter_names` have punctuation such as `OMEGA(1,1)`. A new column is
 #' added without punctuation, such as `OMEGA11`.
 #'
-#' Following this, parameter details from the parameter key are joined to the boot strap parameter estimates.
+#' - Following this, parameter details from the parameter key are joined to the boot strap parameter estimates.
 #' A `dplyr::inner_join` is used so that only parameters in the model output are kept
 #' in the table. This was done so that, if your base and final model used the same structural
 #' THETAs and random parameters, the same parameter key could be used for both.
 #'
-#' This join adds the following columns: `abb` (abbreviation), `desc` (parameter description),
+#' - This join adds the following columns: `abb` (abbreviation), `desc` (parameter description),
 #' `panel`, `trans` (transformation).
 #'
-#' 2. Reformat non-bootstrap estimates and left join onto combined bootstrap estimates and parameter key data.frame.
+#'2.Reformat non-bootstrap estimates and left join onto combined bootstrap estimates and parameter key data.frame.
 #' Expected input is a data.frame with parameter estimates, with the columns:
 #' `parameter_names`, `estimate`.
 #'
@@ -30,7 +30,7 @@
 #'
 #' @param .boot_estimates parameter boot estimates- either path to file or data.frame
 #' @param .nonboot_estimates non-bootstrap final model - either path to file or bbr model_summary
-#' @param .key path to parameter key or data.frame of parameter key. Described in more detail in \link[pmparams]{param_key}
+#' @param .key path to parameter key or data.frame of parameter key. Described in more detail in \code{\link{param_key()}}
 #'
 #' @examples
 #'

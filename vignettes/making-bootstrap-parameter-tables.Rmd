@@ -1,0 +1,140 @@
+---
+title: "making-bootstrap-parameter-tables"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{making-bootstrap-parameter-tables}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+#writeLines("Version: 1.0", con = "temp.Rproj")
+```
+
+# Introduction
+
+This is a vignette to help you become familiar with using `define_boot_table()` and `format_boot_table()`. 
+For more information how to effectively integrate `pmparams` into your workflow, visit the 
+<a href="https://merge.metrumrg.com/expo/expo1-nonmem-foce/posts/parameter-tables.html" target="_blank">
+MeRGE Expo: Parameter Tables </a>..
+
+
+```{r setup_interactive, include=FALSE}
+if (interactive() || isTRUE(getOption('knitr.in.progress'))) {
+  devtools::load_all()
+  Sys.setenv('pmparams_SHINY_DEV_LOAD_PATH' = rprojroot::find_rstudio_root_file())
+}
+```
+
+```{r load packages, results = 'hide', message=FALSE, warning=FALSE}
+library(pmparams)
+library(dplyr)
+library(yaml)
+library(pmtables)
+```
+
+# Data requirements
+
+## Parameter key
+
+We begin by creating a parameter key that tells R how to interpret you parameter values. Our code require four arguments for each parameter:
+
+* abb - abbreviation for model parameter (we use latex coding)
+* desc - parameter description to appear
+* panel - the table panel the parameter should appear under
+* trans - definition of how the parameter should be transformed
+
+If you have a model that uses theta in the $ERROR block, make sure that the theta section's panel is "RV" so that `pmparams` functions can properly identify it. 
+
+It is recommended to use a parameter key yaml, but `pmparams` works for parameter key tibbles. 
+
+A more detailed walk-through of generating the parameter key is available here: <a href="https://merge.metrumrg.com/expo/expo1-nonmem-foce/posts/parameter-key.html" target="_blank">
+MeRGE Expo: Creating a Parameter Key </a>. 
+
+```{r, message = FALSE}
+paramKeyPath <- system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
+paramKey <- yaml::yaml.load_file(paramKeyPath)
+head(unlist(paramKey))
+```
+
+## Non-boot Parameter estimates
+
+`pmparams` allows for different non-boot parameter estimate input types:
+* path to model directory
+* data.frame of bbr model_summary
+
+For this example, we will use the path to the model directory.
+```{r, message = FALSE}
+nonboot_paramEstPath <- system.file("model/nonmem/106", package = "pmparams")
+```
+
+## Boot parameter estimates 
+`pmparams` allows for different boot parameter estimate input types:
+* path to file 
+* data.frame
+
+For this example, we will use the path to file.
+```{r, message = FALSE}
+boot_paramEstPath <- system.file("model/nonmem/boot/data/boot-106.csv", package = "pmparams")
+```
+
+# Define boot parameter table
+
+We will now join parameter estimates and parameter key. Note: this is an inner_join, so only parameters included in the model output and parameter key will be kept in the table. This was done so that, if your base and final model used the same structural THETAs and random parameters, the same parameter key could be used for both. The additional covariate THETAs defined in the parameter key YAML would simply be ignored when creating the base model parameter table.
+
+Additionally, `define_param_table` performs checks and calculates confidence intervals.
+
+```{r}
+df1 <- define_boot_table(.boot_estimates = boot_paramEstPath,
+                .nonboot_estimates = nonboot_paramEstPath,
+                .key = paramKeyPath)
+
+head(df1)
+```
+
+# Format boot parameter table
+
+Now, we perform some house-keeping based on the new parameter key information, calculate any summary statistics (the 95% confidence intervals are calculated by default), and format the values for the report using `format_boot_table`.
+```{r}
+df2 <- format_boot_table(df1)
+```
+
+Usually `define_boot_table` and `format_boot_table` are run together in a single call like this:
+
+```{r}
+df2 <- define_boot_table(.boot_estimates = boot_paramEstPath,
+                .nonboot_estimates = nonboot_paramEstPath,
+                .key = paramKeyPath) %>% 
+        format_boot_table()
+  
+
+head(df2)
+```
+
+# Make parameter table
+
+We use `pmtables` to make formatted table.
+
+```{r}
+tableList <- list()
+
+#fixed footnotes
+footNote1 <- "Abbreviations: CI = confidence intervals"
+footNote2 <- "Confidence intervals = estimate $\\pm$ 1.96 $\\cdot$ SE"
+```
+
+```{r}
+
+tableList$bootstrap <- df2 %>% 
+  mutate(boot_ci_95 = if_else(is.na(boot_ci_95), "FIXED", boot_ci_95)) %>% 
+  st_new() %>% 
+  st_panel("desc") %>% 
+  stable()
+
+tableList$bootstrap %>% st_asis()
+```
