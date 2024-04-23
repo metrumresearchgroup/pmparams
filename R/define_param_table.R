@@ -56,7 +56,7 @@ define_param_table <- function(.estimates, .key, .ci = 95, .zscore = NULL){
     getCI(.ci = .ci, .zscore = .zscore)
 
   if(any(mod_estimates$THETAERR)){
-    message("THETA error block detected:  ", mod_estimates$parameter_names[mod_estimates$THETAERR])
+    message("THETA term was used in $ERROR:  ", mod_estimates$parameter_names[mod_estimates$THETAERR])
   }
 
   return(mod_estimates)
