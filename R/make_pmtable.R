@@ -100,7 +100,7 @@ if (.pmtype %in% c("full", "fixed", "fixed structural", "fixed covariate")){
   pm_tab1 <- pm_tab0 %>%
     pmtables::st_new() %>%
     pmtables::st_panel("type") %>%
-    pmtables::st_blank("abb", "greek", "desc") %>%
+    pmtables::st_blank("abb", "greek") %>%
     pmtables::st_rename("Estimate" = "value",
                         "Shrinkage (\\%)" = "shrinkage")
 }
