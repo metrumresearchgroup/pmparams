@@ -48,7 +48,7 @@ test_that("format_param_table continuous columns expected ouput: shrinkage", {
 
   expect_equal(newDF_shrink$shrinkage[1], "-")
   expect_equal(newDF_shrink$shrinkage[6], "17.9")
-  expect_equal(newDF_shrink$shrinkage[8], "6.02")
+  expect_equal(newDF_shrink$shrinkage[8], "0.587")
 })
 
 test_that("format_param_table continuous columns expected ouput: value", {

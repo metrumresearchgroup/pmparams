@@ -54,7 +54,7 @@ define_param_table <- function(.estimates, .key, .ci = 95, .zscore = NULL){
     defineRows() %>%
     getValueSE() %>%
     getCI(.ci = .ci, .zscore = .zscore) %>%
-    dplyr::arrange("nrow")
+    dplyr::arrange(as.numeric(nrow))
 
   return(mod_estimates)
 }
