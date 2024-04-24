@@ -19,7 +19,7 @@ steps:
 
 - name: Install bbi
   pull: never
-  image: 906087756158.dkr.ecr.us-east-1.amazonaws.com/r-dev-ci-mpn-4.1:cmdstanr
+  image: 906087756158.dkr.ecr.us-east-1.amazonaws.com/r-dev-ci-mpn-4.1:cran-latest
   commands:
     - |
       curl -fSsL "$BBI_URL/$BBI_VERSION/bbi_linux_amd64.tar.gz" |
@@ -81,7 +81,7 @@ steps:
 
 - name: Install bbi
   pull: never
-  image: 906087756158.dkr.ecr.us-east-1.amazonaws.com/r-dev-ci-mpn-4.1:cmdstanr
+  image: 906087756158.dkr.ecr.us-east-1.amazonaws.com/r-dev-ci-mpn-4.1:latest
   commands:
     - |
       curl -fSsL "$BBI_URL/$BBI_VERSION/bbi_linux_amd64.tar.gz" |
@@ -106,6 +106,7 @@ steps:
   - R -s -e 'devtools::install_deps(upgrade = '"'"'always'"'"', dependencies = TRUE)'
   - R -s -e 'pkgpub::create_tagged_repo(.dir = '"'"'/ephemeral'"'"')'
   environment:
+    USER: drone
     BBI_EXE_PATH: /ephemeral/bbi
   volumes:
   - name: cache
