@@ -76,7 +76,7 @@ test_that("define_param_table incorrect parameter key input type: Only abb, desc
 test_that("define_param_table generates correct corr_SD", {
   expect_true(all(newDF$estimate == newDF$value))
   expect_true(all(newDF$stderr == newDF$se))
-  expect_true(newDF$corr_SD[7] == "0.511")
+  expect_true(newDF$corr_SD[9] == "0.511")
   expect_true(newDF$corr_SD[1] == "-")
   expect_true(newDF$corr_SD[6] == "-")
 })
@@ -89,11 +89,20 @@ test_that("define_param_table generates the confidence intervals for various inp
   expect_equal(newDF_ci90$upper[2], 4.1640688)
 
   expect_equal(newDF_ci95$lower[4], 4.1721829)
-  expect_equal(newDF_ci95$upper[7], 0.108133732)
+  expect_equal(newDF_ci95$upper[7], 0.10195012)
 })
+
 
 test_that("define_param_table message if using theta error block", {
   expect_message(define_param_table(.estimates = theta_err, .key = theta_err_key, .ci = 95, .zscore = NULL))
+})
+
+
+test_that("define_param_table expected dataframe: respects yaml key order",{
+  paramKey2 <- paramKey %>%
+    filter(name %in% newDF$name)
+
+  expect_equal(newDF$name, paramKey2$name)
 })
 
 

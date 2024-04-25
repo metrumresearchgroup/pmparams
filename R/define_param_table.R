@@ -53,7 +53,8 @@ define_param_table <- function(.estimates, .key, .ci = 95, .zscore = NULL){
     checkTransforms() %>%
     defineRows() %>%
     getValueSE() %>%
-    getCI(.ci = .ci, .zscore = .zscore)
+    getCI(.ci = .ci, .zscore = .zscore) %>%
+    dplyr::arrange(as.numeric(nrow))
 
   if(any(mod_estimates$THETAERR)){
     message("THETA term was used in $ERROR:  ", mod_estimates$parameter_names[mod_estimates$THETAERR])
