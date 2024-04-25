@@ -87,7 +87,8 @@ define_boot_table <- function(.boot_estimates, .nonboot_estimates, .key){
   checkTransforms() %>%
   defineRows() %>%
   backTrans_log() %>%
-  backTrans_logit()
+  backTrans_logit() %>%
+  dplyr::arrange(as.numeric(nrow))
 
 .boot_df
 

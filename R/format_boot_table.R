@@ -39,7 +39,9 @@ format_boot_table <- function(.boot_df,
   .digit = ifelse(is.null(.digit), formals(pmtables::sig)$digits, .digit)
 
   .df_out <- .boot_df %>%
-    formatValuesBoot()
+    formatValuesBoot() %>%
+    dplyr::arrange(as.numeric(nrow)) %>%
+    dplyr::select(-nrow)
 
   if (any(tolower(.select_cols) == "all")) {
     return(.df_out %>% as.data.frame())

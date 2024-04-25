@@ -31,6 +31,9 @@ paramKey = dplyr::tribble(
   "SIGMA11", "Proportional", "Variance", "RV", "propErr"
 )
 
+paramKey2 <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
+param_yaml <- yaml::yaml.load_file(paramKey2)
+
 #Data for testing param table (no boot)
 
 paramPath <- system.file("model/nonmem/102", package = "pmparams")
