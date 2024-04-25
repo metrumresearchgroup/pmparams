@@ -11,9 +11,9 @@
 #'* Back-transform any parameters estimated in other domains (e.g., log- or logit-transformed variables)
 #'* Calculate additional summary statistics (e.g., 95% confidence intervals, coefficient of variation (CV), etc.)
 #'
-#' @seealso \link[pmparams]{param_key()} example parameter key yaml
+#' @seealso \code{\link[pmparams]{param_key}} example parameter key yaml
 #' @section Key functions:
-#'* \link[pmparams]{param_key()} links
+#'* \link[pmparams]{param_key} links to an example parameter key
 #'* [define_param_table()] and [define_boot_table()]: combines and formats model output parameter estimates with information in parameter key.
 #'* [format_param_table()] and [format_boot_table()]: format parameter estimate values and output selected columns to be shown in
 #'* the parameter table

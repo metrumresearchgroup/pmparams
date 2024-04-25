@@ -7,7 +7,7 @@
 #'
 #' Left join this output bootstrap data.frame with the formatted output of non-bootstrap parameter estimates
 #'
-#' @param .boot_df parameter estimates output from \code{\link{define_boot_table()}} with modifications ready for formatting
+#' @param .boot_df parameter estimates output from \code{\link[pmparams]{define_boot_table}} with modifications ready for formatting
 #' @param .select_cols columns to select for output. Default selects "abb", "desc", "boot_value", "boot_ci". To return all columns, specify "all" for .select_cols.
 #' @param .digit set significant digits for output (optional). Default is three digits
 #' @param .maxex set maxex for computation (optional). Default is NULL

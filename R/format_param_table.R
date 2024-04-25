@@ -18,7 +18,7 @@
 #' - Structural model parameters
 #'4. Select columns for final tables.
 #'
-#' @param .df parameter estimates output from \code{\link{define_param_table()}} with modifications ready for formatting
+#' @param .df parameter estimates output from \code{\link[pmparams]{define_param_table}} with modifications ready for formatting
 #' @param .select_cols columns to select for output. Default selects "type", "abb", "greek", "desc", "value", "ci", "shrinkage". To return all columns, specify "all" for .select_cols
 #' @param .prse output pRSE. Default is FALSE
 #' @param .digit set significant digits for output (optional). Default is three digits
