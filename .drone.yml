@@ -12,38 +12,20 @@ steps:
   image: omerxx/drone-ecr-auth
   commands:
   - $(aws ecr get-login --no-include-email --region us-east-1)
-  - docker pull 906087756158.dkr.ecr.us-east-1.amazonaws.com/r-dev-ci-mpn-4.1:cmdstanr
+  - docker pull 906087756158.dkr.ecr.us-east-1.amazonaws.com/r-dev-ci-mpn-4.1:cran-latest
   volumes:
   - name: docker.sock
     path: /var/run/docker.sock
 
-- name: Install bbi
-  pull: never
-  image: 906087756158.dkr.ecr.us-east-1.amazonaws.com/r-dev-ci-mpn-4.1:cmdstanr
-  commands:
-    - |
-      curl -fSsL "$BBI_URL/$BBI_VERSION/bbi_linux_amd64.tar.gz" |
-        tar -z --extract --to-stdout >/ephemeral/bbi
-    - chmod +x /ephemeral/bbi
-    - /ephemeral/bbi version
-
-  environment:
-    BBI_VERSION: v3.3.0
-    BBI_URL: https://github.com/metrumresearchgroup/bbi/releases/download
-  volumes:
-  - name: cache
-    path: /ephemeral
-
 - name: "Check package: R 4.1"
   pull: never
-  image: 906087756158.dkr.ecr.us-east-1.amazonaws.com/r-dev-ci-mpn-4.1:cmdstanr
+  image: 906087756158.dkr.ecr.us-east-1.amazonaws.com/r-dev-ci-mpn-4.1:cran-latest
   commands:
   - R -s -e 'devtools::install_deps(upgrade = '"'"'always'"'"', dependencies = TRUE)'
   - R -s -e 'devtools::load_all(); sessioninfo::session_info()'
   - R -s -e 'devtools::check(env_vars = c("NOT_CRAN" = "true"))'
   environment:
     USER: drone
-    BBI_EXE_PATH: /ephemeral/bbi
   volumes:
   - name: cache
     path: /ephemeral
@@ -74,40 +56,20 @@ steps:
   image: omerxx/drone-ecr-auth
   commands:
   - $(aws ecr get-login --no-include-email --region us-east-1)
-  - docker pull 906087756158.dkr.ecr.us-east-1.amazonaws.com/r-dev-ci-mpn-4.1:cmdstanr
+  - docker pull 906087756158.dkr.ecr.us-east-1.amazonaws.com/r-dev-ci-mpn-4.1:latest
   volumes:
   - name: docker.sock
     path: /var/run/docker.sock
 
-- name: Install bbi
-  pull: never
-  image: 906087756158.dkr.ecr.us-east-1.amazonaws.com/r-dev-ci-mpn-4.1:cmdstanr
-  commands:
-    - |
-      curl -fSsL "$BBI_URL/$BBI_VERSION/bbi_linux_amd64.tar.gz" |
-        tar -z --extract --to-stdout >/ephemeral/bbi
-    - chmod +x /ephemeral/bbi
-    - /ephemeral/bbi version
-
-  environment:
-    BBI_VERSION: v3.3.0
-    BBI_URL: https://github.com/metrumresearchgroup/bbi/releases/download
-  volumes:
-  - name: cache
-    path: /ephemeral
-
 - name: Build package
   pull: never
-  image: 906087756158.dkr.ecr.us-east-1.amazonaws.com/r-dev-ci-mpn-4.1:cmdstanr
+  image: 906087756158.dkr.ecr.us-east-1.amazonaws.com/r-dev-ci-mpn-4.1:latest
   commands:
   - git config --global user.email drone@metrumrg.com
   - git config --global user.name Drony
   - git fetch --tags
   - R -s -e 'devtools::install_deps(upgrade = '"'"'always'"'"', dependencies = TRUE)'
   - R -s -e 'pkgpub::create_tagged_repo(.dir = '"'"'/ephemeral'"'"')'
-  environment:
-    USER: drone
-    BBI_EXE_PATH: /ephemeral/bbi
   volumes:
   - name: cache
     path: /ephemeral
