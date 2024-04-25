@@ -55,7 +55,8 @@ format_param_table <- function(.df,
     formatValues(.digit = .digit, .maxex = .maxex) %>%
     formatGreekNames() %>%
     getPanelName() %>%
-    dplyr::arrange(as.numeric(nrow))
+    dplyr::arrange(as.numeric(nrow)) %>%
+    dplyr::select(-nrow)
 
   if (any(tolower(.select_cols) == "all")) {
     return(.df_out %>% as.data.frame())
