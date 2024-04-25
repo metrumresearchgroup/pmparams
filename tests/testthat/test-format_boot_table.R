@@ -21,3 +21,8 @@ test_that("format_param_table continuous columns expected ouput: value", {
   expect_equal(newDF3$boot_value[6], "0.484")
 })
 
+test_that("format_boot_table expected dataframe: respects yaml key order", {
+  expect_equal(unname(unlist(param_yaml))[grepl('desc',names(unlist(param_yaml)),fixed=T) & unlist(param_yaml) %in% newDF3$desc],
+               newDF3$desc)
+})
+
