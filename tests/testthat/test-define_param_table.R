@@ -1,3 +1,4 @@
+withr::local_options(list(bbr.bbi_exe_path = bbr::read_bbi_path()),{
 
 test_that("define_param_table expected output: creates new parameter names without parentheses", {
   expect_equal(newDF$name[newDF$parameter_names == "OMEGA(1,1)"], "OMEGA11")
@@ -38,7 +39,6 @@ test_that("define_param_table incorrect input type: missing column(s)",{
 })
 
 test_that("define_param_table handles multiple estimate input types", {
-  skip_if_no_bbi("MPT-DPT-003")
   pathDF <- define_param_table(paramPath, paramKey)
   expect_equal(pathDF$estimate[pathDF$name == "OMEGA22"], 0.0826922)
 
@@ -55,13 +55,11 @@ test_that("define_param_table handles multiple estimate input types", {
 })
 
 test_that("define_param_table handles multiple parameter key input types", {
-  skip_if_no_bbi("MPT-DPT-004")
   pathDF <- define_param_table(paramPath, system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams"))
   expect_equal(pathDF$estimate[pathDF$name == "OMEGA22"], 0.0826922)
 })
 
 test_that("define_param_table handles multiple parameter key input types", {
-  skip_if_no_bbi("MPT-DPT-004")
   key_file <- system.file("model/nonmem/pk-parameter-key.yaml", package = "pmparams")
   key_df <- pmtables::yaml_as_df(key_file)
   pathDF <- define_param_table(paramPath, key_df)
@@ -69,7 +67,6 @@ test_that("define_param_table handles multiple parameter key input types", {
 })
 
 test_that("define_param_table incorrect parameter key input type: Only abb, desc, panel and trans arguments will be used, all others ignored", {
-  skip_if_no_bbi("MPT-DPT-005")
   expect_warning(capture.output(define_param_table(paramPath, system.file("model/nonmem/pk-parameter-key-both.yaml", package = "pmparams"))))
 })
 
@@ -92,4 +89,4 @@ test_that("define_param_table generates the confidence intervals for various inp
   expect_equal(newDF_ci95$upper[7], 0.108133732)
 })
 
-
+})

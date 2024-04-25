@@ -2,13 +2,6 @@ library(dplyr)
 library(testthat)
 library(pmparams)
 
-skip_if_no_bbi <- function(.test_name) {
-  # if bbi_version() can't find bbi, it returns ""
-  if (!nzchar(bbr::bbi_version())) {
-    testthat::skip(paste(.test_name, "needs bbi installed"))
-  }
-}
-
 paramKey = dplyr::tribble(
   ~name, ~abb, ~desc, ~panel, ~trans,
   "THETA1",  "KA (1/h)", "First order absorption rate constant",   "struct", "logTrans",

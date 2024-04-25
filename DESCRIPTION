@@ -18,7 +18,6 @@ Description: `pmparams` is a library written in R that generates clear, well-for
 URL: https://github.com/metrumresearchgroup/pmparams
 BugReports: https://github.com/metrumresearchgroup/pmparams/issues
 Imports:
-    bbr,
     dplyr (>= 0.5.0),
     magrittr,
     pmtables,
@@ -29,12 +28,14 @@ Imports:
     purrr,
     tidyr,
     yaml,
-    readr
+    readr,
+    withr
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Suggests: 
+    bbr,
     testthat (>= 3.0.0),
     knitr
 Config/testthat/edition: 3

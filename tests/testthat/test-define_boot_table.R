@@ -1,3 +1,4 @@
+withr::local_options(list(bbr.bbi_exe_path = bbr::read_bbi_path()),{
 
 test_that("define_boot_table expected output: creates new parameter names without parentheses", {
   expect_equal(newbootDF$abb[newbootDF$desc == "Apparent peripheral volume"], "V3/F (L)")
@@ -39,7 +40,6 @@ test_that("define_boot_table incorrect input type: missing column(s)",{
 })
 
 test_that("define_boot_table handles multiple estimate input types", {
-  skip_if_no_bbi("MPT-DPT-003")
   pathnewbootDF <-define_boot_table(.boot_estimates =boot_paramEst, .nonboot_estimates = nonboot_paramEst, .key = paramKey)
   expect_equal(pathnewbootDF$estimate[pathnewbootDF$name == "OMEGA22"], 0.0821058)
 
@@ -53,7 +53,6 @@ test_that("define_boot_table handles multiple estimate input types", {
 })
 
 test_that("define_boot_table handles multiple parameter key input types", {
-  skip_if_no_bbi("MPT-DPT-004")
   pathDF <- define_boot_table(.boot_estimates =boot_paramEst,
                             .nonboot_estimates = nonboot_paramEst,
                             .key = system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams"))
@@ -61,7 +60,6 @@ test_that("define_boot_table handles multiple parameter key input types", {
 })
 
 test_that("define_boot_table handles multiple parameter key input types", {
-  skip_if_no_bbi("MPT-DPT-004")
   key_file <- system.file("model/nonmem/pk-parameter-key.yaml", package = "pmparams")
   key_df <- pmtables::yaml_as_df(key_file)
   pathDF <- define_boot_table(.boot_estimates =boot_paramEst,
@@ -71,7 +69,6 @@ test_that("define_boot_table handles multiple parameter key input types", {
 })
 
 test_that("define_boot_table incorrect parameter key input type: Only abb, desc, panel and trans arguments will be used, all others ignored", {
-  skip_if_no_bbi("MPT-DPT-005")
   expect_warning(capture.output(define_boot_table(.boot_estimates =boot_paramEst,
                                                 .nonboot_estimates = nonboot_paramEst,
                                                 .key = system.file("model/nonmem/pk-parameter-key-both.yaml", package = "pmparams"))))
@@ -88,4 +85,4 @@ test_that("define_boot_table generates the confidence intervals for various inpu
   expect_equal(newbootDF$upper[2], 65.053174)
 })
 
-
+})
