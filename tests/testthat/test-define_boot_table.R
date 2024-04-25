@@ -1,4 +1,4 @@
-withr::with_options(list(bbr.bbi_exe_path = read_bbi_path()), {
+withr::with_options(list(bbr.bbi_exe_path = bbr::read_bbi_path()), {
 
   test_that("define_boot_table expected output: creates new parameter names without parentheses", {
     expect_equal(newbootDF$abb[newbootDF$desc == "Apparent peripheral volume"], "V3/F (L)")
