@@ -27,14 +27,6 @@ For more information how to effectively integrate `pmparams` into your workflow,
 <a href="https://merge.metrumrg.com/expo/expo1-nonmem-foce/posts/parameter-tables.html" target="_blank">
 MeRGE Expo: Parameter Tables </a>..
 
-
-```{r setup_interactive, include=FALSE}
-if (interactive() || isTRUE(getOption('knitr.in.progress'))) {
-  devtools::load_all()
-  Sys.setenv('pmparams_SHINY_DEV_LOAD_PATH' = rprojroot::find_rstudio_root_file())
-}
-```
-
 ```{r load packages, results = 'hide', message=FALSE, warning=FALSE}
 library(pmparams)
 library(dplyr)
