@@ -54,7 +54,8 @@ define_param_table <- function(.estimates, .key, .ci = 95, .zscore = NULL){
     checkTransforms() %>%
     defineRows() %>%
     getValueSE() %>%
-    getCI(.ci = .ci, .zscore = .zscore)
+    getCI(.ci = .ci, .zscore = .zscore) %>%
+    dplyr::arrange(as.numeric(nrow))
 
   return(mod_estimates)
 }

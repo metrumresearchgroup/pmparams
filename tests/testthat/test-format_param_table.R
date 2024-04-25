@@ -61,11 +61,16 @@ test_that("format_param_table continuous columns expected ouput: shrinkage", {
 
   expect_equal(newDF_shrink$shrinkage[1], "-")
   expect_equal(newDF_shrink$shrinkage[6], "17.9")
-  expect_equal(newDF_shrink$shrinkage[8], "6.02")
+  expect_equal(newDF_shrink$shrinkage[8], "0.587")
 })
 
 test_that("format_param_table continuous columns expected ouput: value", {
   expect_equal(newDF3$value[1], "1.54")
   expect_equal(newDF3$value[6], "0.221 [CV\\%=49.7]")
+})
+
+test_that("format_param_table expected dataframe: respects yaml key order", {
+  expect_equal(unname(unlist(param_yaml))[grepl('desc',names(unlist(param_yaml)),fixed=T) & unlist(param_yaml) %in% newDF3$desc],
+               newDF3$desc)
 })
 
