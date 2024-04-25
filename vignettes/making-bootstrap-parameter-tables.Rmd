@@ -13,7 +13,11 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-#writeLines("Version: 1.0", con = "temp.Rproj")
+
+options(
+  'bbr.bbi_exe_path' = bbr::read_bbi_path(),
+  'bbr.verbose' = FAKSE
+)
 ```
 
 # Introduction
