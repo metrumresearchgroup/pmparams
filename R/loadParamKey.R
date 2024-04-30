@@ -34,5 +34,8 @@ loadParamKey <- function(.key){
     stop("Incorrect parameter key input type. See ?param_key for list of valid parameter key inputs")
   }
 
-  .key
+  .key %>%
+    dplyr::mutate(
+      nrow = 1:dplyr::n()
+    )
 }

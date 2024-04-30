@@ -16,7 +16,8 @@ test_that("format_param_table expected dataframe: col names", {
   expect_equal(names(newDF3),  c("type", "abb", "greek", "desc", "value", "ci", "shrinkage"))
 
   #all cols., no prse
-  expect_equal(length(names(newDF5)),  40)
+  expect_equal(length(names(newDF5)),  39)
+
 })
 
 test_that("format_param_table expected dataframe: prse col", {
@@ -48,7 +49,7 @@ test_that("format_param_table continuous columns expected ouput: shrinkage", {
 
   expect_equal(newDF_shrink$shrinkage[1], "-")
   expect_equal(newDF_shrink$shrinkage[6], "17.9")
-  expect_equal(newDF_shrink$shrinkage[8], "6.02")
+  expect_equal(newDF_shrink$shrinkage[8], "0.587")
 })
 
 test_that("format_param_table continuous columns expected ouput: value", {
@@ -70,4 +71,9 @@ test_that("format_param_table continuous columns expected ouput: CI back transfo
   expected_value = paste0(pmtables::sig(newDF4$value[newDF4$addErrLogDV == TRUE]), " [CV\\%=", expected_cv, "]")
 
   expect_equal(newDF5$value[newDF5$abb == "Lognormal residual error"], expected_value)
+})
+
+test_that("format_param_table expected dataframe: respects yaml key order", {
+  expect_equal(unname(unlist(param_yaml))[grepl('desc',names(unlist(param_yaml)),fixed=T) & unlist(param_yaml) %in% newDF3$desc],
+               newDF3$desc)
 })
