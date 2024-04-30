@@ -67,7 +67,7 @@ test_that("format_param_table continuous columns expected ouput: CI back transfo
 
   newDF5 <- newDF4%>% format_param_table()
 
-  expected_cv =  pmtables::sig(sqrt(newDF4$value[newDF4$addErrLogDV == TRUE]) * 100)
+  expected_cv =  pmtables::sig(sqrt(exp(newDF4$value[newDF4$addErrLogDV == TRUE]) -1)* 100)
   expected_value = paste0(pmtables::sig(newDF4$value[newDF4$addErrLogDV == TRUE]), " [CV\\%=", expected_cv, "]")
 
   expect_equal(newDF5$value[newDF5$abb == "Lognormal residual error"], expected_value)
