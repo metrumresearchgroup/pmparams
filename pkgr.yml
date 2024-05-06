@@ -11,6 +11,7 @@ Repos:
   - CRAN: https://cran.rstudio.com
   - bbr: https://s3.amazonaws.com/mpn.metworx.dev/releases/bbr/latest_tag
   - pmtables: https://s3.amazonaws.com/mpn.metworx.dev/releases/pmtables/latest_tag
+  - nmrec: https://s3.amazonaws.com/mpn.metworx.dev/releases/nmrec/latest_tag
 
 Lockfile:
   Type: renv
