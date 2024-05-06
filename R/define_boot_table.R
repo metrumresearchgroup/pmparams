@@ -73,7 +73,7 @@ define_boot_table <- function(.boot_estimates, .nonboot_estimates, .key){
 #clean up boot
 .bootParam = .boot %>%
     bbr::param_estimates_compare() %>%
-    dplyr::rename(estimate = "50%", lower = "2.5%", upper = "97.5%") %>%
+    dplyr::rename(estimate = "p50", lower = "p2.5", upper = "p97.5") %>%
     dplyr::mutate(name = gsub("[[:punct:]]", "", parameter_names)) %>%
     dplyr::inner_join(.key, by = "name")
 
