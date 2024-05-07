@@ -7,9 +7,8 @@ newDF4 <- newDF %>%
 newDF5 <- newDF %>%
   format_param_table(.select_cols = "all")
 
-newDF6 <- newDF %>%
-  format_param_table(.select_cols = "all", .prse = TRUE)
-
+newDF6 <- theta_err_df1 %>%
+  format_param_table(.select_cols = "all")
 
 test_that("format_param_table expected dataframe: col names", {
   #default cols., no prse
@@ -17,7 +16,6 @@ test_that("format_param_table expected dataframe: col names", {
 
   #all cols., no prse
   expect_equal(length(names(newDF5)),  40)
-
 })
 
 test_that("format_param_table expected dataframe: prse col", {
@@ -71,6 +69,10 @@ test_that("format_param_table continuous columns expected ouput: CI back transfo
   expected_value = paste0(pmtables::sig(newDF4$value[newDF4$addErrLogDV == TRUE]), " [CV\\%=", expected_cv, "]")
 
   expect_equal(newDF5$value[newDF5$abb == "Lognormal residual error"], expected_value)
+
+test_that("format_param_table continuous columns expected ouput: greek", {
+  expect_equal(newDF5$greek[newDF5$S & !newDF5$THETAERR], "$\\Sigma_{(1,1)}$")
+  expect_equal(newDF6$greek[newDF6$S & newDF6$THETAERR], "$\\theta_{(1,1)}$")
 })
 
 test_that("format_param_table expected dataframe: respects yaml key order", {

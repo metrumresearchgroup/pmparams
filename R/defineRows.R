@@ -21,9 +21,10 @@ defineRows <- function(.df){
   }
   .df %>%
     dplyr::mutate(
-      TH = stringr::str_detect(name, "^TH"),
+      THETAERR = stringr::str_detect(name, "^TH") & stringr::str_detect(panel, "RV"),
+      TH = stringr::str_detect(name, "^TH") & !THETAERR,
       OM = stringr::str_detect(name, "^OM"),
-      S = stringr::str_detect(name, "^S"),
+      S = stringr::str_detect(name, "^S") |  THETAERR,
       LOG = (trans=="logTrans"),
       LOGIT = (trans=="logitTrans"),
       lognormO = (trans=="lognormalOm"),
