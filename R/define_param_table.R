@@ -57,7 +57,7 @@ define_param_table <- function(.estimates, .key, .ci = 95, .zscore = NULL){
     dplyr::arrange(as.numeric(nrow))
 
   if(any(mod_estimates$THETAERR)){
-    message("THETA term was used in $ERROR:  ", paste(mod_estimates$parameter_names[mod_estimates$THETAERR]))
+    message("THETA term was used in $ERROR:  ", paste(mod_estimates$parameter_names[mod_estimates$THETAERR], collapse = ", "))
   }
 
   return(mod_estimates)
