@@ -22,4 +22,10 @@ test_that("defineRows expected output: generates logical columns to indicate nam
   expect_equal(all(newDF$S[newDF$name == "THETA1"]), FALSE)
 })
 
+test_that("defineRows expected output: theta error block", {
+  expect_equal(unique(theta_err_df1$THETAERR[theta_err_df1$TH == TRUE]), FALSE)
+  expect_equal(theta_err_df1$S[theta_err_df1$THETAERR == TRUE], TRUE)
+  expect_equal(theta_err_df1$S[theta_err_df1$panel == "RV"], TRUE)
+})
+
 
