@@ -15,7 +15,7 @@ test_that("format_param_table expected dataframe: col names", {
   expect_equal(names(newDF3),  c("type", "abb", "greek", "desc", "value", "ci", "shrinkage"))
 
   #all cols., no prse
-  expect_equal(length(names(newDF5)),  40)
+  expect_equal(length(names(newDF5)),  41)
 })
 
 test_that("format_param_table expected dataframe: prse col", {
@@ -69,6 +69,7 @@ test_that("format_param_table continuous columns expected ouput: CI back transfo
   expected_value = paste0(pmtables::sig(newDF4$value[newDF4$addErrLogDV == TRUE]), " [CV\\%=", expected_cv, "]")
 
   expect_equal(newDF5$value[newDF5$abb == "Lognormal residual error"], expected_value)
+})
 
 test_that("format_param_table continuous columns expected ouput: greek", {
   expect_equal(newDF5$greek[newDF5$S & !newDF5$THETAERR], "$\\Sigma_{(1,1)}$")
