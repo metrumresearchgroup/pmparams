@@ -7,7 +7,7 @@ newDF4 <- newDF %>%
 newDF5 <- newDF %>%
   format_param_table(.select_cols = "all")
 
-newDF6 <- newDF %>%
+newDF6 <- theta_err_df1 %>%
   format_param_table(.select_cols = "all", .prse = TRUE)
 
 ci_name <- newDF %>% dplyr::distinct(ci_level) %>% dplyr::pull(ci_level)
@@ -18,7 +18,7 @@ test_that("format_param_table expected dataframe: col names", {
   expect_equal(names(newDF3),  c("type", "abb", "greek", "desc", "value", "shrinkage", paste0("ci_", ci_name)))
 
   #all cols., no prse
-  expect_equal(length(names(newDF5)),  40)
+  expect_equal(length(names(newDF5)),  41)
 })
 
 test_that("format_param_table expected dataframe: prse col", {
