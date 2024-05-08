@@ -60,20 +60,20 @@ define_boot_table <- function(.boot_estimates, .nonboot_estimates, .key){
 
 
   .nonboot_estimates <- loadParamEstimates(.nonboot_estimates)
-  # #path to nonboot estimates
-  # if(inherits(.nonboot_estimates, "character")){
-  #   .nonboot_estimates <- bbr::read_model(here::here(.nonboot_estimates)) %>%
-  #     bbr::model_summary() %>%
-  #     bbr::param_estimates()
-  # #data.frame of nonboot estimates
-  # } else {
-  #   .nonboot_estimates <- .nonboot_estimates
-  # }
 
 #clean up boot
-.bootParam = .boot %>%
-    bbr::param_estimates_compare() %>%
-    dplyr::rename(estimate = "p50", lower = "p2.5", upper = "p97.5") %>%
+.bootParam0 = .boot %>%
+    bbr::param_estimates_compare()
+
+if (all(names(.bootParam0) == c("parameter_names", "p50", "p2.5", "p97.5"))){
+  .bootParam1 <- .bootParam0 %>%
+    dplyr::rename(estimate = "p50", lower = "p2.5", upper = "p97.5")
+} else {
+  .bootParam1 <- .bootParam0 %>%
+    dplyr::rename(estimate = "50%", lower = "2.5%", upper = "97.5%")
+}
+
+.bootParam <- .bootParam1 %>%
     dplyr::mutate(name = gsub("[[:punct:]]", "", parameter_names)) %>%
     dplyr::inner_join(.key, by = "name")
 
