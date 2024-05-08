@@ -1,3 +1,15 @@
+# pmparams development
+
+## New features
+
+- Allow users to input `THETA` in `ERROR` block. (#21)
+
+- Adds additive error log terms (`addErrLogDV`) as a transformation option in parameter key. (#19)
+
+- Carries specified CI level through all functions. (#15)
+
+- `make_pmtable` generate specific parameter tables by filtering and using pmtables. (#15)
+
 # pmparams 0.1.0
 
 Initial release, featuring the following exported functions:

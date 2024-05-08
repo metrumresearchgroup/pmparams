@@ -18,7 +18,7 @@ test_that("format_param_table expected dataframe: col names", {
   expect_equal(names(newDF3),  c("type", "abb", "greek", "desc", "value", "shrinkage", paste0("ci_", ci_name)))
 
   #all cols., no prse
-  expect_equal(length(names(newDF5)),  41)
+  expect_equal(length(names(newDF5)),  42)
 })
 
 test_that("format_param_table expected dataframe: prse col", {
