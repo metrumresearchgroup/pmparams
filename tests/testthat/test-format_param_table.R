@@ -80,3 +80,18 @@ test_that("format_param_table expected dataframe: respects yaml key order", {
   expect_equal(unname(unlist(param_yaml))[grepl('desc',names(unlist(param_yaml)),fixed=T) & unlist(param_yaml) %in% newDF3$desc],
                newDF3$desc)
 })
+
+test_that("format_param_table panel expected ouput", {
+  paramKey1 <- paramKey %>%
+    mutate(
+      panel = if_else(name == "THETA2", "IIV", panel),
+      trans = if_else(name == "THETA2", "none", trans)
+    )
+
+  newDF7 <- define_param_table(.estimates = paramEst, .key = paramKey1, .ci = 95, .zscore = NULL)
+  newDF8 <- format_param_table(newDF7, .select_cols = "all")
+
+  expect_equal(newDF8$type[newDF8$name == "THETA2"], "Interindividual variance parameters")
+  expect_equal(newDF8$type_f[newDF8$name == "THETA2"], 3)
+  expect_equal(newDF8$panel[newDF8$name == "THETA2"], "IIV")
+})
