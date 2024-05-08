@@ -4,9 +4,9 @@
 
 - Allow users to input `THETA` in `ERROR` block. (#21)
 
-- Adds additive error log terms (`addErrLogDV`) as a transformation option in parameter key. (#19)
+- Allow additive error log terms (`addErrLogDV`) as a transformation option in parameter key. (#19)
 
-- Carries specified CI level through all functions. (#15)
+- Carry specified CI level through all functions. (#15)
 
 - `make_pmtable` generate specific parameter tables by filtering and using pmtables. (#15)
 
