@@ -12,7 +12,7 @@
 #' @keywords internal
 defineRows <- function(.df){
 
-  transList <- c("logTrans", "logitTrans", "lognormalOm", "OmSD", "propErr", "addErr", "none")
+  transList <- c("logTrans", "logitTrans", "lognormalOm", "OmSD", "propErr", "addErr", "addErrLogDV", "none")
   mismatch <- .df %>% dplyr::filter(!(stringr::str_detect(trans, paste(transList, collapse="|"))))
 
   if(nrow(mismatch) > 0) {
@@ -31,7 +31,8 @@ defineRows <- function(.df){
       Osd = (trans=="OmSD"),
       logitOsd = (trans=="logitOmSD"),
       propErr = (trans=="propErr"),
-      addErr = (trans=="addErr")
+      addErr = (trans=="addErr"),
+      addErrLogDV = (trans == "addErrLogDV")
     )
 }
 

@@ -35,6 +35,7 @@ Current options include:
 \item "logitOmSD"  - for omegas using logit transform - returns estimate & SD (calculated with logitnorm package); this option requires you provide the associated THETA separated with a "~"; e.g. "logitOmSD ~ THETA3"
 \item "addErr"     - for additive error terms (coded using SIGMA in $ERROR) - returns est.+ SD
 \item "propErr"    - for proportional error terms (coded using SIGMA in $ERROR) - returns est.+CV\%
+\item "addErrLogDV" - for additive error log terms (coded using SIGMA in $ERROR) - returns est.+CV\%
 }
 }
 \section{YAML Example}{
