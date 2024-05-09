@@ -10,6 +10,10 @@ Authors@R:
              family = "McDermott",
              role = c("aut"),
              email = "michaelmg@metrumrg.com"),
+      person(given = "Eric",
+             family = "Anderson",
+             role = c("aut"),
+             email = "andersone@metrumrg.com"),
       person(given = "Grace",
              family = "O'Brien",
              role = c("aut"),
@@ -33,7 +37,7 @@ Imports:
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Suggests: 
     bbr,
     testthat (>= 3.0.0),

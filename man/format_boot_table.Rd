@@ -6,13 +6,13 @@
 \usage{
 format_boot_table(
   .boot_df,
-  .select_cols = c("abb", "desc", "boot_value", "boot_ci"),
+  .select_cols = c("abb", "desc", "boot_value", "boot_ci_95"),
   .digit = getOption("pmparams.dig"),
   .maxex = getOption("pmparams.maxex")
 )
 }
 \arguments{
-\item{.boot_df}{parameter estimates output from \code{define_boot_table} with modifications ready for formatting}
+\item{.boot_df}{parameter estimates output from \code{\link[pmparams]{define_boot_table}} with modifications ready for formatting}
 
 \item{.select_cols}{columns to select for output. Default selects "abb", "desc", "boot_value", "boot_ci". To return all columns, specify "all" for .select_cols.}
 

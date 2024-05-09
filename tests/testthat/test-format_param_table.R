@@ -8,14 +8,17 @@ newDF5 <- newDF %>%
   format_param_table(.select_cols = "all")
 
 newDF6 <- theta_err_df1 %>%
-  format_param_table(.select_cols = "all")
+  format_param_table(.select_cols = "all", .prse = TRUE)
+
+ci_name <- newDF %>% dplyr::distinct(ci_level) %>% dplyr::pull(ci_level)
+
 
 test_that("format_param_table expected dataframe: col names", {
   #default cols., no prse
-  expect_equal(names(newDF3),  c("type", "abb", "greek", "desc", "value", "ci", "shrinkage"))
+  expect_equal(names(newDF3),  c("type", "abb", "greek", "desc", "value", paste0("ci_", ci_name),"shrinkage"))
 
   #all cols., no prse
-  expect_equal(length(names(newDF5)),  41)
+  expect_equal(length(names(newDF5)),  42)
 })
 
 test_that("format_param_table expected dataframe: prse col", {
@@ -36,6 +39,18 @@ test_that("format_param_table continuous columns expected ouput: CI back transfo
 
   expect_equal(newDF_log1$ci[5], "1.22, 1.36")
 })
+
+test_that("format_param_table continuous columns expected ouput: CI back transforms", {
+  before_format <- newDF %>%
+    mutate(ci_level = as.character(ci_level)) %>%
+    distinct(ci_level) %>%
+    pull(ci_level)
+
+  after_format <- gsub("ci_", "", names(newDF3)[grepl("ci_", names(newDF3))], fixed = T)
+
+  expect_equal(before_format, after_format)
+})
+
 
 test_that("format_param_table continuous columns expected ouput: shrinkage", {
   newDF_shrink <- newDF %>%

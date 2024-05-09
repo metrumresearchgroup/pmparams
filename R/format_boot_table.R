@@ -7,7 +7,7 @@
 #'
 #' Left join this output bootstrap data.frame with the formatted output of non-bootstrap parameter estimates
 #'
-#' @param .boot_df parameter estimates output from `define_boot_table` with modifications ready for formatting
+#' @param .boot_df parameter estimates output from \code{\link[pmparams]{define_boot_table}} with modifications ready for formatting
 #' @param .select_cols columns to select for output. Default selects "abb", "desc", "boot_value", "boot_ci". To return all columns, specify "all" for .select_cols.
 #' @param .digit set significant digits for output (optional). Default is three digits
 #' @param .maxex set maxex for computation (optional). Default is NULL
@@ -32,7 +32,7 @@
 #' format_boot_table(.boot_df = defineBootOut, .select_cols="all")
 #' @export
 format_boot_table <- function(.boot_df,
-                            .select_cols = c("abb", "desc", "boot_value", "boot_ci"),
+                            .select_cols = c("abb", "desc", "boot_value", "boot_ci_95"),
                             .digit = getOption("pmparams.dig"),
                             .maxex = getOption("pmparams.maxex")){
 
@@ -47,7 +47,7 @@ format_boot_table <- function(.boot_df,
     return(.df_out %>% as.data.frame())
   } else {
     return(.df_out %>%
-             dplyr::select(.select_cols) %>%
+             dplyr::select(dplyr::all_of(.select_cols)) %>%
              as.data.frame())
   }
 
