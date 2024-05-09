@@ -47,7 +47,7 @@ format_param_table <- function(.df,
 
   .ci_level <- .df %>% dplyr::distinct(ci_level) %>% dplyr::pull(ci_level)
   .ci_final_nam <- paste0("ci_", .ci_level)
-  .select_cols <- append(.select_cols[.select_cols !="ci"], .ci_final_nam)
+  .select_cols[.select_cols == "ci"] <- .ci_final_nam
 
   if (.prse == TRUE) {
     .df <- .df %>% getpRSE()
