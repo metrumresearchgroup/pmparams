@@ -52,8 +52,6 @@ format_param_table <- function(.df,
   if (.prse == TRUE) {
     .df <- .df %>% getpRSE()
     .select_cols <- append(.select_cols, "pRSE")
-  } else {
-    .df <- .df
   }
 
   .df_out <-
