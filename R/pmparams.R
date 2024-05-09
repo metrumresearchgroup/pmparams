@@ -36,6 +36,13 @@ globalVariables(
     "transTHETA",
     "type_f",
     "upper",
-    "value"
+    "value",
+    "panel",
+    "ci_level",
+    "type",
+    "greek",
+    "shrinkage",
+    "desc",
+    "THETAERR"
   )
 )

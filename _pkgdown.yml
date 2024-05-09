@@ -29,3 +29,7 @@ reference:
     desc: Format bootstrap parameter estimate values and output selected columns to be shown in the bootstrap parameter table.
     contents:
     - format_boot_table
+  - title: Make parameter table
+    desc: Generates specific parameter tables by filtering and using pmtables.
+    contents:
+    - make_pmtable
