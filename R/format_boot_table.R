@@ -32,11 +32,9 @@
 #' format_boot_table(.boot_df = defineBootOut, .select_cols="all")
 #' @export
 format_boot_table <- function(.boot_df,
-                            .select_cols = c("abb", "desc", "boot_value", "boot_ci"),
+                            .select_cols = c("abb", "desc", "boot_value", "boot_ci_95"),
                             .digit = getOption("pmparams.dig"),
                             .maxex = getOption("pmparams.maxex")){
-
-  .select_cols <- append(.select_cols[.select_cols !="boot_ci"], "boot_ci_95")
 
   .digit = ifelse(is.null(.digit), formals(pmtables::sig)$digits, .digit)
 
@@ -49,7 +47,7 @@ format_boot_table <- function(.boot_df,
     return(.df_out %>% as.data.frame())
   } else {
     return(.df_out %>%
-             dplyr::select(.select_cols) %>%
+             dplyr::select(dplyr::all_of(.select_cols)) %>%
              as.data.frame())
   }
 

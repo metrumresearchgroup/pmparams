@@ -70,7 +70,7 @@ format_param_table <- function(.df,
     return(.df_out %>% dplyr::select(-ci) %>% as.data.frame())
   } else {
     return(.df_out %>%
-      dplyr::select(.select_cols) %>%
+      dplyr::select(dplyr::all_of(.select_cols)) %>%
       as.data.frame())
   }
 
