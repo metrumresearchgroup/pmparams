@@ -65,7 +65,7 @@ define_boot_table <- function(.boot_estimates, .nonboot_estimates, .key){
 .bootParam0 = .boot %>%
     bbr::param_estimates_compare()
 
-if (all(names(.bootParam0) == c("parameter_names", "p50", "p2.5", "p97.5"))){
+if (all(c("parameter_names", "p50", "p2.5", "p97.5") %in% names(.bootParam0))){
   .bootParam1 <- .bootParam0 %>%
     dplyr::rename(estimate = "p50", lower = "p2.5", upper = "p97.5")
 } else {
