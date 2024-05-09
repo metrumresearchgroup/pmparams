@@ -6,7 +6,7 @@
 \usage{
 format_boot_table(
   .boot_df,
-  .select_cols = c("abb", "desc", "boot_value", "boot_ci"),
+  .select_cols = c("abb", "desc", "boot_value", "boot_ci_95"),
   .digit = getOption("pmparams.dig"),
   .maxex = getOption("pmparams.maxex")
 )
