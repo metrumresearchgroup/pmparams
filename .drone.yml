@@ -105,6 +105,9 @@ steps:
   - git fetch --tags
   - R -s -e 'devtools::install_deps(upgrade = '"'"'always'"'"', dependencies = TRUE)'
   - R -s -e 'pkgpub::create_tagged_repo(.dir = '"'"'/ephemeral'"'"')'
+  environment:
+    USER: drone
+    BBI_EXE_PATH: /ephemeral/bbi
   volumes:
   - name: cache
     path: /ephemeral
