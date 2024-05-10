@@ -57,8 +57,8 @@ make_pmtable <- function(.df,
     } else if (.pmtype == "fixed and random") {
       .df0 %>%
         dplyr::filter(stringr::str_detect(type, "Struct") |
-                        stringr::str_detect(type, "effect")) %>%
-        dplyr::filter(stringr::str_detect(greek, "Omega") |
+                        stringr::str_detect(type, "effect") |
+                        stringr::str_detect(greek, "Omega") |
                         stringr::str_detect(type, "Resid"))
 
     } else if (.pmtype == "fixed structural") {
