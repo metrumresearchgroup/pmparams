@@ -86,7 +86,7 @@ test_that("make_pmtable correctly filters with .pmtype", {
     nrow(pm_tibble7$data)
   )
 
-  #fixed and random
+  #fixed structural
   expect_equal(
     newFormatDF %>%
       dplyr::filter(stringr::str_detect(type, "Struct")
