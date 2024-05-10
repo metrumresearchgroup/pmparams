@@ -43,6 +43,7 @@ test_that("make_pmtable pmtable commands: args", {
 test_that("make_pmtable correctly filters with .pmtype", {
   pm_tibble4 <- make_pmtable(.df = newFormatDF, .pmtype = "random")
   pm_tibble5 <- make_pmtable(.df = newFormatDF, .pmtype = "fixed", .notes = c("note 1", "note2"))
+  pm_tibble6 <- make_pmtable(.df = newFormatDF, .pmtype = "fixed and random")
 
   #random
   expect_equal(
@@ -63,4 +64,17 @@ test_that("make_pmtable correctly filters with .pmtype", {
       nrow(),
     nrow(pm_tibble5$data)
   )
+
+  #fixed and random
+  expect_equal(
+    newFormatDF %>%
+      dplyr::filter(stringr::str_detect(greek, "Omega") |
+                      stringr::str_detect(type, "Resid") |
+                      stringr::str_detect(type, "Struct") |
+                      stringr::str_detect(type, "effect")
+      ) %>%
+      nrow(),
+    nrow(pm_tibble6$data)
+  )
+
 })

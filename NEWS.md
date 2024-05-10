@@ -1,3 +1,9 @@
+# pmparams development
+
+## Bug Fixes
+
+- `make_pmtable` .pmtype== "fixed and random" filter was outputting empty dataframe. 
+
 # pmparams 0.1.0.8000
 
 ## New features
