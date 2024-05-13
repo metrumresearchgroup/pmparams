@@ -18,8 +18,8 @@
 #' #To make random effects table and add relevant footnotes:
 #' footnotes = get_equations()
 #' table <- make_pmtable(.df = data, .pmtype = "random") %>%
-#' pmtables::st_notes(paste0("Abbreviations: ", footnotes$ci),
-#' footnotes$cv, collapse= "; ", to_string = TRUE) %>%
+#' pmtables::st_notes(footnotes$ci, footnotes$cv) %>%
+#' pmtables::st_notes_str() %>%
 #' pmtables::st_notes(footnotes$cvOmegaEq, footnotes$cvSigmaEq)
 #'
 #' @export
@@ -29,9 +29,9 @@ get_equations <- function(.ci = 95, .zscore = NULL){
     .zscore = 1.64
   } else if (.ci == 90){
     .zscore = 1.96
-  } else if (!(.ci %in% c(90, 95)) & !is.na(.zscore)){
+  } else if (!(.ci %in% c(90, 95)) & !is.null(.zscore)){
     .zscore = .zscore
-  } else {
+  } else if (!(.ci %in% c(90, 95)) & is.null(.zscore)){
     stop("Z-score (.zscore) must be supplied when CI is not 90 or 95")
   }
 

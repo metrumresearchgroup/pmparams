@@ -25,8 +25,8 @@ data <- format_param_table(.df = defineOut)
 #To make random effects table and add relevant footnotes:
 footnotes = get_equations()
 table <- make_pmtable(.df = data, .pmtype = "random") \%>\%
-pmtables::st_notes(paste0("Abbreviations: ", footnotes$ci),
-footnotes$cv, collapse= "; ", to_string = TRUE) \%>\%
+pmtables::st_notes(footnotes$ci, footnotes$cv) \%>\%
+pmtables::st_notes_str() \%>\%
 pmtables::st_notes(footnotes$cvOmegaEq, footnotes$cvSigmaEq)
 
 }
