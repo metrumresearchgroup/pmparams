@@ -34,7 +34,7 @@ get_equations <- function(.ci = 95, .zscore = NULL){
       } else {
         stop("Z-score (.zscore) must be supplied when CI is not 90 or 95")
       }
-    } else if (!is.null(.zscore)){
+    } else {
       if (.ci == 95 & .zscore != 1.64){
         zscore_ci_msg(.ci = 95, .zscore= 1.64)
         1.64
