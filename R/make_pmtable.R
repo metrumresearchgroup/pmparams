@@ -7,16 +7,15 @@
 #' This function:
 #' 1. Filters to columns needed for specific parameter tables
 #' 2. Panels by "type"
-#' 3. Makes "abb", "greek", "desc" blank for "full", "fixed", "fixed structural", "fixed covariate" parameter tables.
-#' Makes "abb" and "greek" blank for "fixed random", "random"
+#' 3. Makes "abb", "greek", "desc" blank for "full", "fixed", "structural", "covariate" parameter tables.
+#' Makes "abb" and "greek" blank for "random"
 #' 4. Attaches notes
 #' 5. Rename "value" to "Estimate" and "shrinkage" to "Shrinkage (\\%)", if applicable
 #'
 #' If these pmtable settings do not work for your parameter table, you can overwrite them afterwards using desired pmtables commands.
 #'
 #' @param .df parameter data set output from pmparams::format_param_table or pmparams::format_boot_table.
-#' @param .pmtype parameter table type. Options include: full, fixed, fixed and random, fixed structural, fixed covariate, random. Defaults to "full".
-#' @param .notes footnotes for table. Defaults to NULL.
+#' @param .pmtype parameter table type. Options include: full (all rows in .df retained in pmtable), fixed (all rows with type = "Struct" or "effect"), structural (all rows with type = "Struct"), covariate (all rows with type = "effect"), random (all rows with greek = "Omega" or type = "Resid"). Defaults to "full".
 #' @param .width notes width. Defaults to 1.
 #'
 #' @examples
@@ -33,7 +32,6 @@
 #' @export
 make_pmtable <- function(.df,
                          .pmtype = "full",
-                         .notes = NULL,
                          .width = 1){
 
   .pmtype <- tolower(.pmtype)
@@ -53,19 +51,11 @@ make_pmtable <- function(.df,
       .df0 %>%
         dplyr::filter(stringr::str_detect(type, "Struct") |
                         stringr::str_detect(type, "effect"))
-
-    } else if (.pmtype == "fixed and random") {
-      .df0 %>%
-        dplyr::filter(stringr::str_detect(type, "Struct") |
-                        stringr::str_detect(type, "effect") |
-                        stringr::str_detect(greek, "Omega") |
-                        stringr::str_detect(type, "Resid"))
-
-    } else if (.pmtype == "fixed structural") {
+    } else if (.pmtype == "structural") {
       .df0 %>%
         dplyr::filter(stringr::str_detect(type, "Struct"))
 
-    } else if (.pmtype == "fixed covariate") {
+    } else if (.pmtype == "covariate") {
       .df0 %>%
         dplyr::filter(stringr::str_detect(type, "effect"))
 
@@ -76,13 +66,12 @@ make_pmtable <- function(.df,
                         stringr::str_detect(type, "Resid"))
 
     } else {
-      stop("Incorrect parameter table type. Options for .pmtype are: full, fixed, fixed and random,
-       fixed structural, fixed covariate, random. See ?make_pmtable for more details")
+      stop("Incorrect parameter table type. Options for .pmtype are: full, fixed, structural, covariate, random. See ?make_pmtable for more details")
     }
 
   pm_tab1 <-
 
-    if (.pmtype %in% c("full", "fixed", "fixed structural", "fixed covariate")){
+    if (.pmtype %in% c("full", "fixed", "structural", "covariate")){
       pm_tab0 %>%
         dplyr::select(-shrinkage) %>%
         pmtables::st_new() %>%
@@ -97,22 +86,13 @@ make_pmtable <- function(.df,
         pmtables::st_blank("abb", "greek") %>%
         pmtables::st_rename("Estimate" = "value",
                             "Shrinkage (\\%)" = "shrinkage")
-    } else if (.pmtype == "fixed and random") {
-      pm_tab0 %>%
-        pmtables::st_new() %>%
-        pmtables::st_panel("type") %>%
-        pmtables::st_blank("abb", "greek") %>%
-        pmtables::st_rename("Estimate" = "value",
-                            "Shrinkage (\\%)" = "shrinkage")
     }
 
   pm_tab2 <-
-    if (is.null(.notes)){
+    if (is.null(.width)){
       pm_tab1
-
     } else {
       pm_tab1 %>%
-        pmtables::st_notes(.notes) %>%
         pmtables::st_notes_detach(width = .width)
     }
 
