@@ -132,8 +132,10 @@ tableList$bootstrap <- df2 %>%
   st_rename(Value = boot_value,
             "95% CI" = boot_ci_95,
             " "= abb) %>% 
+  #abbreviations
   st_notes(footnote$ci) %>% 
   st_notes_str() %>%
+  #equations
   st_notes(footnote$ciEq) 
 
 tableList$bootstrap %>% 

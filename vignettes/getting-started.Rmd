@@ -117,8 +117,8 @@ footnote <- get_equations(.ci = 95)
 tableList$fixed <- make_pmtable(df2, .pmtype = "fixed") %>% 
   #abbreviations
   st_notes(footnote$ci, footnote$se) %>% 
-  #equations
   st_notes_str() %>% 
+  #equations
   st_notes(footnote$ciEq)
 
 tableList$fixed %>%
@@ -131,8 +131,8 @@ tableList$fixed %>%
 tableList$random <- make_pmtable(df2, .pmtype = "random") %>% 
   #abbreviations
   st_notes(footnote$ci, footnote$se) %>% 
-  #equations
   st_notes_str() %>% 
+  #equations
   st_notes(footnote$cvOmegaEq, footnote$cvSigmaEq)
 
 tableList$random %>% 
@@ -145,8 +145,8 @@ If you want to add or overwrite pre-defined `pmtables` argument, simply pipe ont
 tableList$random <- make_pmtable(df2, .pmtype = "random") %>% 
   #abbreviations
   st_notes(footnote$ci, footnote$se) %>% 
-  #equations
   st_notes_str() %>% 
+  #equations
   st_notes(footnote$ciEq) 
 
 tableList$random %>% 
