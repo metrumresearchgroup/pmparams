@@ -120,7 +120,8 @@ footNote5 <- "CV\\% of sigma = sqrt(estimate) $\\cdot$ 100"
 
 ```{r}
 ##fixed
-tableList$fixed <- make_pmtable(df2, .pmtype = "fixed", .notes = c(footNote1, footNote2))
+tableList$fixed <- make_pmtable(df2, .pmtype = "fixed") %>% 
+  st_notes(c(footNote1, footNote2))
 
 # tableList$fixed %>% 
 #   stable() %>% 
@@ -129,7 +130,8 @@ tableList$fixed <- make_pmtable(df2, .pmtype = "fixed", .notes = c(footNote1, fo
 
 ```{r}
 ##random
-tableList$random <- make_pmtable(df2, .pmtype = "random", .notes = c(footNote3, footNote4, footNote5))
+tableList$random <- make_pmtable(df2, .pmtype = "random") %>% 
+  st_notes(c(footNote3, footNote4, footNote5))
 
 tableList$random %>% 
   stable() %>% 
@@ -138,7 +140,9 @@ tableList$random %>%
 
 If you want to add or overwrite pre-defined `pmtables` argument, simply pipe onto the `make_pmtable` tibble:
 ```{r,results = 'asis'}
-tableList$random <- make_pmtable(df2, .pmtype = "random", .notes = c(footNote3, footNote4, footNote5))
+tableList$random <- make_pmtable(df2, .pmtype = "random") %>% 
+  st_notes(c(footNote3, footNote4, footNote5))
+
 tableList$random %>% 
   st_panel("abb") %>% 
   st_select(-"type", -"greek") %>% 
