@@ -134,7 +134,6 @@ tableList$bootstrap <- df2 %>%
             " "= abb) %>% 
   #abbreviations
   st_notes(footnote$ci) %>% 
-  st_notes_str() %>%
   #equations
   st_notes(footnote$ciEq) 
 
