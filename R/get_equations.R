@@ -25,10 +25,16 @@
 #' @export
 get_equations <- function(.ci = 95, .zscore = NULL){
 
-  if (.ci == 95){
+  if (.ci == 95 & is.null(.zscore)){
     .zscore = 1.64
-  } else if (.ci == 90){
+  } else if (.ci == 90 & is.null(.zscore)){
     .zscore = 1.96
+  } else if (.ci == 95 & !is.null(.zscore) & .zscore != 1.64){
+    .zscore = 1.64
+    message("Confidence interval and z-score provided do not match. The z-score that corresponds to 95% CI will be used (z-score = 1.64)")
+  } else if (.ci == 90 & !is.null(.zscore) & .zscore != 1.96){
+    .zscore = 1.96
+    warning("Confidence interval and z-score provided do not match. The z-score that corresponds to 90% CI will be used (z-score = 1.96)")
   } else if (!(.ci %in% c(90, 95)) & !is.null(.zscore)){
     .zscore = .zscore
   } else if (!(.ci %in% c(90, 95)) & is.null(.zscore)){
