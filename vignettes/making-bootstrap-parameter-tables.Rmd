@@ -129,11 +129,14 @@ tableList$bootstrap <- df2 %>%
   mutate(boot_ci_95 = if_else(is.na(boot_ci_95), "FIXED", boot_ci_95)) %>% 
   st_new() %>% 
   st_panel("desc") %>% 
+  st_rename(Value = boot_value,
+            "95% CI" = boot_ci_95,
+            " "= abb) %>% 
   st_notes(footnote$ci) %>% 
   st_notes_str() %>%
-  st_notes(footnote$ciEq) %>% 
-  stable() %>% 
-  st2report()
+  st_notes(footnote$ciEq) 
 
-tableList$bootstrap %>% st_asis()
+tableList$bootstrap %>% 
+  stable() %>%
+  st_asis()
 ```

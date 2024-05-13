@@ -119,11 +119,11 @@ tableList$fixed <- make_pmtable(df2, .pmtype = "fixed") %>%
   st_notes(footnote$ci, footnote$se) %>% 
   #equations
   st_notes_str() %>% 
-  st_notes(footnote$ciEq) 
+  st_notes(footnote$ciEq)
 
-# tableList$fixed %>% 
-#   stable() %>% 
-#   pmtables::st_as_image()
+tableList$fixed %>%
+  stable() %>% 
+  st_asis()
 ```
 
 ```{r}
@@ -136,7 +136,7 @@ tableList$random <- make_pmtable(df2, .pmtype = "random") %>%
   st_notes(footnote$cvOmegaEq, footnote$cvSigmaEq)
 
 tableList$random %>% 
-  stable() %>% 
+  stable() %>%
   st_asis()
 ```
 
@@ -152,7 +152,7 @@ tableList$random <- make_pmtable(df2, .pmtype = "random") %>%
 tableList$random %>% 
   st_panel("abb") %>% 
   st_select(-"type", -"greek") %>% 
-  stable() %>% 
+  stable() %>%
   st_asis()
 ```
 
