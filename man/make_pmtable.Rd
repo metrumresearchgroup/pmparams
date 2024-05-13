@@ -4,14 +4,12 @@
 \alias{make_pmtable}
 \title{Make pmtable parameter table}
 \usage{
-make_pmtable(.df, .pmtype = "full", .notes = NULL, .width = 1)
+make_pmtable(.df, .pmtype = "full", .width = 1)
 }
 \arguments{
 \item{.df}{parameter data set output from pmparams::format_param_table or pmparams::format_boot_table.}
 
-\item{.pmtype}{parameter table type. Options include: full, fixed, fixed and random, fixed structural, fixed covariate, random. Defaults to "full".}
-
-\item{.notes}{footnotes for table. Defaults to NULL.}
+\item{.pmtype}{parameter table type. Options include: full (all rows in .df retained in pmtable), fixed (all rows with type = "Struct" or "effect"), structural (all rows with type = "Struct"), covariate (all rows with type = "effect"), random (all rows with greek = "Omega" and type = "Resid"). Defaults to "full".}
 
 \item{.width}{notes width. Defaults to 1.}
 }
@@ -22,8 +20,8 @@ This function:
 \enumerate{
 \item Filters to columns needed for specific parameter tables
 \item Panels by "type"
-\item Makes "abb", "greek", "desc" blank for "full", "fixed", "fixed structural", "fixed covariate" parameter tables.
-Makes "abb" and "greek" blank for "fixed random", "random"
+\item Makes "abb", "greek", "desc" blank for "full", "fixed", "structural", "covariate" parameter tables.
+Makes "abb" and "greek" blank for "random"
 \item Attaches notes
 \item Rename "value" to "Estimate" and "shrinkage" to "Shrinkage (\\\%)", if applicable
 }
