@@ -2,7 +2,7 @@
 % Please edit documentation in R/zscore_ci_msg.R
 \name{zscore_ci_msg}
 \alias{zscore_ci_msg}
-\title{Remove punctuation from parameter names}
+\title{Generate message that confidence interval and z-score do not match}
 \usage{
 zscore_ci_msg(.ci, .zscore)
 }

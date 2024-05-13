@@ -1,4 +1,4 @@
-#' Remove punctuation from parameter names
+#' Generate message that confidence interval and z-score do not match
 #'
 #' @description
 #'
