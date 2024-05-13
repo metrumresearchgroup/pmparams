@@ -9,7 +9,7 @@ make_pmtable(.df, .pmtype = "full", .width = 1)
 \arguments{
 \item{.df}{parameter data set output from pmparams::format_param_table or pmparams::format_boot_table.}
 
-\item{.pmtype}{parameter table type. Options include: full (all rows in .df retained in pmtable), fixed (all rows with type = "Struct" or "effect"), structural (all rows with type = "Struct"), covariate (all rows with type = "effect"), random (all rows with greek = "Omega" and type = "Resid"). Defaults to "full".}
+\item{.pmtype}{parameter table type. Options include: full (all rows in .df retained in pmtable), fixed (all rows with type = "Struct" or "effect"), structural (all rows with type = "Struct"), covariate (all rows with type = "effect"), random (all rows with greek = "Omega" or type = "Resid"). Defaults to "full".}
 
 \item{.width}{notes width. Defaults to 1.}
 }
