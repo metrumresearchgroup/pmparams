@@ -48,37 +48,25 @@ test_that("make_pmtable correctly filters with .pmtype", {
 
   #random
   expect_equal(
-    newFormatDF %>%
-      dplyr::filter(stringr::str_detect(greek, "Omega") |
-                      stringr::str_detect(type, "Resid")) %>%
-      nrow(),
+    7,
     nrow(pm_tibble4$data)
   )
 
   #fixed
   expect_equal(
-    newFormatDF %>%
-      filter(
-        stringr::str_detect(type, "Struct") |
-          stringr::str_detect(type, "effect")
-      ) %>%
-      nrow(),
+    5,
     nrow(pm_tibble5$data)
   )
 
   #full
   expect_equal(
-    newFormatDF %>%
-      nrow(),
+    12,
     nrow(pm_tibble6$data)
   )
 
   #structural
   expect_equal(
-    newFormatDF %>%
-      dplyr::filter(stringr::str_detect(type, "Struct")
-      ) %>%
-      nrow(),
+    5,
     nrow(pm_tibble7$data)
   )
 
