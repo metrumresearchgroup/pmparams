@@ -25,7 +25,7 @@
 #' @export
 get_equations <- function(.ci = 95, .zscore = NULL){
 
-  .zscore <-
+  .validated_zscore <-
     if (is.null(.zscore)){
       if (.ci == 95){
         1.64
@@ -53,7 +53,7 @@ get_equations <- function(.ci = 95, .zscore = NULL){
     cv   = "CV: coefficient of variation",
     se   = "SE: standard error",
     sd   = "SD: standard deviation",
-    ciEq =  paste0("Confidence intervals = estimate $\\pm$ ", .zscore, " $\\cdot$ SE"),
+    ciEq =  paste0("Confidence intervals = estimate $\\pm$ ", .validated_zscore, " $\\cdot$ SE"),
     cvOmegaEq = "CV\\% of log-normal omegas = sqrt(exp(estimate) - 1) $\\cdot$ 100",
     cvSigmaEq = "CV\\% of sigma = sqrt(estimate) $\\cdot$ 100",
     logTrans = "Parameters estimated in the log-domain were back-transformed for clarity.",
