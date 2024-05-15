@@ -1,6 +1,6 @@
 # pmparams 0.1.0.9000
 
-## New features
+## New features 
 
 - Allow users to input `THETA` in `ERROR` block. (#21)
 
