@@ -2,7 +2,7 @@
 #'
 #' @description
 #'
-#' Output message if confidence interval and z-score do not match for `get_equations`
+#' Output message if confidence interval and z-score do not match for `param_notes`
 #'
 #' @keywords internal
 zscore_ci_msg <- function(.ci, .zscore){

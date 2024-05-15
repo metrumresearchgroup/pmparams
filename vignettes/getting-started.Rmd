@@ -109,7 +109,7 @@ We leverage `make_pmtable` to generate fixed effects and random effects paramete
 tableList <- list()
 
 #grab footnotes
-footnote <- get_equations(.ci = 95)
+footnote <- param_notes(.ci = 95)
 ```
 
 ```{r}

@@ -7,6 +7,6 @@
 zscore_ci_msg(.ci, .zscore)
 }
 \description{
-Output message if confidence interval and z-score do not match for \code{get_equations}
+Output message if confidence interval and z-score do not match for \code{param_notes}
 }
 \keyword{internal}

@@ -16,14 +16,14 @@
 #' data <- format_param_table(.df = defineOut)
 #'
 #' #To make random effects table and add relevant footnotes:
-#' footnotes = get_equations()
+#' footnotes = param_notes()
 #' table <- make_pmtable(.df = data, .pmtype = "random") %>%
 #' pmtables::st_notes(footnotes$ci, footnotes$cv) %>%
 #' pmtables::st_notes_str() %>%
 #' pmtables::st_notes(footnotes$cvOmegaEq, footnotes$cvSigmaEq)
 #'
 #' @export
-get_equations <- function(.ci = 95, .zscore = NULL){
+param_notes <- function(.ci = 95, .zscore = NULL){
 
   .validated_zscore <-
     if (is.null(.zscore)){
@@ -49,7 +49,7 @@ get_equations <- function(.ci = 95, .zscore = NULL){
 
   list(
     ci   = "CI: confidence intervals",
-    corr = "Corr: Correlation coefficient",
+    corr = "Corr: correlation coefficient",
     cv   = "CV: coefficient of variation",
     se   = "SE: standard error",
     sd   = "SD: standard deviation",
