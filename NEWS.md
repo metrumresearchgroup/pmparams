@@ -1,6 +1,6 @@
-# pmparams 0.1.0.9000
+# pmparams (development version)
 
-## New features
+## New features 
 
 - Allow users to input `THETA` in `ERROR` block. (#21)
 
@@ -9,6 +9,8 @@
 - Carry specified CI level through all functions. (#15)
 
 - `make_pmtable` generate specific parameter tables by filtering and using pmtables. (#15)
+
+- `param_notes` generate data frame of generic footnote equations to append to parameter tables. (#39)
 
 # pmparams 0.1.0
 
