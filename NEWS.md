@@ -10,6 +10,8 @@
 
 - `make_pmtable` generate specific parameter tables by filtering and using pmtables. (#15)
 
+- `param_notes` generate data frame of generic footnote equations to append to parameter tables.. (#39)
+
 # pmparams 0.1.0
 
 Initial release, featuring the following exported functions:
