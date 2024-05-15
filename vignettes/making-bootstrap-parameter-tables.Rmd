@@ -119,9 +119,8 @@ We use `pmtables` to make formatted table.
 ```{r}
 tableList <- list()
 
-#fixed footnotes
-footNote1 <- "Abbreviations: CI = confidence intervals"
-footNote2 <- "Confidence intervals = estimate $\\pm$ 1.96 $\\cdot$ SE"
+#grab footnotes
+footnote <- param_notes(.ci = 95)
 ```
 
 ```{r}
@@ -130,7 +129,15 @@ tableList$bootstrap <- df2 %>%
   mutate(boot_ci_95 = if_else(is.na(boot_ci_95), "FIXED", boot_ci_95)) %>% 
   st_new() %>% 
   st_panel("desc") %>% 
-  stable()
+  st_rename(Value = boot_value,
+            "95% CI" = boot_ci_95,
+            " "= abb) %>% 
+  #abbreviations
+  st_notes(footnote$ci) %>% 
+  #equations
+  st_notes(footnote$ciEq) 
 
-tableList$bootstrap %>% st_asis()
+tableList$bootstrap %>% 
+  stable() %>%
+  st_asis()
 ```

@@ -108,45 +108,51 @@ We leverage `make_pmtable` to generate fixed effects and random effects paramete
 ```{r}
 tableList <- list()
 
-#fixed footnotes
-footNote1 <- "Abbreviations: CI = confidence intervals; SE = standard error"
-footNote2 <- "Confidence intervals = estimate $\\pm$ 1.96 $\\cdot$ SE"
-
-#random footnotes
-footNote3 <- "Abbreviations: CI = confidence intervals; Corr = Correlation coefficient; CV = coefficient of variation; SD = standard deviation; SE = standard error"
-footNote4 <- "CV\\% of log-normal omegas = sqrt(exp(estimate) - 1) $\\cdot$ 100" 
-footNote5 <- "CV\\% of sigma = sqrt(estimate) $\\cdot$ 100"
+#grab footnotes
+footnote <- param_notes(.ci = 95)
 ```
 
 ```{r}
 ##fixed
 tableList$fixed <- make_pmtable(df2, .pmtype = "fixed") %>% 
-  st_notes(c(footNote1, footNote2))
+  #abbreviations
+  st_notes(footnote$ci, footnote$se) %>% 
+  st_notes_str() %>% 
+  #equations
+  st_notes(footnote$ciEq)
 
-# tableList$fixed %>% 
-#   stable() %>% 
-#   pmtables::st_as_image()
+tableList$fixed %>%
+  stable() %>% 
+  st_asis()
 ```
 
 ```{r}
 ##random
 tableList$random <- make_pmtable(df2, .pmtype = "random") %>% 
-  st_notes(c(footNote3, footNote4, footNote5))
+  #abbreviations
+  st_notes(footnote$ci, footnote$se) %>% 
+  st_notes_str() %>% 
+  #equations
+  st_notes(footnote$cvOmegaEq, footnote$cvSigmaEq)
 
 tableList$random %>% 
-  stable() %>% 
+  stable() %>%
   st_asis()
 ```
 
 If you want to add or overwrite pre-defined `pmtables` argument, simply pipe onto the `make_pmtable` tibble:
 ```{r,results = 'asis'}
 tableList$random <- make_pmtable(df2, .pmtype = "random") %>% 
-  st_notes(c(footNote3, footNote4, footNote5))
+  #abbreviations
+  st_notes(footnote$ci, footnote$se) %>% 
+  st_notes_str() %>% 
+  #equations
+  st_notes(footnote$ciEq) 
 
 tableList$random %>% 
   st_panel("abb") %>% 
   st_select(-"type", -"greek") %>% 
-  stable() %>% 
+  stable() %>%
   st_asis()
 ```
 

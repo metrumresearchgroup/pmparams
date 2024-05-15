@@ -33,3 +33,7 @@ reference:
     desc: Generates specific parameter tables by filtering and using pmtables.
     contents:
     - make_pmtable
+  - title: Get generic parameter table footnotes
+    desc: Generate data frame of generic footnote equations to append to parameter tables.
+    contents:
+    - param_notes
