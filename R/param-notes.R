@@ -35,11 +35,11 @@ param_notes <- function(.ci = 95, .zscore = NULL){
         stop("Z-score (.zscore) must be supplied when CI is not 90 or 95")
       }
     } else {
-      if (.ci == 95 & .zscore != 1.64){
-        zscore_ci_msg(.ci = 95, .zscore= 1.64)
+      if (.ci == 95 & .zscore != 1.96){
+        zscore_ci_msg(.ci = 95, .zscore= 1.96)
         1.96
-      } else if(.ci == 90 & .zscore != 1.96){
-        zscore_ci_msg(.ci = 90, .zscore= 1.96)
+      } else if(.ci == 90 & .zscore != 1.64){
+        zscore_ci_msg(.ci = 90, .zscore= 1.64)
         1.64
       } else {
         .zscore
