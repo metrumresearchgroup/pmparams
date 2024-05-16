@@ -71,30 +71,31 @@ make_pmtable <- function(.df,
 
   pm_tab1 <-
 
-    if (.pmtype %in% c("full", "fixed", "structural", "covariate")){
+    if (.pmtype == "full"){
       pm_tab0 %>%
-        dplyr::select(-shrinkage) %>%
         pmtables::st_new() %>%
         pmtables::st_panel("type") %>%
-        pmtables::st_blank("abb", "greek", "desc") %>%
-        pmtables::st_rename("Estimate" = "value")
+        pmtables::st_blank("abb", "greek", "desc")
+    } else if (.pmtype %in% c("fixed", "structural", "covariate")){
+        pm_tab0 %>%
+          dplyr::select(-shrinkage) %>%
+          pmtables::st_new() %>%
+          pmtables::st_panel("type") %>%
+          pmtables::st_blank("abb", "greek", "desc")
     } else if (.pmtype == "random"){
       pm_tab0 %>%
         dplyr::select(-desc) %>%
         pmtables::st_new() %>%
         pmtables::st_panel("type") %>%
-        pmtables::st_blank("abb", "greek") %>%
-        pmtables::st_rename("Estimate" = "value",
-                            "Shrinkage (\\%)" = "shrinkage")
+        pmtables::st_blank("abb", "greek")
     }
 
-  pm_tab2 <-
-    if (is.null(.width)){
-      pm_tab1
-    } else {
-      pm_tab1 %>%
-        pmtables::st_notes_detach(width = .width)
-    }
+
+  pm_tab2 <- pm_tab1 %>%
+    pmtables::st_notes_detach(width = .width) %>%
+    pmtables::st_rename("Estimate" = "value",
+                        "Shrinkage (\\%)" = "shrinkage",
+                        "RSE (\\%)" = "pRSE")
 
   return(pm_tab2)
 

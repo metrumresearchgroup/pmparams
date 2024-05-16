@@ -35,6 +35,7 @@ paramModel <- bbr::read_model(system.file("model/nonmem/102", package = "pmparam
 
 newDF <- define_param_table(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
 newFormatDF <- format_param_table(newDF)
+newFormatDFprse  <- format_param_table(newDF, .prse = T)
 
 #Data for testing boot param table
 boot_paramEstPath <- system.file("model/nonmem/boot/data/boot-106.csv", package = "pmparams")
