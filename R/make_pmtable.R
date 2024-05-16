@@ -90,19 +90,13 @@ make_pmtable <- function(.df,
         pmtables::st_blank("abb", "greek")
     }
 
-  pm_tab2 <-
-    if (is.null(.width)){
-      pm_tab1
-    } else {
-      pm_tab1 %>%
-        pmtables::st_notes_detach(width = .width)
-    }
 
-  pm_tab3 <- pm_tab2 %>%
+  pm_tab2 <- pm_tab1 %>%
+    pmtables::st_notes_detach(width = .width) %>%
     pmtables::st_rename("Estimate" = "value",
                         "Shrinkage (\\%)" = "shrinkage",
                         "RSE (\\%)" = "pRSE")
 
-  return(pm_tab3)
+  return(pm_tab2)
 
 }
