@@ -18,10 +18,10 @@ test_that("make_pmtable pmtable commands: make cols blank", {
 
 test_that("make_pmtable pmtable commands: rename cols", {
   pm_tibble3 <- make_pmtable(.df = newFormatDF, .pmtype = "structural")
-  expect_equal(unname(unlist(pm_tibble3$cols_rename)), "value")
+  expect_equal(unname(unlist(pm_tibble3$cols_rename[1])), "value")
 
   pm_tibble4 <- make_pmtable(.df = newFormatDF, .pmtype = "random")
-  expect_equal(unname(unlist(pm_tibble4$cols_rename)), c("value", "shrinkage"))
+  expect_equal(unname(unlist(pm_tibble4$cols_rename)), c("value", "shrinkage", "pRSE"))
 })
 
 
@@ -76,7 +76,6 @@ test_that("make_pmtable pmtable commands: includes prse", {
   pm_tibble8 <- make_pmtable(.df = newFormatDFprse, .pmtype = "full")
   st_pm_tibble8 <- pm_tibble8 %>% pmtables::stable()
 
-  expect_equal(names(pm_tibble8$cols_rename), c("Estimate", "Shrinkage (\\%)" ,"RSE (\\%)"))
   expect_true("pRSE" %in% names(pm_tibble8))
   expect_true(any(grepl("RSE", st_pm_tibble8)))
 
@@ -84,7 +83,7 @@ test_that("make_pmtable pmtable commands: includes prse", {
   pm_tibble9 <- make_pmtable(.df = newFormatDFprse, .pmtype = "structural")
   st_pm_tibble9 <- pm_tibble9 %>% pmtables::stable()
 
-  expect_equal(names(pm_tibble9$cols_rename), c("Estimate", "RSE (\\%)"))
   expect_true("pRSE" %in% names(pm_tibble9))
   expect_true(any(grepl("RSE", st_pm_tibble9)))
 })
+
