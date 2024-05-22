@@ -57,4 +57,5 @@ in RStudio). renv will activate and find the project library.
 ## Getting help
 
 If you encounter a clear bug, please file an issue with a minimal
-reproducible example on [pmparams](https://github.com/pmparams/issues).
+reproducible example on
+[pmparams](https://github.com/metrumresearchgroup/pmparams/issues).
