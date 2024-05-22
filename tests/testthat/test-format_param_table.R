@@ -110,3 +110,13 @@ test_that("format_param_table panel expected ouput", {
   expect_equal(newDF8$type_f[newDF8$name == "THETA2"], 3)
   expect_equal(newDF8$panel[newDF8$name == "THETA2"], "IIV")
 })
+
+test_that("format_param_table: logit back transform large estimate returns 1", {
+  newDF9 <- data.frame(LOGIT = TRUE, value = 1e6, lower = 2, upper = 1e10)
+  newDF10 <- backTrans_logit(newDF9)
+  expect_equal(newDF10$value, 1)
+  expect_equal(newDF10$lower, stats::plogis(newDF9$lower))
+  expect_equal(newDF10$upper, 1)
+})
+
+
