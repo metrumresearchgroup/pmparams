@@ -12,14 +12,24 @@ Status](https://github-drone.metrumrg.com/api/badges/metrumresearchgroup/pmparam
 ## Overview
 
 `pmparams` helps define and format parameter tables. Example code
-demonstrating the package as part of an analysis workflow will soon be
-available in our [MeRGE Expo 1
+demonstrating the package as part of an analysis workflow is available
+in our [MeRGE Expo 1
 repository](https://github.com/metrumresearchgroup/expo1-nonmem-foce/).
+
+### Featured Vignettes
+
+-   [Getting
+    Started](https://metrumresearchgroup.github.io/pmparams/articles/getting-started.html)
+    – Introduction to `pmparams` functions.
+-   [Making Bootstrap
+    Tables](https://metrumresearchgroup.github.io/pmparams/articles/making-bootstrap-parameter-tables.html)
+    – Introduction to `pmparams` functions that create bootstrap
+    parameter tables.
 
 ## Documentation
 
 Public documentation of all functions is hosted at
-<https://metrumresearchgroup.github.io/pmparams/>
+<https://metrumresearchgroup.github.io/pmparams/reference/index.html>
 
 ## Development
 
@@ -47,4 +57,5 @@ in RStudio). renv will activate and find the project library.
 ## Getting help
 
 If you encounter a clear bug, please file an issue with a minimal
-reproducible example on [pmparams](https://github.com/pmparams/issues).
+reproducible example on
+[pmparams](https://github.com/metrumresearchgroup/pmparams/issues).

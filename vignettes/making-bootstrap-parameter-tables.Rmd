@@ -1,5 +1,5 @@
 ---
-title: "making-bootstrap-parameter-tables"
+title: "Making Bootstrap Parameter Tables"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{making-bootstrap-parameter-tables}
