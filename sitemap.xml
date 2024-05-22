@@ -4,6 +4,15 @@
     <loc>/404.html</loc>
   </url>
   <url>
+    <loc>/articles/getting-started.html</loc>
+  </url>
+  <url>
+    <loc>/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>/articles/making-bootstrap-parameter-tables.html</loc>
+  </url>
+  <url>
     <loc>/authors.html</loc>
   </url>
   <url>
@@ -85,10 +94,16 @@
     <loc>/reference/lowerCI.html</loc>
   </url>
   <url>
+    <loc>/reference/make_pmtable.html</loc>
+  </url>
+  <url>
     <loc>/reference/mathMode.html</loc>
   </url>
   <url>
     <loc>/reference/param_key.html</loc>
+  </url>
+  <url>
+    <loc>/reference/param_notes.html</loc>
   </url>
   <url>
     <loc>/reference/parens.html</loc>
@@ -98,5 +113,8 @@
   </url>
   <url>
     <loc>/reference/removePunc.html</loc>
+  </url>
+  <url>
+    <loc>/reference/zscore_ci_msg.html</loc>
   </url>
 </urlset>
