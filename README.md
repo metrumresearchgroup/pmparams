@@ -6,7 +6,7 @@
 <!-- badges: start -->
 
 [![Build
-Status](https://github-drone.metrumrg.com/api/badges/metrumresearchgroup/pmparams/status.svg)](https://github-drone.metrumrg.com/metrumresearchgroup/pmparams)
+Status](https://github.com/metrumresearchgroup/pmparams/actions/workflows/main.yaml/badge.svg)](https://github.com/metrumresearchgroup/pmparams/actions/workflows/main.yaml)
 <!-- badges: end -->
 
 ## Overview

@@ -2,7 +2,7 @@
 ^renv\.lock$
 ^pmparams\.Rproj$
 ^\.Rproj\.user$
-^.drone.yml$
+^.github$
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
