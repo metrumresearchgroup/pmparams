@@ -12,6 +12,7 @@ Repos:
   - bbr: https://s3.amazonaws.com/mpn.metworx.dev/releases/bbr/latest_tag
   - pmtables: https://s3.amazonaws.com/mpn.metworx.dev/releases/pmtables/latest_tag
   - nmrec: https://s3.amazonaws.com/mpn.metworx.dev/releases/nmrec/latest_tag
+  - mrgmisc: https://s3.amazonaws.com/mpn.metworx.dev/releases/mrgmisc/latest_tag
 
 Lockfile:
   Type: renv
