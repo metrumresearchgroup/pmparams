@@ -7,7 +7,7 @@ navbar:
   type: inverse
   right:
   - icon: fa-github fa-lg
-    href: https://ghe.metrumrg.com/software-incubator/pmparams
+    href: https://github.com/metrumresearchgroup/pmparams
 reference:
   - title: Create parameter key
     desc: Requirements for parameter key
