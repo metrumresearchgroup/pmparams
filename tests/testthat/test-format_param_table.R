@@ -120,3 +120,44 @@ test_that("format_param_table: logit back transform large estimate returns 1", {
 })
 
 
+test_that("format_param_table: .digit produces expected significant digits", {
+
+  newDF9 <- format_param_table(newDF)
+  expect_equal(newDF9$value[9], "0.0690 [Corr=0.511]")
+  expect_equal(newDF9$ci[9], "0.0299, 0.108")
+  expect_equal(newDF9$shrinkage[6], "17.9")
+
+  newDF10 <- format_param_table(newDF, .digit = 6)
+  expect_equal(newDF10$value[9], "0.0690088 [Corr=0.510933]")
+  expect_equal(newDF10$ci[9], "0.0298839, 0.108134")
+  expect_equal(newDF10$shrinkage[6], "17.8988")
+})
+
+test_that("format_param_table: .maxex produces expected scientific notation", {
+
+  newDF11 <- newDF %>%
+    mutate(value = value*100,
+           upper = upper*0.01,
+           lower = lower*0.0001)
+
+  newDF12 <- format_param_table(newDF11)
+  expect_equal(newDF12$value[1], "6.77e+18")
+  expect_equal(newDF12$value[10], "13.4 [Corr=0.694]")
+  expect_equal(newDF12$ci[10], "8.78e-06, 0.00180")
+  expect_equal(newDF12$shrinkage[6], "17.9")
+
+  newDF13 <- format_param_table(newDF11, .maxex = 99)
+  expect_equal(newDF13$value[1], "6770000000000000000")
+  expect_equal(newDF13$value[10], "13.4 [Corr=0.694]")
+  expect_equal(newDF13$ci[10], "0.00000878, 0.00180")
+  expect_equal(newDF13$shrinkage[6], "17.9")
+
+  #maxex and digit
+  newDF14 <- format_param_table(newDF11, .digit = 2, .maxex = 99)
+  expect_equal(newDF14$value[1], "6800000000000000000")
+  expect_equal(newDF14$value[10], "13 [Corr=0.69]")
+  expect_equal(newDF14$ci[10], "0.0000088, 0.0018")
+  expect_equal(newDF14$shrinkage[6], "18")
+
+})
+

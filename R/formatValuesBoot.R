@@ -13,5 +13,4 @@ formatValuesBoot <- function(.df,
       boot_ci_95 = dplyr::if_else(fixed, "FIXED", paste0(pmtables::sig(lower, .digit, .maxex), ', ', pmtables::sig(upper, .digit, .maxex))),
       boot_value = pmtables::sig(value, .digit, .maxex)
     )
-    )
 }

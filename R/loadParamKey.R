@@ -10,7 +10,6 @@
 loadParamKey <- function(.key){
 
   if (inherits(.key, "character")){
-    print(paste0("Parameter table yaml path provided: ", .key))
     y1l <- yaml::yaml.load_file(.key)
 
     if (!all(names(y1l[[1]]) %in% c("abb", "desc", "panel", "trans"))) {
