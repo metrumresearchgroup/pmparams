@@ -4,7 +4,7 @@
 \alias{formatValuesBoot}
 \title{Define how values are to be displayed}
 \usage{
-formatValuesBoot(.df)
+formatValuesBoot(.df, .digit, .maxex)
 }
 \description{
 Format values for bootstrap run
