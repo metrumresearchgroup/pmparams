@@ -17,10 +17,11 @@ formatValues <- function(.df,
       ci = paste0(pmtables::sig(lower, .digit, .maxex), ', ', pmtables::sig(upper, .digit, .maxex)),
       ci = dplyr::if_else(fixed, "FIXED", ci),
       sd = dplyr::case_when(
-        diag & OM & Osd ~ pmtables::sig(random_effect_sd),
-        diag & OM & logitOsd ~ pmtables::sig(getSD_logitO(.mean=transTHETA, .var = value)),
+        diag & OM & Osd ~ pmtables::sig(random_effect_sd, .digit, .maxex),
+        diag & OM & logitOsd ~ pmtables::sig(getSD_logitO(.mean=transTHETA, .var = value), .digit, .maxex),
         TRUE ~ "-"
       ),
+      corr_SD = dplyr::case_when(is.na(corr_SD) ~ "-", TRUE ~ pmtables::sig(corr_SD, .digit, .maxex)),
       value = pmtables::sig(value, .digit, .maxex),
       value = dplyr::case_when(
         diag & OM & Osd | diag & OM & logitOsd ~ glue::glue("{value} {parensSQ_se(sd)}"),
@@ -30,6 +31,6 @@ formatValues <- function(.df,
         diag & S & addErr ~ glue::glue("{value} {parensSQ_se(corr_SD)}"),
         !diag & S ~ glue::glue("{value} {parensSQ_corr(corr_SD)}"),
         TRUE ~ value),
-      shrinkage = dplyr::case_when(is.na(shrinkage) ~ "-", TRUE ~ pmtables::sig(shrinkage))
+      shrinkage = dplyr::case_when(is.na(shrinkage) ~ "-", TRUE ~ pmtables::sig(shrinkage, .digit, .maxex))
     )
 }

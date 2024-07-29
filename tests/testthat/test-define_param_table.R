@@ -73,9 +73,9 @@ withr::with_options(list(bbr.bbi_exe_path = bbr::read_bbi_path()), {
   test_that("define_param_table generates correct corr_SD", {
     expect_true(all(newDF$estimate == newDF$value))
     expect_true(all(newDF$stderr == newDF$se))
-    expect_true(newDF$corr_SD[9] == "0.511")
-    expect_true(newDF$corr_SD[1] == "-")
-    expect_true(newDF$corr_SD[6] == "-")
+    expect_true(newDF$corr_SD[9] == "0.510933")
+    expect_true(is.na(newDF$corr_SD[1]))
+    expect_true(is.na(newDF$corr_SD[6]))
   })
 
   test_that("define_param_table generates the confidence intervals for various inputs", {

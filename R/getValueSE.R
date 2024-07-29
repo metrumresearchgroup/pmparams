@@ -23,8 +23,8 @@ getValueSE <- function(.df){
       value = estimate,
       se = stderr,
       corr_SD = dplyr::case_when(
-        OM & !diag | S & diag & addErr ~ pmtables::sig(random_effect_sd),
-        TRUE ~ "-")
+        OM & !diag | S & diag & addErr ~ random_effect_sd,
+        TRUE ~ NA_real_)
     )
 }
 
