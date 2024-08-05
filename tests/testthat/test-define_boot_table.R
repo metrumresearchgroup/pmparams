@@ -41,14 +41,14 @@ withr::with_options(list(bbr.bbi_exe_path = bbr::read_bbi_path()), {
 
   test_that("define_boot_table handles multiple estimate input types", {
     pathnewbootDF <-define_boot_table(.boot_estimates =boot_paramEst, .nonboot_estimates = nonboot_paramEst, .key = paramKey)
-    expect_equal(pathnewbootDF$estimate[pathnewbootDF$name == "OMEGA22"], 0.0821058)
+    expect_equal(pathnewbootDF$value[pathnewbootDF$name == "OMEGA22"], 0.0821058)
 
     mod_est <- bbr::read_model(system.file("model/nonmem/106", package = "pmparams"))
     pathDF2 <- define_boot_table(.boot_estimates = boot_paramEstPath, .nonboot_estimates = nonboot_paramEstPath, .key = paramKey)
-    expect_equal(pathDF2$estimate[pathDF2$name == "OMEGA22"], 0.0821058)
+    expect_equal(pathDF2$value[pathDF2$name == "OMEGA22"], 0.0821058)
 
     pathDF3 <- define_boot_table(.boot_estimates =boot_paramEst, .nonboot_estimates = mod_est, .key = paramKey)
-    expect_equal(pathDF3$estimate[pathDF3$name == "OMEGA22"], 0.0821058)
+    expect_equal(pathDF3$value[pathDF3$name == "OMEGA22"], 0.0821058)
 
   })
 
@@ -56,7 +56,7 @@ withr::with_options(list(bbr.bbi_exe_path = bbr::read_bbi_path()), {
     pathDF <- define_boot_table(.boot_estimates =boot_paramEst,
                                 .nonboot_estimates = nonboot_paramEst,
                                 .key = system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams"))
-    expect_equal(pathDF$estimate[pathDF$name == "OMEGA22"],  0.0821058)
+    expect_equal(pathDF$value[pathDF$name == "OMEGA22"],  0.0821058)
   })
 
   test_that("define_boot_table handles multiple parameter key input types", {
@@ -65,7 +65,7 @@ withr::with_options(list(bbr.bbi_exe_path = bbr::read_bbi_path()), {
     pathDF <- define_boot_table(.boot_estimates =boot_paramEst,
                                 .nonboot_estimates = nonboot_paramEst,
                                 .key = key_df)
-    expect_equal(pathDF$estimate[pathDF$name == "OMEGA22"], 0.0821058)
+    expect_equal(pathDF$value[pathDF$name == "OMEGA22"], 0.0821058)
   })
 
   test_that("define_boot_table incorrect parameter key input type: Only abb, desc, panel and trans arguments will be used, all others ignored", {

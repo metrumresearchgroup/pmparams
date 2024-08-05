@@ -9,9 +9,9 @@ paramKey = dplyr::tribble(
   "THETA3", "CL/F (L/h)", "Apparent clearance",                    "struct", "logTrans",
   "THETA4", "V3/F (L)",  "Apparent peripheral volume",             "struct", "logTrans",
   "THETA5", "Q/F (L/h)", "Apparent intercompartmental clearance",  "struct", "logTrans",
-  "THETA6", "$\\text{CL/F}_{eGFR}$", "eGFR effect on CL/F",        "cov",    "none",
-  "THETA7", "$\\text{CL/F}_{AGE}$", "Age effect on CL/F",          "cov",    "none",
-  "THETA8", "$\\text{CL/F}_{ALB}$", "Serum albumin effect on CL/F","cov",    "none",
+  "THETA6", "CL/F ~ eGFR", "eGFR effect on CL/F",        "cov",    "none",
+  "THETA7", "CL/F ~ AGE", "Age effect on CL/F",          "cov",    "none",
+  "THETA8", "CL/F ~ ALB", "Serum albumin effect on CL/F","cov",    "none",
 
   "OMEGA11", "IIV-KA",   "Variance of absorption",     "IIV", "lognormalOm",
   "OMEGA22", "IIV-V2/F", "Variance of central volume", "IIV", "lognormalOm",
@@ -47,6 +47,10 @@ nonboot_paramEst <- utils::read.csv(system.file("model/nonmem/nonboot_param_est.
 newbootDF <- pmparams::define_boot_table(.boot_estimates =boot_paramEst, .nonboot_estimates = nonboot_paramEst, .key = paramKey)
 formatBootDF <- pmparams::format_boot_table(.boot_df = newbootDF)
 
+newbootDF2 <- pmparams::define_boot_table(.boot_estimates =boot_paramEst,
+                                         .nonboot_estimates = nonboot_paramEst,
+                                         .key = paramKey,
+                                         .prob  = c(0.29, 0.15, 0.99))
 #final output
 nonbootDF <- pmparams::define_param_table(.estimates = nonboot_paramEst, .key = paramKey)
 formatnonbootDF <- nonbootDF %>% pmparams::format_param_table()
