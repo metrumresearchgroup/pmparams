@@ -88,6 +88,7 @@ Additionally, `define_param_table` performs checks and calculates confidence int
 ```{r}
 df1 <- define_boot_table(.boot_estimates = boot_paramEstPath,
                 .nonboot_estimates = nonboot_paramEstPath,
+                .ci = 95,
                 .key = paramKeyPath)
 
 head(df1)
@@ -105,6 +106,7 @@ Usually `define_boot_table` and `format_boot_table` are run together in a single
 ```{r}
 df2 <- define_boot_table(.boot_estimates = boot_paramEstPath,
                 .nonboot_estimates = nonboot_paramEstPath,
+                .ci = 95,
                 .key = paramKeyPath) %>% 
         format_boot_table()
   
@@ -124,13 +126,15 @@ footnote <- param_notes(.ci = 95)
 ```
 
 ```{r}
+#grab boot ci and reformat
+boot_ci_int <- paste0(unique(df2$boot_nam)*100, "% CI")
 
 tableList$bootstrap <- df2 %>% 
-  mutate(boot_ci_95 = if_else(is.na(boot_ci_95), "FIXED", boot_ci_95)) %>% 
+  mutate(boot_ci = if_else(is.na(boot_ci), "FIXED", boot_ci)) %>% 
   st_new() %>% 
   st_panel("desc") %>% 
   st_rename(Value = boot_value,
-            "95% CI" = boot_ci_95,
+            !!boot_ci_int := boot_ci,
             " "= abb) %>% 
   #abbreviations
   st_notes(footnote$ci) %>% 
@@ -138,6 +142,7 @@ tableList$bootstrap <- df2 %>%
   st_notes(footnote$ciEq) 
 
 tableList$bootstrap %>% 
-  stable() %>%
+  stable() %>% 
   st_asis()
+
 ```

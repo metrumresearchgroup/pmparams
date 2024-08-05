@@ -32,7 +32,7 @@
 #' format_boot_table(.boot_df = defineBootOut, .select_cols="all")
 #' @export
 format_boot_table <- function(.boot_df,
-                            .select_cols = c("abb", "desc", "boot_value", "boot_ci_95"),
+                            .select_cols = c("abb", "desc", "boot_value", "boot_ci", "boot_nam", "boot_med"),
                             .digit = getOption("pmparams.dig"),
                             .maxex = getOption("pmparams.maxex")){
 
@@ -41,7 +41,10 @@ format_boot_table <- function(.boot_df,
   .df_out <- .boot_df %>%
     formatValuesBoot(.digit = .digit, .maxex = .maxex) %>%
     dplyr::arrange(as.numeric(nrow)) %>%
-    dplyr::select(-nrow)
+    dplyr::select(-nrow) %>%
+    dplyr::mutate(
+      boot_nam = boot_upper - boot_lower
+      )
 
   if (any(tolower(.select_cols) == "all")) {
     return(.df_out %>% as.data.frame())

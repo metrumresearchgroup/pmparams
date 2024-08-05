@@ -31,7 +31,9 @@
 #' @param .boot_estimates parameter boot estimates- either path to file or data.frame
 #' @param .nonboot_estimates non-bootstrap final model - either path to file or bbr model_summary
 #' @param .key path to parameter key or data.frame of parameter key. Described in more detail in \code{\link[pmparams]{param_key}}
-#'
+#' @param .ci specify 90 or 95 percent confidence interval (default 95%). This will output 90% or 95% CI and median.
+#' @param .probs quartiles for boot strap. Only needed for confidence intervals that are NOT 90 or 95 percent
+#' @param .na.rm include NAs in bootstrap confidence interval estimates.
 #' @examples
 #'
 #' boot_paramEst <- utils::read.csv(system.file("model/nonmem/boot/data/boot-106.csv",
@@ -45,7 +47,12 @@
 #'                .key = paramKey)
 #'
 #' @export
-define_boot_table <- function(.boot_estimates, .nonboot_estimates, .key){
+define_boot_table <- function(.boot_estimates, .nonboot_estimates, .key, .ci = 95, .probs = NULL, .na.rm = FALSE){
+
+  # .boot_estimates <- boot_paramEst
+  # .nonboot_estimates <- nonboot_paramEst
+  # .key <- paramKey
+  # .na.rm = TRUE
 
   #path to boot estimates
   if (inherits(.boot_estimates, "character")){
@@ -61,19 +68,17 @@ define_boot_table <- function(.boot_estimates, .nonboot_estimates, .key){
 
   .nonboot_estimates <- loadParamEstimates(.nonboot_estimates)
 
+  if (!(.ci %in% c(90, 95)) & length(.probs) != 3){
+    message(
+      glue::glue("`define_boot_table` only supports n=3 prob inputs")
+    )
+  } #also add message that if ci and prob are filled out, we will use prob
+
 #clean up boot
-.bootParam0 = .boot %>%
-    bbr::param_estimates_compare()
+  .bootParam0 = .boot %>%
+    getBootCI()
 
-if (all(c("parameter_names", "p50", "p2.5", "p97.5") %in% names(.bootParam0))){
-  .bootParam1 <- .bootParam0 %>%
-    dplyr::rename(estimate = "p50", lower = "p2.5", upper = "p97.5")
-} else {
-  .bootParam1 <- .bootParam0 %>%
-    dplyr::rename(estimate = "50%", lower = "2.5%", upper = "97.5%")
-}
-
-.bootParam <- .bootParam1 %>%
+.bootParam <- .bootParam0 %>%
     dplyr::mutate(name = gsub("[[:punct:]]", "", parameter_names)) %>%
     dplyr::inner_join(.key, by = "name")
 
@@ -83,7 +88,6 @@ if (all(c("parameter_names", "p50", "p2.5", "p97.5") %in% names(.bootParam0))){
                 dplyr::mutate(name = gsub("[[:punct:]]", "", parameter_names)) %>%
                 dplyr::select(parameter_names, fixed),
                 by = "parameter_names") %>%
-  dplyr::mutate(value = estimate) %>%
   checkTransforms() %>%
   defineRows() %>%
   backTrans_log() %>%
