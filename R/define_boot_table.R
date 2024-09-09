@@ -41,12 +41,7 @@
 #'                .key = paramKey)
 #'
 #' @export
-define_boot_table <- function(.boot_estimates, .key, .ci = 95, .percentiles = NULL, .na.rm = FALSE){
-
-  # .boot_estimates = boot_paramEstPath
-  # .ci = 95
-  # .key = paramKeyPath
-  # .percentile = c(0.7, 0.5, 0.3, 0.65)
+define_boot_table <- function(.boot_estimates, .key, .ci = 95, .percentiles = NULL, .na.rm = TRUE){
 
   #path to boot estimates
   if (inherits(.boot_estimates, "character")){
