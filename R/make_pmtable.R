@@ -34,13 +34,12 @@ make_pmtable <- function(.df,
                          .pmtype = "full",
                          .width = 1){
 
- # .df = .df_out
   .pmtype <- tolower(.pmtype)
 
-  .ci_nam <- names(.df)[grepl("ci", names(.df))]
+  .ci_nam <- names(.df)[grepl("ci_", names(.df))]
 
   if (any(grepl("boot", names(.df)))) {
-    .new_ci_nam <-  paste0(unique(.df_out$boot_nam)*100, "\\% CI")
+    .new_ci_nam <-  paste0(unique(.df$boot_nam)*100, "\\% CI")
   } else{
     .new_ci_nam <-  paste0(stringr::str_remove(.ci_nam, "ci_"), "\\% CI")
   }

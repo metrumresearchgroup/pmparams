@@ -1,4 +1,4 @@
-#' Combine bootstrap estimates with non-bootstrap estimates and parameter key
+#' Combine bootstrap estimates with parameter key
 #'
 #' @description
 #'
@@ -6,6 +6,8 @@
 #' some formatting of this combined data.frame.
 #' There are two main steps of this function:
 #'
+#'
+#'#TODO: Update to percentiles
 #'1.Run `bbr::param_estimates_compare` to extract summary quantiles, the 5th, 50th, and 95th, of the
 #' bootstrap estimates for each model parameter.
 #'
@@ -20,43 +22,35 @@
 #' - This join adds the following columns: `abb` (abbreviation), `desc` (parameter description),
 #' `panel`, `trans` (transformation).
 #'
-#'2.Reformat non-bootstrap estimates and left join onto combined bootstrap estimates and parameter key data.frame.
-#' Expected input is a data.frame with parameter estimates, with the columns:
-#' `parameter_names`, `estimate`.
-#'
 #' With this information provided, a check is performed to determine whether parameters
 #' with special transformation rules were defined correctly. In addition, a series of
 #' TRUE/FALSE columns that will be used by subsequent functions.
 #'
 #' @param .boot_estimates parameter boot estimates- either path to file or data.frame
-#' @param .nonboot_estimates non-bootstrap final model - either path to file or bbr model_summary
 #' @param .key path to parameter key or data.frame of parameter key. Described in more detail in \code{\link[pmparams]{param_key}}
-#' @param .ci specify 90 or 95 percent confidence interval (default 95%). This will output 90% or 95% CI and median.
-#' @param .probs quartiles for boot strap. Only needed for confidence intervals that are NOT 90 or 95 percent
-#' @param .na.rm include NAs in bootstrap confidence interval estimates.
+#' @param .ci specify 90 or 95 percent confidence interval or IQR (interquartile range). Default is 95.
+#' @param .percentiles list of all percentiles. Default is NULL. For .ci = 95, .percentiles = c(0.025, 0.5, 0.975). For .ci =90, .percentiles will be c(0.05, 0.5, 0.95)
+#' @param .na.rm Default is false
 #' @examples
 #'
 #' boot_paramEst <- utils::read.csv(system.file("model/nonmem/boot/data/boot-106.csv",
 #'                                  package = "pmparams"))
-#' nonboot_paramEst <- utils::read.csv(system.file("model/nonmem/nonboot_param_est.csv",
-#'                                     package = "pmparams"))
 #' paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
 #'
 #' define_boot_table(.boot_estimates = boot_paramEst,
-#'                .nonboot_estimates = nonboot_paramEst,
 #'                .key = paramKey)
 #'
 #' @export
-define_boot_table <- function(.boot_estimates, .nonboot_estimates, .key, .ci = 95, .probs = NULL, .na.rm = FALSE){
+define_boot_table <- function(.boot_estimates, .key, .ci = 95, .percentiles = NULL, .na.rm = FALSE){
 
-  # .boot_estimates <- boot_paramEst
-  # .nonboot_estimates <- nonboot_paramEst
-  # .key <- paramKey
-  # .na.rm = TRUE
+  # .boot_estimates = boot_paramEstPath
+  # .ci = 95
+  # .key = paramKeyPath
+  # .percentile = c(0.7, 0.5, 0.3, 0.65)
 
   #path to boot estimates
   if (inherits(.boot_estimates, "character")){
-    .boot <- readr::read_csv(.boot_estimates)
+    .boot <- readr::read_csv(.boot_estimates, show_col_types = FALSE)
   #data.frame of boot estimates
   } else {
     .boot <- .boot_estimates
@@ -65,18 +59,9 @@ define_boot_table <- function(.boot_estimates, .nonboot_estimates, .key, .ci = 9
 # parameter key types
   .key <- loadParamKey(.key)
 
-
-  .nonboot_estimates <- loadParamEstimates(.nonboot_estimates)
-
-  if (!(.ci %in% c(90, 95)) & length(.probs) != 3){
-    message(
-      glue::glue("`define_boot_table` only supports n=3 prob inputs")
-    )
-  } #also add message that if ci and prob are filled out, we will use prob
-
 #clean up boot
   .bootParam0 = .boot %>%
-    getBootCI()
+    getBootPercentiles(.ci, .percentiles, .na.rm)
 
 .bootParam <- .bootParam0 %>%
     dplyr::mutate(name = gsub("[[:punct:]]", "", parameter_names)) %>%
@@ -84,10 +69,6 @@ define_boot_table <- function(.boot_estimates, .nonboot_estimates, .key, .ci = 9
 
 #join with nonboot estimates
 .boot_df <- .bootParam %>%
-  dplyr::left_join(.nonboot_estimates %>%
-                dplyr::mutate(name = gsub("[[:punct:]]", "", parameter_names)) %>%
-                dplyr::select(parameter_names, fixed),
-                by = "parameter_names") %>%
   checkTransforms() %>%
   defineRows() %>%
   backTrans_log() %>%

@@ -6,7 +6,7 @@
 \usage{
 format_param_table(
   .df,
-  .select_cols = c("type", "abb", "greek", "desc", "value", "ci", "shrinkage"),
+  .cleanup_cols = T,
   .prse = FALSE,
   .digit = getOption("pmparams.dig"),
   .maxex = getOption("pmparams.maxex")
@@ -15,7 +15,7 @@ format_param_table(
 \arguments{
 \item{.df}{parameter estimates output from \code{\link[pmparams]{define_param_table}} with modifications ready for formatting}
 
-\item{.select_cols}{columns to select for output. Default selects "type", "abb", "greek", "desc", "value", "ci", "shrinkage". To return all columns, specify "all" for .select_cols}
+\item{.cleanup_cols}{columns to select for output. Default selects "type", "abb", "greek", "desc", "value", "ci", "shrinkage". To return all columns, specify .cleanup_cols = F}
 
 \item{.prse}{output pRSE. Default is FALSE}
 
@@ -57,5 +57,5 @@ format_param_table(.df = defineOut)
 
 #To include all columns:
 
-format_param_table(.df = defineOut, .select_cols="all")
+format_param_table(.df = defineOut, .cleanup_cols = FALSE)
 }

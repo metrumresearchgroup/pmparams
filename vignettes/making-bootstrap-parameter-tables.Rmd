@@ -87,8 +87,6 @@ Additionally, `define_param_table` performs checks and calculates confidence int
 
 ```{r}
 df1 <- define_boot_table(.boot_estimates = boot_paramEstPath,
-                .nonboot_estimates = nonboot_paramEstPath,
-                .ci = 95,
                 .key = paramKeyPath)
 
 head(df1)
@@ -105,7 +103,6 @@ Usually `define_boot_table` and `format_boot_table` are run together in a single
 
 ```{r}
 df2 <- define_boot_table(.boot_estimates = boot_paramEstPath,
-                .nonboot_estimates = nonboot_paramEstPath,
                 .ci = 95,
                 .key = paramKeyPath) %>% 
         format_boot_table()
@@ -126,23 +123,71 @@ footnote <- param_notes(.ci = 95)
 ```
 
 ```{r}
-#grab boot ci and reformat
-boot_ci_int <- paste0(unique(df2$boot_nam)*100, "% CI")
-
 tableList$bootstrap <- df2 %>% 
-  mutate(boot_ci = if_else(is.na(boot_ci), "FIXED", boot_ci)) %>% 
   st_new() %>% 
   st_panel("desc") %>% 
-  st_rename(Value = boot_value,
-            !!boot_ci_int := boot_ci,
+  st_rename(Value = boot_value_50,
+            "95\\%CI" = boot_ci_95,
             " "= abb) %>% 
   #abbreviations
   st_notes(footnote$ci) %>% 
   #equations
   st_notes(footnote$ciEq) 
 
+
+tableList$bootstrap %>% stable() %>% st2report()
+
 tableList$bootstrap %>% 
   stable() %>% 
   st_asis()
 
 ```
+
+# Make parameter table with non-bootstrap and bootstrap 
+```{r}
+nonboot_df2 <- define_param_table(.estimates = nonboot_paramEstPath,
+                .key = paramKeyPath) %>% 
+                format_param_table()
+
+bootParam = left_join(nonboot_df2, df2, by = c("abb", "desc"))
+
+head(bootParam)
+
+
+footBoot = glue::glue("CI were determined from the 2.5th and 97.5th percentiles 
+                of the ({nrow(df2)}) non-parametric bootstrap estimates.")
+
+#Fixed
+tableList$fixed <- make_boot_pmtable(.boot_df = df2,
+                    .nonboot_df = nonboot_df2,
+                    .pmtype = "fixed") %>% 
+  st_center(desc = col_ragged(5.5),
+            abb = "l") %>% 
+  st_notes(param_notes()$ci) %>%         # add abbreviations
+  st_notes_str() %>%                     # collapse all abbreviations to a string                        
+  st_notes(param_notes()$logTrans,       # customize other notes
+           footBoot) %>%   
+  st_notes_detach(width = 1) %>% 
+  st_files(output = "final-param-fixed-boot.tex") 
+  
+tableList$fixed %>% 
+  stable() %>% 
+  st_asis()
+
+  
+  ##  RANDOM EFFECTS table ----------------------------
+tableList$random <- bootParam %>% 
+  make_pmtable(.pmtype = "random") %>% 
+  st_center(abb = "l") %>% 
+  st_notes(param_notes()$ci) %>%         # add abbreviations 
+  st_notes_str() %>%                     # collapse all abbreviations to a string                  
+  st_notes(param_notes()$logTrans,       # customize other notes
+           footBoot) %>%   
+  st_notes_detach(width = 1) %>% 
+  st_files(output = "final-param-random-boot.tex") 
+
+tableList$random %>% 
+  stable() %>% 
+  st_asis()
+```
+

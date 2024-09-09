@@ -6,9 +6,9 @@
 #' the bootstrap parameter table.
 #'
 #' Left join this output bootstrap data.frame with the formatted output of non-bootstrap parameter estimates
-#'
+#' TODO: Update format_param_table with .cleanup_cols
 #' @param .boot_df parameter estimates output from \code{\link[pmparams]{define_boot_table}} with modifications ready for formatting
-#' @param .select_cols columns to select for output. Default selects "abb", "desc", "boot_value", "boot_ci". To return all columns, specify "all" for .select_cols.
+#' @param .cleanup_cols clean up columns. Default TRUE and selects "abb", "desc", "boot_value", "boot_ci". To return all columns, set .cleanup_cols = FALSE.
 #' @param .digit set significant digits for output (optional). Default is three digits
 #' @param .maxex set maxex for computation (optional). Default is NULL
 #'
@@ -17,46 +17,43 @@
 #' #Using output from `define_boot_table` (defineBootOut),
 #' boot_paramEst <- utils::read.csv(system.file("model/nonmem/boot/data/boot-106.csv",
 #'                                  package = "pmparams"))
-#' nonboot_paramEst <- utils::read.csv(system.file("model/nonmem/nonboot_param_est.csv",
-#'                                     package = "pmparams"))
 #' paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
 #'
 #' defineBootOut <- define_boot_table(.boot_estimates = boot_paramEst,
-#'                .nonboot_estimates = nonboot_paramEst,
 #'                .key = paramKey)
 #'
 #' format_boot_table(.boot_df = defineBootOut)
 #'
 #' #To include all columns:
 #'
-#' format_boot_table(.boot_df = defineBootOut, .select_cols="all")
+#' format_boot_table(.boot_df = defineBootOut, .cleanup_cols = FALSE)
 #' @export
 format_boot_table <- function(.boot_df,
-                            .select_cols = c("abb", "desc", "boot_value", "boot_ci", "boot_nam", "boot_med"),
+                            .cleanup_cols = TRUE,
                             .digit = getOption("pmparams.dig"),
                             .maxex = getOption("pmparams.maxex")){
+
+  if (.cleanup_cols %in% c("T", "TRUE", T, TRUE)){
+    .cleanup_cols = TRUE
+  } else {
+    .cleanup_cols = FALSE
+  }
 
   .digit = ifelse(is.null(.digit), formals(pmtables::sig)$digits, .digit)
 
   .df_out <- .boot_df %>%
     formatValuesBoot(.digit = .digit, .maxex = .maxex) %>%
     dplyr::arrange(as.numeric(nrow)) %>%
-    dplyr::select(-nrow) %>%
-    dplyr::mutate(
-      boot_nam = boot_upper - boot_lower
-      )
+    dplyr::select(-nrow)
 
-  if (any(tolower(.select_cols) == "all")) {
-    return(.df_out %>% as.data.frame())
-  } else {
+  if (.cleanup_cols == TRUE) {
     return(.df_out %>%
-             dplyr::select(dplyr::all_of(.select_cols)) %>%
+             dplyr::select(abb, desc, dplyr::starts_with("boot_value"), dplyr::starts_with("boot_perc")) %>%
              as.data.frame())
+  } else {
+   return(.df_out %>%
+     as.data.frame())
   }
-
-  .df_out
-
-
 }
 
 

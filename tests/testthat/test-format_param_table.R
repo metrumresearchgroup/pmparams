@@ -5,17 +5,17 @@ newDF4 <- newDF %>%
   format_param_table(.prse = TRUE)
 
 newDF5 <- newDF %>%
-  format_param_table(.select_cols = "all")
+  format_param_table(.cleanup_cols = FALSE)
 
 newDF6 <- theta_err_df1 %>%
-  format_param_table(.select_cols = "all", .prse = TRUE)
+  format_param_table(.cleanup_cols = FALSE, .prse = TRUE)
 
 ci_name <- newDF %>% dplyr::distinct(ci_level) %>% dplyr::pull(ci_level)
 
 
 test_that("format_param_table expected dataframe: col names", {
   #default cols., no prse
-  expect_equal(names(newDF3),  c("type", "abb", "greek", "desc", "value", paste0("ci_", ci_name),"shrinkage"))
+  expect_equal(names(newDF3),  c("type", "abb", "greek", "desc", "value", "shrinkage", paste0("ci_", ci_name)))
 
   #all cols., no prse
   expect_equal(length(names(newDF5)),  42)
@@ -78,7 +78,7 @@ test_that("format_param_table continuous columns expected ouput: CI back transfo
 
   newDF4 <- define_param_table(.estimates = paramEst, .key = key_df, .ci = 95, .zscore = NULL)
 
-  newDF5 <- newDF4%>% format_param_table()
+  newDF5 <- newDF4 %>% format_param_table()
 
   expected_cv =  pmtables::sig(sqrt(exp(newDF4$value[newDF4$addErrLogDV == TRUE]) -1)* 100)
   expected_value = paste0(pmtables::sig(newDF4$value[newDF4$addErrLogDV == TRUE]), " [CV\\%=", expected_cv, "]")
@@ -104,7 +104,7 @@ test_that("format_param_table panel expected ouput", {
     )
 
   newDF7 <- define_param_table(.estimates = paramEst, .key = paramKey1, .ci = 95, .zscore = NULL)
-  newDF8 <- format_param_table(newDF7, .select_cols = "all")
+  newDF8 <- format_param_table(newDF7, .cleanup_cols = FALSE)
 
   expect_equal(newDF8$type[newDF8$name == "THETA2"], "Interindividual variance parameters")
   expect_equal(newDF8$type_f[newDF8$name == "THETA2"], 3)
@@ -146,7 +146,7 @@ test_that("format_param_table: .maxex produces expected scientific notation", {
   expect_equal(newDF12$ci[10], "8.78e-06, 0.00180")
   expect_equal(newDF12$shrinkage[6], "17.9")
 
-  newDF13 <- format_param_table(newDF11, .maxex = 99)
+  newDF13 <- format_param_table(newDF11, .maxex = 99) #TODO: Warning
   expect_equal(newDF13$value[1], "6770000000000000000")
   expect_equal(newDF13$value[10], "13.4 [Corr=0.694]")
   expect_equal(newDF13$ci[10], "0.00000878, 0.00180")
@@ -160,4 +160,5 @@ test_that("format_param_table: .maxex produces expected scientific notation", {
   expect_equal(newDF14$shrinkage[6], "18")
 
 })
+
 

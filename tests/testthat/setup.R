@@ -44,13 +44,12 @@ boot_paramEst <- utils::read.csv(system.file("model/nonmem/boot/data/boot-106.cs
 nonboot_paramEstPath <- system.file("model/nonmem/106", package = "pmparams")
 nonboot_paramEst <- utils::read.csv(system.file("model/nonmem/nonboot_param_est.csv", package = "pmparams"))
 
-newbootDF <- pmparams::define_boot_table(.boot_estimates =boot_paramEst, .nonboot_estimates = nonboot_paramEst, .key = paramKey)
-formatBootDF <- pmparams::format_boot_table(.boot_df = newbootDF)
+newbootDF <- pmparams::define_boot_table(.boot_estimates =boot_paramEst, .key = paramKey)
+formatBootDF <- pmparams::format_boot_table(.boot_df = newbootDF, .cleanup_cols =  T)
 
 newbootDF2 <- pmparams::define_boot_table(.boot_estimates =boot_paramEst,
-                                         .nonboot_estimates = nonboot_paramEst,
                                          .key = paramKey,
-                                         .prob  = c(0.29, 0.15, 0.99))
+                                         .percentiles  = c(0.29, 0.15, 0.99)) #ERROR
 #final output
 nonbootDF <- pmparams::define_param_table(.estimates = nonboot_paramEst, .key = paramKey)
 formatnonbootDF <- nonbootDF %>% pmparams::format_param_table()

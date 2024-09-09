@@ -19,7 +19,7 @@
 #'4. Select columns for final tables.
 #'
 #' @param .df parameter estimates output from \code{\link[pmparams]{define_param_table}} with modifications ready for formatting
-#' @param .select_cols columns to select for output. Default selects "type", "abb", "greek", "desc", "value", "ci", "shrinkage". To return all columns, specify "all" for .select_cols
+#' @param .cleanup_cols columns to select for output. Default selects "type", "abb", "greek", "desc", "value", "ci", "shrinkage". To return all columns, specify .cleanup_cols = F
 #' @param .prse output pRSE. Default is FALSE
 #' @param .digit set significant digits for output (optional). Default is three digits
 #' @param .maxex set maxex for computation (optional). Default is NULL
@@ -35,10 +35,10 @@
 #'
 #' #To include all columns:
 #'
-#' format_param_table(.df = defineOut, .select_cols="all")
+#' format_param_table(.df = defineOut, .cleanup_cols = FALSE)
 #' @export
 format_param_table <- function(.df,
-                             .select_cols = c("type", "abb", "greek", "desc", "value", "ci", "shrinkage"),
+                             .cleanup_cols = T,
                              .prse = FALSE,
                              .digit = getOption("pmparams.dig"),
                              .maxex = getOption("pmparams.maxex")){
@@ -47,11 +47,10 @@ format_param_table <- function(.df,
 
   .ci_level <- .df %>% dplyr::distinct(ci_level) %>% dplyr::pull(ci_level)
   .ci_final_nam <- paste0("ci_", .ci_level)
-  .select_cols[.select_cols == "ci"] <- .ci_final_nam
+  .cleanup_cols[.cleanup_cols == "ci"] <- .ci_final_nam
 
   if (.prse == TRUE) {
     .df <- .df %>% getpRSE()
-    .select_cols <- append(.select_cols, "pRSE")
   }
 
   .df_out <-
@@ -64,12 +63,16 @@ format_param_table <- function(.df,
 
   .df_out[[paste0("ci_", .ci_level)]] <-  .df_out$ci
 
-  if (any(tolower(.select_cols) == "all")) {
-    return(.df_out %>% dplyr::select(-ci) %>% as.data.frame())
-  } else {
+  if (.cleanup_cols == FALSE) {
+    return(.df_out %>% dplyr::select(-{{.ci_final_nam}}) %>% as.data.frame())
+  } else if (.cleanup_cols == TRUE & .prse == FALSE) {
     return(.df_out %>%
-      dplyr::select(dplyr::all_of(.select_cols)) %>%
+      dplyr::select("type", "abb", "greek", "desc", "value", "shrinkage", {{.ci_final_nam}}) %>%
       as.data.frame())
+  } else if (.cleanup_cols == TRUE & .prse == TRUE) {
+    return(.df_out %>%
+             dplyr::select("type", "abb", "greek", "desc", "value", "shrinkage", "pRSE", {{.ci_final_nam}}) %>%
+             as.data.frame())
   }
 
 

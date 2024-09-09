@@ -2,22 +2,33 @@
 % Please edit documentation in R/define_boot_table.R
 \name{define_boot_table}
 \alias{define_boot_table}
-\title{Combine bootstrap estimates with non-bootstrap estimates and parameter key}
+\title{Combine bootstrap estimates with parameter key}
 \usage{
-define_boot_table(.boot_estimates, .nonboot_estimates, .key)
+define_boot_table(
+  .boot_estimates,
+  .key,
+  .ci = 95,
+  .percentiles = NULL,
+  .na.rm = TRUE
+)
 }
 \arguments{
 \item{.boot_estimates}{parameter boot estimates- either path to file or data.frame}
 
-\item{.nonboot_estimates}{non-bootstrap final model - either path to file or bbr model_summary}
-
 \item{.key}{path to parameter key or data.frame of parameter key. Described in more detail in \code{\link[pmparams]{param_key}}}
+
+\item{.ci}{specify 90 or 95 percent confidence interval or IQR (interquartile range). Default is 95.}
+
+\item{.percentiles}{list of all percentiles. Default is NULL. For .ci = 95, .percentiles = c(0.025, 0.5, 0.975). For .ci =90, .percentiles will be c(0.05, 0.5, 0.95)}
+
+\item{.na.rm}{Default is false}
 }
 \description{
 Combines boot strap estimates and non boot strap estimates with information in parameter key. Performs
 some formatting of this combined data.frame.
 There are two main steps of this function:
 
+#TODO: Update to percentiles
 1.Run \code{bbr::param_estimates_compare} to extract summary quantiles, the 5th, 50th, and 95th, of the
 bootstrap estimates for each model parameter.
 \itemize{
@@ -31,10 +42,6 @@ THETAs and random parameters, the same parameter key could be used for both.
 \code{panel}, \code{trans} (transformation).
 }
 
-2.Reformat non-bootstrap estimates and left join onto combined bootstrap estimates and parameter key data.frame.
-Expected input is a data.frame with parameter estimates, with the columns:
-\code{parameter_names}, \code{estimate}.
-
 With this information provided, a check is performed to determine whether parameters
 with special transformation rules were defined correctly. In addition, a series of
 TRUE/FALSE columns that will be used by subsequent functions.
@@ -43,12 +50,9 @@ TRUE/FALSE columns that will be used by subsequent functions.
 
 boot_paramEst <- utils::read.csv(system.file("model/nonmem/boot/data/boot-106.csv",
                                  package = "pmparams"))
-nonboot_paramEst <- utils::read.csv(system.file("model/nonmem/nonboot_param_est.csv",
-                                    package = "pmparams"))
 paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
 
 define_boot_table(.boot_estimates = boot_paramEst,
-               .nonboot_estimates = nonboot_paramEst,
                .key = paramKey)
 
 }
