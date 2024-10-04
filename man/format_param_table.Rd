@@ -9,19 +9,25 @@ format_param_table(
   .cleanup_cols = T,
   .prse = FALSE,
   .digit = getOption("pmparams.dig"),
-  .maxex = getOption("pmparams.maxex")
+  .maxex = getOption("pmparams.maxex"),
+  .select_cols = NULL
 )
 }
 \arguments{
-\item{.df}{parameter estimates output from \code{\link[pmparams]{define_param_table}} with modifications ready for formatting}
+\item{.df}{parameter estimates output from \code{\link[pmparams]{define_param_table}} with modifications
+ready for formatting.}
 
-\item{.cleanup_cols}{columns to select for output. Default selects "type", "abb", "greek", "desc", "value", "ci", "shrinkage". To return all columns, specify .cleanup_cols = F}
+\item{.cleanup_cols}{clean up columns. Default TRUE and selects "type", "abb", "greek", "desc", "value",
+"ci", "shrinkage". To return all columns, specify .cleanup_cols = FALSE.}
 
-\item{.prse}{output pRSE. Default is FALSE}
+\item{.prse}{output pRSE. Default is FALSE.}
 
-\item{.digit}{set significant digits for output (optional). Default is three digits}
+\item{.digit}{set significant digits for output (optional). Default is three digits.}
 
-\item{.maxex}{set maxex for computation (optional). Default is NULL}
+\item{.maxex}{set maxex for computation (optional). Default is NULL.}
+
+\item{.select_cols}{.select_cols columns to select for output. To return all columns, specify "all" for
+.select_cols. Default is NULL.}
 }
 \description{
 Format parameter estimate values and output selected columns to be shown in
@@ -30,8 +36,11 @@ the parameter table.
 There are four main steps of this function:
 \enumerate{
 \item When necessary, back transform parameters and their CIs, round parameters using pmtables::sig, and combine columns.
-\item Format the THETA/OMEGA/SIGMA values to display as greek letters in Latex, with subscript numbers, and where necessary, the transformation applied to that parameter.
-\item Determine which panel of the final table the parameter should be displayed in. This is informed by the panel argument you defined in your parameter key. Note that there are a finite number of options included by default (see below) but you can include additional panels as needed.
+\item Format the THETA/OMEGA/SIGMA values to display as greek letters in Latex, with subscript numbers, and where necessary,
+the transformation applied to that parameter.
+\item Determine which panel of the final table the parameter should be displayed in. This is informed by the panel argument
+you defined in your parameter key. Note that there are a finite number of options included by default (see below) but you
+can include additional panels as needed.
 Panel types include:
 }
 \itemize{

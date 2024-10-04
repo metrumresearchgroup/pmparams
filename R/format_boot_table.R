@@ -45,7 +45,7 @@ format_boot_table <- function(.boot_df,
   .df_out <- .boot_df %>%
     formatValuesBoot(.digit = .digit, .maxex = .maxex) %>%
     formatGreekNames() %>%
-    mutate(diag = FALSE) %>% #TODO: Confirm with katherine
+    dplyr::mutate(diag = FALSE) %>% #TODO: Confirm with katherine
     getPanelName() %>%
     dplyr::arrange(as.numeric(nrow)) %>%
     dplyr::select(-nrow)

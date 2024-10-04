@@ -8,24 +8,26 @@ format_boot_table(
   .boot_df,
   .cleanup_cols = TRUE,
   .digit = getOption("pmparams.dig"),
-  .maxex = getOption("pmparams.maxex")
+  .maxex = getOption("pmparams.maxex"),
+  .select_cols = NULL
 )
 }
 \arguments{
 \item{.boot_df}{parameter estimates output from \code{\link[pmparams]{define_boot_table}} with modifications ready for formatting}
 
-\item{.cleanup_cols}{clean up columns. Default TRUE and selects "abb", "desc", "boot_value", "boot_ci". To return all columns, set .cleanup_cols = FALSE.}
+\item{.cleanup_cols}{clean up columns. Default TRUE and selects "abb", "desc", "boot_value", "boot_ci".
+To return all columns, set .cleanup_cols = FALSE.}
 
 \item{.digit}{set significant digits for output (optional). Default is three digits}
 
 \item{.maxex}{set maxex for computation (optional). Default is NULL}
+
+\item{.select_cols}{.select_cols columns to select for output. To return all columns, specify "all" for
+.select_cols. Default is NULL.}
 }
 \description{
 Format bootstrap parameter estimate values and output selected columns to be shown in
 the bootstrap parameter table.
-
-Left join this output bootstrap data.frame with the formatted output of non-bootstrap parameter estimates
-TODO: Update format_param_table with .cleanup_cols
 }
 \examples{
 

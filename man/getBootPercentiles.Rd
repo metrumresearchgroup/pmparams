@@ -7,7 +7,7 @@
 getBootPercentiles(.boot, .ci, .percentiles, .na.rm)
 }
 \arguments{
-\item{.ci}{specify 90 or 95 percent confidence interval (default 95\%) #TODO: make character, iqr}
+\item{.ci}{specify IQR, 90 or 95 confidence intervals. Default is 95.}
 
 \item{.percentiles}{list of all percentiles. Default is NULL. For .ci = 95, .percentiles = c(0.025, 0.5, 0.975). For .ci =90, .percentiles will be c(0.05, 0.5, 0.95)}
 
@@ -16,7 +16,7 @@ getBootPercentiles(.boot, .ci, .percentiles, .na.rm)
 \item{.df}{data.frame with parameter estimates}
 }
 \description{
-Calculates the upper and lower bound of a 90\% or 95\% confidence interval, based on the
-value and standard error. #TODO: Provide either percentile or confidence interval
+Calculates the upper and lower bound of a 90\% or 95\% confidence interval, interquartile range, or any number of percentiles based on the
+value and standard error.
 }
 \keyword{internal}

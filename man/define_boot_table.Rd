@@ -9,7 +9,8 @@ define_boot_table(
   .key,
   .ci = 95,
   .percentiles = NULL,
-  .na.rm = TRUE
+  .na.rm = TRUE,
+  .nonboot_estimates = NULL
 )
 }
 \arguments{
@@ -28,7 +29,6 @@ Combines boot strap estimates and non boot strap estimates with information in p
 some formatting of this combined data.frame.
 There are two main steps of this function:
 
-#TODO: Update to percentiles
 1.Run \code{bbr::param_estimates_compare} to extract summary quantiles, the 5th, 50th, and 95th, of the
 bootstrap estimates for each model parameter.
 \itemize{
