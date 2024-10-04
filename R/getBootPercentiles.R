@@ -2,11 +2,11 @@
 #'
 #' @description
 #'
-#' Calculates the upper and lower bound of a 90% or 95% confidence interval, based on the
-#' value and standard error. #TODO: Provide either percentile or confidence interval
+#' Calculates the upper and lower bound of a 90% or 95% confidence interval, interquartile range, or any number of percentiles based on the
+#' value and standard error.
 #'
 #' @param .df data.frame with parameter estimates
-#' @param .ci specify 90 or 95 percent confidence interval (default 95%) #TODO: make character, iqr
+#' @param .ci specify IQR, 90 or 95 confidence intervals. Default is 95.
 #' @param .percentiles list of all percentiles. Default is NULL. For .ci = 95, .percentiles = c(0.025, 0.5, 0.975). For .ci =90, .percentiles will be c(0.05, 0.5, 0.95)
 #' @param .na.rm Default is false
 #'
@@ -23,7 +23,7 @@ getBootPercentiles <- function(.boot, .ci, .percentiles, .na.rm) {
 
 
 #check inputs for .ci and .percentile
-
+  .ci = as.character(.ci)
   .ci = tolower(.ci)
 
   #.ci must be numeric and only 1 number between 0 and 100
@@ -39,7 +39,7 @@ getBootPercentiles <- function(.boot, .ci, .percentiles, .na.rm) {
   } else {
     message("Invalid `.ci` input. define_boot_table` only supports `.ci`` = 90, 95, IQR.
           Only .percentiles argument will be used.")
-  } #TODO: what if no probs though? another if statement may be needed
+  }
 
   if (.ci == 95 & length(.percentiles) == 0){
     .percentiles = c(0.025, .5, 0.975)
@@ -52,7 +52,11 @@ getBootPercentiles <- function(.boot, .ci, .percentiles, .na.rm) {
     .ci = NULL
   }
 
-  if (length(.percentiles) > 0 & typeof(.percentiles) != "double"){
+  if (length(.percentiles) == 0){
+    stop("Please provide `.ci` or `.percentile` argument")
+  }
+
+  if (typeof(.percentiles) != "double"){
     stop("Invalid `.percentiles` input. Must be a numeric list.")
   }
 

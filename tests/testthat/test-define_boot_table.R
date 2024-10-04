@@ -27,7 +27,7 @@ withr::with_options(list(bbr.bbi_exe_path = bbr::read_bbi_path()), {
                   newbootDF$propErr[newbootDF$name == "SIGMA11"] == TRUE)
   })
 
-  #TODO:
+  # #TODO: should this be giving error? Drop test?
   # test_that("define_boot_table incorrect input type: no parameter_names column",{
   #   boot_paramEst2 <- boot_paramEst
   #   colnames(boot_paramEst2)[colnames(boot_paramEst2) == "run"] ="no_name"
@@ -72,11 +72,6 @@ withr::with_options(list(bbr.bbi_exe_path = bbr::read_bbi_path()), {
                                                     .key = system.file("model/nonmem/pk-parameter-key-both.yaml", package = "pmparams"))))
   })
 
-  # #for boot, estimates do not equal values////
-  # test_that("define_boot_table generates correct corr_SD", {
-  #   expect_true(all(newbootDF$estimate == newbootDF$value))
-  # })
-
   test_that("define_boot_table generates the confidence intervals for various inputs", {
     newbootDF <-define_boot_table(.boot_estimates =boot_paramEst,
                                   .key = paramKey)
@@ -88,4 +83,55 @@ withr::with_options(list(bbr.bbi_exe_path = bbr::read_bbi_path()), {
     expect_error(capture.output(define_boot_table(.boot_estimates =boot_paramEst,
                                                   .key = paramKey, .ci =63)))
   })
+
+  test_that("define_boot_table generates iqr", {
+    newbootDF <-define_boot_table(.boot_estimates =boot_paramEst,
+                                  .ci = "iqr",
+                                  .key = paramKey)
+    expect_equal(newbootDF$lower_perc25[1], 1.50140037)
+    expect_equal(newbootDF$upper_perc75[2], 62.717938)
+  })
+
+  test_that("define_boot_table: if ci and percentile supplied, choose ci", {
+    newbootDF <-define_boot_table(.boot_estimates =boot_paramEst,
+                                  .ci = "iqr",
+                                  .percentiles = c(0.2, 0.6),
+                                  .key = paramKey)
+    expect_equal(newbootDF$lower_perc25[1], 1.50140037)
+    expect_equal(newbootDF$upper_perc75[2], 62.717938)
+  })
+
+  test_that("define_boot_table: 3 percentiles get renamed lower, value, upper", {
+    newbootDF <-define_boot_table(.boot_estimates =boot_paramEst,
+                                  .percentiles = c(0.2, 0.6, 0.11),
+                                  .key = paramKey)
+    expect_equal(newbootDF$lower_perc11[1], 1.44644391)
+    expect_equal(newbootDF$upper_perc60[2], 61.966381)
+    expect_equal(newbootDF$value_perc20[2], 60.19131)
+  })
+
+  test_that("define_boot_table: greater than 3 percentiles, ouput as percX", {
+    newbootDF <-define_boot_table(.boot_estimates =boot_paramEst,
+                                  .percentiles = c(0.2, 0.6, 0.11, 0.99),
+                                  .key = paramKey)
+    expect_equal(names(newbootDF)[grepl("perc", names(newbootDF))],
+                 c("perc11", "perc20", "perc60", "perc99")
+    )
+  })
+
+  test_that("define_boot_table warning message if provided .nonboot_estimate argument", {
+    expect_message(capture.output(define_boot_table(.boot_estimates =boot_paramEst,
+                                                  .nonboot_estimates = nonboot_paramEst,
+                                                  .key = paramKey)))
+  })
+
+  test_that("define_boot_table error message if .percentile is not numeric list", {
+    expect_error(capture.output(define_boot_table(.boot_estimates =boot_paramEst,
+                                                  .key = paramKey, .percentiles = c(0.26, "0.55"))))
+  })
+
+  #TODO:
+  #add more percentile checks
 })
+
+

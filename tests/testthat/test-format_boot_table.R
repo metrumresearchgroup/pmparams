@@ -7,10 +7,10 @@ newDF5 <- newbootDF %>%
 
 test_that("format_boot_table expected dataframe: col names", {
   #default cols
-  expect_equal(names(newDF3),  c("abb", "desc", "boot_value_50", "boot_perc_95"))
+  expect_equal(names(newDF3),  c("type", "abb", "desc", "boot_value_50", "boot_perc_95"))
 
   #all cols
-  expect_equal(length(names(newDF5)),  24)
+  expect_equal(length(names(newDF5)),  29)
 })
 
 
@@ -64,3 +64,41 @@ test_that("format_param_table: .maxex produces expected scientific notation", {
 
 })
 
+test_that("format_param_table: outputs all percentiles", {
+ df1 <- define_boot_table(.boot_estimates =boot_paramEst,
+                          .key = paramKey,
+                          .percentiles = c(0.1, 0.55, 0.36, 0.98, 0.77))
+ df2 <- format_boot_table(df1)
+
+ expect_equal(names(df2),
+              c("type", "abb","desc", "perc10", "perc36", "perc55", "perc77", "perc98")
+            )
+
+ expect_message(format_boot_table(df1, .select_cols =c("perc10", "desc")))
+
+ df3 <- format_boot_table(df1,
+                          .select_cols =c("perc10", "desc"))
+
+ expect_equal(names(df3),
+              c("perc10", "desc")
+ )
+})
+
+
+##ADD tests for new cases###
+#
+#select_cols
+# newDF7 <- newDF5 %>%
+#   format_boot_table(.cleanup_cols = TRUE,
+#                      .select_cols = "ALL")
+#
+# newDF8 <- newDF5 %>%
+#   format_boot_table(.cleanup_cols = TRUE,
+#                      .select_cols = c("type", "abb", "greek", "desc", "value", "ci"))
+#
+# newDF9 <- newDF5 %>%
+#   format_boot_table(.cleanup_cols = TRUE,
+#                      .select_cols = c("other"))
+
+## multiple percentiles
+#define_boot_table()

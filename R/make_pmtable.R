@@ -14,7 +14,7 @@
 #'
 #' If these pmtable settings do not work for your parameter table, you can overwrite them afterwards using desired pmtables commands.
 #'
-#' @param .df parameter data set output from pmparams::format_param_table or pmparams::format_boot_table.
+#' @param .df parameter data set output from pmparams::format_param_table.
 #' @param .pmtype parameter table type. Options include: full (all rows in .df retained in pmtable), fixed (all rows with type = "Struct" or "effect"), structural (all rows with type = "Struct"), covariate (all rows with type = "effect"), random (all rows with greek = "Omega" or type = "Resid"). Defaults to "full".
 #' @param .width notes width. Defaults to 1.
 #'
@@ -38,11 +38,7 @@ make_pmtable <- function(.df,
 
   .ci_nam <- names(.df)[grepl("ci_", names(.df))]
 
-  if (any(grepl("boot", names(.df)))) {
-    .new_ci_nam <-  paste0(unique(.df$boot_nam)*100, "\\% CI")
-  } else{
-    .new_ci_nam <-  paste0(stringr::str_remove(.ci_nam, "ci_"), "\\% CI")
-  }
+  .new_ci_nam <-  paste0(stringr::str_remove(.ci_nam, "ci_"), "\\% CI")
 
 
   .df0 <- .df

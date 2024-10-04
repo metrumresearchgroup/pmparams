@@ -78,12 +78,12 @@ test_that("format_param_table continuous columns expected ouput: CI back transfo
 
   newDF4 <- define_param_table(.estimates = paramEst, .key = key_df, .ci = 95, .zscore = NULL)
 
-  newDF5 <- newDF4 %>% format_param_table()
+  newDF4a <- newDF4 %>% format_param_table()
 
   expected_cv =  pmtables::sig(sqrt(exp(newDF4$value[newDF4$addErrLogDV == TRUE]) -1)* 100)
   expected_value = paste0(pmtables::sig(newDF4$value[newDF4$addErrLogDV == TRUE]), " [CV\\%=", expected_cv, "]")
 
-  expect_equal(newDF5$value[newDF5$abb == "Lognormal residual error"], expected_value)
+  expect_equal(newDF4a$value[newDF4a$abb == "Lognormal residual error"], expected_value)
 })
 
 test_that("format_param_table continuous columns expected ouput: greek", {
@@ -146,7 +146,7 @@ test_that("format_param_table: .maxex produces expected scientific notation", {
   expect_equal(newDF12$ci[10], "8.78e-06, 0.00180")
   expect_equal(newDF12$shrinkage[6], "17.9")
 
-  newDF13 <- format_param_table(newDF11, .maxex = 99) #TODO: Warning
+  newDF13 <- format_param_table(newDF11, .maxex = 999) #TODO: Warning
   expect_equal(newDF13$value[1], "6770000000000000000")
   expect_equal(newDF13$value[10], "13.4 [Corr=0.694]")
   expect_equal(newDF13$ci[10], "0.00000878, 0.00180")
@@ -161,4 +161,16 @@ test_that("format_param_table: .maxex produces expected scientific notation", {
 
 })
 
-
+##ADD tests for new cases###
+#
+# newDF7 <- theta_err_df1 %>%
+#   format_param_table(.cleanup_cols = TRUE, .prse = TRUE,
+#                      .select_cols = "ALL")
+#
+# newDF8 <- theta_err_df1 %>%
+#   format_param_table(.cleanup_cols = TRUE, .prse = TRUE,
+#                      .select_cols = c("type", "abb", "greek", "desc", "value", "ci"))
+#
+# newDF9 <- theta_err_df1 %>%
+#   format_param_table(.cleanup_cols = TRUE, .prse = TRUE,
+#                      .select_cols = c("other"))

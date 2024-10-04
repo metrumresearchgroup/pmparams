@@ -7,7 +7,6 @@
 #' There are two main steps of this function:
 #'
 #'
-#'#TODO: Update to percentiles
 #'1.Run `bbr::param_estimates_compare` to extract summary quantiles, the 5th, 50th, and 95th, of the
 #' bootstrap estimates for each model parameter.
 #'
@@ -41,7 +40,13 @@
 #'                .key = paramKey)
 #'
 #' @export
-define_boot_table <- function(.boot_estimates, .key, .ci = 95, .percentiles = NULL, .na.rm = TRUE){
+define_boot_table <- function(.boot_estimates, .key, .ci = 95, .percentiles = NULL,
+                              .na.rm = TRUE, .nonboot_estimates = NULL){
+
+
+  if (length(.nonboot_estimates)>0){
+    message("Non-boot estimates no longer joined in this step.")
+  }
 
   #path to boot estimates
   if (inherits(.boot_estimates, "character")){
