@@ -44,9 +44,6 @@ format_boot_table <- function(.boot_df,
 
   .df_out <- .boot_df %>%
     formatValuesBoot(.digit = .digit, .maxex = .maxex) %>%
-    formatGreekNames() %>%
-    dplyr::mutate(diag = FALSE) %>% #TODO: Confirm with katherine
-    getPanelName() %>%
     dplyr::arrange(as.numeric(nrow)) %>%
     dplyr::select(-nrow)
 
@@ -73,7 +70,7 @@ format_boot_table <- function(.boot_df,
     }
   } else if (.cleanup_cols == T) {
     return(    return(.df_out %>%
-                        dplyr::select(type, abb, desc, dplyr::starts_with("boot_value"), dplyr::starts_with("boot_perc"), dplyr::starts_with("perc")) %>%
+                        dplyr::select(panel, abb, desc, dplyr::starts_with("boot_value"), dplyr::starts_with("boot_perc"), dplyr::starts_with("perc")) %>%
                         as.data.frame())
     )
   }

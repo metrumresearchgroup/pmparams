@@ -4,18 +4,16 @@
 \alias{make_boot_pmtable}
 \title{Make pmtable boot parameter table}
 \usage{
-make_boot_pmtable(.boot_df, .pmtype = "full", .width = 1, .nonboot_df = NULL)
+make_boot_pmtable(.df, .pmtype = "full", .width = 1)
 }
 \arguments{
-\item{.boot_df}{bootstrap parameter data set output from pmparams::format_boot_table.}
+\item{.df}{bootstrap parameter data set output from pmparams::format_boot_table or bootstrap parameter dataset and non-bootstrap parameter dataset combined.}
 
 \item{.pmtype}{parameter table type. Options include: full (all rows in .df retained in pmtable), fixed (all rows with type =
 "Struct" or "effect"), structural (all rows with type = "Struct"), covariate (all rows with type = "effect"), random (all
 rows with greek = "Omega" or type = "Resid"). Defaults to "full".}
 
 \item{.width}{notes width. Defaults to 1.}
-
-\item{.nonboot_df}{non-boot data set. If provided, this will be joined onto the bootstrap parameter estimates. Default is NULL.}
 }
 \description{
 Generates specific parameter tables by filtering and using pmtables
@@ -40,17 +38,15 @@ paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pm
 defineOut <- define_boot_table(.boot_estimates = bootEst, .key = paramKey, .ci = 95)
 data <- format_boot_table(.boot_df = defineOut)
 
-#To make random effects table:
 
-make_boot_pmtable(.boot_df = data, .pmtype = "random")
-
-#To include non-bootstrap estimates:
+#To make random effects table with bootstrap and non-bootstrap data:
 
 paramPath <- system.file("model/nonmem/102", package = "pmparams")
-defineOut_nonboot <- define_param_table(.estimates = paramPath, .key = paramKey, .ci = 95, .zscore = NULL)
+defineOut_nonboot <- define_param_table(.estimates = paramPath,
+                                        .key = paramKey)
 data_nonboot <- format_param_table(defineOut_nonboot)
 
-combine <- data_nonboot \%>\% left_join(data)
-make_boot_pmtable(.boot_df = combine, .pmtype = "random")
+combine <- dplyr::left_join(data_nonboot, data)
+make_boot_pmtable(.df = combine, .pmtype = "random")
 
 }

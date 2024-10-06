@@ -9,14 +9,10 @@ formatValuesBoot <- function(.boot_df,
                              .digit,
                              .maxex){
 
-#  .boot_df = newbootDF
-  #TODO: Are there any situtayion liek this>
- # mutate(boot_ci = if_else(is.na(boot_ci), "FIXED", boot_ci)) %>%
+  perc_nam <- names(.boot_df)[grepl("perc", names(.boot_df))]
 
- # .boot_df = defineBootOut
   if (any(grepl("lower_perc", names(.boot_df)))){
 
-    perc_nam <- names(.boot_df)[grepl("perc", names(.boot_df))]
     perc_nam1 <- as.numeric(gsub('.*perc', '', perc_nam))
     perc <- perc_nam1[3] - perc_nam1[1]
     perc_value <- perc_nam1[2]
@@ -34,7 +30,8 @@ formatValuesBoot <- function(.boot_df,
         "boot_value_{{perc_value}}" := pmtables::sig(!!dplyr::sym(perc_nam[2]), .digit, .maxex)
       )
   } else {
-    .boot_df
+    .boot_df %>%
+      dplyr::mutate_at(perc_nam, ~pmtables::sig(., .digit, .maxex))
   }
 
 }

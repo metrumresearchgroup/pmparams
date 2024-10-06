@@ -43,6 +43,7 @@ globalVariables(
     "greek",
     "shrinkage",
     "desc",
-    "THETAERR"
+    "THETAERR",
+    "abb"
   )
 )

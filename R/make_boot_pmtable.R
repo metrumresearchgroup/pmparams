@@ -14,8 +14,7 @@
 #'
 #' If these pmtable settings do not work for your parameter table, you can overwrite them afterwards using desired pmtables commands.
 #'
-#' @param .boot_df bootstrap parameter data set output from pmparams::format_boot_table.
-#' @param .nonboot_df non-boot data set. If provided, this will be joined onto the bootstrap parameter estimates. Default is NULL.
+#' @param .df bootstrap parameter data set output from pmparams::format_boot_table or bootstrap parameter dataset and non-bootstrap parameter dataset combined.
 #' @param .pmtype parameter table type. Options include: full (all rows in .df retained in pmtable), fixed (all rows with type =
 #' "Struct" or "effect"), structural (all rows with type = "Struct"), covariate (all rows with type = "effect"), random (all
 #' rows with greek = "Omega" or type = "Resid"). Defaults to "full".
@@ -29,109 +28,77 @@
 #' defineOut <- define_boot_table(.boot_estimates = bootEst, .key = paramKey, .ci = 95)
 #' data <- format_boot_table(.boot_df = defineOut)
 #'
-#' #To make random effects table:
 #'
-#' make_boot_pmtable(.boot_df = data, .pmtype = "random")
-#'
-#' #To include non-bootstrap estimates:
+#' #To make random effects table with bootstrap and non-bootstrap data:
 #'
 #' paramPath <- system.file("model/nonmem/102", package = "pmparams")
-#' defineOut_nonboot <- define_param_table(.estimates = paramPath, .key = paramKey, .ci = 95, .zscore = NULL)
+#' defineOut_nonboot <- define_param_table(.estimates = paramPath,
+#'                                         .key = paramKey)
 #' data_nonboot <- format_param_table(defineOut_nonboot)
 #'
-#' combine <- data_nonboot %>% left_join(data)
-#' make_boot_pmtable(.boot_df = combine, .pmtype = "random")
+#' combine <- dplyr::left_join(data_nonboot, data)
+#' make_boot_pmtable(.df = combine, .pmtype = "random")
 #'
 #' @export
-make_boot_pmtable <- function(.boot_df,
+make_boot_pmtable <- function(.df,
                               .pmtype = "full",
-                              .width = 1,
-                              .nonboot_df = NULL){
+                              .width = 1){
 
   .pmtype <- tolower(.pmtype)
 
-  if (any(grepl("ci_", names(.boot_df)))){
-    .nonboot_ci <- names(.boot_df)[grepl("ci_", names(.boot_df))]
-    .nonboot_ci_nam  <-  paste0(stringr::str_remove(.nonboot_ci, "ci_"), "\\% CI")
+  if (any(grepl("ci_", names(.df))) & any(grepl("perc", names(.df)))){
+    message("Bootstrap and non-bootstrap parameter estimates detected.")
+  } else if (!any(grepl("ci_", names(.df))) & any(grepl("boot_perc_", names(.df)))){
+    stop("Only bootstrap parameter estimates detected.")
+    #.df <- .df %>% dplyr::mutate(diag = TRUE)
+    #.df <- .df %>% getPanelName()
+    #.df <- .df %>% dplyr::mutate(type = panel)
+  } else {
+    stop("No bootstrap parameter estimates detected.")
   }
 
-  #rename boot value and ci (only if n=3 percentiles given)
-  #case if boot multiple percentiles, return all, do not reformat
-  #rename boot value and ci
-  .boot_perc <- names(.boot_df)[grepl("perc_", names(.boot_df))]
-  .boot_value <- names(.boot_df)[grepl("boot_value", names(.boot_df))]
+  .df <- .df %>%
+    dplyr::select(type, abb, greek, desc, value, shrinkage, names(.df)[grepl("boot", names(.df))])
 
   #rename boot percentile, else keep names as is
-  if (length(.boot_perc) == 1){
+  if (length(names(.df)[grepl("perc_", names(.df))]) == 1){
+    .boot_perc <- names(.df)[grepl("perc_", names(.df))]
+    .boot_value <- names(.df)[grepl("boot_value", names(.df))]
+
     .boot_perc_nam  <-  paste0(stringr::str_remove(.boot_perc, "boot_perc_"), "\\% CI")
     .boot_value_nam  <-  dplyr::if_else(paste0(stringr::str_remove(.boot_value, "boot_value_")) == "50", "Median", "\\%") #TODO: Confirm median rename with Katherine
+  } else {
+    .perc <- names(.df)[grepl("perc", names(.df))]
+    .boot_value <- .perc[1]
+    .boot_perc <- .perc[length(.perc)]
+
+   # names(.df)[grepl("perc", names(.df))] <- paste0(stringr::str_remove(names(.df)[grepl("perc", names(.df))] , "perc"), "\\%")
   }
 
-  #names(.combine)[which(names(.combine) == .ci_nam)] <- .new_ci_nam
-
   pm_tab0 <-
-    if (.pmtype == "full"){
-      .boot_df
-
-    } else if (.pmtype == "fixed"){
-      .boot_df %>%
-        dplyr::filter(stringr::str_detect(type, "Struct") |
-                        stringr::str_detect(type, "effect"))
-    } else if (.pmtype == "structural") {
-      .boot_df %>%
+  if (.pmtype == "full"){
+    .df
+  } else if (.pmtype == "fixed"){
+    .df %>%
+      dplyr::filter(stringr::str_detect(type, "Struct") |
+                  stringr::str_detect(type, "effect"))
+  } else if (.pmtype == "structural") {
+    .df %>%
         dplyr::filter(stringr::str_detect(type, "Struct"))
-
-    } else if (.pmtype == "covariate") {
-      .boot_df %>%
+  } else if (.pmtype == "covariate") {
+    .df %>%
         dplyr::filter(stringr::str_detect(type, "effect"))
-
-    } else if (.pmtype == "random") {
-
-      .boot_df %>%
-        dplyr::filter(stringr::str_detect(greek, "Omega") |
-                        stringr::str_detect(type, "Resid"))
-
-    } else {
-      stop("Incorrect parameter table type. Options for .pmtype are: full, fixed, structural, covariate, random. See ?make_pmtable for more details")
-    }
+  } else if (.pmtype == "random") {
+    .df %>%
+       dplyr::filter(stringr::str_detect(greek, "Omega") |
+                  stringr::str_detect(type, "Resid"))
 
 
-  ## add cases for if have nonboot estimates
-  if(!any(grepl("ci_", names(.boot_df)))){
-  pm_tab1 <-
-
-    if (.pmtype == "full"){
-      pm_tab0 %>%
-        pmtables::st_new() %>%
-        pmtables::st_panel("type") %>%
-        pmtables::st_blank("abb", "greek", "desc") %>%
-        pmtables::st_span("Non-parametric bootstrap", {{.boot_value}}:{{.boot_perc}})
-
-    } else if (.pmtype %in% c("fixed", "structural", "covariate")){
-        pm_tab0 %>%
-          #dplyr::select(-shrinkage) %>% #TODO: bootstrap can't have shrinkage? OK to drop
-          pmtables::st_new() %>%
-          pmtables::st_panel("type") %>%
-          pmtables::st_blank("abb", "greek", "desc") %>%
-          pmtables::st_span("Non-parametric bootstrap", {{.boot_value}}:{{.boot_perc}})
-    } else if (.pmtype == "random"){
-      pm_tab0 %>%
-        dplyr::select(-desc) %>%
-        pmtables::st_new() %>%
-        pmtables::st_panel("type") %>%
-        pmtables::st_blank("abb", "greek") %>%
-        pmtables::st_span("Non-parametric bootstrap", {{.boot_value}}:{{.boot_perc}})
-    }
-
-
-  pm_tab2 <- pm_tab1 %>%
-    pmtables::st_notes_detach(width = .width) %>%
-    pmtables::st_rename("Estimate" = "value",
-                        "RSE (\\%)" = "pRSE",
-                        {{.boot_value_nam}} := {{.boot_value}},
-                        {{.boot_perc_nam}} := {{.boot_perc}}
-                        )
   } else {
+    stop("Incorrect parameter table type. Options for .pmtype are: full, fixed, structural, covariate, random. See ?make_pmtable for more details")
+
+  }
+
     pm_tab1 <-
 
       if (.pmtype == "full"){
@@ -139,7 +106,7 @@ make_boot_pmtable <- function(.boot_df,
           pmtables::st_new() %>%
           pmtables::st_panel("type") %>%
           pmtables::st_blank("abb", "greek", "desc") %>%
-          pmtables::st_span("Final model", value:shrinkage) %>% #TODO add check that will put all these next to eachother (do select statement)
+          pmtables::st_span("Final model", value:shrinkage) %>%
           pmtables::st_span("Non-parametric bootstrap", {{.boot_value}}:{{.boot_perc}})
 
       } else if (.pmtype %in% c("fixed", "structural", "covariate")){
@@ -148,7 +115,7 @@ make_boot_pmtable <- function(.boot_df,
           pmtables::st_new() %>%
           pmtables::st_panel("type") %>%
           pmtables::st_blank("abb", "greek", "desc") %>%
-          pmtables::st_span("Final model", value:{{.nonboot_ci}}) %>%
+          pmtables::st_span("Final model", value) %>%
           pmtables::st_span("Non-parametric bootstrap", {{.boot_value}}:{{.boot_perc}})
       } else if (.pmtype == "random"){
         pm_tab0 %>%
@@ -156,7 +123,7 @@ make_boot_pmtable <- function(.boot_df,
           pmtables::st_new() %>%
           pmtables::st_panel("type") %>%
           pmtables::st_blank("abb", "greek") %>%
-          pmtables::st_span("Final model", value:{{.nonboot_ci}}) %>%
+          pmtables::st_span("Final model", value:shrinkage) %>%
           pmtables::st_span("Non-parametric bootstrap", {{.boot_value}}:{{.boot_perc}})
       }
 
@@ -165,13 +132,20 @@ make_boot_pmtable <- function(.boot_df,
       pmtables::st_notes_detach(width = .width) %>%
       pmtables::st_rename("Estimate" = "value",
                           "Shrinkage (\\%)" = "shrinkage",
-                          "RSE (\\%)" = "pRSE",
-                          {{.nonboot_ci_nam}} := {{.nonboot_ci}},
-                          {{.boot_value_nam}} := {{.boot_value}},
-                          {{.boot_perc_nam}} := {{.boot_perc}}
+                          "RSE (\\%)" = "pRSE"
       )
-  }
 
-  return(pm_tab2)
+    pm_tab3 <-
+      if (length(.boot_value_nam) > 0){
+        pm_tab2 %>%
+            pmtables::st_rename(
+                  {{.boot_value_nam}} := {{.boot_value}},
+                  {{.boot_perc_nam}} := {{.boot_perc}}
+            )
+      } else {
+        pm_tab2
+      }
+
+  return(pm_tab3)
 
 }
