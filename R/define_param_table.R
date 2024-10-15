@@ -79,9 +79,7 @@
 #' @export
 define_param_table <- function(.estimates, .key, .ci = 95, .zscore = NULL){
 
-
   .estimates <- loadParamEstimates(.estimates)
-
   .key <- loadParamKey(.key)
 
   mod_estimates <- .estimates %>%
@@ -91,7 +89,8 @@ define_param_table <- function(.estimates, .key, .ci = 95, .zscore = NULL){
     defineRows() %>%
     getValueSE() %>%
     getCI(.ci = .ci, .zscore = .zscore) %>%
-    dplyr::arrange(as.numeric(nrow))
+    dplyr::arrange(as.numeric(nrow)) %>%
+    tibble::as_tibble()
 
   if(any(mod_estimates$THETAERR)){
     message("THETA term was used in $ERROR:  ", paste(mod_estimates$parameter_names[mod_estimates$THETAERR], collapse = ", "))

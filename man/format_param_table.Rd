@@ -18,19 +18,19 @@ format_param_table(
 \code{\link[pmparams]{define_param_table}} with modifications ready for
 formatting.}
 
-\item{.cleanup_cols}{clean up columns. Defaults to \code{TRUE}, which selects the
+\item{.cleanup_cols}{logical (T/F). Defaults to \code{TRUE}, which selects the
 following columns:
 \itemize{
 \item \code{"type"}, \code{"abb"}, \code{"greek"}, \code{"desc"}, \code{"value"}, \code{"ci"}, \code{"shrinkage"}.
 \item Set to \code{FALSE} to return all columns.
 }}
 
-\item{.prse}{output pRSE. Default is FALSE.}
+\item{.prse}{logical (T/F). If \code{TRUE}, output \code{pRSE}. Default is \code{FALSE}.}
 
 \item{.digit}{set significant digits for output (optional). Default is three
 digits.}
 
-\item{.maxex}{set maxex for computation (optional). Default is NULL.}
+\item{.maxex}{set maxex for computation (optional). Default is \code{NULL}.}
 
 \item{.select_cols}{Deprecated. Please use \code{.cleanup_cols} instead. Columns
 to select for output. To return all columns, specify \code{"all"}.}
@@ -65,14 +65,19 @@ Panel types include:
 }
 \examples{
 
-# Using output from `define_param_table` (defineOut),
-paramEst <- utils::read.csv(system.file("model/nonmem/param_est.csv", package = "pmparams"))
-paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
-defineOut <- define_param_table(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
+model_dir <- system.file("model/nonmem", package = "pmparams")
+paramKey <-  file.path(model_dir, "pk-parameter-key-new.yaml")
 
-format_param_table(.df = defineOut)
+# Using output from `define_param_table` (param_df),
+mod <- bbr::read_model(file.path(model_dir, "106"))
+define_param_table(
+ .estimates = mod,
+ .key = paramKey,
+ .ci = 95,
+)
+
+format_param_table(param_df)
 
 # To include all columns:
-
-format_param_table(.df = defineOut, .cleanup_cols = FALSE)
+format_param_table(param_df, .cleanup_cols = FALSE)
 }

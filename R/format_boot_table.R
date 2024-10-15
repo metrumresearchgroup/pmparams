@@ -6,74 +6,70 @@
 #' the bootstrap parameter table.
 #'
 #' @param .boot_df parameter estimates output from \code{\link[pmparams]{define_boot_table}} with modifications ready for formatting
-#' @param .cleanup_cols clean up columns. Default TRUE and selects "abb", "desc", "boot_value", "boot_ci".
-#' To return all columns, set .cleanup_cols = FALSE.
+#' @param .cleanup_cols logical (T/F). Defaults to `TRUE`, which selects the
+#'   following columns:
+#'   - `"abb"`, `"desc"`, `"boot_value"`, `"boot_ci`".
+#'   - Set to `FALSE` to return all columns.
 #' @param .digit set significant digits for output (optional). Default is three digits
-#' @param .maxex set maxex for computation (optional). Default is NULL
-#' @param .select_cols .select_cols columns to select for output. To return all columns, specify "all" for
-#' .select_cols. Default is NULL.
+#' @param .maxex set maxex for computation (optional). Default is `NULL`
+#' @param .select_cols Deprecated. Please use `.cleanup_cols` instead. Columns
+#'   to select for output. To return all columns, specify `"all"`.
 #'
 #' @examples
 #'
-#' #Using output from `define_boot_table` (defineBootOut),
-#' boot_paramEst <- utils::read.csv(system.file("model/nonmem/boot/data/boot-106.csv",
-#'                                  package = "pmparams"))
-#' paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
+#' # Using output from `define_boot_table`:
+#' model_dir <- system.file("model/nonmem", package = "pmparams")
+#' paramKey <-  file.path(model_dir, "pk-parameter-key-new.yaml")
 #'
-#' defineBootOut <- define_boot_table(.boot_estimates = boot_paramEst,
-#'                .key = paramKey)
+#' boot_run <- bbr::read_model(file.path(model_dir, "106-boot"))
+#' boot_df <- define_boot_table(
+#'  .boot_estimates = bbr::bootstrap_estimates(boot_run),
+#'  .key = paramKey
+#' )
 #'
-#' format_boot_table(.boot_df = defineBootOut)
+#' format_boot_table(boot_df)
 #'
-#' #To include all columns:
+#' # To include all columns:
 #'
-#' format_boot_table(.boot_df = defineBootOut, .cleanup_cols = FALSE)
+#' format_boot_table(.boot_df = boot_df, .cleanup_cols = FALSE)
 #' @export
-format_boot_table <- function(.boot_df,
-                            .cleanup_cols = TRUE,
-                            .digit = getOption("pmparams.dig"),
-                            .maxex = getOption("pmparams.maxex"),
-                            .select_cols = NULL){
+format_boot_table <- function(
+    .boot_df,
+    .cleanup_cols = TRUE,
+    .digit = getOption("pmparams.dig"),
+    .maxex = getOption("pmparams.maxex"),
+    .select_cols = NULL
+){
+  checkmate::assert_logical(.cleanup_cols)
+  .digit <- ifelse(is.null(.digit), formals(pmtables::sig)$digits, .digit)
 
-  .digit = ifelse(is.null(.digit), formals(pmtables::sig)$digits, .digit)
-
-  if (length(.select_cols) > 0){
-    message("`.select_cols` is included for backwards compatibility. Using this sets `.cleanup_cols` = F")
-    .cleanup_cols = F
-  }
-
+  # Create formatted table
   .df_out <- .boot_df %>%
     formatValuesBoot(.digit = .digit, .maxex = .maxex) %>%
-    dplyr::arrange(as.numeric(nrow)) %>%
-    dplyr::select(-nrow)
+    dplyr::arrange(as.numeric(nrow))
 
-  if (length(.select_cols) > 0){
-    if (!all(.select_cols %in% names(.df_out))){
-      stop("Column selected does not exist in dataset")
+  # Handle deprecated .select_cols arg, or define it below
+  if (!is.null(.select_cols)){
+    message("`.select_cols` is deprecated and included for backwards compatibility. Using this sets `.cleanup_cols = FALSE`")
+    .cleanup_cols <- FALSE
+    # Check for specified columns
+    if (!(.select_cols %in% names(.df_out))){
+      cols_missing <- setdiff(.select_cols, names(.df_out))
+      cols_missing <- paste(cols_missing, collapse = ", ")
+      stop(paste("The following specified columns were not found:", cols_missing))
     }
+  } else {
+    # Used when .cleanup_cols = TRUE
+    ci_cols <- names(.df_out)[grepl("^perc_", names(.df_out))]
+    .select_cols <- c("abb", "desc", ci_cols)
   }
 
-  if (.cleanup_cols == F & length(.select_cols) == 0) {
-    return(.df_out %>%
-             as.data.frame()
-    )
-  } else if (.cleanup_cols == F & length(.select_cols) > 0){
-    if (any(tolower(.select_cols) == "all")) {
-      return(.df_out %>%
-               as.data.frame()
-      )
-    } else {
-      return(.df_out %>%
-               dplyr::select(dplyr::all_of(.select_cols)) %>%
-               as.data.frame()
-      )
-    }
-  } else if (.cleanup_cols == T) {
-    return(    return(.df_out %>%
-                        dplyr::select(panel, abb, desc, dplyr::starts_with("boot_value"), dplyr::starts_with("boot_perc"), dplyr::starts_with("perc")) %>%
-                        as.data.frame())
-    )
+  select_everything <- isFALSE(.cleanup_cols) || any(tolower(.select_cols) == "all")
+  if (isFALSE(select_everything)) {
+    .df_out <- .df_out %>% dplyr::select(tidyselect::all_of(.select_cols))
   }
+
+  return(.df_out)
 }
 
 

@@ -15,15 +15,19 @@ format_boot_table(
 \arguments{
 \item{.boot_df}{parameter estimates output from \code{\link[pmparams]{define_boot_table}} with modifications ready for formatting}
 
-\item{.cleanup_cols}{clean up columns. Default TRUE and selects "abb", "desc", "boot_value", "boot_ci".
-To return all columns, set .cleanup_cols = FALSE.}
+\item{.cleanup_cols}{logical (T/F). Defaults to \code{TRUE}, which selects the
+following columns:
+\itemize{
+\item \code{"abb"}, \code{"desc"}, \code{"boot_value"}, \verb{"boot_ci}".
+\item Set to \code{FALSE} to return all columns.
+}}
 
 \item{.digit}{set significant digits for output (optional). Default is three digits}
 
-\item{.maxex}{set maxex for computation (optional). Default is NULL}
+\item{.maxex}{set maxex for computation (optional). Default is \code{NULL}}
 
-\item{.select_cols}{.select_cols columns to select for output. To return all columns, specify "all" for
-.select_cols. Default is NULL.}
+\item{.select_cols}{Deprecated. Please use \code{.cleanup_cols} instead. Columns
+to select for output. To return all columns, specify \code{"all"}.}
 }
 \description{
 Format bootstrap parameter estimate values and output selected columns to be shown in
@@ -31,17 +35,19 @@ the bootstrap parameter table.
 }
 \examples{
 
-#Using output from `define_boot_table` (defineBootOut),
-boot_paramEst <- utils::read.csv(system.file("model/nonmem/boot/data/boot-106.csv",
-                                 package = "pmparams"))
-paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
+# Using output from `define_boot_table`:
+model_dir <- system.file("model/nonmem", package = "pmparams")
+paramKey <-  file.path(model_dir, "pk-parameter-key-new.yaml")
 
-defineBootOut <- define_boot_table(.boot_estimates = boot_paramEst,
-               .key = paramKey)
+boot_run <- bbr::read_model(file.path(model_dir, "106-boot"))
+boot_df <- define_boot_table(
+ .boot_estimates = bbr::bootstrap_estimates(boot_run),
+ .key = paramKey
+)
 
-format_boot_table(.boot_df = defineBootOut)
+format_boot_table(boot_df)
 
-#To include all columns:
+# To include all columns:
 
-format_boot_table(.boot_df = defineBootOut, .cleanup_cols = FALSE)
+format_boot_table(.boot_df = boot_df, .cleanup_cols = FALSE)
 }

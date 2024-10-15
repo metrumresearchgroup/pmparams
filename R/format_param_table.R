@@ -45,16 +45,21 @@
 #'
 #' @examples
 #'
-#' # Using output from `define_param_table` (defineOut),
-#' paramEst <- utils::read.csv(system.file("model/nonmem/param_est.csv", package = "pmparams"))
-#' paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
-#' defineOut <- define_param_table(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
+#' model_dir <- system.file("model/nonmem", package = "pmparams")
+#' paramKey <-  file.path(model_dir, "pk-parameter-key-new.yaml")
 #'
-#' format_param_table(.df = defineOut)
+#' # Using output from `define_param_table` (param_df),
+#' mod <- bbr::read_model(file.path(model_dir, "106"))
+#' define_param_table(
+#'  .estimates = mod,
+#'  .key = paramKey,
+#'  .ci = 95,
+#' )
+#'
+#' format_param_table(param_df)
 #'
 #' # To include all columns:
-#'
-#' format_param_table(.df = defineOut, .cleanup_cols = FALSE)
+#' format_param_table(param_df, .cleanup_cols = FALSE)
 #' @export
 format_param_table <- function(
     .df,

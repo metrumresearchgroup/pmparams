@@ -9,13 +9,13 @@
 #'
 #' Below is the expected format of `.boot_estimates` if a data frame is provided:
 #'    ```
-#'    #>   run   THETA1 THETA2 THETA3 THETA4 THETA5 THETA6   THETA7 THETA8
-#'    #>   <chr>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>    <dbl>  <dbl>
-#'    #>   001    0.494   4.19   1.20   4.20   1.24  0.488 -0.0615   0.377
-#'    #>   002    0.405   4.07   1.14   4.23   1.32  0.536 -0.103    0.517
-#'    #>   003    0.500   4.09   1.15   4.21   1.27  0.413 -0.0752   0.523
-#'    #>   004    0.578   4.16   1.20   4.18   1.30  0.518 -0.0502   0.418
-#'    #>   005    0.499   4.14   1.16   4.25   1.22  0.436 -0.0686   0.394
+#'    run   THETA1 THETA2 THETA3 THETA4 THETA5 THETA6   THETA7 THETA8
+#'    <chr>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>    <dbl>  <dbl>
+#'    001    0.494   4.19   1.20   4.20   1.24  0.488 -0.0615   0.377
+#'    002    0.405   4.07   1.14   4.23   1.32  0.536 -0.103    0.517
+#'    003    0.500   4.09   1.15   4.21   1.27  0.413 -0.0752   0.523
+#'    004    0.578   4.16   1.20   4.18   1.30  0.518 -0.0502   0.418
+#'    005    0.499   4.14   1.16   4.25   1.22  0.436 -0.0686   0.394
 #'    ```
 #'
 #' **Notes:**
@@ -42,13 +42,7 @@
 #' - A file path to a csv containing the above dataset.
 #' @param .key path to parameter key or data.frame of parameter key. Described
 #'   in more detail in \code{\link[pmparams]{param_key}}
-#' @param .ci specify 90 or 95 percent confidence interval or IQR (interquartile
-#'   range). Default is 95.
-#' @param .percentiles list of all percentiles. Default is NULL. For .ci = 95,
-#'   .percentiles = c(0.025, 0.5, 0.975). For .ci =90, .percentiles will be
-#'   c(0.05, 0.5, 0.95)
-#' @param .na.rm Logical (T/F). If `TRUE`, any `NA` and `NaN`'s are removed
-#'  before the quantiles are computed.
+#' @inheritParams getBootPercentiles
 #' @examples
 #'
 #' model_dir <- system.file("model/nonmem", package = "pmparams")
@@ -77,7 +71,6 @@ define_boot_table <- function(
     .percentiles = NULL,
     .na.rm = TRUE
 ){
-
   # path to boot estimates
   if (inherits(.boot_estimates, "character")){
     .boot <- readr::read_csv(.boot_estimates, show_col_types = FALSE)
@@ -103,7 +96,8 @@ define_boot_table <- function(
     defineRows() %>%
     backTrans_log() %>%
     backTrans_logit() %>%
-    dplyr::arrange(as.numeric(nrow))
+    dplyr::arrange(as.numeric(nrow)) %>%
+    tibble::as_tibble()
 
   return(.boot_df)
 }

@@ -23,15 +23,15 @@ parameter estimates for each run. See details.
 \item{.key}{path to parameter key or data.frame of parameter key. Described
 in more detail in \code{\link[pmparams]{param_key}}}
 
-\item{.ci}{specify 90 or 95 percent confidence interval or IQR (interquartile
-range). Default is 95.}
+\item{.ci}{the confidence interval. A value from 1 to 100 denoting the percent
+confidence interval, or \code{"iqr"} (interquartile range). Default is \code{95}.}
 
-\item{.percentiles}{list of all percentiles. Default is NULL. For .ci = 95,
-.percentiles = c(0.025, 0.5, 0.975). For .ci =90, .percentiles will be
-c(0.05, 0.5, 0.95)}
+\item{.percentiles}{optional vector of all percentiles (defaults to \code{NULL}).
+If specified \code{.ci} will be ignored. E.g., \code{.percentiles = c(0.025, 0.5, 0.975)}
+is the equivalent of \code{.ci = 95}.}
 
-\item{.na.rm}{Logical (T/F). If \code{TRUE}, any \code{NA} and \code{NaN}'s are removed
-before the quantiles are computed.}
+\item{.na.rm}{logical (T/F). If \code{TRUE}, any \code{NA} and \code{NaN}'s are removed
+before the quantiles are computed. Passed to \code{\link[stats:quantile]{stats::quantile()}}.}
 }
 \description{
 Combines bootstrap estimates with information in parameter key and performs
@@ -40,13 +40,13 @@ some additional formatting.
 \details{
 Below is the expected format of \code{.boot_estimates} if a data frame is provided:
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{#>   run   THETA1 THETA2 THETA3 THETA4 THETA5 THETA6   THETA7 THETA8
-#>   <chr>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>    <dbl>  <dbl>
-#>   001    0.494   4.19   1.20   4.20   1.24  0.488 -0.0615   0.377
-#>   002    0.405   4.07   1.14   4.23   1.32  0.536 -0.103    0.517
-#>   003    0.500   4.09   1.15   4.21   1.27  0.413 -0.0752   0.523
-#>   004    0.578   4.16   1.20   4.18   1.30  0.518 -0.0502   0.418
-#>   005    0.499   4.14   1.16   4.25   1.22  0.436 -0.0686   0.394
+\if{html}{\out{<div class="sourceCode">}}\preformatted{run   THETA1 THETA2 THETA3 THETA4 THETA5 THETA6   THETA7 THETA8
+<chr>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>    <dbl>  <dbl>
+001    0.494   4.19   1.20   4.20   1.24  0.488 -0.0615   0.377
+002    0.405   4.07   1.14   4.23   1.32  0.536 -0.103    0.517
+003    0.500   4.09   1.15   4.21   1.27  0.413 -0.0752   0.523
+004    0.578   4.16   1.20   4.18   1.30  0.518 -0.0502   0.418
+005    0.499   4.14   1.16   4.25   1.22  0.436 -0.0686   0.394
 }\if{html}{\out{</div>}}
 
 \strong{Notes:}
