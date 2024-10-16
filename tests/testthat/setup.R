@@ -24,32 +24,36 @@ paramKey = dplyr::tribble(
   "SIGMA11", "Proportional", "Variance", "RV", "propErr"
 )
 
-paramKey2 <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
+model_dir <- system.file("model/nonmem", package = "pmparams")
+
+paramKey2 <-  file.path(model_dir, "pk-parameter-key-new.yaml")
 param_yaml <- yaml::yaml.load_file(paramKey2)
 
 #Data for testing param table (no boot)
 
-paramPath <- system.file("model/nonmem/102", package = "pmparams")
-paramEst <- utils::read.csv(system.file("model/nonmem/param_est.csv", package = "pmparams"))
-paramModel <- bbr::read_model(system.file("model/nonmem/102", package = "pmparams"))
+paramPath <- file.path(model_dir, "102")
+paramEst <- readr::read_csv(file.path(model_dir, "param_est.csv"))
+paramModel <- bbr::read_model(paramPath)
 
 newDF <- define_param_table(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
 newFormatDF <- format_param_table(newDF)
 newFormatDFprse  <- format_param_table(newDF, .prse = T)
 
 #Data for testing boot param table
-boot_paramEstPath <- system.file("model/nonmem/boot/data/boot-106.csv", package = "pmparams")
-boot_paramEst <- utils::read.csv(system.file("model/nonmem/boot/data/boot-106.csv", package = "pmparams"))
+boot_paramEstPath <- file.path(model_dir, "boot/data/boot-106.csv")
+boot_paramEst <- readr::read_csv(boot_paramEstPath)
 
-nonboot_paramEstPath <- system.file("model/nonmem/106", package = "pmparams")
-nonboot_paramEst <- utils::read.csv(system.file("model/nonmem/nonboot_param_est.csv", package = "pmparams"))
+nonboot_paramEst <- readr::read_csv(file.path(model_dir, "nonboot_param_est.csv"))
 
 newbootDF <- pmparams::define_boot_table(.boot_estimates =boot_paramEst, .key = paramKey)
 formatBootDF <- pmparams::format_boot_table(.boot_df = newbootDF, .cleanup_cols =  T)
 
-newbootDF2 <- pmparams::define_boot_table(.boot_estimates =boot_paramEst,
-                                         .key = paramKey,
-                                         .percentiles  = c(0.29, 0.15, 0.99)) #ERROR
+newbootDF2 <- pmparams::define_boot_table(
+  .boot_estimates = boot_paramEst,
+  .key = paramKey,
+  .percentiles  = c(0.29, 0.15, 0.99)
+)
+
 #final output
 nonbootDF <- pmparams::define_param_table(.estimates = nonboot_paramEst, .key = paramKey)
 formatnonbootDF <- nonbootDF %>% pmparams::format_param_table()

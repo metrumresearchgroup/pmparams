@@ -82,16 +82,12 @@ define_boot_table <- function(
   # parameter key types
   .key <- loadParamKey(.key)
 
-  # clean up boot
-  .bootParam0 = .boot %>%
-    getBootPercentiles(.ci, .percentiles, .na.rm)
+  # get percentiles and format
+  .bootParam0 <- .boot %>% getBootPercentiles(.ci, .percentiles, .na.rm)
 
-  .bootParam <- .bootParam0 %>%
-    dplyr::mutate(name = gsub("[[:punct:]]", "", parameter_names)) %>%
-    dplyr::inner_join(.key, by = "name")
-
-  # join with nonboot estimates
-  .boot_df <- .bootParam %>%
+  .boot_df <- .bootParam0 %>%
+    removePunc(.column = "parameter_names") %>%
+    dplyr::inner_join(.key, by = "name") %>%
     checkTransforms() %>%
     defineRows() %>%
     backTrans_log() %>%

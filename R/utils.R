@@ -15,6 +15,15 @@ check_for_suggested_pkgs <- function(pkgs = "bbr") {
   }
 }
 
+#' Check if specified package is above a certain version
+#' @examples
+#' \dontrun{
+#'  version_above("bbr", "1.11.0")
+#' }
+#' @noRd
+version_above <- function(pkg, version){
+  packageVersion(pkg) >= package_version(version)
+}
 
 #' Skip tests if missing suggested packages
 #' @noRd

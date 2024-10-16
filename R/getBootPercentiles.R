@@ -42,10 +42,10 @@ getBootPercentiles <- function(
     .percentiles <- get_percentiles_from_ci(.ci)
   } else{
     # Perform checks and ensure order if .percentiles was specified
-    if (any(.percentiles > 1)) {
+    if (any(.percentiles > 1) || any(.percentiles < 0)) {
       stop("`.percentiles` provided are outside of [0,1] range")
     }
-    .percentiles <- .percentiles[order(.percentiles)]
+    .percentiles <- unique(.percentiles[order(.percentiles)])
   }
 
   # Calculate quantiles for each column

@@ -2,9 +2,9 @@
 title: "Getting Started with pmparams"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{getting-started}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+ %\VignetteIndexEntry{getting-started}
+ %\VignetteEngine{knitr::rmarkdown}
+ %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
@@ -93,12 +93,13 @@ df2 <- format_param_table(df1)
 Usually `define_param_table` and `format_param_table` are run together in a single call like this:
 
 ```{r}
-df2 <- define_param_table(.estimates = paramEstimatePath,
-                          .key = paramKeyPath) %>% 
-        format_param_table()
-  
+param_df <- define_param_table(
+  .estimates = paramEstimatePath,
+  .key = paramKeyPath
+) %>% format_param_table()
 
-head(df2)
+
+head(param_df)
 ```
 
 # Make parameter table
@@ -108,17 +109,17 @@ We leverage `make_pmtable` to generate fixed effects and random effects paramete
 ```{r}
 tableList <- list()
 
-#grab footnotes
+# grab footnotes
 footnote <- param_notes(.ci = 95)
 ```
 
 ```{r}
 ##fixed
-tableList$fixed <- make_pmtable(df2, .pmtype = "fixed") %>% 
-  #abbreviations
+tableList$fixed <- make_pmtable(param_df, .pmtype = "fixed") %>% 
+  # abbreviations
   st_notes(footnote$ci, footnote$se) %>% 
   st_notes_str() %>% 
-  #equations
+  # equations
   st_notes(footnote$ciEq)
 
 tableList$fixed %>%
@@ -129,10 +130,10 @@ tableList$fixed %>%
 ```{r}
 ##random
 tableList$random <- make_pmtable(df2, .pmtype = "random") %>% 
-  #abbreviations
+  # abbreviations
   st_notes(footnote$ci, footnote$se) %>% 
   st_notes_str() %>% 
-  #equations
+  # equations
   st_notes(footnote$cvOmegaEq, footnote$cvSigmaEq)
 
 tableList$random %>% 
@@ -143,10 +144,10 @@ tableList$random %>%
 If you want to add or overwrite pre-defined `pmtables` argument, simply pipe onto the `make_pmtable` tibble:
 ```{r,results = 'asis'}
 tableList$random <- make_pmtable(df2, .pmtype = "random") %>% 
-  #abbreviations
+  # abbreviations
   st_notes(footnote$ci, footnote$se) %>% 
   st_notes_str() %>% 
-  #equations
+  # equations
   st_notes(footnote$ciEq) 
 
 tableList$random %>% 
