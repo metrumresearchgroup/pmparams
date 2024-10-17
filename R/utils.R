@@ -22,17 +22,38 @@ check_for_suggested_pkgs <- function(pkgs = "bbr") {
 #' }
 #' @noRd
 version_above <- function(pkg, version){
-  packageVersion(pkg) >= package_version(version)
+  above <- packageVersion(pkg) >= package_version(version)
+  above <- stats::setNames(above, paste(pkg, version))
+  return(above)
 }
 
 #' Skip tests if missing suggested packages
+#' @examples
+#' \dontrun{
+#'  skip_if_missing_deps("bbr")
+#'
+#'  # Provide version requirement
+#'  skip_if_missing_deps("bbr", "1.11.0")
+#' }
 #' @noRd
-skip_if_missing_deps <- function(pkgs = "bbr") {
+skip_if_missing_deps <- function(pkgs = "bbr", vers = NULL) {
   missing_pkgs <- check_for_suggested_pkgs(pkgs = pkgs)
   testthat::skip_if(
     !is.null(missing_pkgs),
-    glue::glue("Skipped because the following packages are needed for this test: {paste(missing_pkgs, collapse = ', ')}")
+    glue::glue("The following packages are needed for this test: {paste(missing_pkgs, collapse = ', ')}")
   )
+
+  if (!is.null(vers)) {
+    checkmate::assert_true(length(pkgs) == length(vers))
+    pkg_vers <- purrr::map2(pkgs, vers, function(.pkg, .ver) {
+      version_above(.pkg, .ver)
+    }) %>% unlist()
+
+    testthat::skip_if(
+      any(!pkg_vers),
+      glue::glue("The following package _versions_ are needed for this test: {paste(names(pkg_vers[!pkg_vers]), collapse = ', ')}")
+    )
+  }
 }
 
 #' Error if missing suggested packages

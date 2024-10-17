@@ -66,8 +66,13 @@ withr::with_options(list(bbr.bbi_exe_path = bbr::read_bbi_path()), {
     expect_equal(pathDF$estimate[pathDF$name == "OMEGA22"], 0.0826922)
   })
 
-  test_that("define_param_table incorrect parameter key input type: Only abb, desc, panel and trans arguments will be used, all others ignored", {
-    expect_warning(capture.output(define_param_table(paramPath, system.file("model/nonmem/pk-parameter-key-both.yaml", package = "pmparams"))))
+  test_that("define_param_table incorrect parameter key input type", {
+    # TODO: There should be a loadParamKey test file that tests this, rather
+    # than having it here and in define_boot_table
+    expect_warning(
+      define_param_table(paramPath, paramKeyBoth_path),
+      "Only abb, desc, panel and trans arguments will be used"
+      )
   })
 
   test_that("define_param_table generates correct corr_SD", {
