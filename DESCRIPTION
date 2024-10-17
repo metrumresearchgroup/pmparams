@@ -17,7 +17,11 @@ Authors@R:
       person(given = "Grace",
              family = "O'Brien",
              role = c("aut"),
-             email = "graceo@metrumrg.com")) 
+             email = "graceo@metrumrg.com")
+      person(given = "Kyle",
+             family = "Barrett",
+             role = c("aut"),
+             email = "barrettk@metrumrg.com")) 
 Description: `pmparams` is a library written in R that generates clear, well-formatted parameter tables to report NONMEM model results.
 URL: https://metrumresearchgroup.github.io/pmparams/, https://github.com/metrumresearchgroup/pmparams
 BugReports: https://github.com/metrumresearchgroup/pmparams/issues
@@ -37,9 +41,9 @@ Imports:
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Suggests: 
-    bbr,
+    bbr (>= 1.11.0),
     testthat (>= 3.0.0),
     knitr
 Config/testthat/edition: 3

@@ -2,51 +2,85 @@
 % Please edit documentation in R/make_boot_pmtable.R
 \name{make_boot_pmtable}
 \alias{make_boot_pmtable}
-\title{Make pmtable boot parameter table}
+\title{Make pmtable bootstrap parameter table}
 \usage{
-make_boot_pmtable(.df, .pmtype = "full", .width = 1)
+make_boot_pmtable(
+  .df,
+  .pmtype = c("full", "fixed", "structural", "covariate", "random"),
+  .width = 1
+)
 }
 \arguments{
-\item{.df}{bootstrap parameter data set output from pmparams::format_boot_table or bootstrap parameter dataset and non-bootstrap parameter dataset combined.}
+\item{.df}{bootstrap parameter dataset and non-bootstrap parameter dataset combined.}
 
-\item{.pmtype}{parameter table type. Options include: full (all rows in .df retained in pmtable), fixed (all rows with type =
-"Struct" or "effect"), structural (all rows with type = "Struct"), covariate (all rows with type = "effect"), random (all
-rows with greek = "Omega" or type = "Resid"). Defaults to "full".}
+\item{.pmtype}{parameter table type. Options include:
+\itemize{
+\item \code{"full"} (all rows in \code{.df} retained in pmtable). This is the default.
+\item \code{"fixed"} (all rows with type = "Struct" or "effect"),
+\item \code{"structural"} (all rows with type = "Struct"),
+\item \code{"covariate"} (all rows with type = "effect"),
+\item \code{"random"} (all rows with greek = "Omega" or type = "Resid").
+}}
 
 \item{.width}{notes width. Defaults to 1.}
 }
 \description{
-Generates specific parameter tables by filtering and using pmtables
+Make pmtable bootstrap parameter table
+}
+\details{
+Generates specific parameter tables by filtering and using \code{pmtables}
 
 This function:
 \enumerate{
 \item Filters to columns needed for specific parameter tables
 \item Panels by "type"
-\item Makes "abb", "greek", "desc" blank for "full", "fixed", "structural", "covariate" parameter tables.
-Makes "abb" and "greek" blank for "random"
+\item Makes \code{"abb"}, \code{"greek"}, \code{"desc"} blank (no title)
+\itemize{
+\item Note that description is removed when \code{.pmtype = "random"}. See
+\code{?pmtables::st_mutate()} if you want to add it back in.
+}
 \item Attaches notes
-\item Rename "value" to "Estimate" and "shrinkage" to "Shrinkage (\\\%)", if applicable
+\item Rename "value" to "Estimate" and "shrinkage" to "Shrinkage (\%)", if
+applicable
 }
 
-If these pmtable settings do not work for your parameter table, you can overwrite them afterwards using desired pmtables commands.
+\strong{Note:}
+If these \code{pmtables} settings do not work for your parameter table, you can
+overwrite them afterwards using desired \code{pmtables} commands.
 }
 \examples{
 
-#Using output from `format_boot_table` (defineOut),
-bootEst <- utils::read.csv(system.file("model/nonmem/boot/data/boot-106.csv", package = "pmparams"))
-paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
-defineOut <- define_boot_table(.boot_estimates = bootEst, .key = paramKey, .ci = 95)
-data <- format_boot_table(.boot_df = defineOut)
+\dontrun{
+
+model_dir <- system.file("model/nonmem", package = "pmparams")
+paramKey <-  file.path(model_dir, "pk-parameter-key-new.yaml")
+
+# Parameter estimates
+mod <- bbr::read_model(file.path(model_dir, "106"))
+param_df <- define_param_table(
+ .estimates = mod,
+ .key = paramKey,
+) \%>\% format_param_table()
+
+# Bootstrap estimates
+boot_run <- bbr::read_model(file.path(model_dir, "106-boot"))
+boot_df <- define_boot_table(
+ .boot_estimates = bbr::bootstrap_estimates(boot_run),
+ .key = paramKey
+) \%>\% format_boot_table()
+
+# Combine parameter estimates with bootstrap estimates
+combine_df <- left_join(param_df, boot_df)
+
+# Fixed effects table
+make_boot_pmtable(.df = combine_df, .pmtype = "fixed") \%>\%
+ pmtables::stable() \%>\%
+ pmtables::st_as_image(border = "0.8cm 0.7cm")
 
 
-#To make random effects table with bootstrap and non-bootstrap data:
-
-paramPath <- system.file("model/nonmem/102", package = "pmparams")
-defineOut_nonboot <- define_param_table(.estimates = paramPath,
-                                        .key = paramKey)
-data_nonboot <- format_param_table(defineOut_nonboot)
-
-combine <- dplyr::left_join(data_nonboot, data)
-make_boot_pmtable(.df = combine, .pmtype = "random")
-
+# Random effects table
+make_boot_pmtable(.df = combine_df, .pmtype = "random") \%>\%
+ pmtables::stable() \%>\%
+ pmtables::st_as_image(border = "0.8cm 0.7cm")
+}
 }

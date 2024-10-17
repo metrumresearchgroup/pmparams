@@ -7,48 +7,91 @@
 define_param_table(.estimates, .key, .ci = 95, .zscore = NULL)
 }
 \arguments{
-\item{.estimates}{path to model directory, bbr NONMEM model, or data.frame of parameter estimates}
+\item{.estimates}{One of the following:
+\itemize{
+\item Path to a \code{bbr} model
+\item A \code{bbr} model. (output of \code{bbr::read_model()})
+\item A \code{bbr} model summary object (output of \code{bbr::model_summary()})
+\item A data frame of the parameter estimates (e.g., output of \code{bbr::param_estimates()})
+}}
 
-\item{.key}{path to parameter key or data.frame of parameter key. Described in more detail in \code{\link[pmparams]{param_key}}}
+\item{.key}{path to parameter key or data.frame of parameter key. Described
+in more detail in \code{\link[pmparams]{param_key}}}
 
 \item{.ci}{confidence interval. Default is 95}
 
-\item{.zscore}{z-score for the specified confidence interval. Only needed for confidence intervals that are NOT 90 or 95 percent}
+\item{.zscore}{z-score for the specified confidence interval. Only needed for
+confidence intervals that are \strong{not} 90 or 95 percent}
 }
 \description{
 Combines model output parameter estimates with information in parameter key. Performs
 some formatting of this combined data.frame.
+}
+\details{
+Below is the expected format of \code{.estimates} if a data frame is provided:
 
-Expected input is a data.frame with parameter estimates, with the columns:
-\code{parameter_names}, \code{estimate}, \code{stderr}, \code{random_effect_sd}, \code{random_effect_sdse},
-\code{fixed}, \code{diag}, \code{shrinkage}.
+\if{html}{\out{<div class="sourceCode">}}\preformatted{parameter_names estimate  stderr random_effect_sd random_effect_sdse fixed diag  shrinkage
+<chr>              <dbl>   <dbl>            <dbl>              <dbl> <lgl> <lgl>     <dbl>
+THETA1            0.443  0.0643            NA               NA       FALSE NA       NA
+THETA2            4.12   0.0275            NA               NA       FALSE NA       NA
+THETA3            1.17   0.0280            NA               NA       FALSE NA       NA
+THETA4            4.21   0.0190            NA               NA       FALSE NA       NA
+THETA5            1.28   0.0348            NA               NA       FALSE NA       NA
+THETA6            0.485  0.0395            NA               NA       FALSE NA       NA
+THETA7           -0.0378 0.0635            NA               NA       FALSE NA       NA
+THETA8            0.419  0.0863            NA               NA       FALSE NA       NA
+}\if{html}{\out{</div>}}
 
-Some \code{parameter_names} have punctuation such as \code{OMEGA(1,1)}. A new column is
-added without punctuation, such as \code{OMEGA11}.
-
-Following this, parameter details from the parameter key are joined to the parameter estimates.
-A \code{dplyr::inner_join} is used so that only parameters in the model output are kept
-in the table. This was done so that, if your base and final model used the same structural
-THETAs and random parameters, the same parameter key could be used for both.
-
-This join adds the following columns: \code{abb} (abbreviation), \code{desc} (parameter description),
-\code{panel}, \code{trans} (transformation).
-
-With this information provided, a check is performed to determine whether parameters
-with special transformation rules were defined correctly. In addition, a series of
-TRUE/FALSE columns that will be used by subsequent functions.
+\strong{Notes:}
+\itemize{
+\item Some parameter names may have punctuation (such as \code{OMEGA(1,1)}). A new
+\code{name} column is automatically added that specifies the name without
+punctuation (i.e. \code{OMEGA11}).
+\item Parameter details from the parameter key are joined to the bootstrap parameter
+estimates. A \code{dplyr::inner_join} is used so that only parameters in the model
+output are kept in the table. This was done so that, if your base and final
+model used the same structural THETAs and random parameters, the same
+parameter key could be used for both.
+\itemize{
+\item This join adds the following columns: \code{abb} (abbreviation), \code{desc}
+(parameter description), \code{panel}, \code{trans} (transformation).
+}
+\item A final check is performed to determine whether parameters with special
+transformation rules were defined correctly. In addition, a series of \code{TRUE}/
+\code{FALSE} columns are added that will be used downstream.
+}
 }
 \examples{
 
-paramEst <- utils::read.csv(system.file("model/nonmem/param_est.csv", package = "pmparams"))
-paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
+model_dir <- system.file("model/nonmem", package = "pmparams")
+paramKey <-  file.path(model_dir, "pk-parameter-key-new.yaml")
 
-define_param_table(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
+# Using a `bbr` model
+mod <- bbr::read_model(file.path(model_dir, "106"))
+define_param_table(
+ .estimates = mod,
+ .key = paramKey,
+ .ci = 95,
+)
 
-#To choose a confidence interval that is not 95 or 90, look up z-score and add as function parameter
-define_param_table(.estimates = paramEst, .key = paramKey, .ci = 82, .zscore = 0.915)
+# Using a file path
+param_est_path <- file.path(model_dir, "param_est.csv")
+param_ests <- readr::read_csv(param_est_path)
+define_param_table(
+ .estimates = param_ests,
+ .key = paramKey,
+ .ci = 95,
+)
+
+# To choose a confidence interval that is not 95 or 90, look up and provide the z-score
+define_param_table(
+ .estimates = param_ests,
+ .key = paramKey,
+ .ci = 82,
+ .zscore = 0.915
+)
 
 }
 \seealso{
-\code{\link[=param_key]{param_key()}}
+\code{\link[=param_key]{param_key()}}, \code{\link[=define_boot_table]{define_boot_table()}}
 }
