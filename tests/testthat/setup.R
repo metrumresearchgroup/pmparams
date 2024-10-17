@@ -28,6 +28,7 @@ paramKey <- dplyr::tribble(
 model_dir <- system.file("model/nonmem", package = "pmparams")
 
 paramKey_path <-  file.path(model_dir, "pk-parameter-key-new.yaml")
+paramKeyBoth_path <-  file.path(model_dir, "pk-parameter-key-both.yaml")
 param_yaml <- yaml::yaml.load_file(paramKey_path)
 
 # Data for testing param table (no bootstrap)
