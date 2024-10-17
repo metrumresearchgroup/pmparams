@@ -76,13 +76,18 @@ make_boot_pmtable <- function(
   if(!any(grepl("ci_", names(.df)))){
     message("No parameter estimates detected.")
   }
-  if(!any(grepl("perc_", names(.df)))){
+  if(!any(grepl("boot_", names(.df)))){
     stop("No bootstrap parameter estimates detected.")
   }
 
+  # Extract bootstrap columns
+  boot_cols_keep <- names(.df)[grepl("boot_", names(.df))]
+  cols_keep <- c("type", "abb", "greek", "desc", "value", "shrinkage", boot_cols_keep)
+  .df_new <- .df %>% dplyr::select(tidyselect::all_of(cols_keep))
+
   # Rename CI and percent columns
-  .df_new <- rename_boot_cols(.df)
-  boot_names <- attributes(.df_new)$new_columns
+  .df_new <- rename_boot_cols(.df_new)
+  boot_names <- attributes(.df_new)$renamed_cols
 
   pm_tab0 <-
     if (.pmtype == "full"){
@@ -136,72 +141,23 @@ make_boot_pmtable <- function(
   return(pm_tab2)
 }
 
-#' Format and group bootstrap `perc_[x]` columns
-#'
-#' Format and group bootstrap `perc_[x]` columns. Columns that correspond to a
-#' confidence interval will instead be grouped into a new confidence interval
-#' column displaying the range. E.g., `perc_2.5` + `perc_97.5` --> `95% CI`
+#' Rename and format bootstrap columns
 #' @inheritParams make_boot_pmtable
-#' @keywords internal
-rename_boot_cols <- function(.df){
-  # Extract bootstrap columns and calculate boot values
-  boot_cols_keep <- names(.df)[grepl("perc_", names(.df))]
-  boot_values <- as.numeric(gsub("perc_", "", boot_cols_keep))
-
-  cols_keep <- c("type", "abb", "greek", "desc", "value", "shrinkage", boot_cols_keep)
-  .df_new <- .df %>% dplyr::select(tidyselect::all_of(cols_keep))
-
-  # This determines which values are paired to another (e.g., 5% and 95%)
-  #  - Remove the median (50%) from boot_values before finding CI pairs
-  filtered_boot_values <- boot_values[boot_values != 50]
-  ci_pairs <- which(filtered_boot_values + rev(filtered_boot_values) == 100)
-
-  new_columns <- c() # Keep track of new columns
-
-  # Create confidence intervals by pairing lower and upper percentiles
-  if (length(ci_pairs) > 0 && length(ci_pairs) %% 2 == 0) {
-    upper_indices <- length(boot_values) - ci_pairs + 1
-    paired_indices <- as.vector(rbind(ci_pairs, upper_indices))[seq_along(ci_pairs)]
-    paired_cols <- boot_cols_keep[paired_indices]
-
-    lower_vals <- boot_values[paired_indices[seq(1, length(paired_indices), by = 2)]]
-    upper_vals <- boot_values[paired_indices[seq(2, length(paired_indices), by = 2)]]
-    ci_names <- paste0(upper_vals - lower_vals, "\\% CI")
-
-    # Add new CI columns to the dataframe
-    new_ci_cols <- purrr::map2_dfc(
-      split(paired_cols, rep(1:(length(paired_cols)/2), each = 2)),
-      ci_names,
-      ~ purrr::set_names(
-        list(paste(.df_new[[.x[1]]], .df_new[[.x[2]]], sep = " , ")),
-        .y
-      )
-    )
-
-    new_columns <- c(new_columns, names(new_ci_cols))
-    .df_new <- dplyr::bind_cols(.df_new, new_ci_cols)
-  }
-
-  # Find & handle remaining columns that are not paired to a CI (e.g., median)
-  remaining_indices <- setdiff(seq_along(boot_values), paired_indices)
-  remaining_cols <- boot_cols_keep[remaining_indices]
-  remaining_values <- boot_values[remaining_indices]
-
-  renamed_cols <- .df_new %>%
+#' @param col_type one of `c("ci", "perc", "median")`
+#' @noRd
+rename_boot_cols <- function(.df) {
+  .df_new <- .df %>%
     dplyr::rename_with(
-      .fn = function(remain_col){
-        dplyr::case_when(
-          remain_col %in% remaining_cols[remaining_values == 50] ~ "Median",
-          TRUE ~ paste0(remaining_values[match(remain_col, remaining_cols)], "\\%")
-        )},
-      .cols = all_of(remaining_cols)
+      .fn = function(rename_col) {
+        rename_col %>%
+          stringr::str_replace("boot_median", "Median") %>%
+          stringr::str_replace("boot_ci_(\\d+)", "\\1\\\\% CI") %>%
+          stringr::str_replace("boot_perc_(\\d+)", "\\1\\\\%")
+      },
+      .cols = dplyr::contains("boot_")
     )
 
-  new_columns <- c(new_columns, setdiff(names(renamed_cols), names(.df_new)))
-
-  # Remove any old columns that still exist
-  .df_final <- renamed_cols %>% dplyr::select(-any_of(boot_cols_keep))
-  attr(.df_final, "new_columns") <- new_columns
-
-  return(.df_final)
+  # Store renamed columns for downstream use
+  attr(.df_new, "renamed_cols") <- setdiff(names(.df_new), names(.df))
+  return(.df_new)
 }
