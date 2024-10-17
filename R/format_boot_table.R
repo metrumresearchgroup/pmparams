@@ -1,11 +1,10 @@
 #' Format bootstrap parameter table
 #'
-#' @description
-#'
 #' Format bootstrap parameter estimate values and output selected columns to be shown in
 #' the bootstrap parameter table.
 #'
-#' @param .boot_df parameter estimates output from \code{\link[pmparams]{define_boot_table}} with modifications ready for formatting
+#' @param .boot_df parameter estimates output from [define_boot_table()] with
+#'   modifications ready for formatting
 #' @param .cleanup_cols logical (T/F). Defaults to `TRUE`, which selects the
 #'   following columns:
 #'   - `"abb"`, `"desc"`, `"boot_value"`, `"boot_ci`".
@@ -17,10 +16,23 @@
 #'
 #' @examples
 #'
-#' # Using output from `define_boot_table`:
 #' model_dir <- system.file("model/nonmem", package = "pmparams")
 #' paramKey <-  file.path(model_dir, "pk-parameter-key-new.yaml")
 #'
+#' # Using a file path:
+#' boot_path <- file.path(model_dir, "boot/data/boot-106.csv")
+#' boot_df <- define_boot_table(
+#'  .boot_estimates = boot_path,
+#'  .key = paramKey
+#' )
+#'
+#' format_boot_table(boot_df)
+#'
+#' # To include all columns:
+#' format_boot_table(boot_df, .cleanup_cols = FALSE)
+#'
+#' # Using a `bbr` bootstrap model object:
+#' \dontrun{
 #' boot_run <- bbr::read_model(file.path(model_dir, "106-boot"))
 #' boot_df <- define_boot_table(
 #'  .boot_estimates = bbr::bootstrap_estimates(boot_run),
@@ -28,10 +40,8 @@
 #' )
 #'
 #' format_boot_table(boot_df)
+#' }
 #'
-#' # To include all columns:
-#'
-#' format_boot_table(.boot_df = boot_df, .cleanup_cols = FALSE)
 #' @export
 format_boot_table <- function(
     .boot_df,

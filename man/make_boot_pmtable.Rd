@@ -7,7 +7,6 @@
 make_boot_pmtable(
   .df,
   .pmtype = c("full", "fixed", "structural", "covariate", "random"),
-  .show_desc = TRUE,
   .width = 1
 )
 }
@@ -23,25 +22,31 @@ make_boot_pmtable(
 \item \code{"random"} (all rows with greek = "Omega" or type = "Resid").
 }}
 
-\item{.show_desc}{logical (T/F). If \code{TRUE} (the default), include the description
-column in the final table.}
-
 \item{.width}{notes width. Defaults to 1.}
 }
 \description{
-Generates specific parameter tables by filtering and using pmtables
+Make pmtable bootstrap parameter table
+}
+\details{
+Generates specific parameter tables by filtering and using \code{pmtables}
 
 This function:
 \enumerate{
 \item Filters to columns needed for specific parameter tables
 \item Panels by "type"
-\item Makes "abb", "greek", "desc" blank for "full", "fixed", "structural", "covariate" parameter tables.
-Makes "abb" and "greek" blank for "random"
+\item Makes \code{"abb"}, \code{"greek"}, \code{"desc"} blank (no title)
+\itemize{
+\item Note that description is removed when \code{.pmtype = "random"}. See
+\code{?pmtables::st_mutate()} if you want to add it back in.
+}
 \item Attaches notes
-\item Rename "value" to "Estimate" and "shrinkage" to "Shrinkage (\\\%)", if applicable
+\item Rename "value" to "Estimate" and "shrinkage" to "Shrinkage (\%)", if
+applicable
 }
 
-If these pmtable settings do not work for your parameter table, you can overwrite them afterwards using desired pmtables commands.
+\strong{Note:}
+If these \code{pmtables} settings do not work for your parameter table, you can
+overwrite them afterwards using desired \code{pmtables} commands.
 }
 \examples{
 
@@ -69,13 +74,13 @@ combine_df <- left_join(param_df, boot_df)
 
 # Fixed effects table
 make_boot_pmtable(.df = combine_df, .pmtype = "fixed") \%>\%
- stable() \%>\%
- st_as_image(border = "0.8cm 0.7cm")
+ pmtables::stable() \%>\%
+ pmtables::st_as_image(border = "0.8cm 0.7cm")
 
 
 # Random effects table
 make_boot_pmtable(.df = combine_df, .pmtype = "random") \%>\%
- stable() \%>\%
- st_as_image(border = "0.8cm 0.7cm")
+ pmtables::stable() \%>\%
+ pmtables::st_as_image(border = "0.8cm 0.7cm")
 }
 }

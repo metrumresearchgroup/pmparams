@@ -48,14 +48,16 @@
 #' model_dir <- system.file("model/nonmem", package = "pmparams")
 #' paramKey <-  file.path(model_dir, "pk-parameter-key-new.yaml")
 #'
-#' # Using `bbr::bootstrap_estimates()`
+#' # Using `bbr::bootstrap_estimates()`:
+#' \dontrun{
 #' boot_run <- bbr::read_model(file.path(model_dir, "106-boot"))
 #' define_boot_table(
 #'  .boot_estimates = bbr::bootstrap_estimates(boot_run),
 #'  .key = paramKey
 #' )
+#' }
 #'
-#' # Using a file path
+#' # Using a file path:
 #' boot_path <- file.path(model_dir, "boot/data/boot-106.csv")
 #' define_boot_table(
 #'  .boot_estimates = boot_path,

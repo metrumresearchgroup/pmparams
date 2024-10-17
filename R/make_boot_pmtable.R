@@ -1,18 +1,22 @@
 #' Make pmtable bootstrap parameter table
 #'
-#' @description
+#' @details
 #'
-#' Generates specific parameter tables by filtering and using pmtables
+#' Generates specific parameter tables by filtering and using `pmtables`
 #'
 #' This function:
 #' 1. Filters to columns needed for specific parameter tables
 #' 2. Panels by "type"
-#' 3. Makes "abb", "greek", "desc" blank for "full", "fixed", "structural", "covariate" parameter tables.
-#' Makes "abb" and "greek" blank for "random"
+#' 3. Makes `"abb"`, `"greek"`, `"desc"` blank (no title)
+#'     - Note that description is removed when `.pmtype = "random"`. See
+#'       `?pmtables::st_mutate()` if you want to add it back in.
 #' 4. Attaches notes
-#' 5. Rename "value" to "Estimate" and "shrinkage" to "Shrinkage (\\%)", if applicable
+#' 5. Rename "value" to "Estimate" and "shrinkage" to "Shrinkage (%)", if
+#'    applicable
 #'
-#' If these pmtable settings do not work for your parameter table, you can overwrite them afterwards using desired pmtables commands.
+#' **Note:**
+#' If these `pmtables` settings do not work for your parameter table, you can
+#' overwrite them afterwards using desired `pmtables` commands.
 #'
 #' @param .df bootstrap parameter dataset and non-bootstrap parameter dataset combined.
 #' @param .pmtype parameter table type. Options include:
@@ -21,8 +25,6 @@
 #' - `"structural"` (all rows with type = "Struct"),
 #' - `"covariate"` (all rows with type = "effect"),
 #' - `"random"` (all rows with greek = "Omega" or type = "Resid").
-#' @param .show_desc logical (T/F). If `TRUE` (the default), include the description
-#'  column in the final table.
 #' @param .width notes width. Defaults to 1.
 #'
 #' @examples
@@ -51,20 +53,19 @@
 #'
 #' # Fixed effects table
 #' make_boot_pmtable(.df = combine_df, .pmtype = "fixed") %>%
-#'  stable() %>%
-#'  st_as_image(border = "0.8cm 0.7cm")
+#'  pmtables::stable() %>%
+#'  pmtables::st_as_image(border = "0.8cm 0.7cm")
 #'
 #'
 #' # Random effects table
 #' make_boot_pmtable(.df = combine_df, .pmtype = "random") %>%
-#'  stable() %>%
-#'  st_as_image(border = "0.8cm 0.7cm")
+#'  pmtables::stable() %>%
+#'  pmtables::st_as_image(border = "0.8cm 0.7cm")
 #' }
 #' @export
 make_boot_pmtable <- function(
     .df,
     .pmtype = c("full", "fixed", "structural", "covariate", "random"),
-    .show_desc = TRUE,
     .width = 1
 ){
   checkmate::assert_numeric(.width)
@@ -79,6 +80,7 @@ make_boot_pmtable <- function(
     stop("No bootstrap parameter estimates detected.")
   }
 
+  # Rename CI and percent columns
   .df_new <- rename_boot_cols(.df)
   boot_names <- attributes(.df_new)$new_columns
 
@@ -95,8 +97,6 @@ make_boot_pmtable <- function(
       .df_new %>% dplyr::filter(stringr::str_detect(greek, "Omega") | stringr::str_detect(type, "Resid"))
     }
 
-  # Toggle description inclusion
-  if (isFALSE(.show_desc)) pm_tab0 <- pm_tab0 %>% dplyr::select(-desc)
 
   # Create pmtable
   pm_tab1 <-
@@ -117,6 +117,7 @@ make_boot_pmtable <- function(
         pmtables::st_span("Non-parametric bootstrap", {{boot_names}})
     } else if (.pmtype == "random"){
       pm_tab0 %>%
+        dplyr::select(-desc) %>%
         pmtables::st_new() %>%
         pmtables::st_panel("type") %>%
         pmtables::st_blank("abb", "greek", "desc") %>%
@@ -135,6 +136,13 @@ make_boot_pmtable <- function(
   return(pm_tab2)
 }
 
+#' Format and group bootstrap `perc_[x]` columns
+#'
+#' Format and group bootstrap `perc_[x]` columns. Columns that correspond to a
+#' confidence interval will instead be grouped into a new confidence interval
+#' column displaying the range. E.g., `perc_2.5` + `perc_97.5` --> `95% CI`
+#' @inheritParams make_boot_pmtable
+#' @keywords internal
 rename_boot_cols <- function(.df){
   # Extract bootstrap columns and calculate boot values
   boot_cols_keep <- names(.df)[grepl("perc_", names(.df))]
@@ -182,7 +190,7 @@ rename_boot_cols <- function(.df){
   renamed_cols <- .df_new %>%
     dplyr::rename_with(
       .fn = function(remain_col){
-        case_when(
+        dplyr::case_when(
           remain_col %in% remaining_cols[remaining_values == 50] ~ "Median",
           TRUE ~ paste0(remaining_values[match(remain_col, remaining_cols)], "\\%")
         )},

@@ -1,10 +1,9 @@
 #' Format parameter table
 #'
-#' @description
-#'
 #' Format parameter estimate values and output selected columns to be shown in
 #' the parameter table.
 #'
+#' @details
 #' There are four main steps of this function:
 #'
 #' 1. When necessary, back transform parameters and their CIs, round parameters
@@ -29,9 +28,8 @@
 #'
 #' 4. Select columns for final tables.
 #'
-#' @param .df parameter estimates output from
-#'   \code{\link[pmparams]{define_param_table}} with modifications ready for
-#'   formatting.
+#' @param .df parameter estimates output from [define_param_table()] with
+#'   modifications ready for formatting.
 #' @param .cleanup_cols logical (T/F). Defaults to `TRUE`, which selects the
 #'   following columns:
 #'   - `"type"`, `"abb"`, `"greek"`, `"desc"`, `"value"`, `"ci"`, `"shrinkage"`.

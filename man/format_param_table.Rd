@@ -14,9 +14,8 @@ format_param_table(
 )
 }
 \arguments{
-\item{.df}{parameter estimates output from
-\code{\link[pmparams]{define_param_table}} with modifications ready for
-formatting.}
+\item{.df}{parameter estimates output from \code{\link[=define_param_table]{define_param_table()}} with
+modifications ready for formatting.}
 
 \item{.cleanup_cols}{logical (T/F). Defaults to \code{TRUE}, which selects the
 following columns:
@@ -38,7 +37,8 @@ to select for output. To return all columns, specify \code{"all"}.}
 \description{
 Format parameter estimate values and output selected columns to be shown in
 the parameter table.
-
+}
+\details{
 There are four main steps of this function:
 \enumerate{
 \item When necessary, back transform parameters and their CIs, round parameters

@@ -7,7 +7,8 @@
 formatValuesBoot(.boot_df, .digit, .maxex)
 }
 \arguments{
-\item{.boot_df}{parameter estimates output from \code{\link[pmparams]{define_boot_table}} with modifications ready for formatting}
+\item{.boot_df}{parameter estimates output from \code{\link[=define_boot_table]{define_boot_table()}} with
+modifications ready for formatting}
 
 \item{.digit}{set significant digits for output (optional). Default is three digits}
 
