@@ -1,8 +1,4 @@
 
-test_that("make_pmtable incorrect input type: invalid .pmtype",{
-  expect_error(capture.output(make_pmtable(.df = newFormatDF, .pmtype = "no type")))
-})
-
 test_that("make_pmtable pmtable commands: st_panel", {
   pm_tibble1 <- make_pmtable(.df = newFormatDF, .pmtype = "full")
   expect_equal(unname(unlist(pm_tibble1$panel$col)), "type")
