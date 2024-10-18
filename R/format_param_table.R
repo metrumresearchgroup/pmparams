@@ -96,29 +96,29 @@ format_param_table <- function(
     .cleanup_cols <- FALSE
     # Check for deprecated ci column specification
     if (any(tolower(.select_cols) == "ci")) {
-      # TODO: test this
+      # TODO: make sure this is tested
       message(glue::glue("`ci` is no longer a valid column name. pmparams will select {.ci_final_nam}"))
       .select_cols[.select_cols == "ci"] <- .ci_final_nam
-      # .select_cols <- gsub("ci", {{.ci_final_nam}}, .select_cols, fixed = TRUE)
     }
+    if (any(tolower(.select_cols) == "all")) .select_cols <- names(.df_out)
     # Check for specified columns
-    if (!(.select_cols %in% names(.df_out))){
+    if (!all(.select_cols %in% names(.df_out))){
       cols_missing <- setdiff(.select_cols, names(.df_out))
       cols_missing <- paste(cols_missing, collapse = ", ")
       stop(paste("The following specified columns were not found:", cols_missing))
     }
   } else {
-    # Used when .cleanup_cols = TRUE
-    .select_cols <- c("type", "abb", "greek", "desc", "value", "shrinkage", .ci_final_nam)
+    if (isTRUE(.cleanup_cols)) {
+      .select_cols <- c("type", "abb", "greek", "desc", "value", "shrinkage", .ci_final_nam)
+    } else {
+      .select_cols <- names(.df_out)
+    }
   }
 
   # Append pRES column if used
   if (isTRUE(.prse)) .select_cols <- append(.select_cols, "pRSE")
 
-  select_everything <- isFALSE(.cleanup_cols) || any(tolower(.select_cols) == "all")
-  if (isFALSE(select_everything)) {
-    .df_out <- .df_out %>% dplyr::select(tidyselect::all_of(.select_cols))
-  }
+  .df_out <- .df_out %>% dplyr::select(tidyselect::all_of(.select_cols))
 
   return(.df_out)
 }

@@ -62,22 +62,24 @@ format_boot_table <- function(
   if (!is.null(.select_cols)){
     message("`.select_cols` is deprecated and included for backwards compatibility. Using this sets `.cleanup_cols = FALSE`")
     .cleanup_cols <- FALSE
+    if (any(tolower(.select_cols) == "all")) .select_cols <- names(.df_out)
     # Check for specified columns
-    if (!(.select_cols %in% names(.df_out))){
+    if (!all(.select_cols %in% names(.df_out))){
       cols_missing <- setdiff(.select_cols, names(.df_out))
       cols_missing <- paste(cols_missing, collapse = ", ")
       stop(paste("The following specified columns were not found:", cols_missing))
     }
   } else {
     # Used when .cleanup_cols = TRUE
-    ci_cols <- names(.df_out)[grepl("^perc_", names(.df_out))]
-    .select_cols <- c("abb", "desc", ci_cols)
+    if (isTRUE(.cleanup_cols)) {
+      ci_cols <- names(.df_out)[grepl("^perc_", names(.df_out))]
+      .select_cols <- c("abb", "desc", ci_cols)
+    } else {
+      .select_cols <- names(.df_out)
+    }
   }
 
-  select_everything <- isFALSE(.cleanup_cols) || any(tolower(.select_cols) == "all")
-  if (isFALSE(select_everything)) {
-    .df_out <- .df_out %>% dplyr::select(tidyselect::all_of(.select_cols))
-  }
+  .df_out <- .df_out %>% dplyr::select(tidyselect::all_of(.select_cols))
 
   # Format and group bootstrap `perc_[x]` columns
   .df_final <- format_boot_cols(.df_out)
@@ -126,6 +128,8 @@ format_boot_cols <- function(.df){
 
     new_columns <- c(new_columns, names(new_ci_cols))
     .df <- dplyr::bind_cols(.df, new_ci_cols)
+  } else {
+    paired_indices <- numeric(0)
   }
 
   # Find & handle remaining columns that are not paired to a CI (e.g., median)
