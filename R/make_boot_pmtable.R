@@ -125,7 +125,7 @@ make_boot_pmtable <- function(
         dplyr::select(-desc) %>%
         pmtables::st_new() %>%
         pmtables::st_panel("type") %>%
-        pmtables::st_blank("abb", "greek", "desc") %>%
+        pmtables::st_blank("abb", "greek") %>%
         pmtables::st_span("Final model", value:shrinkage) %>%
         pmtables::st_span("Non-parametric bootstrap", {{boot_names}})
     }

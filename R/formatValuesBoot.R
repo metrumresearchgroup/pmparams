@@ -3,6 +3,7 @@
 #' @note This function currently only rounds percent columns
 #'
 #' @inheritParams format_boot_table
+#' @importFrom tidyselect all_of
 #' @keywords internal
 formatValuesBoot <- function(.boot_df,
                              .digit,
@@ -13,7 +14,7 @@ formatValuesBoot <- function(.boot_df,
   # Round percent columns
   .boot_df <- .boot_df %>%
     dplyr::mutate(
-      dplyr::across(perc_nam,  ~pmtables::sig(., .digit, .maxex))
+      dplyr::across(all_of(perc_nam),  ~pmtables::sig(., .digit, .maxex))
     )
   return(.boot_df)
 }

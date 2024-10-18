@@ -92,7 +92,7 @@ make_pmtable <- function(
         dplyr::select(-desc) %>%
         pmtables::st_new() %>%
         pmtables::st_panel("type") %>%
-        pmtables::st_blank("abb", "greek", "desc")
+        pmtables::st_blank("abb", "greek")
     }
 
   pm_tab2 <- pm_tab1 %>%
