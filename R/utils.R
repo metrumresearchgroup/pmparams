@@ -27,13 +27,16 @@ version_above <- function(pkg, version){
   return(above)
 }
 
-#' Skip tests if missing suggested packages
+#' Skip tests if missing _suggested_ packages.
 #' @examples
 #' \dontrun{
 #'  skip_if_missing_deps("bbr")
 #'
 #'  # Provide version requirement
 #'  skip_if_missing_deps("bbr", "1.11.0")
+#'
+#'  # Multiple packages/versions
+#'  skip_if_missing_deps(c("bbr", "withr"), c("1.11.0", "3.0.1"))
 #' }
 #' @noRd
 skip_if_missing_deps <- function(pkgs = "bbr", vers = NULL) {
