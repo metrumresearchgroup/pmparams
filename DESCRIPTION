@@ -34,7 +34,7 @@ Imports:
     pmtables,
     rlang,
     stringr,
-    glue,
+    glue (< 1.8.0),
     logitnorm,
     purrr,
     tibble,
