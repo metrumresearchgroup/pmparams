@@ -142,16 +142,13 @@ We use `pmtables` to make formatted table:
 footnote <- param_notes(.ci = 95)
 
 # Render table
-boot_df %>% mutate(
-  ci_95 = paste(`perc_97.5`, ",", `perc_2.5`)
-) %>%
-  select(-c("perc_2.5", "perc_97.5")) %>%
+boot_df %>%
   st_new() %>% 
   st_panel("desc") %>% 
-  st_span("Non-parametric bootstrap", c("perc_50", "ci_95")) %>%
+  st_span("Non-parametric bootstrap", c("boot_median", "boot_ci_95")) %>%
   st_rename(
-    Median = perc_50,
-    "95\\%CI" = ci_95,
+    Median = boot_median,
+    "95\\% CI" = boot_ci_95,
     " "= abb
   ) %>% 
   # abbreviations
@@ -234,7 +231,7 @@ make_boot_pmtable(.df = boot_param_df, .pmtype = "fixed") %>%
 
 ```{r, eval = eval_bbr_chunks, fig.align='center'}
 ##  RANDOM EFFECTS table ----------------------------
-make_boot_pmtable(.df = boot_param_df, .pmtype = "random", .show_desc = FALSE) %>% 
+make_boot_pmtable(.df = boot_param_df, .pmtype = "random") %>% 
   st_center(desc = col_ragged(5.5), abb = "l") %>% 
   st_notes(param_notes()$ci) %>%                   # add abbreviations
   st_notes_str() %>%                               # collapse all abbreviations to a string                        

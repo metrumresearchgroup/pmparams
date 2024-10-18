@@ -70,7 +70,7 @@ paramKey <-  file.path(model_dir, "pk-parameter-key-new.yaml")
 
 # Using output from `define_param_table` (param_df),
 mod <- bbr::read_model(file.path(model_dir, "106"))
-define_param_table(
+param_df <- define_param_table(
  .estimates = mod,
  .key = paramKey,
  .ci = 95,

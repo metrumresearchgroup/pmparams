@@ -79,7 +79,7 @@ format_boot_table <- function(
     }
   }
 
-  .df_out <- .df_out %>% dplyr::select(tidyselect::all_of(.select_cols))
+  .df_out <- .df_out %>% dplyr::select(all_of(.select_cols))
 
   # Format and group bootstrap `perc_[x]` columns
   .df_final <- format_boot_cols(.df_out)

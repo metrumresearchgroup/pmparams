@@ -48,7 +48,7 @@
 #'
 #' # Using output from `define_param_table` (param_df),
 #' mod <- bbr::read_model(file.path(model_dir, "106"))
-#' define_param_table(
+#' param_df <- define_param_table(
 #'  .estimates = mod,
 #'  .key = paramKey,
 #'  .ci = 95,
@@ -58,6 +58,7 @@
 #'
 #' # To include all columns:
 #' format_param_table(param_df, .cleanup_cols = FALSE)
+#' @importFrom tidyselect any_of any_of
 #' @export
 format_param_table <- function(
     .df,
@@ -88,7 +89,7 @@ format_param_table <- function(
 
   # Make ci column `ci_[ci_level]` (e.g., ci_95), instead of 'ci' and 'ci_level'
   .df_out[[paste0("ci_", .ci_level)]] <-  .df_out$ci
-  .df_out <- .df_out %>% dplyr::select(-tidyselect::any_of(c("ci", "ci_level")))
+  .df_out <- .df_out %>% dplyr::select(-any_of(c("ci", "ci_level")))
 
   # Handle deprecated .select_cols arg, or define it below
   if (!is.null(.select_cols)){
@@ -118,7 +119,7 @@ format_param_table <- function(
   # Append pRES column if used
   if (isTRUE(.prse)) .select_cols <- append(.select_cols, "pRSE")
 
-  .df_out <- .df_out %>% dplyr::select(tidyselect::all_of(.select_cols))
+  .df_out <- .df_out %>% dplyr::select(all_of(.select_cols))
 
   return(.df_out)
 }

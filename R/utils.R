@@ -22,7 +22,7 @@ check_for_suggested_pkgs <- function(pkgs = "bbr") {
 #' }
 #' @noRd
 version_above <- function(pkg, version){
-  above <- packageVersion(pkg) >= package_version(version)
+  above <- utils::packageVersion(pkg) >= package_version(version)
   above <- stats::setNames(above, paste(pkg, version))
   return(above)
 }
