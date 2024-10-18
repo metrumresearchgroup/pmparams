@@ -17,7 +17,7 @@ Generate data frame of generic footnote equations to append to parameter tables.
 \examples{
 #Using output from `format_param_table` (defineOut),
 library(dplyr)
-paramEst <- utils::read.csv(system.file("model/nonmem/param_est.csv", package = "pmparams"))
+paramEst <- utils::read.csv(system.file("model/nonmem/param_est_102.csv", package = "pmparams"))
 paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
 defineOut <- define_param_table(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
 data <- format_param_table(.df = defineOut)

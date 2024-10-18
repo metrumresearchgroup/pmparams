@@ -31,9 +31,13 @@ paramKey_path <-  file.path(model_dir, "pk-parameter-key-new.yaml")
 paramKeyBoth_path <-  file.path(model_dir, "pk-parameter-key-both.yaml")
 param_yaml <- yaml::yaml.load_file(paramKey_path)
 
+# bbr objects
+MOD <- bbr::read_model(file.path(model_dir, "106"))
+BOOT_RUN <- bbr::read_model(file.path(model_dir, "106-boot"))
+
 # Data for testing param table (no bootstrap)
 paramPath <- file.path(model_dir, "102")
-paramEst <- readr::read_csv(file.path(model_dir, "param_est.csv"))
+paramEst <- readr::read_csv(file.path(model_dir, "param_est_102.csv"))
 paramModel <- bbr::read_model(paramPath)
 
 newDF <- define_param_table(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
@@ -44,7 +48,7 @@ newFormatDFprse  <- format_param_table(newDF, .prse = T)
 boot_paramEstPath <- file.path(model_dir, "boot/data/boot-106.csv")
 boot_paramEst <- readr::read_csv(boot_paramEstPath)
 
-nonboot_paramEst <- readr::read_csv(file.path(model_dir, "nonboot_param_est.csv"))
+nonboot_paramEst <- model_summary(mod) %>% param_estimates()
 
 newbootDF <- pmparams::define_boot_table(.boot_estimates =boot_paramEst, .key = paramKey)
 formatBootDF <- pmparams::format_boot_table(.boot_df = newbootDF, .cleanup_cols =  T)
@@ -69,6 +73,4 @@ theta_err <- paramEst %>%  mutate(
 theta_err_key = paramKey %>% mutate(name = if_else(name == "SIGMA11", "THETA11", name))
 theta_err_df1 <- define_param_table(.estimates = theta_err, .key = theta_err_key, .ci = 95, .zscore = NULL)
 
-# bbr objects
-MOD <- bbr::read_model(file.path(model_dir, "106"))
-BOOT_RUN <- bbr::read_model(file.path(model_dir, "106-boot"))
+
