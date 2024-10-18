@@ -7,8 +7,8 @@ withr::with_options(list(bbr.bbi_exe_path = bbr::read_bbi_path()), {
   test_that("define_boot_table expected output: generates logical columns to indicate parameter type", {
     expect_equal(newbootDF$TH[newbootDF$parameter_names == "THETA1"], TRUE)
     expect_equal(newbootDF$OM[newbootDF$parameter_names == "THETA1"], FALSE)
-    expect_equal(newbootDF$OM[newbootDF$parameter_names == "OMEGA.1.1."], TRUE)
-    expect_equal(newbootDF$S[newbootDF$parameter_names == "SIGMA.1.1."], TRUE)
+    expect_equal(newbootDF$OM[newbootDF$parameter_names == "OMEGA(1,1)"], TRUE)
+    expect_equal(newbootDF$S[newbootDF$parameter_names == "SIGMA(1,1)"], TRUE)
     expect_equal(newbootDF$S[newbootDF$parameter_names == "THETA1"], FALSE)
   })
 
@@ -27,107 +27,93 @@ withr::with_options(list(bbr.bbi_exe_path = bbr::read_bbi_path()), {
                   newbootDF$propErr[newbootDF$name == "SIGMA11"] == TRUE)
   })
 
-  # #TODO: should this be giving error? Drop test?
-  # test_that("define_boot_table incorrect input type: no parameter_names column",{
-  #   boot_paramEst2 <- boot_paramEst
-  #   colnames(boot_paramEst2)[colnames(boot_paramEst2) == "run"] ="no_name"
-  #   expect_error(capture.output(define_boot_table(boot_paramEst2, paramKey)))
-  # })
 
   test_that("define_boot_table incorrect input type: missing column(s)",{
-    paramKey2 <- as.data.frame(paramKey)
-    colnames(paramKey2)[colnames(paramKey2) == "panel"] ="no_name"
-    expect_error(capture.output(define_boot_table(paramEst, paramKey2)))
-  })
-
-  test_that("define_boot_table handles multiple estimate input types", {
-    pathnewbootDF <-define_boot_table(.boot_estimates =boot_paramEst, .key = paramKey)
-    expect_equal(pathnewbootDF$value[pathnewbootDF$name == "OMEGA22"], 0.0821058)
-
-    mod_est <- bbr::read_model(system.file("model/nonmem/106", package = "pmparams"))
-    pathDF2 <- define_boot_table(.boot_estimates = boot_paramEstPath, .key = paramKey)
-    expect_equal(pathDF2$value[pathDF2$name == "OMEGA22"], 0.0821058)
-
-    pathDF3 <- define_boot_table(.boot_estimates =boot_paramEst, .key = paramKey)
-    expect_equal(pathDF3$value[pathDF3$name == "OMEGA22"], 0.0821058)
-
-  })
-
-  test_that("define_boot_table handles multiple parameter key input types", {
-    pathDF <- define_boot_table(.boot_estimates =boot_paramEst,
-                                .key = system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams"))
-    expect_equal(pathDF$value[pathDF$name == "OMEGA22"],  0.0821058)
-  })
-
-  test_that("define_boot_table handles multiple parameter key input types", {
-    key_file <- system.file("model/nonmem/pk-parameter-key.yaml", package = "pmparams")
-    key_df <- pmtables::yaml_as_df(key_file)
-    pathDF <- define_boot_table(.boot_estimates =boot_paramEst,
-                                .key = key_df)
-    expect_equal(pathDF$value[pathDF$name == "OMEGA22"], 0.0821058)
-  })
-
-  test_that("define_boot_table incorrect parameter key input type: Only abb, desc, panel and trans arguments will be used, all others ignored", {
-    expect_warning(capture.output(define_boot_table(.boot_estimates =boot_paramEst,
-                                                    .key = system.file("model/nonmem/pk-parameter-key-both.yaml", package = "pmparams"))))
-  })
-
-  test_that("define_boot_table generates the confidence intervals for various inputs", {
-    newbootDF <-define_boot_table(.boot_estimates =boot_paramEst,
-                                  .key = paramKey)
-    expect_equal(newbootDF$lower_perc2.5[1], 1.3880675)
-    expect_equal(newbootDF$upper_perc97.5[2], 65.053174)
-  })
-
-  test_that("define_boot_table error message if .ci not 90 or 95", {
-    expect_error(capture.output(define_boot_table(.boot_estimates =boot_paramEst,
-                                                  .key = paramKey, .ci =63)))
-  })
-
-  test_that("define_boot_table generates iqr", {
-    newbootDF <-define_boot_table(.boot_estimates =boot_paramEst,
-                                  .ci = "iqr",
-                                  .key = paramKey)
-    expect_equal(newbootDF$lower_perc25[1], 1.50140037)
-    expect_equal(newbootDF$upper_perc75[2], 62.717938)
-  })
-
-  test_that("define_boot_table: if ci and percentile supplied, choose ci", {
-    newbootDF <-define_boot_table(.boot_estimates =boot_paramEst,
-                                  .ci = "iqr",
-                                  .percentiles = c(0.2, 0.6),
-                                  .key = paramKey)
-    expect_equal(newbootDF$lower_perc25[1], 1.50140037)
-    expect_equal(newbootDF$upper_perc75[2], 62.717938)
-  })
-
-  test_that("define_boot_table: 3 percentiles get renamed lower, value, upper", {
-    newbootDF <-define_boot_table(.boot_estimates =boot_paramEst,
-                                  .percentiles = c(0.2, 0.6, 0.11),
-                                  .key = paramKey)
-    expect_equal(newbootDF$lower_perc11[1], 1.44644391)
-    expect_equal(newbootDF$upper_perc60[2], 61.966381)
-    expect_equal(newbootDF$value_perc20[2], 60.19131)
-  })
-
-  test_that("define_boot_table: greater than 3 percentiles, ouput as percX", {
-    newbootDF <-define_boot_table(.boot_estimates =boot_paramEst,
-                                  .percentiles = c(0.2, 0.6, 0.11, 0.99),
-                                  .key = paramKey)
-    expect_equal(names(newbootDF)[grepl("perc", names(newbootDF))],
-                 c("perc11", "perc20", "perc60", "perc99")
+    paramKey2 <- paramKey
+    names(paramKey2)[names(paramKey2) == "panel"] ="no_name"
+    expect_error(
+      define_boot_table(boot_paramEstPath, paramKey2),
+      "The following required columns are missing: panel"
     )
   })
 
-  test_that("define_boot_table warning message if provided .nonboot_estimate argument", {
-    expect_message(capture.output(define_boot_table(.boot_estimates =boot_paramEst,
-                                                  .nonboot_estimates = nonboot_paramEst,
-                                                  .key = paramKey)))
+  test_that("define_boot_table handles multiple estimate input types", {
+    # Test file path
+    boot_df1 <- define_boot_table(boot_paramEstPath, .key = paramKey)
+    expect_equal(boot_df1$perc_50[boot_df1$name == "OMEGA22"], 0.0821058)
+
+    # Test read-in dataframe
+    boot_df2 <- define_boot_table(boot_paramEst, .key = paramKey)
+    expect_equal(boot_df2$perc_50[boot_df2$name == "OMEGA22"], 0.0821058)
+
+    # Test with bbr
+    skip_if_missing_deps("bbr", "1.11.0")
+    boot_df3 <- define_boot_table(
+      bbr::bootstrap_estimates(BOOT_RUN), .key = paramKey
+    )
+    expect_equal(boot_df3$perc_50[boot_df3$name == "OMEGA22"], 0.08158385)
   })
 
+  test_that("define_boot_table handles multiple parameter key input types", {
+    # Key is a file path
+    boot_df <- define_boot_table(boot_paramEst, .key = paramKey_path)
+    expect_equal(boot_df$perc_50[boot_df$name == "OMEGA22"],  0.0821058)
+
+    # Key is a data frame (row_var must be 'name')
+    key <- pmtables::yaml_as_df(paramKey_path, row_var = "name")
+    boot_df <- define_boot_table(boot_paramEst, .key = key)
+    expect_equal(boot_df$perc_50[boot_df$name == "OMEGA22"], 0.0821058)
+  })
+
+
+  test_that("define_boot_table incorrect parameter key input type", {
+    # TODO: There should be a loadParamKey test file that tests this, rather
+    # than having it here and in define_param_table
+    expect_warning(
+      define_boot_table(boot_paramEst, paramKeyBoth_path),
+      "Only abb, desc, panel and trans arguments will be used"
+    )
+  })
+
+  test_that("define_boot_table generates the confidence intervals for various inputs", {
+    boot_df <- define_boot_table(boot_paramEst, .key = paramKey)
+    expect_equal(boot_df$perc_2.5[1], 1.3880675)
+    expect_equal(boot_df$perc_97.5[2], 65.053174)
+  })
+
+
+  test_that("define_boot_table works with iqr", {
+    boot_df <- define_boot_table(
+      boot_paramEst, .key = paramKey, .ci = "iqr"
+    )
+    # This also confirms the correct percent names were chosen
+    expect_equal(boot_df$perc_25[1], 1.50140037)
+    expect_equal(boot_df$perc_75[2], 62.717938)
+  })
+
+  test_that("define_boot_table: if ci and percentile supplied, choose percentiles", {
+    # Note that .ci has a default (95), and .percentiles defaults to NULL
+    boot_df <- define_boot_table(
+      boot_paramEst, .key = paramKey, .ci = "iqr", .percentiles = c(0.2, 0.6)
+    )
+    expect_equal(boot_df$perc_20[1], 1.4835063)
+    expect_equal(boot_df$perc_60[2], 61.966381)
+  })
+
+  test_that("define_boot_table: 3 percentiles get renamed lower, value, upper", {
+    boot_df <- define_boot_table(
+      boot_paramEst, .key = paramKey, .percentiles = c(0.2, 0.6, 0.11)
+    )
+    perc_names <- boot_df %>% select(starts_with("perc_")) %>% names()
+    expect_equal(perc_names, c("perc_11", "perc_20", "perc_60"))
+  })
+
+
   test_that("define_boot_table error message if .percentile is not numeric list", {
-    expect_error(capture.output(define_boot_table(.boot_estimates =boot_paramEst,
-                                                  .key = paramKey, .percentiles = c(0.26, "0.55"))))
+    expect_error(
+      define_boot_table(boot_paramEst, .key = paramKey, .percentiles = c("0.26", "0.55")),
+      "Must be of type 'numeric'"
+    )
   })
 
   #TODO:

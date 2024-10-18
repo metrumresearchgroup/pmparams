@@ -45,7 +45,7 @@ jobs:
           extra-packages: |
             any::pkgdown
             any::rcmdcheck
-
+            github::tidyverse/glue@v1.7.0
           upgrade: 'TRUE'
       - uses: r-lib/actions/check-r-package@v2
       - name: Check pkgdown
@@ -73,5 +73,7 @@ jobs:
           extra-repositories: 'https://mpn.metworx.com/snapshots/stable/${{ env.MPN_LATEST }}'
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::pkgpub
+          extra-packages: |
+            any::pkgpub
+            github::tidyverse/glue@v1.7.0
       - uses: metrumresearchgroup/actions/publish-r-release@v1

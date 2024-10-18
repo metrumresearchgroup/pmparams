@@ -19,8 +19,8 @@
 #'* the parameter table
 #'* [make_pmtable()]: generates specific parameter tables by filtering and using `pmtables`
 #'
-#' @importFrom magrittr %>%
 #' @importFrom rlang .data :=
+#' @importFrom pmtables st_image_show
 #'
 #' @keywords internal
 globalVariables(
