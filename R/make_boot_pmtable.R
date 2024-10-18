@@ -27,6 +27,7 @@
 #' - `"random"` (all rows with greek = "Omega" or type = "Resid").
 #' @param .width notes width. Defaults to 1.
 #'
+#' @seealso [make_pmtable()]
 #' @examples
 #'
 #' \dontrun{
@@ -54,6 +55,7 @@
 #' # Fixed effects table
 #' make_boot_pmtable(.df = combine_df, .pmtype = "fixed") %>%
 #'  pmtables::stable() %>%
+#'  # preview in Rstudio viewer (requires `magick` and `pdftools`)
 #'  pmtables::st_as_image(border = "0.8cm 0.7cm")
 #'
 #'

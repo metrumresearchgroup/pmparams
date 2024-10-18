@@ -75,6 +75,7 @@ combine_df <- left_join(param_df, boot_df)
 # Fixed effects table
 make_boot_pmtable(.df = combine_df, .pmtype = "fixed") \%>\%
  pmtables::stable() \%>\%
+ # preview in Rstudio viewer (requires `magick` and `pdftools`)
  pmtables::st_as_image(border = "0.8cm 0.7cm")
 
 
@@ -83,4 +84,7 @@ make_boot_pmtable(.df = combine_df, .pmtype = "random") \%>\%
  pmtables::stable() \%>\%
  pmtables::st_as_image(border = "0.8cm 0.7cm")
 }
+}
+\seealso{
+\code{\link[=make_pmtable]{make_pmtable()}}
 }

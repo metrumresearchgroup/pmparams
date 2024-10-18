@@ -41,11 +41,16 @@
 #'  .key = paramKey
 #' ) %>% format_param_table()
 #'
+#' \dontrun{
+#'
 #' # Create random effects table that can be rendered to latex
 #' make_pmtable(param_df, .pmtype = "random") %>%
 #'  pmtables::stable() %>%
-#'  pmtables::st_as_image() # preview in Rstudio viewer
+#'  # preview in Rstudio viewer (requires `magick` and `pdftools`)
+#'  pmtables::st_as_image()
+#'}
 #'
+#' @seealso [make_boot_pmtable()]
 #' @export
 make_pmtable <- function(
     .df,
