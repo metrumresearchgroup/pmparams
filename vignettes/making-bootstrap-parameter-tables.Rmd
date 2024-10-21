@@ -23,6 +23,11 @@ devtools::load_all()
 # - used for CI
 bbr_installed <- is.null(check_for_suggested_pkgs("bbr"))
 eval_bbr_chunks <- bbr_installed && version_above("bbr", "1.11.0")
+
+# CI has issues running st_as_image and stable_save_image
+# - Only build this vignette via pkgdown or when rendering manually (must be on metworx)
+render_tables <- (Sys.getenv("METWORX_VERSION") != "")
+render_bbr_tables <- render_tables && eval_bbr_chunks
 ```
 
 # Introduction
@@ -137,7 +142,7 @@ head(boot_df)
 # Make a simple bootstrap parameter table
 
 Below is a simple display of the bootstrap confidence intervals using well known `pmtables` functions. As we'll see a little later, we can use `make_boot_pmtable()` to make a much nicer table.
-```{r}
+```{r, eval = render_tables}
 # Grab footnotes
 footnote <- param_notes(.ci = 95)
 
@@ -160,8 +165,8 @@ tab <- boot_df %>%
 tab_out <- stable_save_image(tab, format = "png")
 ```
 
-```{r, fig.align='center'}
-st_image_show(tab_out, width = 0.4)
+```{r, eval = render_tables, fig.align='center'}
+st_image_show(tab_out, width = 0.5)
 ```
 
 
@@ -187,21 +192,26 @@ head(boot_param_df)
 ```
 
 
-```{r, eval = eval_bbr_chunks, fig.align='center'}
+```{r, eval = eval_bbr_chunks}
 # Define footnote
 footBoot <- glue::glue("CI were determined from the 2.5th and 97.5th percentiles 
                 of the non-parametric bootstrap estimates (n ={nrow(read.csv(boot_ests_path))}).")
 
 # Render table
-make_boot_pmtable(.df = boot_param_df, .pmtype = "fixed") %>%
+tab <- make_boot_pmtable(.df = boot_param_df, .pmtype = "fixed") %>%
   st_center(desc = col_ragged(5.5), abb = "l") %>% 
   st_notes(param_notes()$ci) %>%                   # add abbreviations
   st_notes_str() %>%                               # collapse all abbreviations to a string                        
   st_notes(param_notes()$logTrans, footBoot) %>%   # customize other notes
   st_notes_detach(width = 1) %>% 
   st_files(output = "final-param-fixed-boot.tex") %>%
-  stable() %>% 
-  st_as_image(width = 0.4, border = "0.2cm 0.7cm")
+  stable(output_file = "deliv/mod106-boot-95-ci-fixed.tex")
+
+tab_out <- stable_save_image(tab, format = "png")
+```
+
+```{r, eval = render_bbr_tables, fig.align='center'}
+st_image_show(tab_out, width = 0.5)
 ```
 
 
@@ -217,31 +227,41 @@ boot_df <- define_boot_table(
 
 
 boot_param_df <- left_join(param_df, boot_df, by = c("abb", "desc"))
-head(boot_param_df)
 ```
 
-```{r, eval = eval_bbr_chunks, fig.align='center'}
+```{r, eval = eval_bbr_chunks}
 ##  FIXED EFFECTS table ----------------------------
-make_boot_pmtable(.df = boot_param_df, .pmtype = "fixed") %>% 
+tab <- make_boot_pmtable(.df = boot_param_df, .pmtype = "fixed") %>% 
   st_center(desc = col_ragged(5.5), abb = "l") %>% 
   st_notes(param_notes()$ci) %>%                   # add abbreviations
   st_notes_str() %>%                               # collapse all abbreviations to a string                        
   st_notes(param_notes()$logTrans) %>%   # customize other notes
   st_notes_detach(width = 1) %>% 
   st_files(output = "final-param-fixed-boot-multi-ci.tex") %>% 
-  stable() %>% 
-  st_as_image(width = 0.4, border = "0.2cm 0.7cm 5.2cm 0.7cm")
+  stable(output_file = "deliv/mod106-boot-95-90-ci-25-perc-fixed.tex")
+
+tab_out <- stable_save_image(tab, format = "png")
 ```
 
-```{r, eval = eval_bbr_chunks, fig.align='center'}
+```{r, eval = render_bbr_tables, fig.align='center'}
+st_image_show(tab_out, width = 0.5)
+```
+
+```{r, eval = eval_bbr_chunks}
 ##  RANDOM EFFECTS table ----------------------------
-make_boot_pmtable(.df = boot_param_df, .pmtype = "random") %>% 
+tab <- make_boot_pmtable(.df = boot_param_df, .pmtype = "random") %>% 
   st_center(desc = col_ragged(5.5), abb = "l") %>% 
   st_notes(param_notes()$ci) %>%                   # add abbreviations
   st_notes_str() %>%                               # collapse all abbreviations to a string                        
   st_notes(param_notes()$logTrans) %>%   # customize other notes
   st_notes_detach(width = 1) %>% 
   st_files(output = "final-param-random-boot-multi-ci.tex") %>% 
-  stable() %>% 
-  st_as_image(width = 0.4, border = "0.2cm 0.7cm 3.2cm 0.7cm")
+  stable(output_file = "deliv/mod106-boot-95-90-ci-25-perc-random.tex")
+
+tab_out <- stable_save_image(tab, format = "png")
 ```
+
+```{r, eval = render_bbr_tables, fig.align='center'}
+st_image_show(tab_out, width = 0.5)
+```
+
