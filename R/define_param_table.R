@@ -51,12 +51,14 @@
 #' paramKey <-  file.path(model_dir, "pk-parameter-key-new.yaml")
 #'
 #' # Using a `bbr` model
+#' \dontrun{
 #' mod <- bbr::read_model(file.path(model_dir, "106"))
 #' define_param_table(
 #'  .estimates = mod,
 #'  .key = paramKey,
 #'  .ci = 95,
 #' )
+#' }
 #'
 #' # Using a file path
 #' param_est_path <- file.path(model_dir, "param_est_102.csv")
