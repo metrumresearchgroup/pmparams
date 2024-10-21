@@ -136,13 +136,13 @@ head(boot_df)
 
 # Make a simple bootstrap parameter table
 
-We use `pmtables` to make formatted table:
-```{r, fig.align='center'}
+Below is a simple display of the bootstrap confidence intervals using well known `pmtables` functions. As we'll see a little later, we can use `make_boot_pmtable()` to make a much nicer table.
+```{r}
 # Grab footnotes
 footnote <- param_notes(.ci = 95)
 
 # Render table
-boot_df %>%
+tab <- boot_df %>%
   st_new() %>% 
   st_panel("desc") %>% 
   st_span("Non-parametric bootstrap", c("boot_median", "boot_ci_95")) %>%
@@ -155,10 +155,14 @@ boot_df %>%
   st_notes(footnote$ci) %>% 
   # equations
   st_notes(footnote$ciEq) %>%
-  stable() %>% 
-  st_as_image(width = 0.4)
+  stable(output_file = "deliv/simple-boot.tex")
+
+tab_out <- stable_save_image(tab, format = "png")
 ```
 
+```{r, fig.align='center'}
+st_image_show(tab_out, width = 0.4)
+```
 
 
 # Combine bootstrap and original model parameter estimates
