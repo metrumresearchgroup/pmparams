@@ -52,3 +52,26 @@ test_that("make_boot_pmtable correctly filters with .pmtype", {
   expect_equal(5, nrow(pm_tibble7$data))
 })
 
+test_that("make_boot_pmtable: intervals and percentiles are appropriately grouped", {
+  # Test 2 groupings and 2 percentiles (one is median): 90% CI, 95% CI, median, 25%
+  percents <- c(0.025, 0.05, 0.5, 0.95, 0.975,  0.25)
+
+  boot_df1 <- define_boot_table(
+    boot_paramEst, .key = paramKey, .percentiles = percents
+  )
+  boot_df2 <- format_boot_table(boot_df1)
+
+  boot_complete1 <-  left_join(formatnonbootDF, boot_df2, by = c("abb", "desc"))
+  boot_complete2 <- make_boot_pmtable(.df = boot_complete1, .pmtype = "full")
+
+  # Preview if necessary
+  # boot_complete2 %>% pmtables::stable() %>%
+  #   pmtables::st_as_image(border = "0.2cm 0.7cm 7.6cm 0.7cm")
+
+  spanned_param_cols <- rlang::quo_get_expr(boot_complete2$span[[1]]$vars) %>% deparse()
+  expect_equal(spanned_param_cols, "value:shrinkage")
+
+  spanned_boot_cols <- rlang::eval_tidy(boot_complete2$span[[2]]$vars)
+  expect_equal(spanned_boot_cols, c("25\\%", "Median", "95\\% CI", "90\\% CI"))
+
+})
