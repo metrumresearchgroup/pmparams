@@ -9,7 +9,6 @@
 loadParamEstimates <- function(.estimates){
 
 if (inherits(.estimates, "character")){
-  print(paste0("Model path provided: ", .estimates))
   .estimates <- bbr::read_model(.estimates)
 }
 

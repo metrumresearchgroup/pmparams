@@ -6,10 +6,24 @@
 #'
 #' @keywords internal
 backTrans_log <- function(.df){
-  .df %>%
-    dplyr::mutate(
-      value = dplyr::case_when(LOG ~ exp(value), TRUE ~ value),
-      lower = dplyr::case_when(LOG ~ exp(lower), TRUE ~ lower),
-      upper = dplyr::case_when(LOG ~ exp(upper), TRUE ~ upper)
+
+  if (any(grepl("perc", names(.df)))){
+    .df %>%
+      dplyr::mutate_at(
+        dplyr::vars(dplyr::contains("perc")),
+        ~ dplyr::case_when(
+          LOG ~ exp(.),
+          TRUE ~ .
+        )
       )
+  } else {
+    .df %>%
+      dplyr::mutate_at(
+        dplyr::vars("value", "lower", "upper"),
+        ~ dplyr::case_when(
+          LOG ~ exp(.),
+          TRUE ~ .
+        )
+      )
+  }
 }
