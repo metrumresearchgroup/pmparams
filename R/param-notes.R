@@ -51,6 +51,7 @@ param_notes <- function(.ci = 95, .zscore = NULL){
     ci   = "CI: confidence intervals",
     corr = "Corr: correlation coefficient",
     cv   = "CV: coefficient of variation",
+    iqr = "IQR: interquartile range",
     rse = "RSE: relative standard error",
     se   = "SE: standard error",
     sd   = "SD: standard deviation",
