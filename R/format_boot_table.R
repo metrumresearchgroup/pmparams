@@ -37,9 +37,7 @@
 #' boot_df <- define_boot_table(
 #'  .boot_estimates = bbr::bootstrap_estimates(boot_run),
 #'  .key = paramKey
-#' )
-#'
-#' format_boot_table(boot_df)
+#' ) %>% format_boot_table()
 #' }
 #'
 #' @export

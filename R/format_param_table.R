@@ -46,10 +46,10 @@
 #' model_dir <- system.file("model/nonmem", package = "pmparams")
 #' paramKey <-  file.path(model_dir, "pk-parameter-key-new.yaml")
 #'
-#' # Using output from `define_param_table` (param_df),
-#' mod <- bbr::read_model(file.path(model_dir, "106"))
+#' # Using a file path:
+#' param_ests <- readr::read_csv(file.path(model_dir, "param_est_102.csv"))
 #' param_df <- define_param_table(
-#'  .estimates = mod,
+#'  .estimates = param_ests,
 #'  .key = paramKey,
 #'  .ci = 95,
 #' )
@@ -58,6 +58,17 @@
 #'
 #' # To include all columns:
 #' format_param_table(param_df, .cleanup_cols = FALSE)
+#'
+#' # Using a `bbr` model
+#' \dontrun{
+#' mod <- bbr::read_model(file.path(model_dir, "106"))
+#' param_df <- define_param_table(
+#'  .estimates = mod,
+#'  .key = paramKey,
+#'  .ci = 95,
+#' ) %>% format_param_table()
+#' }
+#'
 #' @importFrom tidyselect any_of any_of
 #' @export
 format_param_table <- function(

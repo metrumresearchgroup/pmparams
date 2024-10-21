@@ -50,16 +50,6 @@
 #' model_dir <- system.file("model/nonmem", package = "pmparams")
 #' paramKey <-  file.path(model_dir, "pk-parameter-key-new.yaml")
 #'
-#' # Using a `bbr` model
-#' \dontrun{
-#' mod <- bbr::read_model(file.path(model_dir, "106"))
-#' define_param_table(
-#'  .estimates = mod,
-#'  .key = paramKey,
-#'  .ci = 95,
-#' )
-#' }
-#'
 #' # Using a file path
 #' param_est_path <- file.path(model_dir, "param_est_102.csv")
 #' param_ests <- readr::read_csv(param_est_path)
@@ -76,6 +66,16 @@
 #'  .ci = 82,
 #'  .zscore = 0.915
 #' )
+#'
+#' # Using a `bbr` model
+#' \dontrun{
+#' mod <- bbr::read_model(file.path(model_dir, "106"))
+#' define_param_table(
+#'  .estimates = mod,
+#'  .key = paramKey,
+#'  .ci = 95,
+#' )
+#' }
 #'
 #' @seealso [param_key()], [define_boot_table()]
 #' @export
