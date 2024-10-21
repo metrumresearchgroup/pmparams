@@ -192,7 +192,7 @@ head(boot_param_df)
 ```
 
 
-```{r, eval = eval_bbr_chunks}
+```{r, eval = render_bbr_tables}
 # Define footnote
 footBoot <- glue::glue("CI were determined from the 2.5th and 97.5th percentiles 
                 of the non-parametric bootstrap estimates (n ={nrow(read.csv(boot_ests_path))}).")
@@ -229,7 +229,7 @@ boot_df <- define_boot_table(
 boot_param_df <- left_join(param_df, boot_df, by = c("abb", "desc"))
 ```
 
-```{r, eval = eval_bbr_chunks}
+```{r, eval = render_bbr_tables}
 ##  FIXED EFFECTS table ----------------------------
 tab <- make_boot_pmtable(.df = boot_param_df, .pmtype = "fixed") %>% 
   st_center(desc = col_ragged(5.5), abb = "l") %>% 
@@ -247,7 +247,7 @@ tab_out <- stable_save_image(tab, format = "png")
 st_image_show(tab_out, width = 0.5)
 ```
 
-```{r, eval = eval_bbr_chunks}
+```{r, eval = render_bbr_tables}
 ##  RANDOM EFFECTS table ----------------------------
 tab <- make_boot_pmtable(.df = boot_param_df, .pmtype = "random") %>% 
   st_center(desc = col_ragged(5.5), abb = "l") %>% 
