@@ -70,7 +70,7 @@ boot_df <- define_boot_table(
 ) \%>\% format_boot_table()
 
 # Combine parameter estimates with bootstrap estimates
-combine_df <- left_join(param_df, boot_df)
+combine_df <- dplyr::left_join(param_df, boot_df)
 
 # Fixed effects table
 make_boot_pmtable(.df = combine_df, .pmtype = "fixed") \%>\%

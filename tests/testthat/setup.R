@@ -48,7 +48,7 @@ newFormatDFprse  <- format_param_table(newDF, .prse = T)
 boot_paramEstPath <- file.path(model_dir, "boot/data/boot-106.csv")
 boot_paramEst <- readr::read_csv(boot_paramEstPath)
 
-nonboot_paramEst <- model_summary(mod) %>% param_estimates()
+nonboot_paramEst <- model_summary(MOD) %>% param_estimates()
 
 newbootDF <- pmparams::define_boot_table(.boot_estimates =boot_paramEst, .key = paramKey)
 formatBootDF <- pmparams::format_boot_table(.boot_df = newbootDF, .cleanup_cols =  T)

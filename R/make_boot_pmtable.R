@@ -50,7 +50,7 @@
 #' ) %>% format_boot_table()
 #'
 #' # Combine parameter estimates with bootstrap estimates
-#' combine_df <- left_join(param_df, boot_df)
+#' combine_df <- dplyr::left_join(param_df, boot_df)
 #'
 #' # Fixed effects table
 #' make_boot_pmtable(.df = combine_df, .pmtype = "fixed") %>%
@@ -152,7 +152,10 @@ rename_boot_cols <- function(.df) {
     dplyr::rename_with(
       .fn = function(rename_col) {
         rename_col %>%
+          # Specific renaming
           stringr::str_replace("boot_median", "Median") %>%
+          stringr::str_replace("boot_ci_iqr", "IQR") %>%
+          # Value renaming
           stringr::str_replace("boot_ci_(\\d+)", "\\1\\\\% CI") %>%
           stringr::str_replace("boot_perc_(\\d+)", "\\1\\\\%")
       },

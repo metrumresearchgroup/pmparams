@@ -114,7 +114,7 @@ format_boot_cols <- function(.df){
 
     lower_vals <- boot_values[paired_indices[seq(1, length(paired_indices), by = 2)]]
     upper_vals <- boot_values[paired_indices[seq(2, length(paired_indices), by = 2)]]
-    ci_names <- paste0("boot_ci_",upper_vals - lower_vals)
+    ci_names <- paste0("boot_ci_", upper_vals - lower_vals)
 
     # Add new CI columns to the dataframe
     new_ci_cols <- purrr::map2_dfc(
@@ -125,6 +125,13 @@ format_boot_cols <- function(.df){
         .y
       )
     )
+
+    # Substitute boot_ci_50 for boot_ci_iqr if present
+    # - That column can only originate from iqr (or .percentiles = c(0.25, 0.75))
+    # because they must be paired (add up to 100) _and_ the difference must be 50
+    if ("boot_ci_50" %in% names(new_ci_cols)){
+      new_ci_cols <- new_ci_cols %>% dplyr::rename("boot_ci_iqr" = "boot_ci_50")
+    }
 
     new_columns <- c(new_columns, names(new_ci_cols))
     .df <- dplyr::bind_cols(.df, new_ci_cols)

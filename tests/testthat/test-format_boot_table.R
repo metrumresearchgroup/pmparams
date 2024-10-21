@@ -14,7 +14,7 @@ test_that("format_boot_table expected dataframe: col names", {
 })
 
 
-test_that("format_param_table: .digit produces expected significant digits", {
+test_that("format_boot_table: .digit produces expected significant digits", {
 
   expect_equal(newDF3$boot_median[6], "0.484")
   expect_equal(newDF3$boot_ci_95[6], "0.408, 0.558")
@@ -24,7 +24,7 @@ test_that("format_param_table: .digit produces expected significant digits", {
   expect_equal(newDF4$boot_ci_95[6], "0.408194, 0.558204")
 })
 
-test_that("format_param_table: .maxex produces expected scientific notation", {
+test_that("format_boot_table: .maxex produces expected scientific notation", {
 
   newDF5 <- newbootDF %>%
     mutate(perc_50 = perc_50*100,
@@ -52,7 +52,9 @@ test_that("format_param_table: .maxex produces expected scientific notation", {
 
 })
 
-test_that("format_param_table: outputs all percentiles", {
+test_that("format_boot_table: outputs individual percentiles", {
+  # Arbitrary percentiles that dont have any specific handling and cant
+  # be grouped
   percents <- c(0.1, 0.55, 0.36, 0.98, 0.77)
 
   df1 <- define_boot_table(
@@ -71,6 +73,50 @@ test_that("format_param_table: outputs all percentiles", {
   expect_equal(names(df3), c("boot_perc_10", "desc"))
 })
 
+test_that("format_boot_table: percentiles are appropriately grouped", {
+  # Test 3 groupings: 90, 95, and iqr
+  percents <- c(0.025, 0.05, 0.5, 0.95, 0.975,  0.25, 0.75)
+
+  df1 <- define_boot_table(
+    boot_paramEst, .key = paramKey, .percentiles = percents
+  )
+  df2 <- format_boot_table(df1)
+
+  grouped_cols <- paste0("boot_ci_", c("95", "90", "iqr"))
+  expect_equal(names(df2), c("abb","desc", "boot_median", grouped_cols))
+
+  # Test 2 groupings and individual percent
+  percents <- c(0.025, 0.05, 0.5, 0.95, 0.975, 0.25)
+
+  df1 <- define_boot_table(
+    boot_paramEst, .key = paramKey, .percentiles = percents
+  )
+  df2 <- format_boot_table(df1)
+
+  grouped_cols <- paste0("boot_ci_", c("95", "90"))
+  indiv_cols <- c("boot_perc_25", "boot_median")
+  expect_equal(names(df2), c("abb","desc", indiv_cols, grouped_cols))
+})
+
+test_that("format_boot_table: iqr and median have their own handling", {
+  # Test via iqr
+  df1 <- define_boot_table(
+    boot_paramEst, .key = paramKey, .ci = "iqr"
+  )
+  df2 <- format_boot_table(df1)
+
+  boot_cols <- paste0("boot_", c("median", "ci_iqr"))
+  expect_equal(names(df2), c("abb","desc", boot_cols))
+
+  # Test via percentiles
+  df1 <- define_boot_table(
+    boot_paramEst, .key = paramKey, .percentiles = c(.25, .50, .75)
+  )
+  df2 <- format_boot_table(df1)
+
+  boot_cols <- paste0("boot_", c("median", "ci_iqr"))
+  expect_equal(names(df2), c("abb","desc", boot_cols))
+})
 
 ##ADD tests for new cases###
 #
