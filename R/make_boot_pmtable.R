@@ -1,4 +1,4 @@
-#' Make pmtable bootstrap parameter table
+#' Generate a complete bootstrap parameter table ready for rendering via `pmtables`
 #'
 #' @details
 #'

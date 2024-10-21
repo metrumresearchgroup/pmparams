@@ -2,7 +2,7 @@
 % Please edit documentation in R/make_pmtable.R
 \name{make_pmtable}
 \alias{make_pmtable}
-\title{Make pmtable parameter table}
+\title{Generate a complete parameter table ready for rendering via \code{pmtables}}
 \usage{
 make_pmtable(
   .df,
@@ -25,7 +25,7 @@ make_pmtable(
 \item{.width}{notes width. Defaults to 1.}
 }
 \description{
-Make pmtable parameter table
+Generate a complete parameter table ready for rendering via \code{pmtables}
 }
 \details{
 Generates specific parameter tables by filtering and using \code{pmtables}

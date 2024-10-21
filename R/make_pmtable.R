@@ -1,4 +1,4 @@
-#' Make pmtable parameter table
+#' Generate a complete parameter table ready for rendering via `pmtables`
 #'
 #' @details
 #'

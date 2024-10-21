@@ -2,7 +2,7 @@
 % Please edit documentation in R/make_boot_pmtable.R
 \name{make_boot_pmtable}
 \alias{make_boot_pmtable}
-\title{Make pmtable bootstrap parameter table}
+\title{Generate a complete bootstrap parameter table ready for rendering via \code{pmtables}}
 \usage{
 make_boot_pmtable(
   .df,
@@ -25,7 +25,7 @@ make_boot_pmtable(
 \item{.width}{notes width. Defaults to 1.}
 }
 \description{
-Make pmtable bootstrap parameter table
+Generate a complete bootstrap parameter table ready for rendering via \code{pmtables}
 }
 \details{
 Generates specific parameter tables by filtering and using \code{pmtables}
