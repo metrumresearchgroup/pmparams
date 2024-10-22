@@ -2,18 +2,16 @@
 % Please edit documentation in R/format_boot_table.R
 \name{format_boot_cols}
 \alias{format_boot_cols}
-\title{Format and group bootstrap \code{perc_[x]} columns}
+\title{Format and group bootstrap \code{boot_perc_[x]} columns}
 \usage{
-format_boot_cols(.df, keep_perc_cols = TRUE)
+format_boot_cols(.df)
 }
 \arguments{
 \item{.df}{bootstrap parameter dataset and non-bootstrap parameter dataset combined.}
-
-\item{keep_perc_cols}{logical (T/F). If \code{TRUE}, keep the original percent columns}
 }
 \description{
-Format and group bootstrap \code{perc_[x]} columns. Columns that correspond to a
+Format and group bootstrap \code{boot_perc_[x]} columns. Columns that correspond to a
 confidence interval will instead be grouped into a new confidence interval
-column displaying the range. E.g., \code{perc_2.5} + \code{perc_97.5} --> \code{boot_ci_95}
+column displaying the range. E.g., \code{boot_perc_2.5} + \code{boot_perc_97.5} --> \code{boot_ci_95}
 }
 \keyword{internal}
