@@ -75,3 +75,18 @@ test_that("make_boot_pmtable: intervals and percentiles are appropriately groupe
   expect_equal(spanned_boot_cols, c("25\\%", "Median", "90\\% CI", "95\\% CI"))
 
 })
+
+
+test_that("make_boot_pmtable: incorrect dataframe checks", {
+  # Missing required columns
+  expect_error(
+    make_boot_pmtable(.df = formatBootDF),
+    "The following required columns are missing: type, greek, value, shrinkage"
+  )
+
+  # Missing bootstrap estimates
+  expect_error(
+    make_boot_pmtable(.df = formatnonbootDF),
+    "No confidence intervals or percentiles for the bootstrap parameter estimates were detected"
+  )
+})

@@ -73,19 +73,23 @@ make_boot_pmtable <- function(
   checkmate::assert_numeric(.width)
   .pmtype <- match.arg(.pmtype)
 
-  # TODO: improve these checks
-  # - Maybe assign classes to the formatted functions
-  if(!any(grepl("ci_", names(.df)))){
-    message("No parameter estimates detected.")
+  req_cols <- c("type", "abb", "greek", "desc", "value", "shrinkage")
+  if (!all(req_cols %in% names(.df))) {
+    missing_cols <- paste(setdiff(req_cols, names(.df)), collapse = ", ")
+    stop(glue::glue("The following required columns are missing: {missing_cols}"))
   }
-  if(!any(grepl("boot_", names(.df)))){
-    stop("No bootstrap parameter estimates detected.")
+
+  if (!any(grepl("^boot_", names(.df)))) {
+    msg <- paste(
+      "No confidence intervals or percentiles for the bootstrap parameter estimates were detected.",
+      "See `?make_boot_pmtable` for more details."
+    )
+    stop(msg)
   }
 
   # Extract bootstrap columns
   boot_cols_keep <- names(.df)[grepl("boot_", names(.df))]
-  cols_keep <- c("type", "abb", "greek", "desc", "value", "shrinkage", boot_cols_keep)
-  .df_new <- .df %>% dplyr::select(all_of(cols_keep))
+  .df_new <- .df %>% dplyr::select(all_of(c(req_cols, boot_cols_keep)))
 
   # Rename CI and percent columns
   .df_new <- rename_boot_cols(.df_new)
