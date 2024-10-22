@@ -115,9 +115,6 @@ withr::with_options(list(bbr.bbi_exe_path = bbr::read_bbi_path()), {
       "Must be of type 'numeric'"
     )
   })
-
-  #TODO:
-  #add more percentile checks
 })
 
 
