@@ -64,13 +64,6 @@ test_that("format_boot_table: outputs individual percentiles", {
 
   perc_fmt <- paste0("boot_perc_", sort(percents*100))
   expect_equal(names(df2), c("abb","desc", perc_fmt))
-
-  expect_message(
-    df3 <- format_boot_table(df1, .select_cols = c("boot_perc_10", "desc")),
-    "`.select_cols` is deprecated"
-  )
-
-  expect_equal(names(df3), c("boot_perc_10", "desc"))
 })
 
 test_that("format_boot_table: percentiles are appropriately grouped", {
@@ -118,20 +111,24 @@ test_that("format_boot_table: iqr and median have their own handling", {
   expect_equal(names(df2), c("abb","desc", boot_cols))
 })
 
-##ADD tests for new cases###
-#
-#select_cols
-# newDF7 <- newDF5 %>%
-#   format_boot_table(.cleanup_cols = TRUE,
-#                      .select_cols = "ALL")
-#
-# newDF8 <- newDF5 %>%
-#   format_boot_table(.cleanup_cols = TRUE,
-#                      .select_cols = c("panel", "abb", "greek", "desc", "value", "ci"))
-#
-# newDF9 <- newDF5 %>%
-#   format_boot_table(.cleanup_cols = TRUE,
-#                      .select_cols = c("other"))
 
-## multiple percentiles
-#define_boot_table()
+test_that("format_boot_table: .select_cols works", {
+  expect_message(
+    df2 <- format_boot_table(df1, .select_cols = c("boot_perc_25", "desc")),
+    "`.select_cols` is deprecated"
+  )
+  expect_equal(names(df2), c("boot_perc_25", "desc"))
+
+  # 'all' returns all columns
+  expect_message(
+    df2 <- format_boot_table(df1, .select_cols = "ALL"),
+    "`.select_cols` is deprecated"
+  )
+  expect_equal(setdiff(names(df2), names(df1)), c("boot_median", "boot_ci_iqr"))
+
+  expect_error(
+    format_boot_table(df1, .select_cols = "other") %>% suppressMessages(),
+    "The following specified columns were not found: other"
+  )
+})
+
