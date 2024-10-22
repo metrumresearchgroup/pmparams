@@ -4,14 +4,16 @@
 \alias{format_boot_cols}
 \title{Format and group bootstrap \code{perc_[x]} columns}
 \usage{
-format_boot_cols(.df)
+format_boot_cols(.df, keep_perc_cols = TRUE)
 }
 \arguments{
 \item{.df}{bootstrap parameter dataset and non-bootstrap parameter dataset combined.}
+
+\item{keep_perc_cols}{logical (T/F). If \code{TRUE}, keep the original percent columns}
 }
 \description{
 Format and group bootstrap \code{perc_[x]} columns. Columns that correspond to a
 confidence interval will instead be grouped into a new confidence interval
-column displaying the range. E.g., \code{perc_2.5} + \code{perc_97.5} --> \verb{95\% CI}
+column displaying the range. E.g., \code{perc_2.5} + \code{perc_97.5} --> \code{boot_ci_95}
 }
 \keyword{internal}

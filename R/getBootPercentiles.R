@@ -56,7 +56,7 @@ getBootPercentiles <- function(
     tibble::rownames_to_column() %>%
     tibble::as_tibble()
 
-  .percentiles_nam <- paste0("perc_", .percentiles*100)
+  .percentiles_nam <- paste0("boot_perc_", .percentiles*100)
   colnames(comp_df) <- c("parameter_names", .percentiles_nam)
 
   return(comp_df)

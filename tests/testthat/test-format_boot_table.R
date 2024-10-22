@@ -9,7 +9,7 @@ test_that("format_boot_table expected dataframe: col names", {
   # default cols
   expect_equal(names(newDF3),  c("abb", "desc", "boot_median", "boot_ci_95"))
   # all cols
-  expect_equal(setdiff(names(newbootDF), names(newDF5)), c("perc_2.5", "perc_50", "perc_97.5"))
+  expect_equal(setdiff(names(newbootDF), names(newDF5)), c("boot_perc_2.5", "boot_perc_50", "boot_perc_97.5"))
   expect_equal(setdiff(names(newDF5), names(newbootDF)), c("boot_median", "boot_ci_95"))
 })
 
@@ -27,9 +27,9 @@ test_that("format_boot_table: .digit produces expected significant digits", {
 test_that("format_boot_table: .maxex produces expected scientific notation", {
 
   newDF5 <- newbootDF %>%
-    mutate(perc_50 = perc_50*100,
-           perc_97.5 = perc_97.5*0.01,
-           perc_2.5 = perc_2.5*0.0001)
+    mutate(boot_perc_50 = boot_perc_50*100,
+           boot_perc_97.5 = boot_perc_97.5*0.01,
+           boot_perc_2.5 = boot_perc_2.5*0.0001)
 
   newDF6 <- format_boot_table(newDF5)
   expect_equal(newDF6$boot_median[1], "157")
@@ -66,7 +66,7 @@ test_that("format_boot_table: outputs individual percentiles", {
   expect_equal(names(df2), c("abb","desc", perc_fmt))
 
   expect_message(
-    df3 <- format_boot_table(df1, .select_cols = c("perc_10", "desc")),
+    df3 <- format_boot_table(df1, .select_cols = c("boot_perc_10", "desc")),
     "`.select_cols` is deprecated"
   )
 
@@ -82,7 +82,7 @@ test_that("format_boot_table: percentiles are appropriately grouped", {
   )
   df2 <- format_boot_table(df1)
 
-  grouped_cols <- paste0("boot_ci_", c("95", "90", "iqr"))
+  grouped_cols <- paste0("boot_ci_", c("iqr", "90", "95"))
   expect_equal(names(df2), c("abb","desc", "boot_median", grouped_cols))
 
   # Test 2 groupings and individual percent
@@ -93,7 +93,7 @@ test_that("format_boot_table: percentiles are appropriately grouped", {
   )
   df2 <- format_boot_table(df1)
 
-  grouped_cols <- paste0("boot_ci_", c("95", "90"))
+  grouped_cols <- paste0("boot_ci_", c("90", "95"))
   indiv_cols <- c("boot_perc_25", "boot_median")
   expect_equal(names(df2), c("abb","desc", indiv_cols, grouped_cols))
 })

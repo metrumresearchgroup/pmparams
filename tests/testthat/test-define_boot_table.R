@@ -40,29 +40,29 @@ withr::with_options(list(bbr.bbi_exe_path = bbr::read_bbi_path()), {
   test_that("define_boot_table handles multiple estimate input types", {
     # Test file path
     boot_df1 <- define_boot_table(boot_paramEstPath, .key = paramKey)
-    expect_equal(boot_df1$perc_50[boot_df1$name == "OMEGA22"], 0.0821058)
+    expect_equal(boot_df1$boot_perc_50[boot_df1$name == "OMEGA22"], 0.0821058)
 
     # Test read-in dataframe
     boot_df2 <- define_boot_table(boot_paramEst, .key = paramKey)
-    expect_equal(boot_df2$perc_50[boot_df2$name == "OMEGA22"], 0.0821058)
+    expect_equal(boot_df2$boot_perc_50[boot_df2$name == "OMEGA22"], 0.0821058)
 
     # Test with bbr
     skip_if_missing_deps("bbr", "1.11.0")
     boot_df3 <- define_boot_table(
       bbr::bootstrap_estimates(BOOT_RUN), .key = paramKey
     )
-    expect_equal(boot_df3$perc_50[boot_df3$name == "OMEGA22"], 0.08158385)
+    expect_equal(boot_df3$boot_perc_50[boot_df3$name == "OMEGA22"], 0.08158385)
   })
 
   test_that("define_boot_table handles multiple parameter key input types", {
     # Key is a file path
     boot_df <- define_boot_table(boot_paramEst, .key = paramKey_path)
-    expect_equal(boot_df$perc_50[boot_df$name == "OMEGA22"],  0.0821058)
+    expect_equal(boot_df$boot_perc_50[boot_df$name == "OMEGA22"],  0.0821058)
 
     # Key is a data frame (row_var must be 'name')
     key <- pmtables::yaml_as_df(paramKey_path, row_var = "name")
     boot_df <- define_boot_table(boot_paramEst, .key = key)
-    expect_equal(boot_df$perc_50[boot_df$name == "OMEGA22"], 0.0821058)
+    expect_equal(boot_df$boot_perc_50[boot_df$name == "OMEGA22"], 0.0821058)
   })
 
 
@@ -77,8 +77,8 @@ withr::with_options(list(bbr.bbi_exe_path = bbr::read_bbi_path()), {
 
   test_that("define_boot_table generates the confidence intervals for various inputs", {
     boot_df <- define_boot_table(boot_paramEst, .key = paramKey)
-    expect_equal(boot_df$perc_2.5[1], 1.3880675)
-    expect_equal(boot_df$perc_97.5[2], 65.053174)
+    expect_equal(boot_df$boot_perc_2.5[1], 1.3880675)
+    expect_equal(boot_df$boot_perc_97.5[2], 65.053174)
   })
 
 
@@ -87,8 +87,8 @@ withr::with_options(list(bbr.bbi_exe_path = bbr::read_bbi_path()), {
       boot_paramEst, .key = paramKey, .ci = "iqr"
     )
     # This also confirms the correct percent names were chosen
-    expect_equal(boot_df$perc_25[1], 1.50140037)
-    expect_equal(boot_df$perc_75[2], 62.717938)
+    expect_equal(boot_df$boot_perc_25[1], 1.50140037)
+    expect_equal(boot_df$boot_perc_75[2], 62.717938)
   })
 
   test_that("define_boot_table: if ci and percentile supplied, choose percentiles", {
@@ -96,16 +96,16 @@ withr::with_options(list(bbr.bbi_exe_path = bbr::read_bbi_path()), {
     boot_df <- define_boot_table(
       boot_paramEst, .key = paramKey, .ci = "iqr", .percentiles = c(0.2, 0.6)
     )
-    expect_equal(boot_df$perc_20[1], 1.4835063)
-    expect_equal(boot_df$perc_60[2], 61.966381)
+    expect_equal(boot_df$boot_perc_20[1], 1.4835063)
+    expect_equal(boot_df$boot_perc_60[2], 61.966381)
   })
 
   test_that("define_boot_table: 3 percentiles get renamed lower, value, upper", {
     boot_df <- define_boot_table(
       boot_paramEst, .key = paramKey, .percentiles = c(0.2, 0.6, 0.11)
     )
-    perc_names <- boot_df %>% select(starts_with("perc_")) %>% names()
-    expect_equal(perc_names, c("perc_11", "perc_20", "perc_60"))
+    boot_perc_names <- boot_df %>% select(starts_with("boot_perc_")) %>% names()
+    expect_equal(boot_perc_names, c("boot_perc_11", "boot_perc_20", "boot_perc_60"))
   })
 
 

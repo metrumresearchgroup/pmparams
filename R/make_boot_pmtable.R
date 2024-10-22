@@ -156,8 +156,8 @@ rename_boot_cols <- function(.df) {
           stringr::str_replace("boot_median", "Median") %>%
           stringr::str_replace("boot_ci_iqr", "IQR") %>%
           # Value renaming
-          stringr::str_replace("boot_ci_(\\d+)", "\\1\\\\% CI") %>%
-          stringr::str_replace("boot_perc_(\\d+)", "\\1\\\\%")
+          stringr::str_replace("boot_ci_([0-9.]+)", "\\1\\\\% CI") %>%
+          stringr::str_replace("boot_perc_([0-9.]+)", "\\1\\\\%")
       },
       .cols = dplyr::contains("boot_")
     )

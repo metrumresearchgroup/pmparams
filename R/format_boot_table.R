@@ -70,7 +70,7 @@ format_boot_table <- function(
   } else {
     # Used when .cleanup_cols = TRUE
     if (isTRUE(.cleanup_cols)) {
-      ci_cols <- names(.df_out)[grepl("^perc_", names(.df_out))]
+      ci_cols <- names(.df_out)[grepl("^boot_perc_", names(.df_out))]
       .select_cols <- c("abb", "desc", ci_cols)
     } else {
       .select_cols <- names(.df_out)
@@ -85,17 +85,17 @@ format_boot_table <- function(
   return(.df_final)
 }
 
-#' Format and group bootstrap `perc_[x]` columns
+#' Format and group bootstrap `boot_perc_[x]` columns
 #'
-#' Format and group bootstrap `perc_[x]` columns. Columns that correspond to a
+#' Format and group bootstrap `boot_perc_[x]` columns. Columns that correspond to a
 #' confidence interval will instead be grouped into a new confidence interval
-#' column displaying the range. E.g., `perc_2.5` + `perc_97.5` --> `95% CI`
+#' column displaying the range. E.g., `boot_perc_2.5` + `boot_perc_97.5` --> `boot_ci_95`
 #' @inheritParams make_boot_pmtable
 #' @keywords internal
 format_boot_cols <- function(.df){
   # Extract bootstrap columns and calculate boot values
-  boot_cols_keep <- names(.df)[grepl("perc_", names(.df))]
-  boot_values <- as.numeric(gsub("perc_", "", boot_cols_keep))
+  boot_cols_keep <- names(.df)[grepl("^boot_perc_", names(.df))]
+  boot_values <- as.numeric(gsub("^boot_perc_", "", boot_cols_keep))
 
   # This determines which values are paired to another (e.g., 5% and 95%)
   #  - Remove the median (50%) from boot_values before finding CI pairs
@@ -112,9 +112,10 @@ format_boot_cols <- function(.df){
 
     lower_vals <- boot_values[paired_indices[seq(1, length(paired_indices), by = 2)]]
     upper_vals <- boot_values[paired_indices[seq(2, length(paired_indices), by = 2)]]
-    ci_names <- paste0("boot_ci_", upper_vals - lower_vals)
+    ci_vals <- upper_vals - lower_vals
+    ci_names <- paste0("boot_ci_", ci_vals)
 
-    # Add new CI columns to the dataframe
+    # Create new dataframe with grouped CI columns
     new_ci_cols <- purrr::map2_dfc(
       split(paired_cols, rep(1:(length(paired_cols)/2), each = 2)),
       ci_names,
@@ -124,9 +125,12 @@ format_boot_cols <- function(.df){
       )
     )
 
+    # Order new CI columns
+    new_ci_cols <- new_ci_cols %>% dplyr::relocate(ci_names[order(ci_vals)])
+
     # Substitute boot_ci_50 for boot_ci_iqr if present
     # - That column can only originate from iqr (or .percentiles = c(0.25, 0.75))
-    # because they must be paired (add up to 100) _and_ the difference must be 50
+    # because they must be paired (add up to 100%) _and_ the difference must be 50%
     if ("boot_ci_50" %in% names(new_ci_cols)){
       new_ci_cols <- new_ci_cols %>% dplyr::rename("boot_ci_iqr" = "boot_ci_50")
     }
@@ -135,6 +139,7 @@ format_boot_cols <- function(.df){
     .df <- dplyr::bind_cols(.df, new_ci_cols)
   } else {
     paired_indices <- numeric(0)
+    paired_cols <- character(0)
   }
 
   # Find & handle remaining columns that are not paired to a CI (e.g., median)
@@ -147,7 +152,7 @@ format_boot_cols <- function(.df){
       .fn = function(remain_col){
         dplyr::case_when(
           remain_col %in% remaining_cols[remaining_values == 50] ~ "boot_median",
-          TRUE ~ paste0("boot_", remain_col)
+          TRUE ~ remain_col
         )},
       .cols = all_of(remaining_cols)
     )
@@ -155,7 +160,8 @@ format_boot_cols <- function(.df){
   new_columns <- c(new_columns, setdiff(names(renamed_cols), names(.df)))
 
   # Remove any old columns that still exist
-  .df_final <- renamed_cols %>% dplyr::select(-any_of(boot_cols_keep))
+  .df_final <- renamed_cols %>% dplyr::select(-any_of(paired_cols))
+
   attr(.df_final, "new_columns") <- new_columns
 
   return(.df_final)

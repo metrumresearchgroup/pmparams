@@ -72,6 +72,6 @@ test_that("make_boot_pmtable: intervals and percentiles are appropriately groupe
   expect_equal(spanned_param_cols, "value:shrinkage")
 
   spanned_boot_cols <- rlang::eval_tidy(boot_complete2$span[[2]]$vars)
-  expect_equal(spanned_boot_cols, c("25\\%", "Median", "95\\% CI", "90\\% CI"))
+  expect_equal(spanned_boot_cols, c("25\\%", "Median", "90\\% CI", "95\\% CI"))
 
 })
