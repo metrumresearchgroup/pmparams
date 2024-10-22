@@ -7,7 +7,13 @@
 loadParamEstimates(.estimates)
 }
 \arguments{
-\item{.estimates}{path to model directory, bbr NONMEM model, or data.frame of parameter estimates}
+\item{.estimates}{One of the following:
+\itemize{
+\item Path to a \code{bbr} model
+\item A \code{bbr} model. (output of \code{bbr::read_model()})
+\item A \code{bbr} model summary object (output of \code{bbr::model_summary()})
+\item A data frame of the parameter estimates (e.g., output of \code{bbr::param_estimates()})
+}}
 }
 \description{
 Loads parameter estimates by providing model path, bbr model summary, or data frame of parameter estimates

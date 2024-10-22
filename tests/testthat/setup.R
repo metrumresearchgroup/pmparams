@@ -1,8 +1,9 @@
 library(dplyr)
+library(bbr)
 library(testthat)
 library(pmparams)
 
-paramKey = dplyr::tribble(
+paramKey <- dplyr::tribble(
   ~name, ~abb, ~desc, ~panel, ~trans,
   "THETA1",  "KA (1/h)", "First order absorption rate constant",   "struct", "logTrans",
   "THETA2", "V2/F (L)",  "Apparent central volume",                "struct", "logTrans",
@@ -24,40 +25,52 @@ paramKey = dplyr::tribble(
   "SIGMA11", "Proportional", "Variance", "RV", "propErr"
 )
 
-paramKey2 <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
-param_yaml <- yaml::yaml.load_file(paramKey2)
+model_dir <- system.file("model/nonmem", package = "pmparams")
 
-#Data for testing param table (no boot)
+paramKey_path <-  file.path(model_dir, "pk-parameter-key-new.yaml")
+paramKeyBoth_path <-  file.path(model_dir, "pk-parameter-key-both.yaml")
+param_yaml <- yaml::yaml.load_file(paramKey_path)
 
-paramPath <- system.file("model/nonmem/102", package = "pmparams")
-paramEst <- utils::read.csv(system.file("model/nonmem/param_est.csv", package = "pmparams"))
-paramModel <- bbr::read_model(system.file("model/nonmem/102", package = "pmparams"))
+# bbr objects
+MOD <- bbr::read_model(file.path(model_dir, "106"))
+BOOT_RUN <- bbr::read_model(file.path(model_dir, "106-boot"))
+
+# Data for testing param table (no bootstrap)
+paramPath <- file.path(model_dir, "102")
+paramEst <- readr::read_csv(file.path(model_dir, "param_est_102.csv"))
+paramModel <- bbr::read_model(paramPath)
 
 newDF <- define_param_table(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
 newFormatDF <- format_param_table(newDF)
 newFormatDFprse  <- format_param_table(newDF, .prse = T)
 
-#Data for testing boot param table
-boot_paramEstPath <- system.file("model/nonmem/boot/data/boot-106.csv", package = "pmparams")
-boot_paramEst <- utils::read.csv(system.file("model/nonmem/boot/data/boot-106.csv", package = "pmparams"))
+# Data for testing bootstrap param table
+boot_paramEstPath <- file.path(model_dir, "boot/data/boot-106.csv")
+boot_paramEst <- readr::read_csv(boot_paramEstPath)
 
-nonboot_paramEstPath <- system.file("model/nonmem/106", package = "pmparams")
-nonboot_paramEst <- utils::read.csv(system.file("model/nonmem/nonboot_param_est.csv", package = "pmparams"))
+paramEst_106 <- readr::read_csv(file.path(model_dir, "param_est_106.csv"))
 
 newbootDF <- pmparams::define_boot_table(.boot_estimates =boot_paramEst, .key = paramKey)
 formatBootDF <- pmparams::format_boot_table(.boot_df = newbootDF, .cleanup_cols =  T)
 
-newbootDF2 <- pmparams::define_boot_table(.boot_estimates =boot_paramEst,
-                                         .key = paramKey,
-                                         .percentiles  = c(0.29, 0.15, 0.99)) #ERROR
-#final output
-nonbootDF <- pmparams::define_param_table(.estimates = nonboot_paramEst, .key = paramKey)
+newbootDF2 <- pmparams::define_boot_table(
+  .boot_estimates = boot_paramEst,
+  .key = paramKey,
+  .percentiles  = c(0.29, 0.15, 0.99)
+)
+
+# final output
+nonbootDF <- pmparams::define_param_table(.estimates = paramEst_106, .key = paramKey)
 formatnonbootDF <- nonbootDF %>% pmparams::format_param_table()
 
 
 bootParam <-  left_join(formatnonbootDF, formatBootDF, by = c("abb", "desc"))
 
-#testing theta error block
-theta_err = paramEst %>% as.data.frame() %>% mutate(parameter_names = if_else(parameter_names == "SIGMA(1,1)", "THETA(1,1)", parameter_names))
+# testing theta error block
+theta_err <- paramEst %>%  mutate(
+  parameter_names = if_else(parameter_names == "SIGMA(1,1)", "THETA(1,1)", parameter_names)
+)
 theta_err_key = paramKey %>% mutate(name = if_else(name == "SIGMA11", "THETA11", name))
 theta_err_df1 <- define_param_table(.estimates = theta_err, .key = theta_err_key, .ci = 95, .zscore = NULL)
+
+
