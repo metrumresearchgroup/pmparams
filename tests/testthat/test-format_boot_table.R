@@ -113,6 +113,8 @@ test_that("format_boot_table: iqr and median have their own handling", {
 
 
 test_that("format_boot_table: .select_cols works", {
+  df1 <- define_boot_table(boot_paramEst, .key = paramKey, .ci = "iqr")
+
   expect_message(
     df2 <- format_boot_table(df1, .select_cols = c("boot_perc_25", "desc")),
     "`.select_cols` is deprecated"
