@@ -23,7 +23,7 @@ paramKey <-  file.path(model_dir, "pk-parameter-key-new.yaml")
 param_est <- utils::read.csv(file.path(model_dir, "param_est.csv"))
 
 # Make and format parameter table
-defineOut <- define_param_table(
+param_df <- define_param_table(
  .estimates = param_est,
  .key = paramKey,
  .ci = 95
@@ -32,7 +32,7 @@ defineOut <- define_param_table(
 # Make random effects table and add relevant footnotes:
 footnotes <- param_notes()
 
-table <- make_pmtable(.df = defineOut, .pmtype = "random") \%>\%
+table <- make_pmtable(.df = param_df, .pmtype = "random") \%>\%
   pmtables::st_notes(footnotes$ci, footnotes$cv) \%>\%
   pmtables::st_notes_str() \%>\%
   pmtables::st_notes(footnotes$cvOmegaEq, footnotes$cvSigmaEq)
