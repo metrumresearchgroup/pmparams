@@ -5,22 +5,31 @@
 #'
 #'
 #' @param .ci specify 90 or 95 percent confidence interval (default 95%)
-#' @param .zscore z-score for the specified confidence interval. Only needed for confidence intervals that are NOT 90 or 95 percent
+#' @param .zscore z-score for the specified confidence interval. Only needed for
+#'  confidence intervals that are NOT 90 or 95 percent
 #'
 #' @examples
-#' #Using output from `format_param_table` (defineOut),
 #' library(dplyr)
-#' paramEst <- utils::read.csv(system.file("model/nonmem/param_est.csv", package = "pmparams"))
-#' paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
-#' defineOut <- define_param_table(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
-#' data <- format_param_table(.df = defineOut)
+#' model_dir <- system.file("model/nonmem", package = "pmparams")
+#' paramKey <-  file.path(model_dir, "pk-parameter-key-new.yaml")
 #'
-#' #To make random effects table and add relevant footnotes:
-#' footnotes = param_notes()
+#' # Read in parameter estimates (or provide `bbr` model)
+#' param_est <- utils::read.csv(file.path(model_dir, "param_est.csv"))
+#'
+#' # Make and format parameter table
+#' defineOut <- define_param_table(
+#'  .estimates = param_est,
+#'  .key = paramKey,
+#'  .ci = 95
+#' ) %>% format_param_table()
+#'
+#' # Make random effects table and add relevant footnotes:
+#' footnotes <- param_notes()
+#'
 #' table <- make_pmtable(.df = data, .pmtype = "random") %>%
-#' pmtables::st_notes(footnotes$ci, footnotes$cv) %>%
-#' pmtables::st_notes_str() %>%
-#' pmtables::st_notes(footnotes$cvOmegaEq, footnotes$cvSigmaEq)
+#'   pmtables::st_notes(footnotes$ci, footnotes$cv) %>%
+#'   pmtables::st_notes_str() %>%
+#'   pmtables::st_notes(footnotes$cvOmegaEq, footnotes$cvSigmaEq)
 #'
 #' @export
 param_notes <- function(.ci = 95, .zscore = NULL){
@@ -51,6 +60,7 @@ param_notes <- function(.ci = 95, .zscore = NULL){
     ci   = "CI: confidence intervals",
     corr = "Corr: correlation coefficient",
     cv   = "CV: coefficient of variation",
+    iqr = "IQR: interquartile range",
     rse = "RSE: relative standard error",
     se   = "SE: standard error",
     sd   = "SD: standard deviation",
@@ -60,6 +70,4 @@ param_notes <- function(.ci = 95, .zscore = NULL){
     logTrans = "Parameters estimated in the log-domain were back-transformed for clarity",
     logitTrans = "Parameters estimated in the logit-domain were back-transformed for clarity"
   )
-
-
 }
