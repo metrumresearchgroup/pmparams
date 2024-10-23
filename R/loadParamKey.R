@@ -16,7 +16,7 @@ loadParamKey <- function(.key){
       warning("Only abb, desc, panel and trans arguments will be used, all others ignored")
     }
 
-    .key <- dplyr::tibble(
+    .key <- tibble::tibble(
       name = names(y1l),
       abb = unlist(y1l)[grepl('abb',names(unlist(y1l)),fixed=T)],
       desc = unlist(y1l)[grepl('desc',names(unlist(y1l)),fixed=T)],
