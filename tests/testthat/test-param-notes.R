@@ -1,4 +1,3 @@
-#param notes
 
 test_that("param_notes unexpected input: confidence internal that is not 90 or 95 without accompanying z-score",{
   expect_error(
@@ -11,7 +10,6 @@ test_that("param_notes unexpected input: confidence internal and z-score mismatc
   expect_message(
     param_notes(.ci = 95, .zscore = 1.9),
     regexp = "Confidence interval and z-score provided do not match. The z-score that corresponds to 95% CI will be used \\(z-score = 1\\.96\\)"
-
   )
 })
 
@@ -22,7 +20,6 @@ test_that("param_notes expected output: z-score",{
   z = 1.4
   eq3 <- param_notes(.ci = 5, .zscore = z)
   expect_equal(eq3$ciEq, paste0("CI = estimate $\\pm$ ", z, " $\\cdot$ SE"))
-
 })
 
 test_that("param_notes expected output: footnotes",{
@@ -30,6 +27,4 @@ test_that("param_notes expected output: footnotes",{
   expect_equal(11, length(eq4))
   expect_equal(anyNA(eq4), FALSE)
   expect_equal(eq4$cvOmegaEq,"CV\\% of log-normal omegas = sqrt(exp(estimate) - 1) $\\cdot$ 100")
-
-
 })

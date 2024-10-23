@@ -17,7 +17,8 @@ formatGreekNames <- function(.df){
     tidyr::separate(
       parameter_names,
       into = c("text2", "num2"),
-      sep = "A"
+      sep = "A",
+      remove = FALSE
     ) %>%
     dplyr::select(-"num", -"text2") %>%
     dplyr::mutate(
@@ -29,6 +30,6 @@ formatGreekNames <- function(.df){
         TH & LOG ~ expGreek(text, num2),
         TH & LOGIT ~ logitGreek(text, num2),
         TRUE ~ mathMode(greekNum(gtGreek(text), num2))
-        )
-    )
+      )
+    ) %>% dplyr::select(-"num2")
 }

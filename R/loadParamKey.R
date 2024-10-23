@@ -9,14 +9,15 @@
 #' @keywords internal
 loadParamKey <- function(.key){
 
+  key_cols <- c("abb", "desc", "panel", "trans")
   if (inherits(.key, "character")){
     y1l <- yaml::yaml.load_file(.key)
 
-    if (!all(names(y1l[[1]]) %in% c("abb", "desc", "panel", "trans"))) {
+    if (!all(names(y1l[[1]]) %in% key_cols)) {
       warning("Only abb, desc, panel and trans arguments will be used, all others ignored")
     }
 
-    .key <- dplyr::tibble(
+    .key <- tibble::tibble(
       name = names(y1l),
       abb = unlist(y1l)[grepl('abb',names(unlist(y1l)),fixed=T)],
       desc = unlist(y1l)[grepl('desc',names(unlist(y1l)),fixed=T)],
@@ -26,8 +27,10 @@ loadParamKey <- function(.key){
   }
 
   if (inherits(.key, "data.frame")){
-    if (!(all(c("name", "abb", "desc", "panel", "trans") %in% colnames(.key)))) {
-      stop("Incorrect parameter key input type. See ?param_key for list of valid parameter key inputs")
+    key_df_cols <- c("name", key_cols)
+    if (!(all(key_df_cols %in% colnames(.key)))) {
+      missing_cols <- paste(setdiff(key_df_cols, colnames(.key)), collapse = ", ")
+      stop(glue::glue("The following required columns are missing: {missing_cols}"))
     }
   } else{
     stop("Incorrect parameter key input type. See ?param_key for list of valid parameter key inputs")

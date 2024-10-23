@@ -2,41 +2,73 @@
 % Please edit documentation in R/make_pmtable.R
 \name{make_pmtable}
 \alias{make_pmtable}
-\title{Make pmtable parameter table}
+\title{Generate a complete parameter table ready for rendering via \code{pmtables}}
 \usage{
-make_pmtable(.df, .pmtype = "full", .width = 1)
+make_pmtable(
+  .df,
+  .pmtype = c("full", "fixed", "structural", "covariate", "random"),
+  .width = 1
+)
 }
 \arguments{
-\item{.df}{parameter data set output from pmparams::format_param_table or pmparams::format_boot_table.}
+\item{.df}{parameter data set output from pmparams::format_param_table.}
 
-\item{.pmtype}{parameter table type. Options include: full (all rows in .df retained in pmtable), fixed (all rows with type = "Struct" or "effect"), structural (all rows with type = "Struct"), covariate (all rows with type = "effect"), random (all rows with greek = "Omega" or type = "Resid"). Defaults to "full".}
+\item{.pmtype}{parameter table type. Options include:
+\itemize{
+\item \code{"full"} (all rows in \code{.df} retained in pmtable). This is the default.
+\item \code{"fixed"} (all rows with type = "Struct" or "effect"),
+\item \code{"structural"} (all rows with type = "Struct"),
+\item \code{"covariate"} (all rows with type = "effect"),
+\item \code{"random"} (all rows with greek = "Omega" or type = "Resid").
+}}
 
 \item{.width}{notes width. Defaults to 1.}
 }
 \description{
-Generates specific parameter tables by filtering and using pmtables
+Generate a complete parameter table ready for rendering via \code{pmtables}
+}
+\details{
+Generates specific parameter tables by filtering and using \code{pmtables}
 
 This function:
 \enumerate{
 \item Filters to columns needed for specific parameter tables
 \item Panels by "type"
-\item Makes "abb", "greek", "desc" blank for "full", "fixed", "structural", "covariate" parameter tables.
-Makes "abb" and "greek" blank for "random"
+\item Makes \code{"abb"}, \code{"greek"}, \code{"desc"} blank (no title)
+\itemize{
+\item Note that description is removed when \code{.pmtype = "random"}. See
+\code{?pmtables::st_mutate()} if you want to add it back in.
+}
 \item Attaches notes
-\item Rename "value" to "Estimate" and "shrinkage" to "Shrinkage (\\\%)", if applicable
+\item Rename "value" to "Estimate" and "shrinkage" to "Shrinkage (\%)", if
+applicable
 }
 
-If these pmtable settings do not work for your parameter table, you can overwrite them afterwards using desired pmtables commands.
+\strong{Note:}
+If these \code{pmtables} settings do not work for your parameter table, you can
+overwrite them afterwards using desired \code{pmtables} commands.
 }
 \examples{
 
-#Using output from `format_param_table` (defineOut),
-paramEst <- utils::read.csv(system.file("model/nonmem/param_est.csv", package = "pmparams"))
-paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
-defineOut <- define_param_table(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
-data <- format_param_table(.df = defineOut)
+model_dir <- system.file("model/nonmem", package = "pmparams")
+paramKey <-  file.path(model_dir, "pk-parameter-key-new.yaml")
 
-#To make random effects table:
+# Read in parameter estimates (or provide `bbr` model)
+param_est <- utils::read.csv(file.path(model_dir, "param_est.csv"))
 
-make_pmtable(.df = data, .pmtype = "random")
+# Create formatted parameter table
+param_df <- define_param_table(
+ .estimates = param_est,
+ .key = paramKey
+) \%>\% format_param_table()
+
+\dontrun{
+
+# Create random effects table that can be rendered to latex
+make_pmtable(param_df, .pmtype = "random") \%>\%
+ pmtables::stable() \%>\%
+ # preview in Rstudio viewer (requires `magick` and `pdftools`)
+ pmtables::st_as_image()
+}
+
 }

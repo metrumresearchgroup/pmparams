@@ -2,22 +2,32 @@
 title: "Getting Started with pmparams"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{getting-started}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+ %\VignetteIndexEntry{getting-started}
+ %\VignetteEngine{knitr::rmarkdown}
+ %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 
 options(
   'bbr.bbi_exe_path' = bbr::read_bbi_path(),
   'bbr.verbose' = FALSE
 )
+
+# NOTE: if running chunks interactively we need to load the package first
+devtools::load_all()
+
+# bbr required to render some sections of this vignette
+# - used for CI
+eval_bbr_chunks <- is.null(check_for_suggested_pkgs("bbr"))
+
+# CI has issues running st_as_image and stable_save_image
+# - Only build this vignette via pkgdown or when rendering manually (must be on metworx)
+render_tables <- (Sys.getenv("METWORX_VERSION") != "")
+render_bbr_tables <- render_tables && eval_bbr_chunks
 ```
+
 
 # Introduction
 
@@ -27,8 +37,8 @@ MeRGE Expo: Parameter Tables </a>.
 
 ```{r load packages, results = 'hide', message=FALSE, warning=FALSE}
 library(pmparams)
+library(bbr)
 library(dplyr)
-library(yaml)
 library(pmtables)
 ```
 
@@ -52,108 +62,120 @@ A more detailed walk-through of generating the parameter key is available here: 
 MeRGE Expo: Creating a Parameter Key </a>. 
 
 ```{r, message = FALSE}
-paramKeyPath <- system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
-paramKey <- yaml::yaml.load_file(paramKeyPath)
-head(unlist(paramKey))
+model_dir <- system.file("model/nonmem", package = "pmparams")
+paramKey <- file.path(model_dir, "pk-parameter-key-new.yaml")
+
+yaml::yaml.load_file(paramKey) %>% unlist() %>% head()
 ```
 
 ## Parameter estimates
 
 `pmparams` allows for different parameter estimate input types:
-* path to model directory
-* bbr NONMEM model
-* data.frame of parameter estimates
 
-For this example, we will use the path to the model directory.
-```{r, message = FALSE}
-paramEstimatePath <- system.file("model/nonmem/102", package = "pmparams")
+* path to a `bbr` NONMEM model 
+* `bbr` NONMEM model (output from `bbr::read_model()`)
+* `bbr` NONMEM model summary (output from `bbr::model_summary()`)
+* data.frame of parameter estimates (e.g., output from `bbr::param_estimates()`)
+
+For this example, we will use a `bbr` model
+```{r, message = FALSE, eval = eval_bbr_chunks}
+mod <- bbr::read_model(file.path(model_dir, "102"))
 ```
 
 
 # Define parameter table
 
-We will now join parameter estimates and parameter key. Note: this is an inner_join, so only parameters included in the model output and parameter key will be kept in the table. This was done so that, if your base and final model used the same structural THETAs and random parameters, the same parameter key could be used for both. The additional covariate THETAs defined in the parameter key YAML would simply be ignored when creating the base model parameter table.
+We will now join parameter estimates and parameter key. Note: this is an `inner_join`, so only parameters included in the model output and parameter key will be kept in the table. This was done so that, if your base and final model used the same structural THETAs and random parameters, the same parameter key could be used for both. The additional covariate THETAs defined in the parameter key YAML would simply be ignored when creating the base model parameter table.
 
 Additionally, `define_param_table` performs checks and calculates confidence intervals.
 
-```{r}
-df1 <- define_param_table(.estimates = paramEstimatePath,
-                          .key = paramKeyPath)
+```{r, eval = eval_bbr_chunks}
+param_df <- mod %>% 
+  define_param_table(.key = paramKey)
 
-head(df1)
+head(param_df)
 ```
 
 # Format parameter table
 
-Now, we perform some house-keeping based on the new parameter key information, calculate any summary statistics (the 95% confidence intervals are calculated by default), and format the values for the report using `format_param_table`.
-```{r}
-df2 <- format_param_table(df1)
+Now, we perform some house-keeping based on the new parameter key information, calculate any summary statistics (the 95% confidence intervals are calculated by default), and format the values for the report using `format_param_table()`.
+```{r, eval = eval_bbr_chunks}
+param_df <- param_df %>% 
+  format_param_table(.cleanup_cols = TRUE, .digit = 3)
+
+head(param_df)
 ```
 
 Usually `define_param_table` and `format_param_table` are run together in a single call like this:
 
-```{r}
-df2 <- define_param_table(.estimates = paramEstimatePath,
-                          .key = paramKeyPath) %>% 
-        format_param_table()
-  
-
-head(df2)
+```{r, eval = FALSE}
+param_df <- define_param_table(
+  .estimates = paramEstimatePath,
+  .key = paramKeyPath
+) %>% format_param_table()
 ```
 
 # Make parameter table
 
-We leverage `make_pmtable` to generate fixed effects and random effects parameter tables
+We can leverage `make_pmtable()` to generate fixed effects and random effects parameter tables, and `param_notes()` to easily add informative footnotes or notes.
 
 ```{r}
-tableList <- list()
-
-#grab footnotes
+# grab footnotes
 footnote <- param_notes(.ci = 95)
 ```
 
-```{r}
-##fixed
-tableList$fixed <- make_pmtable(df2, .pmtype = "fixed") %>% 
-  #abbreviations
+```{r, eval = render_bbr_tables}
+##  FIXED EFFECTS table ----------------------------
+tab_fixed <- make_pmtable(param_df, .pmtype = "fixed") %>% 
+  # abbreviations
   st_notes(footnote$ci, footnote$se) %>% 
   st_notes_str() %>% 
-  #equations
-  st_notes(footnote$ciEq)
+  # equations
+  st_notes(footnote$ciEq) %>%
+  # file
+  st_files(output = "deliv/final-param-fixed-ci-95.tex")
 
-tableList$fixed %>%
-  stable() %>% 
-  st_asis()
+tab_fixed_out <- tab_fixed %>% stable() %>% 
+  stable_save_image(format = "png")
 ```
 
-```{r}
-##random
-tableList$random <- make_pmtable(df2, .pmtype = "random") %>% 
-  #abbreviations
+```{r, eval = render_bbr_tables, fig.align='center'}
+st_image_show(tab_fixed_out, width = 0.6)
+```
+
+
+```{r, eval = render_bbr_tables}
+##  RANDOM EFFECTS table ----------------------------
+tab_random <- make_pmtable(param_df, .pmtype = "random") %>% 
+  # abbreviations
   st_notes(footnote$ci, footnote$se) %>% 
   st_notes_str() %>% 
-  #equations
-  st_notes(footnote$cvOmegaEq, footnote$cvSigmaEq)
+  # equations
+  st_notes(footnote$cvOmegaEq, footnote$cvSigmaEq) %>%
+  # file
+  st_files(output = "deliv/final-param-random-ci-95.tex")
 
-tableList$random %>% 
-  stable() %>%
-  st_asis()
+tab_random_out <- tab_random %>% stable() %>% 
+  stable_save_image(format = "png")
+```
+
+```{r, eval = render_bbr_tables, fig.align='center'}
+st_image_show(tab_random_out, width = 0.6)
 ```
 
 If you want to add or overwrite pre-defined `pmtables` argument, simply pipe onto the `make_pmtable` tibble:
-```{r,results = 'asis'}
-tableList$random <- make_pmtable(df2, .pmtype = "random") %>% 
-  #abbreviations
-  st_notes(footnote$ci, footnote$se) %>% 
-  st_notes_str() %>% 
-  #equations
-  st_notes(footnote$ciEq) 
-
-tableList$random %>% 
+```{r, eval = render_bbr_tables}
+tab_random2 <- tab_random %>% 
   st_panel("abb") %>% 
   st_select(-"type", -"greek") %>% 
-  stable() %>%
-  st_asis()
+  st_files(output = "deliv/final-param-random-ci-95-modified.tex")
+
+tab_random_out2 <- tab_random2 %>% stable() %>% 
+  stable_save_image(format = "png")
+```
+
+```{r, eval = render_bbr_tables, fig.align='center'}
+st_image_show(tab_random_out2, width = 0.6)
 ```
 
 # Other functions

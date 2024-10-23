@@ -13,24 +13,18 @@ reference:
     desc: Requirements for parameter key
     contents:
     - param_key
-  - title: Define parameter table
-    desc: Combine model output parameter estimates with information in parameter key. Perform some formatting of this combined data.frame.
+  - title: Define parameter tabless
+    desc: Combine model output parameter estimates with information in a parameter key. Perform some formatting with this combined data.frame.
     contents:
     - define_param_table
-  - title: Format parameter table
-    desc: Estimate values and output selected columns to be shown in the parameter table.
+    - define_boot_table
+  - title: Format parameter tables
+    desc: Format columns to be shown in the final parameter table.
     contents:
     - format_param_table
-  - title: Define boot parameter table
-    desc: Combine bootstrap estimates with non-bootstrap estimates and parameter key. Perform some formatting of this combined data.frame.
-    contents:
-    - define_boot_table
-  - title: Format boot parameter table
-    desc: Format bootstrap parameter estimate values and output selected columns to be shown in the bootstrap parameter table.
-    contents:
     - format_boot_table
   - title: Make parameter table
-    desc: Generates specific parameter tables by filtering and using pmtables.
+    desc: Generate complete parameter tables ready for rendering using `pmtables`.
     contents:
     - make_pmtable
   - title: Get generic parameter table footnotes
