@@ -16,7 +16,6 @@ confidence intervals that are NOT 90 or 95 percent}
 Generate data frame of generic footnote equations to append to parameter tables.
 }
 \examples{
-library(dplyr)
 model_dir <- system.file("model/nonmem", package = "pmparams")
 paramKey <-  file.path(model_dir, "pk-parameter-key-new.yaml")
 
@@ -33,7 +32,7 @@ defineOut <- define_param_table(
 # Make random effects table and add relevant footnotes:
 footnotes <- param_notes()
 
-table <- make_pmtable(.df = data, .pmtype = "random") \%>\%
+table <- make_pmtable(.df = defineOut, .pmtype = "random") \%>\%
   pmtables::st_notes(footnotes$ci, footnotes$cv) \%>\%
   pmtables::st_notes_str() \%>\%
   pmtables::st_notes(footnotes$cvOmegaEq, footnotes$cvSigmaEq)
