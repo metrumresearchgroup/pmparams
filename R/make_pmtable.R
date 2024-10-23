@@ -50,7 +50,6 @@
 #'  pmtables::st_as_image()
 #'}
 #'
-#' @seealso [make_boot_pmtable()]
 #' @export
 make_pmtable <- function(
     .df,

@@ -72,6 +72,3 @@ make_pmtable(param_df, .pmtype = "random") \%>\%
 }
 
 }
-\seealso{
-\code{\link[=make_boot_pmtable]{make_boot_pmtable()}}
-}
