@@ -31,8 +31,7 @@ digits.}
 
 \item{.maxex}{set maxex for computation (optional). Default is \code{NULL}.}
 
-\item{.select_cols}{Deprecated. Please use \code{.cleanup_cols} instead. Columns
-to select for output. To return all columns, specify \code{"all"}.}
+\item{.select_cols}{Deprecated. Please use \code{.cleanup_cols} instead.}
 }
 \description{
 Format parameter estimate values and output selected columns to be shown in

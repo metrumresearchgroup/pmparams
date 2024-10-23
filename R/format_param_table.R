@@ -38,8 +38,7 @@
 #' @param .digit set significant digits for output (optional). Default is three
 #'   digits.
 #' @param .maxex set maxex for computation (optional). Default is `NULL`.
-#' @param .select_cols Deprecated. Please use `.cleanup_cols` instead. Columns
-#'   to select for output. To return all columns, specify `"all"`.
+#' @param .select_cols Deprecated. Please use `.cleanup_cols` instead.
 #'
 #' @examples
 #'
