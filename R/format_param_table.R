@@ -69,7 +69,7 @@
 #' ) %>% format_param_table()
 #' }
 #'
-#' @importFrom tidyselect any_of any_of
+#' @importFrom tidyselect any_of all_of
 #' @export
 format_param_table <- function(
     .df,
