@@ -35,9 +35,9 @@
 #'   - `"type"`, `"abb"`, `"greek"`, `"desc"`, `"value"`, `"ci"`, `"shrinkage"`.
 #'   - Set to `FALSE` to return all columns.
 #' @param .prse logical (T/F). If `TRUE`, output `pRSE`. Default is `FALSE`.
-#' @param .digit set significant digits for output (optional). Default is three
-#'   digits.
-#' @param .maxex set maxex for computation (optional). Default is `NULL`.
+#' @param .digit number of significant digits. Default is three digits
+#' @param .maxex maximum number of significant digits before moving to scientific
+#'   notation. Default is NULL
 #' @param .select_cols Deprecated. Please use `.cleanup_cols` instead.
 #'
 #' @examples

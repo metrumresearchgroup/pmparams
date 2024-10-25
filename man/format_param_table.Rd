@@ -26,10 +26,10 @@ following columns:
 
 \item{.prse}{logical (T/F). If \code{TRUE}, output \code{pRSE}. Default is \code{FALSE}.}
 
-\item{.digit}{set significant digits for output (optional). Default is three
-digits.}
+\item{.digit}{number of significant digits. Default is three digits}
 
-\item{.maxex}{set maxex for computation (optional). Default is \code{NULL}.}
+\item{.maxex}{maximum number of significant digits before moving to scientific
+notation. Default is NULL}
 
 \item{.select_cols}{Deprecated. Please use \code{.cleanup_cols} instead.}
 }
