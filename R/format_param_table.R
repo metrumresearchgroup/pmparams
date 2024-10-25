@@ -21,8 +21,8 @@
 #' @param .df parameter estimates output from \code{\link[pmparams]{define_param_table}} with modifications ready for formatting
 #' @param .select_cols columns to select for output. Default selects "type", "abb", "greek", "desc", "value", "ci", "shrinkage". To return all columns, specify "all" for .select_cols
 #' @param .prse output pRSE. Default is FALSE
-#' @param .digit set significant digits for output (optional). Default is three digits
-#' @param .maxex set maxex for computation (optional). Default is NULL
+#' @param .digit number of significant digits. Default is three digits
+#' @param .maxex maximum number of significant digits before moving to scientific notation. Default is NULL
 #'
 #' @examples
 #'

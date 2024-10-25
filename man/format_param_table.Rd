@@ -19,9 +19,9 @@ format_param_table(
 
 \item{.prse}{output pRSE. Default is FALSE}
 
-\item{.digit}{set significant digits for output (optional). Default is three digits}
+\item{.digit}{number of significant digits. Default is three digits}
 
-\item{.maxex}{set maxex for computation (optional). Default is NULL}
+\item{.maxex}{maximum number of significant digits before moving to scientific notation. Default is NULL}
 }
 \description{
 Format parameter estimate values and output selected columns to be shown in
