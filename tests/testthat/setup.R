@@ -33,7 +33,7 @@ param_yaml <- yaml::yaml.load_file(paramKey_path)
 
 # Data for testing param table (no bootstrap)
 paramPath <- file.path(model_dir, "102")
-paramEst <- readr::read_csv(file.path(model_dir, "param_est.csv"))
+paramEst <- readr::read_csv(file.path(model_dir, "param_est.csv"), show_col_types = FALSE)
 paramModel <- bbr::read_model(paramPath)
 
 newDF <- define_param_table(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
