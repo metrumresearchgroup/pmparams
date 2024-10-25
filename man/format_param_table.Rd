@@ -6,34 +6,51 @@
 \usage{
 format_param_table(
   .df,
-  .select_cols = c("type", "abb", "greek", "desc", "value", "ci", "shrinkage"),
+  .cleanup_cols = TRUE,
   .prse = FALSE,
   .digit = getOption("pmparams.dig"),
-  .maxex = getOption("pmparams.maxex")
+  .maxex = getOption("pmparams.maxex"),
+  .select_cols = NULL
 )
 }
 \arguments{
-\item{.df}{parameter estimates output from \code{\link[pmparams]{define_param_table}} with modifications ready for formatting}
+\item{.df}{parameter estimates output from \code{\link[=define_param_table]{define_param_table()}} with
+modifications ready for formatting.}
 
-\item{.select_cols}{columns to select for output. Default selects "type", "abb", "greek", "desc", "value", "ci", "shrinkage". To return all columns, specify "all" for .select_cols}
+\item{.cleanup_cols}{logical (T/F). Defaults to \code{TRUE}, which selects the
+following columns:
+\itemize{
+\item \code{"type"}, \code{"abb"}, \code{"greek"}, \code{"desc"}, \code{"value"}, \code{"ci"}, \code{"shrinkage"}.
+\item Set to \code{FALSE} to return all columns.
+}}
 
-\item{.prse}{output pRSE. Default is FALSE}
+\item{.prse}{logical (T/F). If \code{TRUE}, output \code{pRSE}. Default is \code{FALSE}.}
 
 \item{.digit}{number of significant digits. Default is three digits}
 
-\item{.maxex}{maximum number of significant digits before moving to scientific notation. Default is NULL}
+\item{.maxex}{maximum number of significant digits before moving to scientific
+notation. Default is NULL}
+
+\item{.select_cols}{Deprecated. Please use \code{.cleanup_cols} instead.}
 }
 \description{
 Format parameter estimate values and output selected columns to be shown in
 the parameter table.
-
+}
+\details{
 There are four main steps of this function:
 \enumerate{
-\item When necessary, back transform parameters and their CIs, round parameters using pmtables::sig, and combine columns.
-\item Format the THETA/OMEGA/SIGMA values to display as greek letters in Latex, with subscript numbers, and where necessary, the transformation applied to that parameter.
-\item Determine which panel of the final table the parameter should be displayed in. This is informed by the panel argument you defined in your parameter key. Note that there are a finite number of options included by default (see below) but you can include additional panels as needed.
+\item When necessary, back transform parameters and their CIs, round parameters
+using \code{pmtables::sig}, and combine columns.
+\item Format the THETA/OMEGA/SIGMA values to display as Greek letters in LaTeX,
+with subscript numbers, and indicate the transformation applied to that
+parameter, if applicable.
+\item Determine which panel of the final table the parameter should be displayed
+in. This is informed by the panel argument you defined in your parameter key.
+Note that there are a finite number of options included by default (see
+below), but you can include additional panels as needed.
+
 Panel types include:
-}
 \itemize{
 \item Residual variance
 \item Interindividual covariance parameters
@@ -42,20 +59,35 @@ Panel types include:
 \item Covariate effect parameters
 \item Structural model parameters
 }
-\enumerate{
 \item Select columns for final tables.
 }
 }
 \examples{
 
-#Using output from `define_param_table` (defineOut),
-paramEst <- utils::read.csv(system.file("model/nonmem/param_est.csv", package = "pmparams"))
-paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
-defineOut <- define_param_table(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
+model_dir <- system.file("model/nonmem", package = "pmparams")
+paramKey <-  file.path(model_dir, "pk-parameter-key-new.yaml")
 
-format_param_table(.df = defineOut)
+# Using a file path:
+param_ests <- readr::read_csv(file.path(model_dir, "param_est.csv"))
+param_df <- define_param_table(
+ .estimates = param_ests,
+ .key = paramKey,
+ .ci = 95,
+)
 
-#To include all columns:
+format_param_table(param_df)
 
-format_param_table(.df = defineOut, .select_cols="all")
+# To include all columns:
+format_param_table(param_df, .cleanup_cols = FALSE)
+
+# Using a `bbr` model
+\dontrun{
+mod <- bbr::read_model(file.path(model_dir, "106"))
+param_df <- define_param_table(
+ .estimates = mod,
+ .key = paramKey,
+ .ci = 95,
+) \%>\% format_param_table()
+}
+
 }

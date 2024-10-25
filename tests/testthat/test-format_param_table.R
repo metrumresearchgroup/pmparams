@@ -5,24 +5,24 @@ newDF4 <- newDF %>%
   format_param_table(.prse = TRUE)
 
 newDF5 <- newDF %>%
-  format_param_table(.select_cols = "all")
+  format_param_table(.cleanup_cols = FALSE)
 
 newDF6 <- theta_err_df1 %>%
-  format_param_table(.select_cols = "all", .prse = TRUE)
+  format_param_table(.cleanup_cols = FALSE, .prse = TRUE)
 
 ci_name <- newDF %>% dplyr::distinct(ci_level) %>% dplyr::pull(ci_level)
 
 
 test_that("format_param_table expected dataframe: col names", {
-  #default cols., no prse
-  expect_equal(names(newDF3),  c("type", "abb", "greek", "desc", "value", paste0("ci_", ci_name),"shrinkage"))
+  # default cols., no prse
+  expect_equal(names(newDF3),  c("type", "abb", "greek", "desc", "value", "shrinkage", paste0("ci_", ci_name)))
 
-  #all cols., no prse
-  expect_equal(length(names(newDF5)),  42)
+  # all cols., no prse
+  expect_equal(length(names(newDF5)),  40)
 })
 
 test_that("format_param_table expected dataframe: prse col", {
-  #default cols., prse
+  # default cols., prse
   expect_equal(newDF4$pRSE[1],  "6.29")
   expect_true("pRSE" %in% names(newDF6))
 
@@ -78,12 +78,12 @@ test_that("format_param_table continuous columns expected ouput: CI back transfo
 
   newDF4 <- define_param_table(.estimates = paramEst, .key = key_df, .ci = 95, .zscore = NULL)
 
-  newDF5 <- newDF4%>% format_param_table()
+  newDF4a <- newDF4 %>% format_param_table()
 
   expected_cv =  pmtables::sig(sqrt(exp(newDF4$value[newDF4$addErrLogDV == TRUE]) -1)* 100)
   expected_value = paste0(pmtables::sig(newDF4$value[newDF4$addErrLogDV == TRUE]), " [CV\\%=", expected_cv, "]")
 
-  expect_equal(newDF5$value[newDF5$abb == "Lognormal residual error"], expected_value)
+  expect_equal(newDF4a$value[newDF4a$abb == "Lognormal residual error"], expected_value)
 })
 
 test_that("format_param_table continuous columns expected ouput: greek", {
@@ -104,7 +104,7 @@ test_that("format_param_table panel expected ouput", {
     )
 
   newDF7 <- define_param_table(.estimates = paramEst, .key = paramKey1, .ci = 95, .zscore = NULL)
-  newDF8 <- format_param_table(newDF7, .select_cols = "all")
+  newDF8 <- format_param_table(newDF7, .cleanup_cols = FALSE)
 
   expect_equal(newDF8$type[newDF8$name == "THETA2"], "Interindividual variance parameters")
   expect_equal(newDF8$type_f[newDF8$name == "THETA2"], 3)
@@ -124,12 +124,12 @@ test_that("format_param_table: .digit produces expected significant digits", {
 
   newDF9 <- format_param_table(newDF)
   expect_equal(newDF9$value[9], "0.0690 [Corr=0.511]")
-  expect_equal(newDF9$ci[9], "0.0299, 0.108")
+  expect_equal(newDF9$ci_95[9], "0.0299, 0.108")
   expect_equal(newDF9$shrinkage[6], "17.9")
 
   newDF10 <- format_param_table(newDF, .digit = 6)
   expect_equal(newDF10$value[9], "0.0690088 [Corr=0.510933]")
-  expect_equal(newDF10$ci[9], "0.0298839, 0.108134")
+  expect_equal(newDF10$ci_95[9], "0.0298839, 0.108134")
   expect_equal(newDF10$shrinkage[6], "17.8988")
 })
 
@@ -143,21 +143,36 @@ test_that("format_param_table: .maxex produces expected scientific notation", {
   newDF12 <- format_param_table(newDF11)
   expect_equal(newDF12$value[1], "6.77e+18")
   expect_equal(newDF12$value[10], "13.4 [Corr=0.694]")
-  expect_equal(newDF12$ci[10], "8.78e-06, 0.00180")
+  expect_equal(newDF12$ci_95[10], "8.78e-06, 0.00180")
   expect_equal(newDF12$shrinkage[6], "17.9")
-
-  newDF13 <- format_param_table(newDF11, .maxex = 99)
-  expect_equal(newDF13$value[1], "6770000000000000000")
-  expect_equal(newDF13$value[10], "13.4 [Corr=0.694]")
-  expect_equal(newDF13$ci[10], "0.00000878, 0.00180")
-  expect_equal(newDF13$shrinkage[6], "17.9")
-
-  #maxex and digit
-  newDF14 <- format_param_table(newDF11, .digit = 2, .maxex = 99)
-  expect_equal(newDF14$value[1], "6800000000000000000")
-  expect_equal(newDF14$value[10], "13 [Corr=0.69]")
-  expect_equal(newDF14$ci[10], "0.0000088, 0.0018")
-  expect_equal(newDF14$shrinkage[6], "18")
-
 })
 
+test_that("format_param_table: .select_cols works", {
+
+  # Traditional use works
+  expect_warning(
+    df2 <- format_param_table(newDF, .select_cols = c("abb", "ci_95")),
+    "`.select_cols` is deprecated"
+  )
+  expect_equal(names(df2), c("abb", "ci_95"))
+
+  # 'all' returns all columns
+  expect_warning(
+    df2 <- format_param_table(newDF, .select_cols = "ALL"),
+    "`.select_cols` is deprecated"
+  )
+  expect_equal(setdiff(names(df2), names(newDF)), c("cv", "pRSE", "sd", "text", "greek", "type", "type_f", "ci_95"))
+
+  # Missing cols
+  expect_error(
+    format_param_table(newDF, .select_cols = "other") %>% suppressWarnings(),
+    "The following specified columns were not found: other"
+  )
+
+  # Old way of selecting `ci` column messages
+  expect_message(
+    df2 <- format_param_table(newDF, .select_cols = "ci") %>% suppressWarnings(),
+    "`ci` is no longer a valid column name. pmparams will select ci_95"
+  )
+
+})

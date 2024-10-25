@@ -17,31 +17,43 @@ Authors@R:
       person(given = "Grace",
              family = "O'Brien",
              role = c("aut"),
-             email = "graceo@metrumrg.com")) 
+             email = "graceo@metrumrg.com"),
+      person(given = "Kyle",
+             family = "Barrett",
+             role = c("aut"),
+             email = "barrettk@metrumrg.com")) 
 Description: `pmparams` is a library written in R that generates clear, well-formatted parameter tables to report NONMEM model results.
 URL: https://metrumresearchgroup.github.io/pmparams/, https://github.com/metrumresearchgroup/pmparams
 BugReports: https://github.com/metrumresearchgroup/pmparams/issues
+Depends:
+    R (>= 3.5)
 Imports:
-    dplyr (>= 0.5.0),
+    checkmate,
+    dplyr (>= 1.0.0),
     magrittr,
     pmtables,
     rlang,
     stringr,
-    glue,
+    glue (< 1.8.0),
     logitnorm,
     purrr,
+    tibble,
     tidyr,
-    yaml,
+    tidyselect (>= 1.0.0),
     readr,
-    withr
+    yaml
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Suggests: 
-    bbr,
+    bbr (>= 1.11.0),
+    devtools,
+    knitr,
+    magick,
+    pdftools,
     testthat (>= 3.0.0),
-    knitr
+    withr
 Config/testthat/edition: 3
 VignetteBuilder: 
     knitr

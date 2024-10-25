@@ -24,14 +24,17 @@ paramKey = dplyr::tribble(
   "SIGMA11", "Proportional", "Variance", "RV", "propErr"
 )
 
-paramKey2 <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
-param_yaml <- yaml::yaml.load_file(paramKey2)
 
-#Data for testing param table (no boot)
+model_dir <- system.file("model/nonmem", package = "pmparams")
 
-paramPath <- system.file("model/nonmem/102", package = "pmparams")
-paramEst <- utils::read.csv(system.file("model/nonmem/param_est.csv", package = "pmparams"))
-paramModel <- bbr::read_model(system.file("model/nonmem/102", package = "pmparams"))
+paramKey_path <-  file.path(model_dir, "pk-parameter-key-new.yaml")
+paramKeyBoth_path <-  file.path(model_dir, "pk-parameter-key-both.yaml")
+param_yaml <- yaml::yaml.load_file(paramKey_path)
+
+# Data for testing param table (no bootstrap)
+paramPath <- file.path(model_dir, "102")
+paramEst <- readr::read_csv(file.path(model_dir, "param_est.csv"), show_col_types = FALSE)
+paramModel <- bbr::read_model(paramPath)
 
 newDF <- define_param_table(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
 newFormatDF <- format_param_table(newDF)

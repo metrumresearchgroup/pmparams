@@ -13,6 +13,14 @@ Repos:
   - pmtables: https://s3.amazonaws.com/mpn.metworx.dev/releases/pmtables/latest_tag
   - nmrec: https://s3.amazonaws.com/mpn.metworx.dev/releases/nmrec/latest_tag
   - mrgmisc: https://s3.amazonaws.com/mpn.metworx.dev/releases/mrgmisc/latest_tag
+  - glue: https://mpn.metworx.com/snapshots/stable/2024-09-23 # 1.8.0 conflics with pmtables
+
+Customizations:
+  Packages:
+    - glue:
+        Repo: glue
+    - pmtables:
+        Suggests: true
 
 Lockfile:
   Type: renv
