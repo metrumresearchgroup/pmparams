@@ -103,11 +103,10 @@ format_param_table <- function(
 
   # Handle deprecated .select_cols arg, or define it below
   if (!is.null(.select_cols)){
-    message("`.select_cols` is deprecated and included for backwards compatibility. Using this sets `.cleanup_cols = FALSE`")
+    warning("`.select_cols` is deprecated and included for backwards compatibility. Using this sets `.cleanup_cols = FALSE`")
     .cleanup_cols <- FALSE
     # Check for deprecated ci column specification
     if (any(tolower(.select_cols) == "ci")) {
-      # TODO: make sure this is tested
       message(glue::glue("`ci` is no longer a valid column name. pmparams will select {.ci_final_nam}"))
       .select_cols[.select_cols == "ci"] <- .ci_final_nam
     }

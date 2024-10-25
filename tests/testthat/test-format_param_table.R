@@ -5,10 +5,10 @@ newDF4 <- newDF %>%
   format_param_table(.prse = TRUE)
 
 newDF5 <- newDF %>%
-  format_param_table(.select_cols = "all") %>% suppressMessages()
+  format_param_table(.cleanup_cols = FALSE)
 
 newDF6 <- theta_err_df1 %>%
-  format_param_table(.select_cols = "all", .prse = TRUE) %>% suppressMessages()
+  format_param_table(.cleanup_cols = FALSE, .prse = TRUE)
 
 ci_name <- newDF %>% dplyr::distinct(ci_level) %>% dplyr::pull(ci_level)
 
@@ -150,14 +150,14 @@ test_that("format_param_table: .maxex produces expected scientific notation", {
 test_that("format_param_table: .select_cols works", {
 
   # Traditional use works
-  expect_message(
+  expect_warning(
     df2 <- format_param_table(newDF, .select_cols = c("abb", "ci_95")),
     "`.select_cols` is deprecated"
   )
   expect_equal(names(df2), c("abb", "ci_95"))
 
   # 'all' returns all columns
-  expect_message(
+  expect_warning(
     df2 <- format_param_table(newDF, .select_cols = "ALL"),
     "`.select_cols` is deprecated"
   )
@@ -165,7 +165,14 @@ test_that("format_param_table: .select_cols works", {
 
   # Missing cols
   expect_error(
-    format_param_table(newDF, .select_cols = "other") %>% suppressMessages(),
+    format_param_table(newDF, .select_cols = "other") %>% suppressWarnings(),
     "The following specified columns were not found: other"
   )
+
+  # Old way of selecting `ci` column messages
+  expect_message(
+    df2 <- format_param_table(newDF, .select_cols = "ci") %>% suppressWarnings(),
+    "`ci` is no longer a valid column name. pmparams will select ci_95"
+  )
+
 })
