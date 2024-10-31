@@ -1,3 +1,19 @@
+# pmparams 0.2.1
+
+## New features
+- Update R to 4.3. (#56)
+  
+- Update wording in argument descriptions, examples, and vignettes. (#59, #62, #65, #68)
+  
+- Remove unnecessary console messages. (#58)
+  
+- Update dependency and suggest packages. (#76)
+  
+- Show formatted LaTeX table in vignettes. (#75, #76)
+  
+## Bug fixes
+- Update `.maxex` and `.digits` arguments to carry through all functions. (#61)
+
 # pmparams 0.2.0
 
 ## New features 
