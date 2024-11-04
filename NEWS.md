@@ -13,7 +13,7 @@
   
 - Update dependency and suggest packages. (#74)
 
-- Add `.cleanup_cols` argument to `format_param_table` and deprecates `.select_cols` argument. `.select_cols` had limited utility. Users can instead use `pmtables::st_select` to further select their columns if needed. (#74)
+- Add `.cleanup_cols` argument to `format_param_table` and deprecate `.select_cols` argument. The flexibility in `.select_cols` has limited utility. `.cleanup_cols` is a simpler version of `.select_cols` that users can set to T or F.  If user wants to select certain columns, they can set `.cleanup_cols` = F and then use `pmtables::st_select` to further select their columns if needed. (#74)
   
 ## Bug fixes
 - Update `.maxex` and `.digits` arguments to carry through all functions. (#63)
