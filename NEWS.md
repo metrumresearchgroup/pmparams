@@ -3,13 +3,17 @@
 ## New features
 - Update R to 4.3. (#63)
   
-- Update wording in argument descriptions, examples, and vignettes. (#77)
+- Update wording in argument descriptions, examples, and vignettes. (#74, #77)
+
+- Add examples utilizing `bbr` models to function documentation and getting-started vignette. (#74)
+
+- Show formatted LaTeX table in vignettes. (#74)
   
 - Remove unnecessary console messages. (#63)
   
 - Update dependency and suggest packages. (#74)
-  
-- Show formatted LaTeX table in vignettes. (#74)
+
+- Add `.cleanup_cols` argument to `format_param_table` and deprecates `.select_cols` argument. `.select_cols` had limited utility. Users can instead use `pmtables::st_select` to further select their columns if needed. (#74)
   
 ## Bug fixes
 - Update `.maxex` and `.digits` arguments to carry through all functions. (#63)
