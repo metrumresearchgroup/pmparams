@@ -1,17 +1,7 @@
 # pmparams 0.2.1
 
 ## New features
-- Update R to 4.3. (#63)
-  
-- Update wording in argument descriptions, examples, and vignettes. (#74, #77)
-
-- Add examples utilizing `bbr` models to function documentation and getting-started vignette. (#74)
-
-- Show formatted LaTeX table in vignettes. (#74)
-  
-- Remove unnecessary console messages. (#63)
-  
-- Update dependency and suggest packages. (#74)
+- Update wording in argument descriptions, examples, and vignettes. (#63, #74, #77)
 
 - Add `.cleanup_cols` argument to `format_param_table` and deprecate `.select_cols` argument. The flexibility in `.select_cols` has limited utility. `.cleanup_cols` is a simpler version of `.select_cols` that users can set to T or F.  If user wants to select certain columns, they can set `.cleanup_cols` = F and then use `pmtables::st_select` to further select their columns if needed. (#74)
   
