@@ -1,120 +1,43 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/articles/getting-started.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/articles/making-bootstrap-parameter-tables.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/asNum.html</loc>
-  </url>
-  <url>
-    <loc>/reference/backTrans_log.html</loc>
-  </url>
-  <url>
-    <loc>/reference/backTrans_logit.html</loc>
-  </url>
-  <url>
-    <loc>/reference/checkTransforms.html</loc>
-  </url>
-  <url>
-    <loc>/reference/defineRows.html</loc>
-  </url>
-  <url>
-    <loc>/reference/define_boot_table.html</loc>
-  </url>
-  <url>
-    <loc>/reference/define_param_table.html</loc>
-  </url>
-  <url>
-    <loc>/reference/formatGreekNames.html</loc>
-  </url>
-  <url>
-    <loc>/reference/formatValues.html</loc>
-  </url>
-  <url>
-    <loc>/reference/formatValuesBoot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/format_boot_table.html</loc>
-  </url>
-  <url>
-    <loc>/reference/format_param_table.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getCI.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getCV_propS.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getEvenNo.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getPanelName.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getSD_logitO.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getValueSE.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getpRSE.html</loc>
-  </url>
-  <url>
-    <loc>/reference/grouped_warn_ungroup.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/loadParamEstimates.html</loc>
-  </url>
-  <url>
-    <loc>/reference/loadParamKey.html</loc>
-  </url>
-  <url>
-    <loc>/reference/lowerCI.html</loc>
-  </url>
-  <url>
-    <loc>/reference/make_pmtable.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mathMode.html</loc>
-  </url>
-  <url>
-    <loc>/reference/param_key.html</loc>
-  </url>
-  <url>
-    <loc>/reference/param_notes.html</loc>
-  </url>
-  <url>
-    <loc>/reference/parens.html</loc>
-  </url>
-  <url>
-    <loc>/reference/pmparams.html</loc>
-  </url>
-  <url>
-    <loc>/reference/removePunc.html</loc>
-  </url>
-  <url>
-    <loc>/reference/zscore_ci_msg.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/404.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/articles/getting-started.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/articles/index.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/articles/making-bootstrap-parameter-tables.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/authors.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/index.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/news/index.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/asNum.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/backTrans_log.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/backTrans_logit.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/checkTransforms.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/defineRows.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/define_boot_table.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/define_param_table.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/formatGreekNames.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/formatValues.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/formatValuesBoot.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/format_boot_table.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/format_param_table.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/getCI.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/getCV_propS.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/getEvenNo.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/getPanelName.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/getSD_logitO.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/getValueSE.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/getpRSE.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/grouped_warn_ungroup.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/index.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/loadParamEstimates.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/loadParamKey.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/lowerCI.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/make_pmtable.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/mathMode.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/param_key.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/param_notes.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/parens.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/pipe.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/pmparams.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/removePunc.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/zscore_ci_msg.html</loc></url>
 </urlset>
+
