@@ -1,16 +1,16 @@
-newDF3 <- newDF %>%
+newDF3 <- PARAM_TAB_102 %>%
   format_param_table()
 
-newDF4 <- newDF %>%
+newDF4 <- PARAM_TAB_102 %>%
   format_param_table(.prse = TRUE)
 
-newDF5 <- newDF %>%
+newDF5 <- PARAM_TAB_102 %>%
   format_param_table(.cleanup_cols = FALSE)
 
 newDF6 <- theta_err_df1 %>%
   format_param_table(.cleanup_cols = FALSE, .prse = TRUE)
 
-ci_name <- newDF %>% dplyr::distinct(ci_level) %>% dplyr::pull(ci_level)
+ci_name <- PARAM_TAB_102 %>% dplyr::distinct(ci_level) %>% dplyr::pull(ci_level)
 
 
 test_that("format_param_table expected dataframe: col names", {
@@ -32,7 +32,7 @@ test_that("format_param_table expected dataframe: prse col", {
 
 
 test_that("format_param_table continuous columns expected ouput: CI back transforms", {
-  newDF_log1 <- newDF %>%
+  newDF_log1 <- PARAM_TAB_102 %>%
     dplyr::mutate(
       ci = paste0(pmtables::sig(lower), ", ", pmtables::sig(upper))
     )
@@ -41,7 +41,7 @@ test_that("format_param_table continuous columns expected ouput: CI back transfo
 })
 
 test_that("format_param_table continuous columns expected ouput: CI back transforms", {
-  before_format <- newDF %>%
+  before_format <- PARAM_TAB_102 %>%
     mutate(ci_level = as.character(ci_level)) %>%
     distinct(ci_level) %>%
     pull(ci_level)
@@ -53,7 +53,7 @@ test_that("format_param_table continuous columns expected ouput: CI back transfo
 
 
 test_that("format_param_table continuous columns expected ouput: shrinkage", {
-  newDF_shrink <- newDF %>%
+  newDF_shrink <- PARAM_TAB_102 %>%
     dplyr::mutate(
       shrinkage = if_else(is.na(shrinkage), "-",
                           as.character(pmtables::sig(shrinkage))
@@ -71,12 +71,11 @@ test_that("format_param_table continuous columns expected ouput: value", {
 })
 
 test_that("format_param_table continuous columns expected ouput: CI back transforms for addErrLogDV", {
-  key_file <- file.path(MODEL_DIR, "pk-parameter-key.yaml")
-  key_df <- pmtables::yaml_as_df(key_file) %>%
+  key_df <- pmtables::yaml_as_df(PARAM_KEY_PATH_DF) %>%
     filter(.row != "gg") %>%
     dplyr::add_row(.row = "gg", name = "SIGMA11", abb = "Lognormal residual error", desc = "Variance", panel = "RV", trans = "addErrLogDV")
 
-  newDF4 <- define_param_table(.estimates = paramEst, .key = key_df, .ci = 95, .zscore = NULL)
+  newDF4 <- define_param_table(.estimates = PARAM_EST_102, .key = key_df, .ci = 95, .zscore = NULL)
 
   newDF4a <- newDF4 %>% format_param_table()
 
@@ -92,18 +91,18 @@ test_that("format_param_table continuous columns expected ouput: greek", {
 })
 
 test_that("format_param_table expected dataframe: respects yaml key order", {
-  expect_equal(unname(unlist(param_yaml))[grepl('desc',names(unlist(param_yaml)),fixed=T) & unlist(param_yaml) %in% newDF3$desc],
+  expect_equal(unname(unlist(PARAM_KEY_YAML))[grepl('desc',names(unlist(PARAM_KEY_YAML)),fixed=T) & unlist(PARAM_KEY_YAML) %in% newDF3$desc],
                newDF3$desc)
 })
 
 test_that("format_param_table panel expected ouput", {
-  paramKey1 <- paramKey %>%
+  paramKey1 <- PARAM_KEY_DF %>%
     mutate(
       panel = if_else(name == "THETA2", "IIV", panel),
       trans = if_else(name == "THETA2", "none", trans)
     )
 
-  newDF7 <- define_param_table(.estimates = paramEst, .key = paramKey1, .ci = 95, .zscore = NULL)
+  newDF7 <- define_param_table(.estimates = PARAM_EST_102, .key = paramKey1, .ci = 95, .zscore = NULL)
   newDF8 <- format_param_table(newDF7, .cleanup_cols = FALSE)
 
   expect_equal(newDF8$type[newDF8$name == "THETA2"], "Interindividual variance parameters")
@@ -122,12 +121,12 @@ test_that("format_param_table: logit back transform large estimate returns 1", {
 
 test_that("format_param_table: .digit produces expected significant digits", {
 
-  newDF9 <- format_param_table(newDF)
+  newDF9 <- format_param_table(PARAM_TAB_102)
   expect_equal(newDF9$value[9], "0.0690 [Corr=0.511]")
   expect_equal(newDF9$ci_95[9], "0.0299, 0.108")
   expect_equal(newDF9$shrinkage[6], "17.9")
 
-  newDF10 <- format_param_table(newDF, .digit = 6)
+  newDF10 <- format_param_table(PARAM_TAB_102, .digit = 6)
   expect_equal(newDF10$value[9], "0.0690088 [Corr=0.510933]")
   expect_equal(newDF10$ci_95[9], "0.0298839, 0.108134")
   expect_equal(newDF10$shrinkage[6], "17.8988")
@@ -135,7 +134,7 @@ test_that("format_param_table: .digit produces expected significant digits", {
 
 test_that("format_param_table: .maxex produces expected scientific notation", {
 
-  newDF11 <- newDF %>%
+  newDF11 <- PARAM_TAB_102 %>%
     mutate(value = value*100,
            upper = upper*0.01,
            lower = lower*0.0001)
@@ -151,27 +150,27 @@ test_that("format_param_table: .select_cols works", {
 
   # Traditional use works
   expect_warning(
-    df2 <- format_param_table(newDF, .select_cols = c("abb", "ci_95")),
+    df2 <- format_param_table(PARAM_TAB_102, .select_cols = c("abb", "ci_95")),
     "`.select_cols` is deprecated"
   )
   expect_equal(names(df2), c("abb", "ci_95"))
 
   # 'all' returns all columns
   expect_warning(
-    df2 <- format_param_table(newDF, .select_cols = "ALL"),
+    df2 <- format_param_table(PARAM_TAB_102, .select_cols = "ALL"),
     "`.select_cols` is deprecated"
   )
-  expect_equal(setdiff(names(df2), names(newDF)), c("cv", "pRSE", "sd", "text", "greek", "type", "type_f", "ci_95"))
+  expect_equal(setdiff(names(df2), names(PARAM_TAB_102)), c("cv", "pRSE", "sd", "text", "greek", "type", "type_f", "ci_95"))
 
   # Missing cols
   expect_error(
-    format_param_table(newDF, .select_cols = "other") %>% suppressWarnings(),
+    format_param_table(PARAM_TAB_102, .select_cols = "other") %>% suppressWarnings(),
     "The following specified columns were not found: other"
   )
 
   # Old way of selecting `ci` column messages
   expect_message(
-    df2 <- format_param_table(newDF, .select_cols = "ci") %>% suppressWarnings(),
+    df2 <- format_param_table(PARAM_TAB_102, .select_cols = "ci") %>% suppressWarnings(),
     "`ci` is no longer a valid column name. pmparams will select ci_95"
   )
 
