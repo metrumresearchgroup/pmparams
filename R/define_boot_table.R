@@ -48,7 +48,7 @@ define_boot_table <- function(.boot_estimates, .nonboot_estimates, .key){
 
   #path to boot estimates
   if (inherits(.boot_estimates, "character")){
-    .boot <- readr::read_csv(.boot_estimates)
+    .boot <- readr::read_csv(.boot_estimates, show_col_types = FALSE)
   #data.frame of boot estimates
   } else {
     .boot <- .boot_estimates
