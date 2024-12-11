@@ -35,7 +35,9 @@ PARAM_KEY_PATH_BOTH <-  file.path(MODEL_DIR, "pk-parameter-key-both.yaml")
 
 # Data for testing param table (no bootstrap)
 MOD102_PATH <- file.path(MODEL_DIR, "102")
-PARAM_EST_102 <- readr::read_csv(file.path(MODEL_DIR, "param_est_102.csv"), show_col_types = FALSE)
+PARAM_EST_102 <- readr::read_csv(
+  file.path(MODEL_DIR, "param_est_102.csv"), show_col_types = FALSE
+)
 
 PARAM_TAB_102 <- define_param_table(
   .estimates = PARAM_EST_102,
@@ -47,7 +49,9 @@ FMT_PARAM_TAB_102_PRSE  <- format_param_table(PARAM_TAB_102, .prse = TRUE)
 
 # Data for testing boot param table
 MOD106_PATH <- file.path(MODEL_DIR, "106")
-PARAM_EST_106 <- readr::read_csv(file.path(MODEL_DIR, "param_est_106.csv"), show_col_types = FALSE)
+PARAM_EST_106 <- readr::read_csv(
+  file.path(MODEL_DIR, "param_est_106.csv"), show_col_types = FALSE
+)
 
 BOOT_106_EST_PATH <- file.path(MODEL_DIR, "boot", "data", "boot-106.csv")
 BOOT_106_EST <- readr::read_csv(BOOT_106_EST_PATH, show_col_types = FALSE)
@@ -60,8 +64,15 @@ BOOT_TAB_106 <- pmparams::define_boot_table(
 FMT_BOOT_TAB_106 <- pmparams::format_boot_table(.boot_df = BOOT_TAB_106)
 
 # testing theta error block
-THETA_ERR = PARAM_EST_102 %>% as.data.frame() %>% mutate(parameter_names = if_else(parameter_names == "SIGMA(1,1)", "THETA(1,1)", parameter_names))
-THETA_ERR_KEY = PARAM_KEY_DF %>% mutate(name = if_else(name == "SIGMA11", "THETA11", name))
+THETA_ERR = PARAM_EST_102 %>%
+  as.data.frame() %>%
+  mutate(
+    parameter_names = if_else(
+      parameter_names == "SIGMA(1,1)", "THETA(1,1)", parameter_names
+    )
+  )
+THETA_ERR_KEY = PARAM_KEY_DF %>%
+  mutate(name = if_else(name == "SIGMA11", "THETA11", name))
 THETA_ERR_PARAM_TAB <- define_param_table(
   .estimates = THETA_ERR,
   .key = THETA_ERR_KEY,
