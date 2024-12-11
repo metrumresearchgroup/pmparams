@@ -112,8 +112,12 @@ withr::with_options(list(bbr.bbi_exe_path = bbr::read_bbi_path()), {
   })
 
   test_that("define_param_table message if using theta error block", {
-    expect_message(define_param_table(.estimates = THETA_ERR, .key = THETA_ERR_KEY, .ci = 95, .zscore = NULL))
+    expect_message(
+      define_param_table(
+        .estimates = THETA_ERR, .key = THETA_ERR_KEY, .ci = 95, .zscore = NULL
+      ),
+      "THETA term was used"
+    )
   })
-
 
 })
