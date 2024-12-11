@@ -67,10 +67,14 @@ withr::with_options(list(bbr.bbi_exe_path = bbr::read_bbi_path()), {
     expect_equal(pathDF$estimate[pathDF$name == "OMEGA22"], 0.0821058)
   })
 
-  test_that("define_boot_table incorrect parameter key input type: Only abb, desc, panel and trans arguments will be used, all others ignored", {
-    expect_warning(capture.output(define_boot_table(.boot_estimates = BOOT_106_EST,
-                                                    .nonboot_estimates = PARAM_EST_106,
-                                                    .key = PARAM_KEY_PATH_BOTH)))
+  test_that("define_boot_table incorrect parameter key input type", {
+    expect_warning(
+      define_boot_table(
+        .boot_estimates = BOOT_106_EST, .nonboot_estimates = PARAM_EST_106,
+        .key = PARAM_KEY_PATH_BOTH
+      ),
+      "Only abb, desc, panel and trans arguments will be used"
+    )
   })
 
   # #for boot, estimates do not equal values////
