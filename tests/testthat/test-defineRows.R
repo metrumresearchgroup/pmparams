@@ -23,9 +23,9 @@ test_that("defineRows expected output: generates logical columns to indicate nam
 })
 
 test_that("defineRows expected output: theta error block", {
-  expect_equal(unique(theta_err_df1$THETAERR[theta_err_df1$TH == TRUE]), FALSE)
-  expect_equal(theta_err_df1$S[theta_err_df1$THETAERR == TRUE], TRUE)
-  expect_equal(theta_err_df1$S[theta_err_df1$panel == "RV"], TRUE)
+  expect_equal(unique(THETA_ERR_PARAM_TAB$THETAERR[THETA_ERR_PARAM_TAB$TH == TRUE]), FALSE)
+  expect_equal(THETA_ERR_PARAM_TAB$S[THETA_ERR_PARAM_TAB$THETAERR == TRUE], TRUE)
+  expect_equal(THETA_ERR_PARAM_TAB$S[THETA_ERR_PARAM_TAB$panel == "RV"], TRUE)
 })
 
 

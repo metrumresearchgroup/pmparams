@@ -59,14 +59,11 @@ BOOT_TAB_106 <- pmparams::define_boot_table(
 )
 FMT_BOOT_TAB_106 <- pmparams::format_boot_table(.boot_df = BOOT_TAB_106)
 
-# final output
-nonbootDF <- pmparams::define_param_table(.estimates = PARAM_EST_106, .key = PARAM_KEY_DF)
-formatnonbootDF <- nonbootDF %>% pmparams::format_param_table()
-
-
-bootParam <-  left_join(formatnonbootDF, FMT_BOOT_TAB_106, by = c("abb", "desc"))
-
 # testing theta error block
-theta_err = PARAM_EST_102 %>% as.data.frame() %>% mutate(parameter_names = if_else(parameter_names == "SIGMA(1,1)", "THETA(1,1)", parameter_names))
-theta_err_key = PARAM_KEY_DF %>% mutate(name = if_else(name == "SIGMA11", "THETA11", name))
-theta_err_df1 <- define_param_table(.estimates = theta_err, .key = theta_err_key, .ci = 95, .zscore = NULL)
+THETA_ERR = PARAM_EST_102 %>% as.data.frame() %>% mutate(parameter_names = if_else(parameter_names == "SIGMA(1,1)", "THETA(1,1)", parameter_names))
+THETA_ERR_KEY = PARAM_KEY_DF %>% mutate(name = if_else(name == "SIGMA11", "THETA11", name))
+THETA_ERR_PARAM_TAB <- define_param_table(
+  .estimates = THETA_ERR,
+  .key = THETA_ERR_KEY,
+  .ci = 95, .zscore = NULL
+) %>% suppressMessages()

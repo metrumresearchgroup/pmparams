@@ -7,7 +7,7 @@ newDF4 <- PARAM_TAB_102 %>%
 newDF5 <- PARAM_TAB_102 %>%
   format_param_table(.cleanup_cols = FALSE)
 
-newDF6 <- theta_err_df1 %>%
+newDF6 <- THETA_ERR_PARAM_TAB %>%
   format_param_table(.cleanup_cols = FALSE, .prse = TRUE)
 
 ci_name <- PARAM_TAB_102 %>% dplyr::distinct(ci_level) %>% dplyr::pull(ci_level)
