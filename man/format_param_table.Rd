@@ -68,7 +68,7 @@ model_dir <- system.file("model/nonmem", package = "pmparams")
 paramKey <-  file.path(model_dir, "pk-parameter-key-new.yaml")
 
 # Using a file path:
-param_ests <- readr::read_csv(file.path(model_dir, "param_est.csv"))
+param_ests <- readr::read_csv(file.path(model_dir, "param_est_102.csv"))
 param_df <- define_param_table(
  .estimates = param_ests,
  .key = paramKey,

@@ -33,7 +33,7 @@ param_yaml <- yaml::yaml.load_file(paramKey_path)
 
 # Data for testing param table (no bootstrap)
 paramPath <- file.path(model_dir, "102")
-paramEst <- readr::read_csv(file.path(model_dir, "param_est.csv"), show_col_types = FALSE)
+paramEst <- readr::read_csv(file.path(model_dir, "param_est_102.csv"), show_col_types = FALSE)
 paramModel <- bbr::read_model(paramPath)
 
 newDF <- define_param_table(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
@@ -42,10 +42,10 @@ newFormatDFprse  <- format_param_table(newDF, .prse = T)
 
 #Data for testing boot param table
 boot_paramEstPath <- system.file("model/nonmem/boot/data/boot-106.csv", package = "pmparams")
-boot_paramEst <- utils::read.csv(system.file("model/nonmem/boot/data/boot-106.csv", package = "pmparams"))
+boot_paramEst <- readr::read_csv(system.file("model/nonmem/boot/data/boot-106.csv", package = "pmparams"))
 
 nonboot_paramEstPath <- system.file("model/nonmem/106", package = "pmparams")
-nonboot_paramEst <- utils::read.csv(system.file("model/nonmem/nonboot_param_est.csv", package = "pmparams"))
+nonboot_paramEst <- readr::read_csv(file.path(model_dir, "param_est_106.csv"))
 
 newbootDF <- pmparams::define_boot_table(.boot_estimates =boot_paramEst, .nonboot_estimates = nonboot_paramEst, .key = paramKey)
 formatBootDF <- pmparams::format_boot_table(.boot_df = newbootDF)

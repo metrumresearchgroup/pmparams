@@ -17,7 +17,7 @@
 #' #Using output from `define_boot_table` (defineBootOut),
 #' boot_paramEst <- utils::read.csv(system.file("model/nonmem/boot/data/boot-106.csv",
 #'                                  package = "pmparams"))
-#' nonboot_paramEst <- utils::read.csv(system.file("model/nonmem/nonboot_param_est.csv",
+#' nonboot_paramEst <- utils::read.csv(system.file("model/nonmem/param_est_106.csv",
 #'                                     package = "pmparams"))
 #' paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
 #'
