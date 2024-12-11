@@ -7,8 +7,8 @@ withr::with_options(list(bbr.bbi_exe_path = bbr::read_bbi_path()), {
   test_that("define_boot_table expected output: generates logical columns to indicate parameter type", {
     expect_equal(newbootDF$TH[newbootDF$parameter_names == "THETA1"], TRUE)
     expect_equal(newbootDF$OM[newbootDF$parameter_names == "THETA1"], FALSE)
-    expect_equal(newbootDF$OM[newbootDF$parameter_names == "OMEGA.1.1."], TRUE)
-    expect_equal(newbootDF$S[newbootDF$parameter_names == "SIGMA.1.1."], TRUE)
+    expect_equal(newbootDF$OM[newbootDF$parameter_names == "OMEGA(1,1)"], TRUE)
+    expect_equal(newbootDF$S[newbootDF$parameter_names == "SIGMA(1,1)"], TRUE)
     expect_equal(newbootDF$S[newbootDF$parameter_names == "THETA1"], FALSE)
   })
 
@@ -40,10 +40,10 @@ withr::with_options(list(bbr.bbi_exe_path = bbr::read_bbi_path()), {
   })
 
   test_that("define_boot_table handles multiple estimate input types", {
-    pathnewbootDF <-define_boot_table(.boot_estimates =boot_paramEst, .nonboot_estimates = nonboot_paramEst, .key = paramKey)
+    pathnewbootDF <- define_boot_table(.boot_estimates =boot_paramEst, .nonboot_estimates = nonboot_paramEst, .key = paramKey)
     expect_equal(pathnewbootDF$estimate[pathnewbootDF$name == "OMEGA22"], 0.0821058)
 
-    mod_est <- bbr::read_model(system.file("model/nonmem/106", package = "pmparams"))
+    mod_est <- bbr::read_model(file.path(MODEL_DIR, "106"))
     pathDF2 <- define_boot_table(.boot_estimates = boot_paramEstPath, .nonboot_estimates = nonboot_paramEstPath, .key = paramKey)
     expect_equal(pathDF2$estimate[pathDF2$name == "OMEGA22"], 0.0821058)
 
@@ -55,12 +55,12 @@ withr::with_options(list(bbr.bbi_exe_path = bbr::read_bbi_path()), {
   test_that("define_boot_table handles multiple parameter key input types", {
     pathDF <- define_boot_table(.boot_estimates =boot_paramEst,
                                 .nonboot_estimates = nonboot_paramEst,
-                                .key = system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams"))
+                                .key = paramKey_path)
     expect_equal(pathDF$estimate[pathDF$name == "OMEGA22"],  0.0821058)
   })
 
   test_that("define_boot_table handles multiple parameter key input types", {
-    key_file <- system.file("model/nonmem/pk-parameter-key.yaml", package = "pmparams")
+    key_file <- file.path(MODEL_DIR, "pk-parameter-key.yaml")
     key_df <- pmtables::yaml_as_df(key_file)
     pathDF <- define_boot_table(.boot_estimates =boot_paramEst,
                                 .nonboot_estimates = nonboot_paramEst,
@@ -71,7 +71,7 @@ withr::with_options(list(bbr.bbi_exe_path = bbr::read_bbi_path()), {
   test_that("define_boot_table incorrect parameter key input type: Only abb, desc, panel and trans arguments will be used, all others ignored", {
     expect_warning(capture.output(define_boot_table(.boot_estimates =boot_paramEst,
                                                     .nonboot_estimates = nonboot_paramEst,
-                                                    .key = system.file("model/nonmem/pk-parameter-key-both.yaml", package = "pmparams"))))
+                                                    .key = paramKeyBoth_path)))
   })
 
   # #for boot, estimates do not equal values////

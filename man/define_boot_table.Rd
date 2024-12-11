@@ -40,12 +40,11 @@ with special transformation rules were defined correctly. In addition, a series 
 TRUE/FALSE columns that will be used by subsequent functions.
 }
 \examples{
+model_dir <- system.file("model/nonmem", package = "pmparams")
 
-boot_paramEst <- utils::read.csv(system.file("model/nonmem/boot/data/boot-106.csv",
-                                 package = "pmparams"))
-nonboot_paramEst <- utils::read.csv(system.file("model/nonmem/param_est_106.csv",
-                                    package = "pmparams"))
-paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
+boot_paramEst <- readr::read_csv(file.path(model_dir, "boot/data/boot-106.csv"))
+nonboot_paramEst <- readr::read_csv(file.path(model_dir, "param_est_102.csv"))
+paramKey <-  file.path(model_dir, "pk-parameter-key-new.yaml")
 
 define_boot_table(.boot_estimates = boot_paramEst,
                .nonboot_estimates = nonboot_paramEst,

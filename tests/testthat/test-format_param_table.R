@@ -71,7 +71,7 @@ test_that("format_param_table continuous columns expected ouput: value", {
 })
 
 test_that("format_param_table continuous columns expected ouput: CI back transforms for addErrLogDV", {
-  key_file <- system.file("model/nonmem/pk-parameter-key.yaml", package = "pmparams")
+  key_file <- file.path(MODEL_DIR, "pk-parameter-key.yaml")
   key_df <- pmtables::yaml_as_df(key_file) %>%
     filter(.row != "gg") %>%
     dplyr::add_row(.row = "gg", name = "SIGMA11", abb = "Lognormal residual error", desc = "Variance", panel = "RV", trans = "addErrLogDV")

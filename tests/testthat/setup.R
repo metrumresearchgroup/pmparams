@@ -25,15 +25,15 @@ paramKey = dplyr::tribble(
 )
 
 
-model_dir <- system.file("model/nonmem", package = "pmparams")
+MODEL_DIR <- system.file("model/nonmem", package = "pmparams")
 
-paramKey_path <-  file.path(model_dir, "pk-parameter-key-new.yaml")
-paramKeyBoth_path <-  file.path(model_dir, "pk-parameter-key-both.yaml")
+paramKey_path <-  file.path(MODEL_DIR, "pk-parameter-key-new.yaml")
+paramKeyBoth_path <-  file.path(MODEL_DIR, "pk-parameter-key-both.yaml")
 param_yaml <- yaml::yaml.load_file(paramKey_path)
 
 # Data for testing param table (no bootstrap)
-paramPath <- file.path(model_dir, "102")
-paramEst <- readr::read_csv(file.path(model_dir, "param_est_102.csv"), show_col_types = FALSE)
+paramPath <- file.path(MODEL_DIR, "102")
+paramEst <- readr::read_csv(file.path(MODEL_DIR, "param_est_102.csv"), show_col_types = FALSE)
 paramModel <- bbr::read_model(paramPath)
 
 newDF <- define_param_table(.estimates = paramEst, .key = paramKey, .ci = 95, .zscore = NULL)
@@ -41,11 +41,11 @@ newFormatDF <- format_param_table(newDF)
 newFormatDFprse  <- format_param_table(newDF, .prse = T)
 
 #Data for testing boot param table
-boot_paramEstPath <- system.file("model/nonmem/boot/data/boot-106.csv", package = "pmparams")
-boot_paramEst <- readr::read_csv(system.file("model/nonmem/boot/data/boot-106.csv", package = "pmparams"))
+boot_paramEstPath <- file.path(MODEL_DIR, "boot", "data", "boot-106.csv")
+boot_paramEst <- readr::read_csv(boot_paramEstPath, show_col_types = FALSE)
 
-nonboot_paramEstPath <- system.file("model/nonmem/106", package = "pmparams")
-nonboot_paramEst <- readr::read_csv(file.path(model_dir, "param_est_106.csv"))
+nonboot_paramEstPath <- file.path(MODEL_DIR, "106")
+nonboot_paramEst <- readr::read_csv(file.path(MODEL_DIR, "param_est_106.csv"), show_col_types = FALSE)
 
 newbootDF <- pmparams::define_boot_table(.boot_estimates =boot_paramEst, .nonboot_estimates = nonboot_paramEst, .key = paramKey)
 formatBootDF <- pmparams::format_boot_table(.boot_df = newbootDF)
