@@ -27,43 +27,51 @@ withr::with_options(list(bbr.bbi_exe_path = bbr::read_bbi_path()), {
                   BOOT_TAB_106$propErr[BOOT_TAB_106$name == "SIGMA11"] == TRUE)
   })
 
-  test_that("define_boot_table incorrect input type: no parameter_names column",{
-    boot_paramEst2 <- BOOT_106_EST
-    colnames(boot_paramEst2)[colnames(boot_paramEst2) == "run"] ="no_name"
-    expect_error(capture.output(define_boot_table(boot_paramEst2, PARAM_KEY_DF)))
-  })
-
   test_that("define_boot_table incorrect input type: missing column(s)",{
     paramKey2 <- as.data.frame(PARAM_KEY_DF)
     colnames(paramKey2)[colnames(paramKey2) == "panel"] ="no_name"
-    expect_error(capture.output(define_boot_table(PARAM_EST_102, paramKey2)))
+    expect_error(
+      define_boot_table(BOOT_106_EST, PARAM_EST_106, paramKey2),
+      "The following required columns are missing: panel"
+    )
   })
 
   test_that("define_boot_table handles multiple estimate input types", {
-    pathnewbootDF <- define_boot_table(.boot_estimates = BOOT_106_EST, .nonboot_estimates = PARAM_EST_106, .key = PARAM_KEY_DF)
+    pathnewbootDF <- define_boot_table(
+      .boot_estimates = BOOT_106_EST, .nonboot_estimates = PARAM_EST_106,
+      .key = PARAM_KEY_DF
+    )
     expect_equal(BOOT_TAB_106$estimate[BOOT_TAB_106$name == "OMEGA22"], 0.0821058)
 
-    pathDF2 <- define_boot_table(.boot_estimates = BOOT_106_EST_PATH, .nonboot_estimates = MOD106_PATH, .key = PARAM_KEY_DF)
+    pathDF2 <- define_boot_table(
+      .boot_estimates = BOOT_106_EST_PATH, .nonboot_estimates = MOD106_PATH,
+      .key = PARAM_KEY_DF
+    )
     expect_equal(pathDF2$estimate[pathDF2$name == "OMEGA22"], 0.0821058)
 
     mod_est <- bbr::read_model(MOD106_PATH)
-    pathDF3 <- define_boot_table(.boot_estimates = BOOT_106_EST, .nonboot_estimates = mod_est, .key = PARAM_KEY_DF)
+    pathDF3 <- define_boot_table(
+      .boot_estimates = BOOT_106_EST, .nonboot_estimates = mod_est,
+      .key = PARAM_KEY_DF
+    )
     expect_equal(pathDF3$estimate[pathDF3$name == "OMEGA22"], 0.0821058)
 
   })
 
   test_that("define_boot_table handles multiple parameter key input types", {
-    pathDF <- define_boot_table(.boot_estimates = BOOT_106_EST,
-                                .nonboot_estimates = PARAM_EST_106,
-                                .key = PARAM_KEY_PATH)
+    pathDF <- define_boot_table(
+      .boot_estimates = BOOT_106_EST, .nonboot_estimates = PARAM_EST_106,
+      .key = PARAM_KEY_PATH
+    )
     expect_equal(pathDF$estimate[pathDF$name == "OMEGA22"],  0.0821058)
   })
 
   test_that("define_boot_table handles multiple parameter key input types", {
     key_df <- pmtables::yaml_as_df(PARAM_KEY_PATH_DF)
-    pathDF <- define_boot_table(.boot_estimates = BOOT_106_EST,
-                                .nonboot_estimates = PARAM_EST_106,
-                                .key = key_df)
+    pathDF <- define_boot_table(
+      .boot_estimates = BOOT_106_EST, .nonboot_estimates = PARAM_EST_106,
+      .key = key_df
+    )
     expect_equal(pathDF$estimate[pathDF$name == "OMEGA22"], 0.0821058)
   })
 

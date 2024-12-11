@@ -1,7 +1,10 @@
 #check transforms
 
 test_that("checkTranforms unexpected input: no trans column", {
-  expect_error(checkTransforms(PARAM_TAB_102 %>% select(-trans)))
+  expect_error(
+    checkTransforms(PARAM_TAB_102 %>% select(-trans)),
+    "Trans column does not exist in input data"
+  )
 })
 
 test_that("checkTransforms tildes input: works with trans column with no tildes", {

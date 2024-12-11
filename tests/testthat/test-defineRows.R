@@ -3,7 +3,10 @@
 test_that("defineRows unexpected input: trans column is not in list of valid trans values",{
   paramKey2 <- PARAM_KEY_DF
   paramKey2$trans[1] <- "lgoTrans"
-  expect_error(capture.output(defineRows(paramKey2)))
+  expect_error(
+    capture.output(defineRows(paramKey2)), # suppress printed message
+    "Invalid transform value"
+  )
 })
 
 
