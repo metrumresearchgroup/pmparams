@@ -1,16 +1,20 @@
-#' Define how values are to be displayed
+#' Format confidence interval percents for bootstrap run
 #'
-#' @description
-#' Format values for bootstrap run
+#' @note This function currently only rounds percent columns
 #'
+#' @inheritParams format_boot_table
+#' @importFrom tidyselect all_of
 #' @keywords internal
-
-formatValuesBoot <- function(.df,
+formatValuesBoot <- function(.boot_df,
                              .digit,
                              .maxex){
-  .df %>%
+  # Gather percent columns
+  perc_nam <- names(.boot_df)[grepl("perc", names(.boot_df))]
+
+  # Round percent columns
+  .boot_df <- .boot_df %>%
     dplyr::mutate(
-      boot_ci_95 = dplyr::if_else(fixed, "FIXED", paste0(pmtables::sig(lower, .digit, .maxex), ', ', pmtables::sig(upper, .digit, .maxex))),
-      boot_value = pmtables::sig(value, .digit, .maxex)
+      dplyr::across(all_of(perc_nam),  ~pmtables::sig(., .digit, .maxex))
     )
+  return(.boot_df)
 }

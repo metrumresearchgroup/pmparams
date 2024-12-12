@@ -2,52 +2,84 @@
 % Please edit documentation in R/define_boot_table.R
 \name{define_boot_table}
 \alias{define_boot_table}
-\title{Combine bootstrap estimates with non-bootstrap estimates and parameter key}
+\title{Combine bootstrap estimates with parameter key}
 \usage{
-define_boot_table(.boot_estimates, .nonboot_estimates, .key)
+define_boot_table(
+  .boot_estimates,
+  .key,
+  .ci = 95,
+  .percentiles = NULL,
+  .na.rm = TRUE
+)
 }
 \arguments{
-\item{.boot_estimates}{parameter boot estimates- either path to file or data.frame}
+\item{.boot_estimates}{One of the following:
+\itemize{
+\item Output from \code{bbr::bootstrap_estimates()} or a wide data frame denoting the
+parameter estimates for each run. See details.
+\item A file path to a csv containing the above dataset.
+}}
 
-\item{.nonboot_estimates}{non-bootstrap final model - either path to file or bbr model_summary}
-
-\item{.key}{path to parameter key or data.frame of parameter key. Described in more detail in \code{\link[pmparams]{param_key}}}
+\item{.key}{path to parameter key or data.frame of parameter key. Described
+in more detail in \code{\link[pmparams]{param_key}}}
 }
 \description{
-Combines boot strap estimates and non boot strap estimates with information in parameter key. Performs
-some formatting of this combined data.frame.
-There are two main steps of this function:
-
-1.Run \code{bbr::param_estimates_compare} to extract summary quantiles, the 5th, 50th, and 95th, of the
-bootstrap estimates for each model parameter.
-\itemize{
-\item Some \code{parameter_names} have punctuation such as \code{OMEGA(1,1)}. A new column is
-added without punctuation, such as \code{OMEGA11}.
-\item Following this, parameter details from the parameter key are joined to the boot strap parameter estimates.
-A \code{dplyr::inner_join} is used so that only parameters in the model output are kept
-in the table. This was done so that, if your base and final model used the same structural
-THETAs and random parameters, the same parameter key could be used for both.
-\item This join adds the following columns: \code{abb} (abbreviation), \code{desc} (parameter description),
-\code{panel}, \code{trans} (transformation).
+Combines bootstrap estimates with information in parameter key and performs
+some additional formatting.
 }
+\details{
+Below is the expected format of \code{.boot_estimates} if a data frame is provided:
 
-2.Reformat non-bootstrap estimates and left join onto combined bootstrap estimates and parameter key data.frame.
-Expected input is a data.frame with parameter estimates, with the columns:
-\code{parameter_names}, \code{estimate}.
+\if{html}{\out{<div class="sourceCode">}}\preformatted{run   THETA1 THETA2 THETA3 THETA4 THETA5 THETA6   THETA7 THETA8
+<chr>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>    <dbl>  <dbl>
+001    0.494   4.19   1.20   4.20   1.24  0.488 -0.0615   0.377
+002    0.405   4.07   1.14   4.23   1.32  0.536 -0.103    0.517
+003    0.500   4.09   1.15   4.21   1.27  0.413 -0.0752   0.523
+004    0.578   4.16   1.20   4.18   1.30  0.518 -0.0502   0.418
+005    0.499   4.14   1.16   4.25   1.22  0.436 -0.0686   0.394
+}\if{html}{\out{</div>}}
 
-With this information provided, a check is performed to determine whether parameters
-with special transformation rules were defined correctly. In addition, a series of
-TRUE/FALSE columns that will be used by subsequent functions.
+\strong{Notes:}
+\itemize{
+\item Some parameter names may have punctuation (such as \code{OMEGA(1,1)}). A new
+\code{name} column is automatically added that specifies the name without
+punctuation (i.e. \code{OMEGA11}).
+\item Parameter details from the parameter key are joined to the bootstrap parameter
+estimates. A \code{dplyr::inner_join} is used so that only parameters in the model
+output are kept in the table. This was done so that, if your base and final
+model used the same structural THETAs and random parameters, the same
+parameter key could be used for both.
+\itemize{
+\item This join adds the following columns: \code{abb} (abbreviation), \code{desc}
+(parameter description), \code{panel}, \code{trans} (transformation).
+}
+\item A final check is performed to determine whether parameters with special
+transformation rules were defined correctly. In addition, a series of \code{TRUE}/
+\code{FALSE} columns are added that will be used downstream.
+}
 }
 \examples{
-model_dir <- system.file("model/nonmem", package = "pmparams")
 
-boot_paramEst <- readr::read_csv(file.path(model_dir, "boot/data/boot-106.csv"))
-nonboot_paramEst <- readr::read_csv(file.path(model_dir, "param_est_106.csv"))
+model_dir <- system.file("model/nonmem", package = "pmparams")
 paramKey <-  file.path(model_dir, "pk-parameter-key-new.yaml")
 
-define_boot_table(.boot_estimates = boot_paramEst,
-               .nonboot_estimates = nonboot_paramEst,
-               .key = paramKey)
+# Using a file path:
+boot_path <- file.path(model_dir, "boot/data/boot-106.csv")
+define_boot_table(
+ .boot_estimates = boot_path,
+ .key = paramKey
+)
 
+# Using a `bbr` bootstrap model object:
+\dontrun{
+boot_run <- bbr::read_model(file.path(model_dir, "106-boot"))
+define_boot_table(
+ .boot_estimates = bbr::bootstrap_estimates(boot_run),
+ .key = paramKey
+)
+}
+
+}
+\seealso{
+\code{\link[=param_key]{param_key()}}, \code{\link[=define_param_table]{define_param_table()}}
 }
