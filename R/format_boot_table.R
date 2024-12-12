@@ -17,7 +17,7 @@
 #'
 #' # Using output from `define_boot_table` (defineBootOut),
 #' boot_paramEst <- readr::read_csv(file.path(model_dir, "boot/data/boot-106.csv"))
-#' nonboot_paramEst <- readr::read_csv(file.path(model_dir, "param_est_102.csv"))
+#' nonboot_paramEst <- readr::read_csv(file.path(model_dir, "param_est_106.csv"))
 #' paramKey <-  file.path(model_dir, "pk-parameter-key-new.yaml")
 #'
 #' defineBootOut <- define_boot_table(.boot_estimates = boot_paramEst,
