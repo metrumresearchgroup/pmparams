@@ -33,12 +33,11 @@
 #' @param .key path to parameter key or data.frame of parameter key. Described in more detail in \code{\link[pmparams]{param_key}}
 #'
 #' @examples
+#' model_dir <- system.file("model/nonmem", package = "pmparams")
 #'
-#' boot_paramEst <- utils::read.csv(system.file("model/nonmem/boot/data/boot-106.csv",
-#'                                  package = "pmparams"))
-#' nonboot_paramEst <- utils::read.csv(system.file("model/nonmem/nonboot_param_est.csv",
-#'                                     package = "pmparams"))
-#' paramKey <-  system.file("model/nonmem/pk-parameter-key-new.yaml", package = "pmparams")
+#' boot_paramEst <- readr::read_csv(file.path(model_dir, "boot/data/boot-106.csv"))
+#' nonboot_paramEst <- readr::read_csv(file.path(model_dir, "param_est_106.csv"))
+#' paramKey <-  file.path(model_dir, "pk-parameter-key-new.yaml")
 #'
 #' define_boot_table(.boot_estimates = boot_paramEst,
 #'                .nonboot_estimates = nonboot_paramEst,
@@ -49,7 +48,7 @@ define_boot_table <- function(.boot_estimates, .nonboot_estimates, .key){
 
   #path to boot estimates
   if (inherits(.boot_estimates, "character")){
-    .boot <- readr::read_csv(.boot_estimates)
+    .boot <- readr::read_csv(.boot_estimates, show_col_types = FALSE)
   #data.frame of boot estimates
   } else {
     .boot <- .boot_estimates

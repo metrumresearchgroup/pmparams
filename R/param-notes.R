@@ -13,7 +13,7 @@
 #' paramKey <-  file.path(model_dir, "pk-parameter-key-new.yaml")
 #'
 #' # Read in parameter estimates (or provide `bbr` model)
-#' param_est <- utils::read.csv(file.path(model_dir, "param_est.csv"))
+#' param_est <- utils::read.csv(file.path(model_dir, "param_est_102.csv"))
 #'
 #' # Make and format parameter table
 #' param_df <- define_param_table(

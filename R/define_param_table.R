@@ -51,7 +51,7 @@
 #' paramKey <-  file.path(model_dir, "pk-parameter-key-new.yaml")
 #'
 #' # Using a file path
-#' param_est_path <- file.path(model_dir, "param_est.csv")
+#' param_est_path <- file.path(model_dir, "param_est_102.csv")
 #' param_ests <- readr::read_csv(param_est_path)
 #' define_param_table(
 #'  .estimates = param_ests,
