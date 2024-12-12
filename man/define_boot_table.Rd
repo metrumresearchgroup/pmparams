@@ -22,6 +22,16 @@ parameter estimates for each run. See details.
 
 \item{.key}{path to parameter key or data.frame of parameter key. Described
 in more detail in \code{\link[pmparams]{param_key}}}
+
+\item{.ci}{the confidence interval. A value from 1 to 100 denoting the percent
+confidence interval, or \code{"iqr"} (interquartile range). Default is \code{95}.}
+
+\item{.percentiles}{optional vector of all percentiles (defaults to \code{NULL}).
+If specified \code{.ci} will be ignored. E.g., \code{.percentiles = c(0.025, 0.5, 0.975)}
+is the equivalent of \code{.ci = 95}.}
+
+\item{.na.rm}{logical (T/F). If \code{TRUE}, any \code{NA} and \code{NaN}'s are removed
+before the quantiles are computed. Passed to \code{\link[stats:quantile]{stats::quantile()}}.}
 }
 \description{
 Combines bootstrap estimates with information in parameter key and performs
