@@ -60,7 +60,7 @@
 #'
 #' # Using a `bbr` model
 #' \dontrun{
-#' mod <- bbr::read_model(file.path(model_dir, "106"))
+#' mod <- bbr::read_model(file.path(model_dir, "102"))
 #' param_df <- define_param_table(
 #'  .estimates = mod,
 #'  .key = paramKey,
