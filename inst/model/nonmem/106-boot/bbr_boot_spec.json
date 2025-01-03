@@ -1,0 +1,55 @@
+{
+  "bootstrap_spec": {
+    "problem": ["Bootstrap of 106.ctl"],
+    "strat_cols": ["STUDY"],
+    "seed": [1234],
+    "n_samples": [200],
+    "model_path": ["/data/home/kyleb/project.mrg/az/current/models/pk/106-boot.ctl"],
+    "based_on_model_path": ["/data/home/kyleb/project.mrg/az/current/models/pk/106.ctl"],
+    "based_on_data_path": ["../../../data/derived/pk.csv"],
+    "model_md5": ["0b9ae80d9be48aac0844740635acce77"],
+    "based_on_model_md5": ["057d42c020e99e370fffb0ee5603210e"],
+    "based_on_data_md5": ["84a596d0fd81c2d187a64bc62d96b433"],
+    "output_dir": ["/data/home/kyleb/project.mrg/az/current/models/pk/106-boot"],
+    "bbi_version": ["v3.3.0"],
+    "configuration": {
+      "clean_lvl": [1],
+      "git": [true],
+      "output_dir": ["{{ .Name }}"],
+      "threads": [2],
+      "local": {},
+      "nonmem": {
+        "nm73gf": {
+          "home": ["/opt/NONMEM/nm73gf"],
+          "executable": ["nmfe73"],
+          "nmqual": [true]
+        },
+        "nm73gf_nmfe": {
+          "home": ["/opt/NONMEM/nm73gf_nmfe"],
+          "executable": ["nmfe73"]
+        },
+        "nm74gf": {
+          "home": ["/opt/NONMEM/nm74gf"],
+          "executable": ["nmfe74"],
+          "nmqual": [true]
+        },
+        "nm74gf_nmfe": {
+          "home": ["/opt/NONMEM/nm74gf_nmfe"],
+          "executable": ["nmfe74"]
+        },
+        "nm75": {
+          "home": ["/opt/NONMEM/nm75"],
+          "executable": ["nmfe75"],
+          "default": [true]
+        }
+      },
+      "parallel": [false],
+      "nmfe_options": {
+        "maxlim": [2]
+      },
+      "mpi_exec_path": ["/usr/local/mpich3/bin/mpiexec"],
+      "parallel_timeout": [2147483647]
+    },
+    "cleaned_up": [true]
+  }
+}
