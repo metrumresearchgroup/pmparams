@@ -6,10 +6,25 @@
 #'
 #' @keywords internal
 backTrans_logit <- function(.df){
-  .df %>%
-    dplyr::mutate(
-      value = dplyr::case_when(LOGIT ~ stats::plogis(value), TRUE ~ value),
-      lower = dplyr::case_when(LOGIT ~ stats::plogis(lower), TRUE ~ lower),
-      upper = dplyr::case_when(LOGIT ~ stats::plogis(upper), TRUE ~ upper)
+
+  if (any(grepl("perc", names(.df)))){
+    .df %>%
+      dplyr::mutate_at(
+        dplyr::vars(dplyr::contains("perc")),
+        ~ dplyr::case_when(
+          LOGIT ~ stats::plogis(.),
+          TRUE ~ .
+        )
       )
+  } else {
+    .df %>%
+      dplyr::mutate_at(
+        dplyr::vars("value", "lower", "upper"),
+        ~ dplyr::case_when(
+          LOGIT ~ stats::plogis(.),
+          TRUE ~ .
+        )
+      )
+  }
+
 }
