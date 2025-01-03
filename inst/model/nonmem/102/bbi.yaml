@@ -1,15 +1,15 @@
 nm_version: ""
-overwrite: false
+overwrite: true
 clean_lvl: 1
 copy_lvl: 0
 git: true
-bbi_binary: /data/apps/bbi
-save_config: false
+bbi_binary: ""
+save_config: true
 output_dir: '{{ .Name }}'
-threads: 1
+threads: 2
 debug: false
 local:
-  create_child_dirs: false
+  create_child_dirs: true
 nonmem:
   nm73gf:
     home: /opt/NONMEM/nm73gf
@@ -25,12 +25,17 @@ nonmem:
     home: /opt/NONMEM/nm74gf
     executable: nmfe74
     nmqual: true
-    default: true
+    default: false
   nm74gf_nmfe:
     home: /opt/NONMEM/nm74gf_nmfe
     executable: nmfe74
     nmqual: false
     default: false
+  nm75:
+    home: /opt/NONMEM/nm75
+    executable: nmfe75
+    nmqual: false
+    default: true
 parallel: false
 delay: 0
 nmqual: false
@@ -44,7 +49,7 @@ nmfe_options:
   prdefault: false
   tprdefault: false
   nobuild: false
-  maxlim: 100
+  maxlim: 2
 mpi_exec_path: /usr/local/mpich3/bin/mpiexec
 parallel_timeout: 2147483647
 parafile: ""
