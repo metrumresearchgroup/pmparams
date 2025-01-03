@@ -1,0 +1,17 @@
+model_type: nmboot
+tags:
+- two-compartment + absorption
+- ETA-CL
+- ETA-KA
+- ETA-V2
+- CLWT-allo
+- V2WT-allo
+- QWT-allo
+- V3WT-allo
+- CLEGFR
+- CLAGE
+- CLALB
+- proportional RUV
+- BOOTSTRAP_SUBMISSION
+based_on:
+- '106'

@@ -2,22 +2,32 @@
 title: "Making Bootstrap Parameter Tables"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{making-bootstrap-parameter-tables}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+ %\VignetteIndexEntry{making-bootstrap-parameter-tables}
+ %\VignetteEngine{knitr::rmarkdown}
+ %\VignetteEncoding{UTF-8}
 ---
-
-
+  
+  
 ```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 
 options(
   'bbr.bbi_exe_path' = bbr::read_bbi_path(),
   'bbr.verbose' = FALSE
 )
+
+# NOTE: if running chunks interactively we need to load the package first
+devtools::load_all()
+
+# bbr > 1.11.0 is required to render most sections of this vignette
+# - used for CI
+bbr_installed <- is.null(check_for_suggested_pkgs("bbr"))
+eval_bbr_chunks <- bbr_installed && version_above("bbr", "1.11.0")
+
+# CI has issues running st_as_image and stable_save_image
+# - Only build this vignette via pkgdown or when rendering manually (must be on metworx)
+render_tables <- (Sys.getenv("METWORX_VERSION") != "")
+render_bbr_tables <- render_tables && eval_bbr_chunks
 ```
 
 # Introduction
@@ -29,12 +39,26 @@ MeRGE Expo: Parameter Tables </a>..
 
 ```{r load packages, results = 'hide', message=FALSE, warning=FALSE}
 library(pmparams)
+library(bbr)
 library(dplyr)
 library(yaml)
 library(pmtables)
 ```
 
 # Data requirements
+
+## Bootstrap methods
+
+Bootstrapping a `bbr` model previously was a more involved process that required manually saving out csv. However as of `bbr 1.11.0`, bootstrapping can be done in-house, tracking a new bootstrap model object. For this reason we support multiple methods for specifying the estimates, all of which will be described below.
+
+In any case, lets set some key variables we'll use throughout this tutorial:
+```{r}
+model_dir <- system.file("model/nonmem", package = "pmparams")
+# Parameter Key
+paramKeyPath <- file.path(model_dir, "pk-parameter-key-new.yaml")
+# Model we're bootstrapping
+orig_mod <- bbr::read_model(file.path(model_dir, "106"))
+```
 
 ## Parameter key
 
@@ -53,92 +77,190 @@ A more detailed walk-through of generating the parameter key is available here: 
 MeRGE Expo: Creating a Parameter Key </a>. 
 
 ```{r, message = FALSE}
-MODEL_DIR <- system.file("model/nonmem", package = "pmparams")
-paramKeyPath <- file.path(MODEL_DIR, "pk-parameter-key-new.yaml")
 paramKey <- yaml::yaml.load_file(paramKeyPath)
 head(unlist(paramKey))
 ```
 
-## Non-boot Parameter estimates
+# Creating Bootstrap estimate parameter table with `bbr 1.11.0` and greater
 
-`pmparams` allows for different non-boot parameter estimate input types:
-* path to model directory
-* data.frame of bbr model_summary
-
-For this example, we will use the path to the model directory.
-```{r, message = FALSE}
-nonboot_paramEstPath <- file.path(MODEL_DIR, "106")
+We begin by reading in the original `bbr` model and the bootstrap run:
+```{r, eval = eval_bbr_chunks}
+orig_mod <- bbr::read_model(file.path(model_dir, "106"))
+boot_run <- bbr::read_model(file.path(model_dir, "106-boot"))
 ```
 
-## Boot parameter estimates 
+## Define & Format bootstrap parameter table
+We will now join parameter estimates and parameter key. `define_param_table` will handle both the joining and creation of new confidence interval related columns.
+
+- Note: this uses `dplyr::inner_join`, so only parameters included in the model output _and_ parameter key will be kept in the table. This was done so that if your base and final model used the same structural THETAs and random parameters, the same parameter key could be used for both. The additional covariate THETAs defined in the parameter key YAML would simply be ignored when creating the base model parameter table.
+
+```{r, eval = eval_bbr_chunks}
+boot_df <- define_boot_table(
+  .boot_estimates = bbr::bootstrap_estimates(boot_run),
+  .key = paramKeyPath
+)
+
+head(boot_df)
+```
+
+Now we perform some house-keeping based on the new parameter key information, and format the values for the report using `format_boot_table`.
+```{r, eval = eval_bbr_chunks}
+boot_df <- format_boot_table(boot_df)
+
+head(boot_df)
+```
+
+# Creating Bootstrap estimate paramter table using previous methods
+
+### Bootstrap parameter estimates 
 `pmparams` allows for different boot parameter estimate input types:
-* path to file 
-* data.frame
+* path to a csv 
+* A data.frame (like what's returned from `bbr::bootstrap_estimates()`)
 
-For this example, we will use the path to file.
+## Define & Format bootstrap parameter table
+
+For this example, we will use the path to a csv:
 ```{r, message = FALSE}
-boot_paramEstPath <- file.path(MODEL_DIR, "boot", "data", "boot-106.csv")
+boot_ests_path <- file.path(model_dir, "boot/data/boot-106.csv")
 ```
 
-# Define boot parameter table
-
-We will now join parameter estimates and parameter key. Note: this is an inner_join, so only parameters included in the model output and parameter key will be kept in the table. This was done so that, if your base and final model used the same structural THETAs and random parameters, the same parameter key could be used for both. The additional covariate THETAs defined in the parameter key YAML would simply be ignored when creating the base model parameter table.
-
-Additionally, `define_param_table` performs checks and calculates confidence intervals.
-
+As we can see below, we get the same final data frame as before:
 ```{r}
-df1 <- define_boot_table(.boot_estimates = boot_paramEstPath,
-                .nonboot_estimates = nonboot_paramEstPath,
-                .key = paramKeyPath)
+# Join to key and calculate confidence interval
+boot_df <- define_boot_table(
+  .boot_estimates = boot_ests_path,
+  .key = paramKeyPath
+)
 
-head(df1)
+# Format table
+boot_df <- format_boot_table(boot_df)
+
+head(boot_df)
 ```
 
-# Format boot parameter table
 
-Now, we perform some house-keeping based on the new parameter key information, calculate any summary statistics (the 95% confidence intervals are calculated by default), and format the values for the report using `format_boot_table`.
-```{r}
-df2 <- format_boot_table(df1)
-```
+# Make a simple bootstrap parameter table
 
-Usually `define_boot_table` and `format_boot_table` are run together in a single call like this:
-
-```{r}
-df2 <- define_boot_table(.boot_estimates = boot_paramEstPath,
-                .nonboot_estimates = nonboot_paramEstPath,
-                .key = paramKeyPath) %>% 
-        format_boot_table()
-  
-
-head(df2)
-```
-
-# Make parameter table
-
-We use `pmtables` to make formatted table.
-
-```{r}
-tableList <- list()
-
-#grab footnotes
+Below is a simple display of the bootstrap confidence intervals using well known `pmtables` functions. As we'll see a little later, we can use `make_boot_pmtable()` to make a much nicer table.
+```{r, eval = render_tables}
+# Grab footnotes
 footnote <- param_notes(.ci = 95)
-```
 
-```{r}
-
-tableList$bootstrap <- df2 %>% 
-  mutate(boot_ci_95 = if_else(is.na(boot_ci_95), "FIXED", boot_ci_95)) %>% 
+# Render table
+tab <- boot_df %>%
   st_new() %>% 
   st_panel("desc") %>% 
-  st_rename(Value = boot_value,
-            "95% CI" = boot_ci_95,
-            " "= abb) %>% 
-  #abbreviations
+  st_span("Non-parametric bootstrap", c("boot_median", "boot_ci_95")) %>%
+  st_rename(
+    Median = boot_median,
+    "95\\% CI" = boot_ci_95,
+    " "= abb
+  ) %>% 
+  # abbreviations
   st_notes(footnote$ci) %>% 
-  #equations
-  st_notes(footnote$ciEq) 
+  # equations
+  st_notes(footnote$ciEq) %>%
+  stable(output_file = "deliv/simple-boot.tex")
 
-tableList$bootstrap %>% 
-  stable() %>%
-  st_asis()
+tab_out <- stable_save_image(tab, format = "png")
+```
+
+```{r, eval = render_tables, fig.align='center'}
+st_image_show(tab_out, width = 0.5)
+```
+
+
+# Combine bootstrap and original model parameter estimates
+
+Start by creating both of the formatted parameter tables, and then join them together as seen below:
+```{r, eval = eval_bbr_chunks}
+boot_df <- define_boot_table(
+  .boot_estimates = bbr::bootstrap_estimates(boot_run),
+  .key = paramKeyPath,
+  .ci = "iqr"
+) %>% format_boot_table()
+
+param_df <- define_param_table(
+  .estimates = orig_mod,
+  .key = paramKeyPath,
+  .ci = 95
+) %>% format_param_table()
+
+
+boot_param_df <- left_join(param_df, boot_df, by = c("abb", "desc"))
+head(boot_param_df)
+```
+
+
+```{r, eval = render_bbr_tables}
+# Define footnote
+footBoot <- glue::glue("CI were determined from the 2.5th and 97.5th percentiles 
+                of the non-parametric bootstrap estimates (n ={nrow(read.csv(boot_ests_path))}).")
+
+# Render table
+tab <- make_boot_pmtable(.df = boot_param_df, .pmtype = "fixed") %>%
+  st_center(desc = col_ragged(5.5), abb = "l") %>% 
+  st_notes(param_notes()$ci) %>%                   # add abbreviations
+  st_notes_str() %>%                               # collapse all abbreviations to a string                        
+  st_notes(param_notes()$logTrans, footBoot) %>%   # customize other notes
+  st_notes_detach(width = 1) %>% 
+  st_files(output = "final-param-fixed-boot.tex") %>%
+  stable(output_file = "deliv/mod106-boot-95-ci-fixed.tex")
+
+tab_out <- stable_save_image(tab, format = "png")
+```
+
+```{r, eval = render_bbr_tables, fig.align='center'}
+st_image_show(tab_out, width = 0.5)
+```
+
+
+## Complex example
+To illustrate the flexibility of `make_boot_pmtable()`, we'll use a more complex example. Here we'll specify `.percentiles` to include two confidence intervals, the median value, and an extra 25% quantile (just for fun).
+
+```{r, eval = eval_bbr_chunks}
+boot_df <- define_boot_table(
+  .boot_estimates = bbr::bootstrap_estimates(boot_run),
+  .key = paramKeyPath,
+  .percentiles = c(0.025, 0.05, 0.25, 0.5, 0.95, 0.975)
+) %>% format_boot_table()
+
+
+boot_param_df <- left_join(param_df, boot_df, by = c("abb", "desc"))
+```
+
+```{r, eval = render_bbr_tables}
+##  FIXED EFFECTS table ----------------------------
+tab <- make_boot_pmtable(.df = boot_param_df, .pmtype = "fixed") %>% 
+  st_center(desc = col_ragged(5.5), abb = "l") %>% 
+  st_notes(param_notes()$ci) %>%                   # add abbreviations
+  st_notes_str() %>%                               # collapse all abbreviations to a string                        
+  st_notes(param_notes()$logTrans) %>%   # customize other notes
+  st_notes_detach(width = 1) %>% 
+  st_files(output = "final-param-fixed-boot-multi-ci.tex") %>% 
+  stable(output_file = "deliv/mod106-boot-95-90-ci-25-perc-fixed.tex")
+
+tab_out <- stable_save_image(tab, format = "png")
+```
+
+```{r, eval = render_bbr_tables, fig.align='center'}
+st_image_show(tab_out, width = 0.5)
+```
+
+```{r, eval = render_bbr_tables}
+##  RANDOM EFFECTS table ----------------------------
+tab <- make_boot_pmtable(.df = boot_param_df, .pmtype = "random") %>% 
+  st_center(desc = col_ragged(5.5), abb = "l") %>% 
+  st_notes(param_notes()$ci) %>%                   # add abbreviations
+  st_notes_str() %>%                               # collapse all abbreviations to a string                        
+  st_notes(param_notes()$logTrans) %>%   # customize other notes
+  st_notes_detach(width = 1) %>% 
+  st_files(output = "final-param-random-boot-multi-ci.tex") %>% 
+  stable(output_file = "deliv/mod106-boot-95-90-ci-25-perc-random.tex")
+
+tab_out <- stable_save_image(tab, format = "png")
+```
+
+```{r, eval = render_bbr_tables, fig.align='center'}
+st_image_show(tab_out, width = 0.5)
 ```

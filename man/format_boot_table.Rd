@@ -6,41 +6,58 @@
 \usage{
 format_boot_table(
   .boot_df,
-  .select_cols = c("abb", "desc", "boot_value", "boot_ci_95"),
+  .cleanup_cols = TRUE,
   .digit = getOption("pmparams.dig"),
-  .maxex = getOption("pmparams.maxex")
+  .maxex = getOption("pmparams.maxex"),
+  .select_cols = NULL
 )
 }
 \arguments{
-\item{.boot_df}{parameter estimates output from \code{\link[pmparams]{define_boot_table}} with modifications ready for formatting}
+\item{.boot_df}{parameter estimates output from \code{\link[=define_boot_table]{define_boot_table()}} with
+modifications ready for formatting}
 
-\item{.select_cols}{columns to select for output. Default selects "abb", "desc", "boot_value", "boot_ci". To return all columns, specify "all" for .select_cols.}
+\item{.cleanup_cols}{logical (T/F). Defaults to \code{TRUE}, which selects the
+following columns:
+\itemize{
+\item \code{"abb"}, \code{"desc"}, \code{"boot_value"}, \verb{"boot_ci}".
+\item Set to \code{FALSE} to return all columns.
+}}
 
 \item{.digit}{set significant digits for output (optional). Default is three digits}
 
-\item{.maxex}{set maxex for computation (optional). Default is NULL}
+\item{.maxex}{set maxex for computation (optional). Default is \code{NULL}}
+
+\item{.select_cols}{Deprecated. Please use \code{.cleanup_cols} instead. Columns
+to select for output. To return all columns, specify \code{"all"}.}
 }
 \description{
 Format bootstrap parameter estimate values and output selected columns to be shown in
 the bootstrap parameter table.
-
-Left join this output bootstrap data.frame with the formatted output of non-bootstrap parameter estimates
 }
 \examples{
-model_dir <- system.file("model/nonmem", package = "pmparams")
 
-# Using output from `define_boot_table` (defineBootOut),
-boot_paramEst <- readr::read_csv(file.path(model_dir, "boot/data/boot-106.csv"))
-nonboot_paramEst <- readr::read_csv(file.path(model_dir, "param_est_106.csv"))
+model_dir <- system.file("model/nonmem", package = "pmparams")
 paramKey <-  file.path(model_dir, "pk-parameter-key-new.yaml")
 
-defineBootOut <- define_boot_table(.boot_estimates = boot_paramEst,
-               .nonboot_estimates = nonboot_paramEst,
-               .key = paramKey)
+# Using a file path:
+boot_path <- file.path(model_dir, "boot/data/boot-106.csv")
+boot_df <- define_boot_table(
+ .boot_estimates = boot_path,
+ .key = paramKey
+)
 
-format_boot_table(.boot_df = defineBootOut)
+format_boot_table(boot_df)
 
 # To include all columns:
+format_boot_table(boot_df, .cleanup_cols = FALSE)
 
-format_boot_table(.boot_df = defineBootOut, .select_cols="all")
+# Using a `bbr` bootstrap model object:
+\dontrun{
+boot_run <- bbr::read_model(file.path(model_dir, "106-boot"))
+boot_df <- define_boot_table(
+ .boot_estimates = bbr::bootstrap_estimates(boot_run),
+ .key = paramKey
+) \%>\% format_boot_table()
+}
+
 }
