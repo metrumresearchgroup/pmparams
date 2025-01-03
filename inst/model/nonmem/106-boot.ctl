@@ -3,11 +3,13 @@ $PROBLEM Bootstrap run of model 106
 $INPUT C NUM ID TIME SEQ CMT EVID AMT DV AGE WT HT EGFR ALB BMI SEX AAG
        SCR AST ALT CP TAFD TAD LDOS MDV BLQ PHASE
 
-$DATA ../../../data/derived/pk.csv IGNORE=(C='C', BLQ=1)
+$DATA ../../../data/derived/analysis3.csv IGNORE=(C='C', BLQ=1)
 
 $SUBROUTINE ADVAN4 TRANS4
 
 $PK
+ 
+;log transformed PK parms
  
 V2WT = LOG(WT/70)
 CLWT = LOG(WT/70)*0.75
@@ -24,7 +26,7 @@ CL   = EXP(THETA(3)+CLWT+CLEGFR+CLAGE+CLALB+ETA(3))
 V3   = EXP(THETA(4)+V3WT)
 Q    = EXP(THETA(5)+QWT) 
 
-S2 = V2/1000
+S2 = V2/1000 ; dose in mcg, conc in mcg/mL
 
 $ERROR
 IPRED = F 
@@ -41,14 +43,11 @@ $THETA  ; log values
 (0.5)   ;  8 ALB~CL ()
 
 $OMEGA BLOCK(3)
-0.2             ; 1 ETA(KA)
-0.01 0.2        ; 2 ETA(V2)
-0.01 0.01 0.2   ; 3 ETA(CL)
+0.2   ;ETA(KA)
+0.01 0.2   ;ETA(V2)
+0.01 0.01 0.2   ;ETA(CL)
 
 $SIGMA
-0.05     ; 1 proportional error
+0.05     ; 1 pro error
 
-
-$EST   METHOD=1 INTER SIGL=6 NSIG=3 PRINT=1 MAXEVAL=9999  RANMETHOD=P 
-       MSFO=106-boot.MSF 
-
+$EST MAXEVAL=9999 METHOD=1 INTER SIGL=6 NSIG=3 PRINT=1 MSFO=./106-boot.msf 
