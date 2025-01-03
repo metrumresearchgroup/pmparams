@@ -7,6 +7,8 @@
 getBootPercentiles(.boot, .ci = 95, .percentiles = NULL, .na.rm = TRUE)
 }
 \arguments{
+\item{.boot}{data.frame with parameter estimates}
+
 \item{.ci}{the confidence interval. A value from 1 to 100 denoting the percent
 confidence interval, or \code{"iqr"} (interquartile range). Default is \code{95}.}
 
@@ -16,8 +18,6 @@ is the equivalent of \code{.ci = 95}.}
 
 \item{.na.rm}{logical (T/F). If \code{TRUE}, any \code{NA} and \code{NaN}'s are removed
 before the quantiles are computed. Passed to \code{\link[stats:quantile]{stats::quantile()}}.}
-
-\item{.df}{data.frame with parameter estimates}
 }
 \description{
 Calculates the upper and lower bound of a 90\% or 95\% confidence interval,

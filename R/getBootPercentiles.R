@@ -6,7 +6,7 @@
 #' interquartile range, or any number of percentiles based on the value and
 #' standard error.
 #'
-#' @param .df data.frame with parameter estimates
+#' @param .boot data.frame with parameter estimates
 #' @param .ci the confidence interval. A value from 1 to 100 denoting the percent
 #'  confidence interval, or `"iqr"` (interquartile range). Default is `95`.
 #' @param .percentiles optional vector of all percentiles (defaults to `NULL`).
