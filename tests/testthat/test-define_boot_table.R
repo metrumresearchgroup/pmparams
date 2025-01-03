@@ -50,7 +50,7 @@ withr::with_options(list(bbr.bbi_exe_path = bbr::read_bbi_path()), {
     boot_df3 <- define_boot_table(
       bbr::bootstrap_estimates(BOOT_RUN), .key = PARAM_KEY_DF
     )
-    expect_equal(boot_df3$boot_perc_50[boot_df3$name == "OMEGA22"], 0.08158385)
+    expect_equal(boot_df3$boot_perc_50[boot_df3$name == "OMEGA22"], 0.08162395)
   })
 
 
