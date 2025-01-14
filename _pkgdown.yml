@@ -13,7 +13,7 @@ reference:
     desc: Requirements for parameter key
     contents:
     - param_key
-  - title: Define parameter tabless
+  - title: Define parameter tables
     desc: Combine model output parameter estimates with information in a parameter key. Perform some formatting with this combined data.frame.
     contents:
     - define_param_table
