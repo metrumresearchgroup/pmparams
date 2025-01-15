@@ -1,3 +1,9 @@
+# pmparams 0.2.2
+
+## Changes
+- Organization and formatting updates related to test suite and documentation (#81)
+- Removed glue constraint added in `pmparams 0.2.1`. (#85)
+
 # pmparams 0.2.1
 
 ## New features
