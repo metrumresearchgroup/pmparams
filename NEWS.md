@@ -1,10 +1,8 @@
 # pmparams 0.2.2
 
-## New features
+## Changes
 - Organization and formatting updates related to test suite and documentation (#81)
-
-## Bug fixes
-- Removed glue constraint added in `pmparams 0.2.1`. This was done as a precautionary measure to ensure examples relying on `pmtables` ran smoothly, but is no longer relevant since the issue was addressed in `pmtables 0.8.1`. (#85)
+- Removed glue constraint added in `pmparams 0.2.1`. (#85)
 
 # pmparams 0.2.1
 
