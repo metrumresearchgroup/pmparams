@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmparams</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2</span>
       </span>
     </div>
 
@@ -136,7 +136,8 @@ available here:
 <a href="https://merge.metrumrg.com/expo/expo1-nonmem-foce/posts/parameter-key.html" target="_blank" class="external-link">
 MeRGE Expo: Creating a Parameter Key </a>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">paramKeyPath</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"model/nonmem/pk-parameter-key-new.yaml"</span>, package <span class="op">=</span> <span class="st">"pmparams"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">MODEL_DIR</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"model/nonmem"</span>, package <span class="op">=</span> <span class="st">"pmparams"</span><span class="op">)</span></span>
+<span><span class="va">paramKeyPath</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">MODEL_DIR</span>, <span class="st">"pk-parameter-key-new.yaml"</span><span class="op">)</span></span>
 <span><span class="va">paramKey</span> <span class="op">&lt;-</span> <span class="fu">yaml</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/yaml/man/yaml.load.html" class="external-link">yaml.load_file</a></span><span class="op">(</span><span class="va">paramKeyPath</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">paramKey</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                             THETA1.abb                            THETA1.desc </span></span>
@@ -154,7 +155,7 @@ estimate input types: * path to model directory * data.frame of bbr
 model_summary</p>
 <p>For this example, we will use the path to the model directory.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">nonboot_paramEstPath</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"model/nonmem/106"</span>, package <span class="op">=</span> <span class="st">"pmparams"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">nonboot_paramEstPath</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">MODEL_DIR</span>, <span class="st">"106"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="boot-parameter-estimates">Boot parameter estimates<a class="anchor" aria-label="anchor" href="#boot-parameter-estimates"></a>
@@ -163,7 +164,7 @@ model_summary</p>
 input types: * path to file * data.frame</p>
 <p>For this example, we will use the path to file.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">boot_paramEstPath</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"model/nonmem/boot/data/boot-106.csv"</span>, package <span class="op">=</span> <span class="st">"pmparams"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">boot_paramEstPath</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">MODEL_DIR</span>, <span class="st">"boot"</span>, <span class="st">"data"</span>, <span class="st">"boot-106.csv"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -182,14 +183,6 @@ calculates confidence intervals.</p>
 <code class="sourceCode R"><span><span class="va">df1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/define_boot_table.html">define_boot_table</a></span><span class="op">(</span>.boot_estimates <span class="op">=</span> <span class="va">boot_paramEstPath</span>,</span>
 <span>                .nonboot_estimates <span class="op">=</span> <span class="va">nonboot_paramEstPath</span>,</span>
 <span>                .key <span class="op">=</span> <span class="va">paramKeyPath</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">1000</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">16</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
-<span><span class="co">#&gt; <span style="color: #BB0000;">chr</span>  (1): run</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">dbl</span> (15): THETA1, THETA2, THETA3, THETA4, THETA5, THETA6, THETA7, THETA8, OM...</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 25</span></span></span>
@@ -223,14 +216,6 @@ this:</p>
 <span>                .nonboot_estimates <span class="op">=</span> <span class="va">nonboot_paramEstPath</span>,</span>
 <span>                .key <span class="op">=</span> <span class="va">paramKeyPath</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>        <span class="fu"><a href="../reference/format_boot_table.html">format_boot_table</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">1000</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">16</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
-<span><span class="co">#&gt; <span style="color: #BB0000;">chr</span>  (1): run</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">dbl</span> (15): THETA1, THETA2, THETA3, THETA4, THETA5, THETA6, THETA7, THETA8, OM...</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
 <span>  </span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df2</span><span class="op">)</span></span>
