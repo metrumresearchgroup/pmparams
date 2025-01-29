@@ -22,7 +22,6 @@ getBootPercentiles <- function(
     .percentiles = NULL,
     .na.rm = TRUE
 ){
-  checkmate::assert_true(length(.ci) == 1)
   checkmate::assert_numeric(.percentiles, null.ok = TRUE)
   checkmate::assert_logical(.na.rm)
 
@@ -35,18 +34,21 @@ getBootPercentiles <- function(
 
   # Convert .ci to percentiles when .percentiles is _not_ specified
   if (is.null(.percentiles)) {
-    # Convert "IQR"
-    .ci <- tolower(.ci)
-    if (.ci == "iqr") .ci <- 50
-    # Convert CI to percentiles
-    .percentiles <- get_percentiles_from_ci(.ci)
+    .percentiles <- purrr::map(.ci, function(ci.i){
+      # Convert "IQR"
+      ci.i <- tolower(ci.i)
+      if (ci.i == "iqr") ci.i <- 50
+      # Convert CI to percentiles
+      get_percentiles_from_ci(ci.i)
+    }) %>% purrr::list_c()
   } else{
     # Perform checks and ensure order if .percentiles was specified
     if (any(.percentiles > 1) || any(.percentiles < 0)) {
       stop("`.percentiles` provided are outside of [0,1] range")
     }
-    .percentiles <- unique(.percentiles[order(.percentiles)])
   }
+
+  .percentiles <- unique(.percentiles[order(.percentiles)])
 
   # Calculate quantiles for each column
   comp_df <- comp_df %>%
