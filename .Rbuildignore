@@ -8,3 +8,4 @@
 ^pkgdown$
 ^pkgr\.yml$
 ^README\.Rmd$
+^data-raw$
