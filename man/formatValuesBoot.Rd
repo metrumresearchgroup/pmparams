@@ -2,11 +2,22 @@
 % Please edit documentation in R/formatValuesBoot.R
 \name{formatValuesBoot}
 \alias{formatValuesBoot}
-\title{Define how values are to be displayed}
+\title{Format confidence interval percents for bootstrap run}
 \usage{
-formatValuesBoot(.df, .digit, .maxex)
+formatValuesBoot(.boot_df, .digit, .maxex)
+}
+\arguments{
+\item{.boot_df}{parameter estimates output from \code{\link[=define_boot_table]{define_boot_table()}} with
+modifications ready for formatting}
+
+\item{.digit}{set significant digits for output (optional). Default is three digits}
+
+\item{.maxex}{set maxex for computation (optional). Default is \code{NULL}}
 }
 \description{
-Format values for bootstrap run
+Format confidence interval percents for bootstrap run
+}
+\note{
+This function currently only rounds percent columns
 }
 \keyword{internal}
