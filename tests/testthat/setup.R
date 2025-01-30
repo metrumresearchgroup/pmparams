@@ -1,4 +1,5 @@
 library(dplyr)
+library(bbr)
 library(testthat)
 library(pmparams)
 
@@ -33,35 +34,38 @@ PARAM_KEY_PATH_DF <-  file.path(MODEL_DIR, "pk-parameter-key.yaml")
 PARAM_KEY_PATH_BOTH <-  file.path(MODEL_DIR, "pk-parameter-key-both.yaml")
 
 
-# Data for testing param table (no bootstrap)
+### Data for testing param table (no bootstrap) ###
 MOD102_PATH <- file.path(MODEL_DIR, "102")
 PARAM_EST_102 <- readr::read_csv(
   file.path(MODEL_DIR, "param_est_102.csv"), show_col_types = FALSE
 )
 
-PARAM_TAB_102 <- define_param_table(
-  .estimates = PARAM_EST_102,
-  .key = PARAM_KEY_DF,
-  .ci = 95, .zscore = NULL
-)
+PARAM_TAB_102 <- define_param_table(PARAM_EST_102, .key = PARAM_KEY_DF)
 FMT_PARAM_TAB_102 <- format_param_table(PARAM_TAB_102)
-FMT_PARAM_TAB_102_PRSE  <- format_param_table(PARAM_TAB_102, .prse = TRUE)
+FMT_PARAM_TAB_102_PRSE <- format_param_table(PARAM_TAB_102, .prse = TRUE)
 
-# Data for testing boot param table
+### Data for testing boot param table ###
+# parameter estimates
 MOD106_PATH <- file.path(MODEL_DIR, "106")
 PARAM_EST_106 <- readr::read_csv(
   file.path(MODEL_DIR, "param_est_106.csv"), show_col_types = FALSE
 )
 
+PARAM_TAB_106 <- define_param_table(PARAM_EST_106, .key = PARAM_KEY_DF)
+FMT_PARAM_TAB_106 <- format_param_table(PARAM_TAB_106)
+
+# bootstrap model
+BOOT_RUN <- bbr::read_model(file.path(MODEL_DIR, "106-boot"))
+
+# bootstrap estimates (saved out)
 BOOT_106_EST_PATH <- file.path(MODEL_DIR, "boot", "data", "boot-106.csv")
 BOOT_106_EST <- readr::read_csv(BOOT_106_EST_PATH, show_col_types = FALSE)
 
-BOOT_TAB_106 <- pmparams::define_boot_table(
-  .boot_estimates = BOOT_106_EST,
-  .nonboot_estimates = PARAM_EST_106,
-  .key = PARAM_KEY_DF
-)
-FMT_BOOT_TAB_106 <- pmparams::format_boot_table(.boot_df = BOOT_TAB_106)
+BOOT_TAB_106 <- define_boot_table(BOOT_106_EST, .key = PARAM_KEY_DF)
+FMT_BOOT_TAB_106 <- format_boot_table(BOOT_TAB_106)
+
+# combined table
+BOOT_PARAM_TAB_106 <- left_join(FMT_PARAM_TAB_106, FMT_BOOT_TAB_106, by = c("abb", "desc"))
 
 # testing theta error block
 THETA_ERR = PARAM_EST_102 %>%

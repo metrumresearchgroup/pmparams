@@ -1,94 +1,112 @@
-#' Combine bootstrap estimates with non-bootstrap estimates and parameter key
+#' Combine bootstrap estimates with parameter key
 #'
 #' @description
 #'
-#' Combines boot strap estimates and non boot strap estimates with information in parameter key. Performs
-#' some formatting of this combined data.frame.
-#' There are two main steps of this function:
+#' Combines bootstrap estimates with information in parameter key and performs
+#' some additional formatting.
 #'
-#'1.Run `bbr::param_estimates_compare` to extract summary quantiles, the 5th, 50th, and 95th, of the
-#' bootstrap estimates for each model parameter.
+#' @details
 #'
-#' - Some `parameter_names` have punctuation such as `OMEGA(1,1)`. A new column is
-#' added without punctuation, such as `OMEGA11`.
+#' Below is the expected format of `.boot_estimates` if a data frame is provided:
+#'    ```
+#'    run   THETA1 THETA2 THETA3 THETA4 THETA5 THETA6   THETA7 THETA8
+#'    <chr>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>    <dbl>  <dbl>
+#'    001    0.494   4.19   1.20   4.20   1.24  0.488 -0.0615   0.377
+#'    002    0.405   4.07   1.14   4.23   1.32  0.536 -0.103    0.517
+#'    003    0.500   4.09   1.15   4.21   1.27  0.413 -0.0752   0.523
+#'    004    0.578   4.16   1.20   4.18   1.30  0.518 -0.0502   0.418
+#'    005    0.499   4.14   1.16   4.25   1.22  0.436 -0.0686   0.394
+#'    ```
 #'
-#' - Following this, parameter details from the parameter key are joined to the boot strap parameter estimates.
-#' A `dplyr::inner_join` is used so that only parameters in the model output are kept
-#' in the table. This was done so that, if your base and final model used the same structural
-#' THETAs and random parameters, the same parameter key could be used for both.
+#' **Notes:**
+#' - Some parameter names may have punctuation (such as `OMEGA(1,1)`). A new
+#' `name` column is automatically added that specifies the name without
+#'  punctuation (i.e. `OMEGA11`).
 #'
-#' - This join adds the following columns: `abb` (abbreviation), `desc` (parameter description),
-#' `panel`, `trans` (transformation).
+#' - Parameter details from the parameter key are joined to the bootstrap parameter
+#' estimates. A `dplyr::inner_join` is used so that only parameters in the model
+#' output are kept in the table. This was done so that, if your base and final
+#' model used the same structural THETAs and random parameters, the same
+#' parameter key could be used for both.
+#'   - This join adds the following columns: `abb` (abbreviation), `desc`
+#'     (parameter description), `panel`, `trans` (transformation).
 #'
-#'2.Reformat non-bootstrap estimates and left join onto combined bootstrap estimates and parameter key data.frame.
-#' Expected input is a data.frame with parameter estimates, with the columns:
-#' `parameter_names`, `estimate`.
+#' - A final check is performed to determine whether parameters with special
+#' transformation rules were defined correctly. In addition, a series of `TRUE`/
+#' `FALSE` columns are added that will be used downstream.
 #'
-#' With this information provided, a check is performed to determine whether parameters
-#' with special transformation rules were defined correctly. In addition, a series of
-#' TRUE/FALSE columns that will be used by subsequent functions.
 #'
-#' @param .boot_estimates parameter boot estimates- either path to file or data.frame
-#' @param .nonboot_estimates non-bootstrap final model - either path to file or bbr model_summary
-#' @param .key path to parameter key or data.frame of parameter key. Described in more detail in \code{\link[pmparams]{param_key}}
-#'
+#' @param .boot_estimates One of the following:
+#' - Output from `bbr::bootstrap_estimates()` or a wide data frame denoting the
+#' parameter estimates for each run. See details.
+#' - A file path to a csv containing the above dataset.
+#' @param .nonboot_estimates Deprecated. Parameter estimates are now joined later
+#' in the workflow.
+#' @param .key path to parameter key or data.frame of parameter key. Described
+#'   in more detail in \code{\link[pmparams]{param_key}}
+#' @inheritParams getBootPercentiles
 #' @examples
-#' model_dir <- system.file("model/nonmem", package = "pmparams")
 #'
-#' boot_paramEst <- readr::read_csv(file.path(model_dir, "boot/data/boot-106.csv"))
-#' nonboot_paramEst <- readr::read_csv(file.path(model_dir, "param_est_106.csv"))
+#' model_dir <- system.file("model/nonmem", package = "pmparams")
 #' paramKey <-  file.path(model_dir, "pk-parameter-key-new.yaml")
 #'
-#' define_boot_table(.boot_estimates = boot_paramEst,
-#'                .nonboot_estimates = nonboot_paramEst,
-#'                .key = paramKey)
+#' # Using a file path:
+#' boot_path <- file.path(model_dir, "boot/data/boot-106.csv")
+#' define_boot_table(
+#'  .boot_estimates = boot_path,
+#'  .key = paramKey
+#' )
 #'
+#' # Using a `bbr` bootstrap model object:
+#' \dontrun{
+#' boot_run <- bbr::read_model(file.path(model_dir, "106-boot"))
+#' define_boot_table(
+#'  .boot_estimates = bbr::bootstrap_estimates(boot_run),
+#'  .key = paramKey
+#' )
+#' }
+#'
+#' @seealso [param_key()], [define_param_table()], [format_boot_table()]
 #' @export
-define_boot_table <- function(.boot_estimates, .nonboot_estimates, .key){
+define_boot_table <- function(
+    .boot_estimates,
+    .nonboot_estimates = NULL,
+    .key,
+    .ci = 95,
+    .na.rm = TRUE
+){
+  if(!is.null(.nonboot_estimates)){
+    lifecycle::deprecate_warn(
+      when = "0.3.0",
+      what = "define_boot_table(.nonboot_estimates)",
+      details = "This argument is no longer used."
+    )
+  }
 
-  #path to boot estimates
+  # path to boot estimates
   if (inherits(.boot_estimates, "character")){
     .boot <- readr::read_csv(.boot_estimates, show_col_types = FALSE)
-  #data.frame of boot estimates
+    # data.frame of boot estimates
   } else {
     .boot <- .boot_estimates
   }
 
-# parameter key types
+  # parameter key types
   .key <- loadParamKey(.key)
 
+  # get percentiles and format
+  .bootParam0 <- getBootPercentiles(.boot, .ci, .na.rm)
 
-  .nonboot_estimates <- loadParamEstimates(.nonboot_estimates)
+  .boot_df <- .bootParam0 %>%
+    removePunc(.column = "parameter_names") %>%
+    dplyr::inner_join(.key, by = "name") %>%
+    checkTransforms() %>%
+    defineRows() %>%
+    backTrans_log() %>%
+    backTrans_logit() %>%
+    dplyr::arrange(as.numeric(nrow)) %>%
+    dplyr::select(-"nrow") %>%
+    tibble::as_tibble()
 
-#clean up boot
-.bootParam0 = .boot %>%
-    bbr::param_estimates_compare()
-
-if (all(c("parameter_names", "p50", "p2.5", "p97.5") %in% names(.bootParam0))){
-  .bootParam1 <- .bootParam0 %>%
-    dplyr::rename(estimate = "p50", lower = "p2.5", upper = "p97.5")
-} else {
-  .bootParam1 <- .bootParam0 %>%
-    dplyr::rename(estimate = "50%", lower = "2.5%", upper = "97.5%")
-}
-
-.bootParam <- .bootParam1 %>%
-    dplyr::mutate(name = gsub("[[:punct:]]", "", parameter_names)) %>%
-    dplyr::inner_join(.key, by = "name")
-
-#join with nonboot estimates
-.boot_df <- .bootParam %>%
-  dplyr::left_join(.nonboot_estimates %>%
-                dplyr::mutate(name = gsub("[[:punct:]]", "", parameter_names)) %>%
-                dplyr::select(parameter_names, fixed),
-                by = "parameter_names") %>%
-  dplyr::mutate(value = estimate) %>%
-  checkTransforms() %>%
-  defineRows() %>%
-  backTrans_log() %>%
-  backTrans_logit() %>%
-  dplyr::arrange(as.numeric(nrow))
-
-.boot_df
-
+  return(.boot_df)
 }
