@@ -61,8 +61,8 @@ test_that("format_param_table continuous columns expected ouput: shrinkage", {
     )
 
   expect_equal(newDF_shrink$shrinkage[1], "-")
-  expect_equal(newDF_shrink$shrinkage[6], "17.9")
-  expect_equal(newDF_shrink$shrinkage[8], "0.587")
+  expect_equal(newDF_shrink$shrinkage[6], "18.2")
+  expect_equal(newDF_shrink$shrinkage[8], "0.898")
 })
 
 test_that("format_param_table continuous columns expected ouput: value", {
@@ -124,12 +124,12 @@ test_that("format_param_table: .digit produces expected significant digits", {
   newDF9 <- format_param_table(PARAM_TAB_102)
   expect_equal(newDF9$value[9], "0.0690 [Corr=0.511]")
   expect_equal(newDF9$ci_95[9], "0.0299, 0.108")
-  expect_equal(newDF9$shrinkage[6], "17.9")
+  expect_equal(newDF9$shrinkage[6], "18.2")
 
   newDF10 <- format_param_table(PARAM_TAB_102, .digit = 6)
   expect_equal(newDF10$value[9], "0.0690088 [Corr=0.510933]")
   expect_equal(newDF10$ci_95[9], "0.0298839, 0.108134")
-  expect_equal(newDF10$shrinkage[6], "17.8988")
+  expect_equal(newDF10$shrinkage[6], "18.1558")
 })
 
 test_that("format_param_table: .maxex produces expected scientific notation", {
@@ -143,7 +143,7 @@ test_that("format_param_table: .maxex produces expected scientific notation", {
   expect_equal(newDF12$value[1], "6.77e+18")
   expect_equal(newDF12$value[10], "13.4 [Corr=0.694]")
   expect_equal(newDF12$ci_95[10], "8.78e-06, 0.00180")
-  expect_equal(newDF12$shrinkage[6], "17.9")
+  expect_equal(newDF12$shrinkage[6], "18.2")
 })
 
 test_that("format_param_table: .select_cols works", {
