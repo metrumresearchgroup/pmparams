@@ -30,6 +30,7 @@ Depends:
 Imports:
     checkmate,
     dplyr (>= 1.0.0),
+    lifecycle,
     magrittr,
     pmtables,
     rlang,
