@@ -40,7 +40,7 @@ PARAM_EST_102 <- readr::read_csv(
   file.path(MODEL_DIR, "param_est_102.csv"), show_col_types = FALSE
 )
 
-PARAM_TAB_102 <- define_param_table(PARAM_EST_102, .key = PARAM_KEY_DF)
+PARAM_TAB_102 <- define_param_table(PARAM_EST_102, PARAM_KEY_DF)
 FMT_PARAM_TAB_102 <- format_param_table(PARAM_TAB_102)
 FMT_PARAM_TAB_102_PRSE <- format_param_table(PARAM_TAB_102, .prse = TRUE)
 
@@ -51,7 +51,7 @@ PARAM_EST_106 <- readr::read_csv(
   file.path(MODEL_DIR, "param_est_106.csv"), show_col_types = FALSE
 )
 
-PARAM_TAB_106 <- define_param_table(PARAM_EST_106, .key = PARAM_KEY_DF)
+PARAM_TAB_106 <- define_param_table(PARAM_EST_106, PARAM_KEY_DF)
 FMT_PARAM_TAB_106 <- format_param_table(PARAM_TAB_106)
 
 # bootstrap model
@@ -61,7 +61,7 @@ BOOT_RUN <- bbr::read_model(file.path(MODEL_DIR, "106-boot"))
 BOOT_106_EST_PATH <- file.path(MODEL_DIR, "boot", "data", "boot-106.csv")
 BOOT_106_EST <- readr::read_csv(BOOT_106_EST_PATH, show_col_types = FALSE)
 
-BOOT_TAB_106 <- define_boot_table(BOOT_106_EST, .key = PARAM_KEY_DF)
+BOOT_TAB_106 <- define_boot_table(BOOT_106_EST, PARAM_KEY_DF)
 FMT_BOOT_TAB_106 <- format_boot_table(BOOT_TAB_106)
 
 # combined table
@@ -78,7 +78,6 @@ THETA_ERR = PARAM_EST_102 %>%
 THETA_ERR_KEY = PARAM_KEY_DF %>%
   mutate(name = if_else(name == "SIGMA11", "THETA11", name))
 THETA_ERR_PARAM_TAB <- define_param_table(
-  .estimates = THETA_ERR,
-  .key = THETA_ERR_KEY,
+  THETA_ERR, THETA_ERR_KEY,
   .ci = 95, .zscore = NULL
 ) %>% suppressMessages()

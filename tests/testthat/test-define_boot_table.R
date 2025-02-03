@@ -31,36 +31,36 @@ withr::with_options(list(bbr.bbi_exe_path = bbr::read_bbi_path()), {
     paramKey2 <- as.data.frame(PARAM_KEY_DF)
     colnames(paramKey2)[colnames(paramKey2) == "panel"] ="no_name"
     expect_error(
-      define_boot_table(BOOT_106_EST, .key = paramKey2),
+      define_boot_table(BOOT_106_EST, paramKey2),
       "The following required columns are missing: panel"
     )
   })
 
   test_that("define_boot_table handles multiple estimate input types", {
     # Test file path
-    boot_df1 <- define_boot_table(BOOT_106_EST_PATH, .key = PARAM_KEY_DF)
+    boot_df1 <- define_boot_table(BOOT_106_EST_PATH, PARAM_KEY_DF)
     expect_equal(boot_df1$value[boot_df1$name == "OMEGA22"], 0.0821058)
 
     # Test read-in dataframe
-    boot_df2 <- define_boot_table(BOOT_106_EST, .key = PARAM_KEY_DF)
+    boot_df2 <- define_boot_table(BOOT_106_EST, PARAM_KEY_DF)
     expect_equal(boot_df2$value[boot_df2$name == "OMEGA22"], 0.0821058)
 
     # Test with bbr
     skip_if_missing_deps("bbr", "1.11.0")
     boot_df3 <- define_boot_table(
-      bbr::bootstrap_estimates(BOOT_RUN), .key = PARAM_KEY_DF
+      bbr::bootstrap_estimates(BOOT_RUN), PARAM_KEY_DF
     )
     expect_equal(boot_df3$value[boot_df3$name == "OMEGA22"], 0.0790954)
   })
 
   test_that("define_boot_table handles multiple parameter key input types", {
     # Key is a file path
-    boot_df <- define_boot_table(BOOT_106_EST, .key = PARAM_KEY_PATH)
+    boot_df <- define_boot_table(BOOT_106_EST, PARAM_KEY_PATH)
     expect_equal(boot_df$value[boot_df$name == "OMEGA22"],  0.0821058)
 
     # Key is a data frame (row_var must be 'name')
     key <- pmtables::yaml_as_df(PARAM_KEY_PATH, row_var = "name")
-    boot_df <- define_boot_table(BOOT_106_EST, .key = key)
+    boot_df <- define_boot_table(BOOT_106_EST, key)
     expect_equal(boot_df$value[boot_df$name == "OMEGA22"], 0.0821058)
   })
 
@@ -68,14 +68,14 @@ withr::with_options(list(bbr.bbi_exe_path = bbr::read_bbi_path()), {
     # TODO: There should be a loadParamKey test file that tests this, rather
     # than having it here and in define_param_table
     expect_warning(
-      define_boot_table(BOOT_106_EST, .key = PARAM_KEY_PATH_BOTH),
+      define_boot_table(BOOT_106_EST, PARAM_KEY_PATH_BOTH),
       "Only abb, desc, panel and trans arguments will be used"
     )
   })
 
   test_that("define_boot_table works with iqr", {
     boot_df <- define_boot_table(
-      BOOT_106_EST, .key = PARAM_KEY_DF, .ci = "iqr"
+      BOOT_106_EST, PARAM_KEY_DF, .ci = "iqr"
     )
     # This also confirms the correct percent names were chosen
     expect_equal(boot_df$lower[1], 1.50140037)

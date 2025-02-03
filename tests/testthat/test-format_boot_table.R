@@ -66,7 +66,7 @@ test_that("format_param_table: .maxex produces expected scientific notation", {
 test_that("format_boot_table: CI not calculated for fixed parameters", {
   skip_if_missing_deps("bbr", "1.11.0")
   boot_df <- define_boot_table(
-    bbr::bootstrap_estimates(BOOT_RUN), .key = PARAM_KEY_DF
+    bbr::bootstrap_estimates(BOOT_RUN), PARAM_KEY_DF
   )
   boot_df_fmt <- format_boot_table(boot_df)
   expect_equal(
@@ -76,7 +76,7 @@ test_that("format_boot_table: CI not calculated for fixed parameters", {
 })
 
 test_that("format_boot_table: .select_cols works", {
-  df1 <- define_boot_table(BOOT_106_EST, .key = PARAM_KEY_DF, .ci = "iqr")
+  df1 <- define_boot_table(BOOT_106_EST, PARAM_KEY_DF, .ci = "iqr")
 
   expect_message(
     df2 <- format_boot_table(df1, .select_cols = c("lower", "desc")),
