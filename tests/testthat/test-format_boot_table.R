@@ -97,23 +97,24 @@ test_that("format_param_table: .ci correctly names columns", {
 })
 
 test_that("format_boot_table: .select_cols works", {
+  rlang::local_options(lifecycle_verbosity = "warning")
   df1 <- define_boot_table(BOOT_106_EST, PARAM_KEY_DF, .ci = "iqr")
 
-  expect_message(
+  expect_warning(
     df2 <- format_boot_table(df1, .select_cols = c("lower", "desc")),
-    "`.select_cols` is deprecated"
+    "is deprecated"
   )
   expect_equal(names(df2), c("lower", "desc"))
 
   # 'all' returns all columns
-  expect_message(
+  expect_warning(
     df2 <- format_boot_table(df1, .select_cols = "ALL"),
-    "`.select_cols` is deprecated"
+    "is deprecated"
   )
   expect_equal(setdiff(names(df2), names(df1)), c("boot_value", "boot_ci_50"))
 
   expect_error(
-    format_boot_table(df1, .select_cols = "other") %>% suppressMessages(),
+    format_boot_table(df1, .select_cols = "other") %>% suppressWarnings(),
     "The following specified columns were not found: other"
   )
 })

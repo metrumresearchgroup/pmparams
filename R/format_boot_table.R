@@ -56,7 +56,11 @@ format_boot_table <- function(
 
   # Handle deprecated .select_cols arg, or define it below
   if (!is.null(.select_cols)){
-    message("`.select_cols` is deprecated and included for backwards compatibility. Using this sets `.cleanup_cols = FALSE`")
+    lifecycle::deprecate_warn(
+      when = "0.3.0",
+      what = "format_boot_table(.select_cols)",
+      details = "Using this sets `.cleanup_cols = FALSE`"
+    )
     .cleanup_cols <- FALSE
     if (any(tolower(.select_cols) == "all")) .select_cols <- names(.df_out)
     # Check for specified columns

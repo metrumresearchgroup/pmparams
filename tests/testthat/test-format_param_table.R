@@ -147,18 +147,18 @@ test_that("format_param_table: .maxex produces expected scientific notation", {
 })
 
 test_that("format_param_table: .select_cols works", {
-
+  rlang::local_options(lifecycle_verbosity = "warning")
   # Traditional use works
   expect_warning(
     df2 <- format_param_table(PARAM_TAB_102, .select_cols = c("abb", "ci_95")),
-    "`.select_cols` is deprecated"
+    "is deprecated"
   )
   expect_equal(names(df2), c("abb", "ci_95"))
 
   # 'all' returns all columns
   expect_warning(
     df2 <- format_param_table(PARAM_TAB_102, .select_cols = "ALL"),
-    "`.select_cols` is deprecated"
+    "is deprecated"
   )
   expect_equal(setdiff(names(df2), names(PARAM_TAB_102)), c("cv", "pRSE", "sd", "text", "greek", "type", "type_f", "ci_95"))
 
