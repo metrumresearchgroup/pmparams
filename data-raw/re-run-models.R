@@ -2,6 +2,7 @@ devtools::load_all()
 library(bbr)
 
 model_dir <- "inst/model/nonmem"
+model_dir <- file.path(rprojroot::find_rstudio_root_file(), model_dir)
 
 mod2 <- read_model(file.path(model_dir, "102"))
 mod6 <- read_model(file.path(model_dir, "106"))
