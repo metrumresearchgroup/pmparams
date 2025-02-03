@@ -18,10 +18,9 @@ getBootPercentiles <- function(
     .ci = 95,
     .na.rm = TRUE
 ){
-  checkmate::assert_true(length(.ci) == 1)
   if (tolower(.ci) == "iqr") .ci <- 50
   .ci <- as.numeric(.ci)
-  if(.ci < 1 || .ci > 99){
+  if (!checkmate::test_integerish(.ci, lower = 1, upper = 99, len = 1)){
     rlang::abort("`.ci` must be between 1 and 99 if numeric ('iqr' also acceptable)")
   }
 
