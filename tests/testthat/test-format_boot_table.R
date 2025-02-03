@@ -75,6 +75,27 @@ test_that("format_boot_table: CI not calculated for fixed parameters", {
   )
 })
 
+
+test_that("format_param_table: .ci correctly names columns", {
+
+  df1 <- define_boot_table(BOOT_106_EST, PARAM_KEY_DF, .ci = 90)
+  df1_f <- format_boot_table(df1) %>% dplyr::select(starts_with("boot"))
+  expect_equal(names(df1_f), c("boot_value", "boot_ci_90"))
+
+  df2 <- define_boot_table(BOOT_106_EST, PARAM_KEY_DF, .ci = 70)
+  df2_f <- format_boot_table(df2) %>% dplyr::select(starts_with("boot"))
+  expect_equal(names(df2_f), c("boot_value", "boot_ci_70"))
+
+  df3 <- define_boot_table(BOOT_106_EST, PARAM_KEY_DF, .ci = "iqr")
+  df3_f <- format_boot_table(df3) %>% dplyr::select(starts_with("boot"))
+  expect_equal(names(df3_f), c("boot_value", "boot_ci_50"))
+
+  # Spot check values that interval size decreases as confidence goes down
+  expect_equal(df1_f$boot_ci_90[1], "1.41, 1.75")
+  expect_equal(df2_f$boot_ci_70[1], "1.47, 1.68")
+  expect_equal(df3_f$boot_ci_50[1], "1.50, 1.64")
+})
+
 test_that("format_boot_table: .select_cols works", {
   df1 <- define_boot_table(BOOT_106_EST, PARAM_KEY_DF, .ci = "iqr")
 
