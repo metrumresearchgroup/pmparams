@@ -40,11 +40,11 @@
 #' - Output from `bbr::bootstrap_estimates()` or a wide data frame denoting the
 #' parameter estimates for each run. See details.
 #' - A file path to a csv containing the above dataset.
-#' @param .nonboot_estimates Deprecated. Parameter estimates are now joined later
-#' in the workflow.
 #' @param .key path to parameter key or data.frame of parameter key. Described
 #'   in more detail in \code{\link[pmparams]{param_key}}
 #' @inheritParams getBootPercentiles
+#' @param .nonboot_estimates Deprecated. Parameter estimates are now joined later
+#' in the workflow.
 #' @examples
 #'
 #' model_dir <- system.file("model/nonmem", package = "pmparams")
@@ -70,10 +70,10 @@
 #' @export
 define_boot_table <- function(
     .boot_estimates,
-    .nonboot_estimates = NULL,
     .key,
     .ci = 95,
-    .na.rm = TRUE
+    .na.rm = TRUE,
+    .nonboot_estimates = NULL
 ){
   if(!is.null(.nonboot_estimates)){
     lifecycle::deprecate_warn(

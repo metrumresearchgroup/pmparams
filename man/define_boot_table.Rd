@@ -6,10 +6,10 @@
 \usage{
 define_boot_table(
   .boot_estimates,
-  .nonboot_estimates = NULL,
   .key,
   .ci = 95,
-  .na.rm = TRUE
+  .na.rm = TRUE,
+  .nonboot_estimates = NULL
 )
 }
 \arguments{
@@ -20,9 +20,6 @@ parameter estimates for each run. See details.
 \item A file path to a csv containing the above dataset.
 }}
 
-\item{.nonboot_estimates}{Deprecated. Parameter estimates are now joined later
-in the workflow.}
-
 \item{.key}{path to parameter key or data.frame of parameter key. Described
 in more detail in \code{\link[pmparams]{param_key}}}
 
@@ -31,6 +28,9 @@ confidence interval, or \code{"iqr"} (interquartile range). Default is \code{95}
 
 \item{.na.rm}{logical (T/F). If \code{TRUE}, any \code{NA} and \code{NaN}'s are removed
 before the quantiles are computed. Passed to \code{\link[stats:quantile]{stats::quantile()}}.}
+
+\item{.nonboot_estimates}{Deprecated. Parameter estimates are now joined later
+in the workflow.}
 }
 \description{
 Combines bootstrap estimates with information in parameter key and performs
