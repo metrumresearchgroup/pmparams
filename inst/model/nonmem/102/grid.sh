@@ -1,5 +1,5 @@
 #!/bin/bash
 
-#$ -wd /data/home/sethg/example-projects/bbr-nonmem-poppk-foce/model/pk/102
+#$ -wd /data/Projects/package_dev/pmparams/inst/model/nonmem/102
 
-/data/apps/bbi nonmem run local 102.ctl
+/usr/local/bin/bbi nonmem run local 102.ctl

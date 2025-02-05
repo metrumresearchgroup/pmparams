@@ -1,0 +1,10 @@
+mv: cannot move '/data/home/barrettk/.config/mimeapps.list.new' to '/data/home/barrettk/.config/mimeapps.list': No such file or directory
+time="2025-01-30T11:28:49-05:00" level=info msg="Successfully loaded default configuration from /data/Projects/package_dev/pmparams/inst/model/nonmem/102/bbi.yaml"
+time="2025-01-30T11:28:49-05:00" level=info msg="Beginning Local Path"
+time="2025-01-30T11:28:49-05:00" level=info msg="A total of 1 models have completed the initial preparation phase"
+time="2025-01-30T11:28:49-05:00" level=info msg="[102] Beginning local work phase"
+time="2025-01-30T11:30:40-05:00" level=info msg="[102] Beginning cleanup phase"
+time="2025-01-30T11:30:41-05:00" level=info msg="[102] Cleanup completed"
+time="2025-01-30T11:30:41-05:00" level=info msg="Waiting for any post execution hooks to finish"
+time="2025-01-30T11:30:41-05:00" level=info msg="\r1 models completed in 1m51.256017302s"
+

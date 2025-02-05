@@ -1,16 +1,29 @@
-#' Define how values are to be displayed
+#' Format confidence interval percents for bootstrap run
 #'
-#' @description
-#' Format values for bootstrap run
+#' @note This function currently only rounds percent columns
 #'
+#' @inheritParams format_boot_table
+#' @importFrom tidyselect all_of
 #' @keywords internal
+formatValuesBoot <- function(
+    .boot_df,
+    .digit,
+    .maxex
+){
+  ci_name <- paste0("boot_ci_", unique(.boot_df[["ci_level"]]))
 
-formatValuesBoot <- function(.df,
-                             .digit,
-                             .maxex){
-  .df %>%
+  .boot_df %>%
     dplyr::mutate(
-      boot_ci_95 = dplyr::if_else(fixed, "FIXED", paste0(pmtables::sig(lower, .digit, .maxex), ', ', pmtables::sig(upper, .digit, .maxex))),
-      boot_value = pmtables::sig(value, .digit, .maxex)
-    )
+      boot_value = pmtables::sig(.data$value, .digit, .maxex),
+      fixed = (.data$lower == .data$upper),
+      !!rlang::sym(ci_name) := dplyr::if_else(
+        .data$fixed,
+        "FIXED",
+        paste0(
+          pmtables::sig(.data$lower, .digit, .maxex), ', ',
+          pmtables::sig(.data$upper, .digit, .maxex)
+        )
+      )
+    ) %>%
+    dplyr::select(-"fixed")
 }
