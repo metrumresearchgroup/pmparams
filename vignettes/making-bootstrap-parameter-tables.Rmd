@@ -185,17 +185,8 @@ st_image_show(tab_out, width = 0.8)
 
 
 ## Complex example
-To illustrate the flexibility of `make_boot_pmtable()`, we'll use a more complex example. Here we'll include two confidence intervals, the median value, and an extra 25% quantile (just for fun). Individual percentiles must be named `boot_perc_[x]` for `make_boot_pmtable` to format the names correctly, though custom adjustments can be done using `pmtables::st_rename()`.
-
-```{r, eval = eval_bbr_chunks}
-param_df <- define_param_table(
-  .estimates = orig_mod,
-  .key = paramKeyPath,
-  .ci = 95
-) %>% 
-  # Retain parameter_names column for joining
-  format_param_table(.cleanup_cols = FALSE)
-
+To illustrate the flexibility of `make_boot_pmtable()`, we'll use a more complex example where we include two confidence intervals:
+```{r, eval = eval_bbr_chunks, message=FALSE}
 # Two confidence intervals
 boot_df <- define_boot_table(
   .boot_estimates = bbr::bootstrap_estimates(boot_run),
@@ -209,20 +200,10 @@ boot_df2 <- define_boot_table(
   .ci = "iqr"
 ) %>% format_boot_table()
 
-# Add custom percentile
-
-perc_25 <- bbr::summarize_bootstrap_run(boot_run) %>%
-  bbr::param_estimates_compare(probs = 0.25) %>%
-  dplyr::transmute(
-    parameter_names, 
-    boot_perc_25 = signif(p25, 3)
-  )
-
 
 boot_param_df <- param_df %>%
-  left_join(perc_25, by = "parameter_names") %>%
-  left_join(boot_df, by = c("abb", "desc")) %>%
-  left_join(boot_df2, by = c("abb", "desc", "boot_value"))
+  left_join(boot_df) %>%
+  left_join(boot_df2)
 ```
 
 ```{r, eval = render_bbr_tables}
@@ -234,7 +215,7 @@ tab <- make_boot_pmtable(.df = boot_param_df, .pmtype = "fixed") %>%
   st_notes(param_notes()$logTrans) %>%   # customize other notes
   st_notes_detach(width = 1) %>% 
   st_files(output = "final-param-fixed-boot-multi-ci.tex") %>% 
-  stable(output_file = "deliv/mod106-boot-95-iqr-ci-25-perc-fixed.tex")
+  stable(output_file = "deliv/mod106-boot-95-iqr-ci-fixed.tex")
 
 tab_out <- stable_save_image(tab, format = "png")
 ```
