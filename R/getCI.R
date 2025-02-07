@@ -29,9 +29,13 @@ getCI <- function(.df, .value = "value", .se = "se", .ci = 95){
 #' @inheritParams getCI
 #' @noRd
 calculate_ci <- function(est, se, .ci = 95) {
-  z <- get_z_stat(.ci) # Two-tailed z-test
-  lower <- est - z * se
-  upper <- est + z * se
+  # Get the Z statistic for a two-tailed z-test
+  alpha <- 1 - (.ci / 100)
+  z_stat <- qnorm(1 - (alpha / 2))
+
+  # Intervals
+  lower <- est - z_stat * se
+  upper <- est + z_stat * se
 
   list(
     lower = lower,
@@ -39,11 +43,3 @@ calculate_ci <- function(est, se, .ci = 95) {
   )
 }
 
-#' Get the Z statistic for a two-tailed z-test
-#' @inheritParams getCI
-#' @noRd
-get_z_stat <- function(.ci){
-  alpha <- 1 - (.ci / 100)
-  z_stat <- qnorm(1 - (alpha / 2))
-  return(z_stat)
-}
