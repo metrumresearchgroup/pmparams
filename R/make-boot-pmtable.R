@@ -149,7 +149,6 @@ make_boot_pmtable <- function(
 
 #' Rename and format bootstrap columns
 #' @inheritParams make_boot_pmtable
-#' @param col_type one of `c("ci", "perc", "median")`
 #' @noRd
 rename_boot_cols <- function(.df) {
   .df_new <- .df %>%
