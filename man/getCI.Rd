@@ -4,7 +4,7 @@
 \alias{getCI}
 \title{Calculate 90\% or 95\% confidence intervals}
 \usage{
-getCI(.df, .value = "value", .se = "se", .ci = 95, .zscore = NULL)
+getCI(.df, .value = "value", .se = "se", .ci = 95)
 }
 \arguments{
 \item{.df}{data.frame with parameter estimates}

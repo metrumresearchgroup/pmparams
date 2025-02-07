@@ -12,21 +12,39 @@
 #' @param .zscore z-score for the specified confidence interval. Only needed for confidence intervals that are NOT 90 or 95 percent
 #'
 #' @keywords internal
-getCI <- function(.df, .value = "value", .se = "se", .ci = 95, .zscore = NULL){
+getCI <- function(.df, .value = "value", .se = "se", .ci = 95){
 
-  if (.ci %in% c(90, 95)){
+  .df %>%
+    dplyr::mutate(
+      lower = calculate_ci(.df[[.value]], .df[[.se]], .ci = .ci)$lower,
+      upper = calculate_ci(.df[[.value]], .df[[.se]], .ci = .ci)$upper,
+      ci_level  = .ci
+    )
 
-    .df %>%
-      dplyr::mutate(lower = lowerCI(.est = .df[[.value]], .se = .df[[.se]], .ci = .ci),
-                    upper = upperCI(.est = .df[[.value]], .se = .df[[.se]], .ci = .ci),
-                    ci_level  = .ci)
-  } else if (!is.null(.zscore)){
-    .df %>%
-      dplyr::mutate(lower = lowerCI(.est = .df[[.value]], .se = .df[[.se]], .ci = .ci, .zscore = .zscore),
-                    upper = upperCI(.est = .df[[.value]], .se = .df[[.se]], .ci = .ci, .zscore = .zscore),
-                    ci_level = .ci)
-  } else if (!(.ci %in% c(90, 95)) & is.null(.zscore)){
-    stop("Z-score (.zscore) must be supplied when CI is not 90 or 95")
-  }
+}
 
+
+#' Get the lower and upper intervals for a confidence interval
+#' @param est parameter estimates
+#' @param se standard error
+#' @inheritParams getCI
+#' @noRd
+calculate_ci <- function(est, se, .ci = 95) {
+  z <- get_z_stat(.ci) # Two-tailed z-test
+  lower <- est - z * se
+  upper <- est + z * se
+
+  list(
+    lower = lower,
+    upper = upper
+  )
+}
+
+#' Get the Z statistic for a two-tailed z-test
+#' @inheritParams getCI
+#' @noRd
+get_z_stat <- function(.ci){
+  alpha <- 1 - (.ci / 100)
+  z_stat <- qnorm(1 - (alpha / 2))
+  return(z_stat)
 }
