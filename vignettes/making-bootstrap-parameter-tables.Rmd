@@ -35,7 +35,7 @@ render_bbr_tables <- render_tables && eval_bbr_chunks
 This is a vignette to help you become familiar with using `define_boot_table()` and `format_boot_table()`. 
 For more information how to effectively integrate `pmparams` into your workflow, visit the 
 <a href="https://merge.metrumrg.com/expo/expo1-nonmem-foce/posts/parameter-tables.html" target="_blank">
-MeRGE Expo: Parameter Tables </a>..
+MeRGE Expo: Parameter Tables</a>.
 
 ```{r load packages, results = 'hide', message=FALSE, warning=FALSE}
 library(pmparams)
@@ -61,16 +61,16 @@ boot_run <- bbr::read_model(file.path(model_dir, "106-boot"))
 
 ## Parameter key
 
-We begin by creating a parameter key that tells R how to interpret you parameter values. Our code require four arguments for each parameter:
+We begin by creating a parameter key that tells R how to interpret your parameter values. Our code requires four arguments for each parameter:
 
 * abb - abbreviation for model parameter (we use latex coding)
 * desc - parameter description to appear
 * panel - the table panel the parameter should appear under
 * trans - definition of how the parameter should be transformed
 
-If you have a model that uses theta in the $ERROR block, make sure that the theta section's panel is "RV" so that `pmparams` functions can properly identify it. 
+If you have a model that uses theta in the $ERROR block, make sure the theta panel label is "RV" so the `pmparams` functions can properly identify it. 
 
-It is recommended to use a parameter key yaml, but `pmparams` works for parameter key tibbles. 
+We recommend using a parameter key yaml, but `pmparams` works for parameter key tibbles. 
 
 A more detailed walk-through of generating the parameter key is available here: <a href="https://merge.metrumrg.com/expo/expo1-nonmem-foce/posts/parameter-key.html" target="_blank">
 MeRGE Expo: Creating a Parameter Key </a>. 
@@ -80,20 +80,20 @@ param_key_lst <- yaml::yaml.load_file(param_key)
 head(unlist(param_key_lst))
 ```
 
-# Creating bootstrap estimate parameter table
+# Creating a parameter table bootstrap estimates
+
+## Define & format bootstrap parameter table
+Parameter tables of bootstrap estimates are created by first passing your bootstrap estimates to the `pmparams` `define_boot_table()` function, which handles both the joining and creation of new confidence interval related columns.
+
+- Note: this uses `dplyr::inner_join`, so only parameters included in the model output _and_ parameter key will be kept in the table. This was done so that if your base and final model used the same structural THETAs and random parameters, the same parameter key could be used for both. The additional covariate THETAs defined in the parameter key YAML would simply be ignored when creating the base model parameter table.
+
+Bootstrap runs can be performed directly in `bbr` (version `1.11.0` or later), which tracks a bootstrap model object (`boot_run`). Once executed, the `bbr::bootstrap_estimates()` function can be used to easily read those estimates into a data frame that you can subsequently pass to the `pmparams` `define_boot_table()` function. 
 
 ### Bootstrap parameter estimates argument
-`pmparams` allows for different bootstrap parameter estimate input types:
+To support use cases outside of `bbr`, this function allows you to pass in those bootstrap estimates in a couple of formats:
 
 * A ***path*** to a csv (`file.path(model_dir, "boot/data/boot-106.csv")`)
 * A data.frame (like what's returned from `bbr::bootstrap_estimates()`)
-
-As of `bbr 1.11.0`, bootstrapping can be done in-house, tracking a new bootstrap model object (`boot_run`). Once executed, we can easily read in these estimates using `bbr::bootstrap_estimates()`.
-
-## Define & format bootstrap parameter table
-We will now join parameter estimates and parameter key. `define_param_table` will handle both the joining and creation of new confidence interval related columns.
-
-- Note: this uses `dplyr::inner_join`, so only parameters included in the model output _and_ parameter key will be kept in the table. This was done so that if your base and final model used the same structural THETAs and random parameters, the same parameter key could be used for both. The additional covariate THETAs defined in the parameter key YAML would simply be ignored when creating the base model parameter table.
 
 ```{r, eval = eval_bbr_chunks}
 # Also accepted
@@ -119,7 +119,7 @@ head(boot_df)
 
 # Combine bootstrap and original model parameter estimates
 
-Start by creating both of the formatted parameter tables, and then join them together as seen below:
+Start by creating both formatted parameter tables, and then join them together as seen below:
 ```{r, eval = eval_bbr_chunks}
 boot_df <- boot_ests %>%
   define_boot_table(param_key, .ci = 95) %>% 
@@ -137,8 +137,7 @@ head(boot_param_df)
 
 ```{r, eval = render_bbr_tables}
 # Define footnote
-
-footBoot <- glue::glue("CI were determined from the 2.5th and 97.5th percentiles 
+footBoot <- glue::glue("CIs were determined from the 2.5th and 97.5th percentiles 
                 of the non-parametric bootstrap estimates (n ={nrow(boot_ests)}).")
 
 # Render table
@@ -169,7 +168,7 @@ boot_df <- boot_ests %>%
   format_boot_table()
 
 boot_df2 <- boot_ests %>%
-  define_boot_table(param_key, .ci = "iqr") %>% 
+  define_boot_table(param_key, .ci = 90) %>% 
   format_boot_table()
 
 
@@ -187,7 +186,7 @@ tab <- boot_param_df %>%
   st_notes(param_notes()$logTrans) %>%   # customize other notes
   st_notes_detach(width = 1) %>% 
   st_files(output = "final-param-fixed-boot-multi-ci.tex") %>% 
-  stable(output_file = "deliv/mod106-boot-95-iqr-ci-fixed.tex")
+  stable(output_file = "deliv/mod106-boot-95-90-ci-fixed.tex")
 
 tab_out <- stable_save_image(tab, format = "png")
 ```
