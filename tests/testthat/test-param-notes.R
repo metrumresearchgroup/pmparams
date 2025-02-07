@@ -1,25 +1,19 @@
 
-test_that("param_notes unexpected input: confidence internal that is not 90 or 95 without accompanying z-score",{
-  expect_error(
-    param_notes(.ci = 75),
-    regexp = "Z-score \\(.zscore\\) must be supplied when CI is not 90 or 95"
-  )
-})
 
-test_that("param_notes unexpected input: confidence internal and z-score mismatch",{
-  expect_message(
-    param_notes(.ci = 95, .zscore = 1.9),
-    regexp = "Confidence interval and z-score provided do not match. The z-score that corresponds to 95% CI will be used \\(z-score = 1\\.96\\)"
-  )
-})
-
-test_that("param_notes expected output: z-score",{
+test_that("param_notes expected output: alpha",{
   eq2 <- param_notes(.ci = 95)
-  expect_equal(eq2$ciEq, paste0("CI = estimate $\\pm$ ", 1.96, " $\\cdot$ SE"))
+  alpha <- 0.05
+  expect_equal(
+    eq2$ciEq,
+    paste0("CI = estimate $\\pm$ $\\mathcal{Z}_{\\alpha/2}$ $\\cdot$ SE, $\\alpha = ", alpha, "$")
+  )
 
-  z = 1.4
-  eq3 <- param_notes(.ci = 5, .zscore = z)
-  expect_equal(eq3$ciEq, paste0("CI = estimate $\\pm$ ", z, " $\\cdot$ SE"))
+  alpha <- 0.5
+  eq3 <- param_notes(.ci = 50)
+  expect_equal(
+    eq3$ciEq,
+    paste0("CI = estimate $\\pm$ $\\mathcal{Z}_{\\alpha/2}$ $\\cdot$ SE, $\\alpha = ", alpha, "$")
+  )
 })
 
 test_that("param_notes expected output: footnotes",{

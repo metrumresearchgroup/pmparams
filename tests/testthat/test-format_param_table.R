@@ -128,7 +128,7 @@ test_that("format_param_table: .digit produces expected significant digits", {
 
   newDF10 <- format_param_table(PARAM_TAB_102, .digit = 6)
   expect_equal(newDF10$value[9], "0.0690088 [Corr=0.510933]")
-  expect_equal(newDF10$ci_95[9], "0.0298839, 0.108134")
+  expect_equal(newDF10$ci_95[9], "0.0298846, 0.108133")
   expect_equal(newDF10$shrinkage[6], "18.1558")
 })
 
