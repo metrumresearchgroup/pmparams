@@ -2,16 +2,21 @@
 #'
 #' @description
 #'
-#' Calculates the upper and lower bound of a 90% or 95% confidence interval, based on the
+#' Calculates the upper and lower bound of a confidence interval, based on the
 #' value and standard error.
 #'
-#' @param .df data.frame with parameter estimates
-#' @param .value column name to be used to calculate confidence interval
-#' @param .se column name with standard errors
-#' @param .ci specify 90 or 95 percent confidence interval (default 95%)
+#' @param .df A data.frame with parameter estimates
+#' @param .value Column name to be used to calculate confidence interval
+#' @param .se Column name with standard errors
+#' @param .ci Confidence interval. A value from 1 to 99 denoting the percent
+#'  confidence interval. Default is `95`.
 #'
 #' @keywords internal
 getCI <- function(.df, .value = "value", .se = "se", .ci = 95){
+
+  if (!checkmate::test_integerish(.ci, lower = 1, upper = 99, len = 1)){
+    rlang::abort("`.ci` must be between 1 and 99")
+  }
 
   .df %>%
     dplyr::mutate(

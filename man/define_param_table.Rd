@@ -18,7 +18,8 @@ define_param_table(.estimates, .key, .ci = 95, .zscore = NULL)
 \item{.key}{Path to parameter key or data.frame of parameter key. Described
 in more detail in \code{\link[pmparams]{param_key}}}
 
-\item{.ci}{Confidence interval. Default is 95}
+\item{.ci}{Confidence interval. A value from 1 to 99 denoting the percent
+confidence interval. Default is \code{95}.}
 
 \item{.zscore}{Deprecated. Please use the \code{.ci} argument.}
 }

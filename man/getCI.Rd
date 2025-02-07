@@ -7,16 +7,17 @@
 getCI(.df, .value = "value", .se = "se", .ci = 95)
 }
 \arguments{
-\item{.df}{data.frame with parameter estimates}
+\item{.df}{A data.frame with parameter estimates}
 
-\item{.value}{column name to be used to calculate confidence interval}
+\item{.value}{Column name to be used to calculate confidence interval}
 
-\item{.se}{column name with standard errors}
+\item{.se}{Column name with standard errors}
 
-\item{.ci}{specify 90 or 95 percent confidence interval (default 95\%)}
+\item{.ci}{Confidence interval. A value from 1 to 99 denoting the percent
+confidence interval. Default is \code{95}.}
 }
 \description{
-Calculates the upper and lower bound of a 90\% or 95\% confidence interval, based on the
+Calculates the upper and lower bound of a confidence interval, based on the
 value and standard error.
 }
 \keyword{internal}

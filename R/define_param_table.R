@@ -41,7 +41,7 @@
 #' @inheritParams loadParamEstimates
 #' @param .key Path to parameter key or data.frame of parameter key. Described
 #'   in more detail in \code{\link[pmparams]{param_key}}
-#' @param .ci Confidence interval. Default is 95
+#' @inheritParams getCI
 #' @param .zscore Deprecated. Please use the `.ci` argument.
 #'
 #' @examples

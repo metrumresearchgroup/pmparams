@@ -7,7 +7,8 @@
 param_notes(.ci = 95, .zscore = NULL)
 }
 \arguments{
-\item{.ci}{Confidence interval. Default is 95}
+\item{.ci}{Confidence interval. A value from 1 to 99 denoting the percent
+confidence interval. Default is \code{95}.}
 
 \item{.zscore}{Deprecated. Please use the \code{.ci} argument.}
 }
