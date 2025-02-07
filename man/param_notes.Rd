@@ -7,10 +7,9 @@
 param_notes(.ci = 95, .zscore = NULL)
 }
 \arguments{
-\item{.ci}{specify 90 or 95 percent confidence interval (default 95\%)}
+\item{.ci}{Confidence interval. Default is 95}
 
-\item{.zscore}{z-score for the specified confidence interval. Only needed for
-confidence intervals that are NOT 90 or 95 percent}
+\item{.zscore}{Deprecated. Please use the \code{.ci} argument.}
 }
 \description{
 Generate data frame of generic footnote equations to append to parameter tables.
@@ -23,16 +22,15 @@ paramKey <-  file.path(model_dir, "pk-parameter-key-new.yaml")
 param_est <- utils::read.csv(file.path(model_dir, "param_est_102.csv"))
 
 # Make and format parameter table
-param_df <- define_param_table(
- .estimates = param_est,
- .key = paramKey,
- .ci = 95
-) \%>\% format_param_table()
+param_df <- param_est \%>\%
+  define_param_table(paramKey, .ci = 95) \%>\%
+  format_param_table()
 
 # Make random effects table and add relevant footnotes:
 footnotes <- param_notes()
 
-table <- make_pmtable(.df = param_df, .pmtype = "random") \%>\%
+table <- param_df \%>\%
+  make_pmtable(.pmtype = "random") \%>\%
   pmtables::st_notes(footnotes$ci, footnotes$cv) \%>\%
   pmtables::st_notes_str() \%>\%
   pmtables::st_notes(footnotes$cvOmegaEq, footnotes$cvSigmaEq)
