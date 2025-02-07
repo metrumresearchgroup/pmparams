@@ -14,8 +14,6 @@ getCI(.df, .value = "value", .se = "se", .ci = 95)
 \item{.se}{column name with standard errors}
 
 \item{.ci}{specify 90 or 95 percent confidence interval (default 95\%)}
-
-\item{.zscore}{z-score for the specified confidence interval. Only needed for confidence intervals that are NOT 90 or 95 percent}
 }
 \description{
 Calculates the upper and lower bound of a 90\% or 95\% confidence interval, based on the

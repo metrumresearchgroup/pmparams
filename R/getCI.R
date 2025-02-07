@@ -9,7 +9,6 @@
 #' @param .value column name to be used to calculate confidence interval
 #' @param .se column name with standard errors
 #' @param .ci specify 90 or 95 percent confidence interval (default 95%)
-#' @param .zscore z-score for the specified confidence interval. Only needed for confidence intervals that are NOT 90 or 95 percent
 #'
 #' @keywords internal
 getCI <- function(.df, .value = "value", .se = "se", .ci = 95){
