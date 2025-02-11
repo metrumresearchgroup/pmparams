@@ -3,6 +3,9 @@
 #' @description
 #' Define what is in estimate column and what is in square brackets.
 #'
+#' @param .df Parameter estimates output from [define_param_table()] with
+#'   modifications ready for formatting.
+#' @inheritParams display_value
 #' @keywords internal
 formatValues <- function(.df,
                          .digit,
