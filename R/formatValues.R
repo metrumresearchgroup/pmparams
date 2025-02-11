@@ -50,7 +50,8 @@ formatValues <- function(.df,
 #'   notation. Default is `NULL`
 #'
 #' @keywords internal
-display_value <- function(x, .digit, .maxex){
+display_value <- function(x, .digit = NULL, .maxex = NULL){
+  .digit <- ifelse(is.null(.digit), formals(pmtables::sig)$digits, .digit)
   pmtables::sig(x, .digit, .maxex) %>%
     format_negative_vals()
 }

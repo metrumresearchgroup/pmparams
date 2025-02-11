@@ -4,7 +4,7 @@
 \alias{display_value}
 \title{Format values for display purposes}
 \usage{
-display_value(x, .digit, .maxex)
+display_value(x, .digit = NULL, .maxex = NULL)
 }
 \arguments{
 \item{x}{Numeric; value to manipulate}
