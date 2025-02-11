@@ -29,6 +29,10 @@
 #' @export
 param_notes <- function(.ci = 95, .zscore = NULL){
 
+  if(!checkmate::test_integerish(.ci, lower = 1, upper = 99, len = 1)){
+    rlang::abort("`.ci` must be between 1 and 99")
+  }
+
   if(!is.null(.zscore)){
     lifecycle::deprecate_warn(
       when = "0.3.0",
