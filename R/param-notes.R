@@ -44,16 +44,16 @@ param_notes <- function(.ci = 95, .zscore = NULL){
   alpha <- signif((1 - (.ci / 100)), 3)
 
   list(
-    ci   = "CI: confidence intervals",
+    ci   = "CI: confidence interval",
     corr = "Corr: correlation coefficient",
     cv   = "CV: coefficient of variation",
     rse = "RSE: relative standard error",
     se   = "SE: standard error",
     sd   = "SD: standard deviation",
     ciEq =  paste0("CI = estimate $\\pm$ $\\mathcal{Z}_{\\alpha/2}$ $\\cdot$ SE, $\\alpha = ", alpha, "$"),
-    cvOmegaEq = "CV\\% of log-normal omegas = sqrt(exp(estimate) - 1) $\\cdot$ 100",
+    cvOmegaEq = "CV\\% of log-normal omega = sqrt(exp(estimate) - 1) $\\cdot$ 100",
     cvSigmaEq = "CV\\% of sigma = sqrt(estimate) $\\cdot$ 100",
-    logTrans = "Parameters estimated in the log-domain were back-transformed for clarity",
-    logitTrans = "Parameters estimated in the logit-domain were back-transformed for clarity"
+    logTrans = "Parameters estimated in the log domain were back-transformed for clarity",
+    logitTrans = "Parameters estimated in the logit domain were back-transformed for clarity"
   )
 }
