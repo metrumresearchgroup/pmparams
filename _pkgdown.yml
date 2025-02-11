@@ -29,6 +29,7 @@ reference:
     - make_pmtable
     - make_boot_pmtable
   - title: Get generic parameter table footnotes
-    desc: Generate data frame of generic footnote equations to append to parameter tables.
+    desc: Generate list of generic footnote equations to append to parameter tables.
     contents:
     - param_notes
+    - boot_notes
