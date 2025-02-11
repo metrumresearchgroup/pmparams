@@ -1,12 +1,8 @@
 #' Generate all footnote equation options
-#' @description
 #'
-#' Generate data frame of generic footnote equations to append to parameter tables.
+#' Generate list of generic footnote equations to append to parameter tables.
 #'
-#'
-#' @param .ci specify 90 or 95 percent confidence interval (default 95%)
-#' @param .zscore z-score for the specified confidence interval. Only needed for
-#'  confidence intervals that are NOT 90 or 95 percent
+#' @inheritParams define_param_table
 #'
 #' @examples
 #' model_dir <- system.file("model/nonmem", package = "pmparams")
@@ -16,44 +12,36 @@
 #' param_est <- utils::read.csv(file.path(model_dir, "param_est_102.csv"))
 #'
 #' # Make and format parameter table
-#' param_df <- define_param_table(
-#'  .estimates = param_est,
-#'  .key = paramKey,
-#'  .ci = 95
-#' ) %>% format_param_table()
+#' param_df <- param_est %>%
+#'   define_param_table(paramKey, .ci = 95) %>%
+#'   format_param_table()
 #'
 #' # Make random effects table and add relevant footnotes:
-#' footnotes <- param_notes()
+#' footnotes <- param_notes(.ci = 95)
 #'
-#' table <- make_pmtable(.df = param_df, .pmtype = "random") %>%
+#' table <- param_df %>%
+#'   make_pmtable(.pmtype = "random") %>%
 #'   pmtables::st_notes(footnotes$ci, footnotes$cv) %>%
 #'   pmtables::st_notes_str() %>%
+#'   pmtables::st_notes(footnotes$ciEq) %>%
 #'   pmtables::st_notes(footnotes$cvOmegaEq, footnotes$cvSigmaEq)
 #'
 #' @export
 param_notes <- function(.ci = 95, .zscore = NULL){
 
-  .validated_zscore <-
-    if (is.null(.zscore)){
-      if (.ci == 95){
-        1.96
-      } else if(.ci == 90){
-        1.64
-      } else {
-        stop("Z-score (.zscore) must be supplied when CI is not 90 or 95")
-      }
-    } else {
-      if (.ci == 95 & .zscore != 1.96){
-        zscore_ci_msg(.ci = 95, .zscore= 1.96)
-        1.96
-      } else if(.ci == 90 & .zscore != 1.64){
-        zscore_ci_msg(.ci = 90, .zscore= 1.64)
-        1.64
-      } else {
-        .zscore
-      }
-    }
+  if(!checkmate::test_integerish(.ci, lower = 1, upper = 99, len = 1)){
+    rlang::abort("`.ci` must be between 1 and 99")
+  }
 
+  if(!is.null(.zscore)){
+    lifecycle::deprecate_warn(
+      when = "0.3.0",
+      what = "define_param_table(.zscore)",
+      details = "This argument is no longer used and will be ignored"
+    )
+  }
+
+  alpha <- signif((1 - (.ci / 100)), 3)
 
   list(
     ci   = "CI: confidence intervals",
@@ -62,7 +50,7 @@ param_notes <- function(.ci = 95, .zscore = NULL){
     rse = "RSE: relative standard error",
     se   = "SE: standard error",
     sd   = "SD: standard deviation",
-    ciEq =  paste0("CI = estimate $\\pm$ ", .validated_zscore, " $\\cdot$ SE"),
+    ciEq =  paste0("CI = estimate $\\pm$ $\\mathcal{Z}_{\\alpha/2}$ $\\cdot$ SE, $\\alpha = ", alpha, "$"),
     cvOmegaEq = "CV\\% of log-normal omegas = sqrt(exp(estimate) - 1) $\\cdot$ 100",
     cvSigmaEq = "CV\\% of sigma = sqrt(estimate) $\\cdot$ 100",
     logTrans = "Parameters estimated in the log-domain were back-transformed for clarity",

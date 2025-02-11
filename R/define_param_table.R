@@ -39,11 +39,10 @@
 #' `FALSE` columns are added that will be used downstream.
 #'
 #' @inheritParams loadParamEstimates
-#' @param .key path to parameter key or data.frame of parameter key. Described
+#' @param .key Path to parameter key or data.frame of parameter key. Described
 #'   in more detail in \code{\link[pmparams]{param_key}}
-#' @param .ci confidence interval. Default is 95
-#' @param .zscore z-score for the specified confidence interval. Only needed for
-#'   confidence intervals that are **not** 90 or 95 percent
+#' @inheritParams getCI
+#' @param .zscore Deprecated. Please use the `.ci` argument.
 #'
 #' @examples
 #'
@@ -53,33 +52,28 @@
 #' # Using a file path
 #' param_est_path <- file.path(model_dir, "param_est_102.csv")
 #' param_ests <- readr::read_csv(param_est_path)
-#' define_param_table(
-#'  .estimates = param_ests,
-#'  .key = paramKey,
-#'  .ci = 95,
-#' )
 #'
-#' # To choose a confidence interval that is not 95 or 90, look up and provide the z-score
-#' define_param_table(
-#'  .estimates = param_ests,
-#'  .key = paramKey,
-#'  .ci = 82,
-#'  .zscore = 0.915
-#' )
+#' define_param_table(param_ests, paramKey, .ci = 95)
+#'
 #'
 #' # Using a `bbr` model
 #' \dontrun{
 #' mod <- bbr::read_model(file.path(model_dir, "102"))
-#' define_param_table(
-#'  .estimates = mod,
-#'  .key = paramKey,
-#'  .ci = 95,
-#' )
+#'
+#' define_param_table(mod, paramKey, .ci = 95)
 #' }
 #'
 #' @seealso [param_key()], [define_boot_table()]
 #' @export
 define_param_table <- function(.estimates, .key, .ci = 95, .zscore = NULL){
+
+  if(!is.null(.zscore)){
+    lifecycle::deprecate_warn(
+      when = "0.3.0",
+      what = "define_param_table(.zscore)",
+      details = "This argument is no longer used and will be ignored"
+    )
+  }
 
   .estimates <- loadParamEstimates(.estimates)
   .key <- loadParamKey(.key)
@@ -90,7 +84,7 @@ define_param_table <- function(.estimates, .key, .ci = 95, .zscore = NULL){
     checkTransforms() %>%
     defineRows() %>%
     getValueSE() %>%
-    getCI(.ci = .ci, .zscore = .zscore) %>%
+    getCI(.ci = .ci) %>%
     dplyr::arrange(as.numeric(nrow)) %>%
     tibble::as_tibble()
 
