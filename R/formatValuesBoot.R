@@ -14,14 +14,14 @@ formatValuesBoot <- function(
 
   .boot_df %>%
     dplyr::mutate(
-      boot_value = pmtables::sig(.data$value, .digit, .maxex),
+      boot_value = display_value(.data$value, .digit, .maxex),
       fixed = (.data$lower == .data$upper),
       !!rlang::sym(ci_name) := dplyr::if_else(
         .data$fixed,
         "FIXED",
         paste0(
-          pmtables::sig(.data$lower, .digit, .maxex), ', ',
-          pmtables::sig(.data$upper, .digit, .maxex)
+          display_value(.data$lower, .digit, .maxex), ', ',
+          display_value(.data$upper, .digit, .maxex)
         )
       )
     ) %>%

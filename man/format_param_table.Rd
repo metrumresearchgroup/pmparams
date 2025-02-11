@@ -14,22 +14,22 @@ format_param_table(
 )
 }
 \arguments{
-\item{.df}{parameter estimates output from \code{\link[=define_param_table]{define_param_table()}} with
+\item{.df}{Parameter estimates output from \code{\link[=define_param_table]{define_param_table()}} with
 modifications ready for formatting.}
 
-\item{.cleanup_cols}{logical (T/F). Defaults to \code{TRUE}, which selects the
+\item{.cleanup_cols}{Logical (T/F). Defaults to \code{TRUE}, which selects the
 following columns:
 \itemize{
 \item \code{"type"}, \code{"abb"}, \code{"greek"}, \code{"desc"}, \code{"value"}, \code{"ci"}, \code{"shrinkage"}.
 \item Set to \code{FALSE} to return all columns.
 }}
 
-\item{.prse}{logical (T/F). If \code{TRUE}, output \code{pRSE}. Default is \code{FALSE}.}
+\item{.prse}{Logical (T/F). If \code{TRUE}, output \code{pRSE}. Default is \code{FALSE}.}
 
-\item{.digit}{number of significant digits. Default is three digits}
+\item{.digit}{Number of significant digits. Default is three digits}
 
-\item{.maxex}{maximum number of significant digits before moving to scientific
-notation. Default is NULL}
+\item{.maxex}{Maximum number of significant digits before moving to scientific
+notation. Default is \code{NULL}}
 
 \item{.select_cols}{Deprecated. Please use \code{.cleanup_cols} instead.}
 }
