@@ -13,7 +13,7 @@ confidence interval. Default is \code{95}.}
 \item{.zscore}{Deprecated. Please use the \code{.ci} argument.}
 }
 \description{
-Generate data frame of generic footnote equations to append to parameter tables.
+Generate list of generic footnote equations to append to parameter tables.
 }
 \examples{
 model_dir <- system.file("model/nonmem", package = "pmparams")
@@ -28,12 +28,13 @@ param_df <- param_est \%>\%
   format_param_table()
 
 # Make random effects table and add relevant footnotes:
-footnotes <- param_notes()
+footnotes <- param_notes(.ci = 95)
 
 table <- param_df \%>\%
   make_pmtable(.pmtype = "random") \%>\%
   pmtables::st_notes(footnotes$ci, footnotes$cv) \%>\%
   pmtables::st_notes_str() \%>\%
+  pmtables::st_notes(footnotes$ciEq) \%>\%
   pmtables::st_notes(footnotes$cvOmegaEq, footnotes$cvSigmaEq)
 
 }

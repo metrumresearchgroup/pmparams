@@ -1,8 +1,6 @@
 #' Generate all footnote equation options
-#' @description
 #'
-#' Generate data frame of generic footnote equations to append to parameter tables.
-#'
+#' Generate list of generic footnote equations to append to parameter tables.
 #'
 #' @inheritParams define_param_table
 #'
@@ -19,12 +17,13 @@
 #'   format_param_table()
 #'
 #' # Make random effects table and add relevant footnotes:
-#' footnotes <- param_notes()
+#' footnotes <- param_notes(.ci = 95)
 #'
 #' table <- param_df %>%
 #'   make_pmtable(.pmtype = "random") %>%
 #'   pmtables::st_notes(footnotes$ci, footnotes$cv) %>%
 #'   pmtables::st_notes_str() %>%
+#'   pmtables::st_notes(footnotes$ciEq) %>%
 #'   pmtables::st_notes(footnotes$cvOmegaEq, footnotes$cvSigmaEq)
 #'
 #' @export
