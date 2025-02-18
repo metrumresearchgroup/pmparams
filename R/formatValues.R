@@ -59,5 +59,5 @@ display_value <- function(x, .digit = NULL, .maxex = NULL){
 #' Substitute negative signs (`-`) for LaTeX styling (`$-$`)
 #' @noRd
 format_negative_vals <- function(x){
-  gsub("^-", "$-$", x)
+  sub("^-", "$-$", x)
 }
