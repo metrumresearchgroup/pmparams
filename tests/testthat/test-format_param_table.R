@@ -79,10 +79,21 @@ test_that("format_param_table continuous columns expected ouput: CI back transfo
 
   newDF4a <- newDF4 %>% format_param_table()
 
+
+  key_df_theta <- pmtables::yaml_as_df(PARAM_KEY_PATH_DF) %>%
+    filter(.row != "gg") %>%
+    dplyr::add_row(.row = "gg", name = "THETA11", abb = "Lognormal residual error", desc = "Variance", panel = "RV", trans = "addErrLogDV")
+
+  newDF4_theta <- define_param_table(.estimates = PARAM_EST_102 %>% mutate(parameter_names = if_else(parameter_names=="SIGMA(1,1)", "THETA(1,1)", parameter_names)), .key = key_df_theta, .ci = 95, .zscore = NULL)
+
+  newDF4a_theta <- newDF4_theta %>% format_param_table()
+
   expected_cv =  pmtables::sig(sqrt(exp(newDF4$value[newDF4$addErrLogDV == TRUE]) -1)* 100)
   expected_value = paste0(pmtables::sig(newDF4$value[newDF4$addErrLogDV == TRUE]), " [CV\\%=", expected_cv, "]")
 
+
   expect_equal(newDF4a$value[newDF4a$abb == "Lognormal residual error"], expected_value)
+  expect_equal(newDF4a_theta$value[newDF4a_theta$abb == "Lognormal residual error"], expected_value)
 })
 
 test_that("format_param_table continuous columns expected ouput: greek", {

@@ -31,7 +31,7 @@
 #'   - "logitOmSD"  - for omegas using logit transform - returns estimate & SD (calculated with logitnorm package); this option requires you provide the associated THETA separated with a "~"; e.g. "logitOmSD ~ THETA3"
 #'   - "addErr"     - for additive error terms (coded using SIGMA in $ERROR) - returns est.+ SD
 #'   - "propErr"    - for proportional error terms (coded using SIGMA in $ERROR) - returns est.+CV%
-#'   - "addErrLogDV" - for additive error when DV modeled in log domain (still coded using SIGMA in $ERROR) - returns est.+CV%
+#'   - "addErrLogDV" - for an additive error term on log-transformed data (coded using THETA or SIGMA in $ERROR) - returns est.+CV%
 #'
 #' # YAML Example
 #'
