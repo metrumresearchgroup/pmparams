@@ -26,6 +26,7 @@
 #'   pmtables::st_notes(footnotes$ciEq) %>%
 #'   pmtables::st_notes(footnotes$cvOmegaEq, footnotes$cvSigmaEq)
 #'
+#' @seealso [boot_notes()]
 #' @export
 param_notes <- function(.ci = 95, .zscore = NULL){
 

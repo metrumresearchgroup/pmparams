@@ -38,3 +38,6 @@ table <- param_df \%>\%
   pmtables::st_notes(footnotes$cvOmegaEq, footnotes$cvSigmaEq)
 
 }
+\seealso{
+\code{\link[=boot_notes]{boot_notes()}}
+}
