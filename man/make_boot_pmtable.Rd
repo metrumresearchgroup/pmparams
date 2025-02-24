@@ -28,7 +28,9 @@ make_boot_pmtable(
 Generate a complete bootstrap parameter table ready for rendering via \code{pmtables}
 }
 \details{
-Generates specific parameter tables by filtering and using \code{pmtables}
+Generates specific parameter tables by filtering and using \code{pmtables}. This
+function expects a data.frame with both the regular parameter estimates \emph{and}
+the bootstrap parameter estimates. See "Examples" for more detail.
 
 This function:
 \enumerate{

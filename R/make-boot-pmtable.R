@@ -2,7 +2,9 @@
 #'
 #' @details
 #'
-#' Generates specific parameter tables by filtering and using `pmtables`
+#' Generates specific parameter tables by filtering and using `pmtables`. This
+#' function expects a data.frame with both the regular parameter estimates _and_
+#' the bootstrap parameter estimates. See "Examples" for more detail.
 #'
 #' This function:
 #' 1. Filters to columns needed for specific parameter tables
