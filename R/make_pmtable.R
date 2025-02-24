@@ -27,6 +27,7 @@
 #' - `"random"` (all rows with greek = "Omega" or type = "Resid").
 #' @param .width notes width. Defaults to 1.
 #'
+#' @seealso [make_boot_pmtable()]
 #' @examples
 #'
 #' model_dir <- system.file("model/nonmem", package = "pmparams")
