@@ -33,9 +33,9 @@ Current options include:
 \item "lognormalOm"- for log-normal omegas e.g. CL = THETA(1) * exp(ETA(1)) - returns est.+CV\%
 \item "OmSD"       - for omegas where you want to return SD only - returns estimate & SD; use this for additive omegas e.g. CL = THETA(1) + ETA(1)
 \item "logitOmSD"  - for omegas using logit transform - returns estimate & SD (calculated with logitnorm package); this option requires you provide the associated THETA separated with a "~"; e.g. "logitOmSD ~ THETA3"
-\item "addErr"     - for additive error terms (coded using SIGMA in $ERROR) - returns est.+ SD
-\item "propErr"    - for proportional error terms (coded using SIGMA in $ERROR) - returns est.+CV\%
-\item "addErrLogDV" - for additive error when DV modeled in log domain (still coded using SIGMA in $ERROR) - returns est.+CV\%
+\item "addErr"     - for additive error terms (coded using THETA or SIGMA in $ERROR) - returns est.+ SD
+\item "propErr"    - for proportional error terms (coded using THETA or SIGMA in $ERROR) - returns est.+CV\%
+\item "addErrLogDV" - for an additive error term on log-transformed data (coded using THETA or SIGMA in $ERROR) - returns est.+CV\%
 }
 }
 \section{YAML Example}{
