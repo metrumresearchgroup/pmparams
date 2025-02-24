@@ -36,7 +36,7 @@ getCI <- function(.df, .value = "value", .se = "se", .ci = 95){
 calculate_ci <- function(est, se, .ci = 95) {
   # Get the Z statistic for a two-tailed z-test
   alpha <- 1 - (.ci / 100)
-  z_stat <- qnorm(1 - (alpha / 2))
+  z_stat <- stats::qnorm(1 - (alpha / 2))
 
   # Intervals
   lower <- est - z_stat * se
