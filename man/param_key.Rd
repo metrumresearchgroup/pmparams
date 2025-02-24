@@ -17,25 +17,25 @@ It must contain the following:
 
 Current options include:
 \itemize{
-\item panel=="struct" ~ "Structural model parameters"
-\item panel=="cov" ~ "Covariate effect parameters"
-\item panel=="IIV" ~ "Interindividual covariance parameters" (off-diagonals << function takes care of this)
-\item panel=="IIV" ~ "Interindividual variance parameters" (diagonals << function takes care of this)
-\item panel=="IOV"  ~ "Interoccasion variance parameters"
-\item panel=="RV" ~ "Residual variance"
+\item \code{panel=="struct"} ~ "Structural model parameters"
+\item \code{panel=="cov"} ~ "Covariate effect parameters"
+\item \code{panel=="IIV"} ~ "Interindividual covariance parameters" (off-diagonals << function takes care of this)
+\item \code{panel=="IIV"} ~ "Interindividual variance parameters" (diagonals << function takes care of this)
+\item \code{panel=="IOV"}  ~ "Interoccasion variance parameters"
+\item \code{panel=="RV"} ~ "Residual variance"
 }
 
 \strong{trans} = define how the parameter will be transformed. Current options include:
 \itemize{
-\item "none" -   untransformed parameters, e.g. THETAs or off-diagonals
-\item "logTrans" -  THETAs estimated in the log domain
-\item "logitTrans" - THETAs estimated using a logit transform
-\item "lognormalOm"- for log-normal omegas e.g. CL = THETA(1) * exp(ETA(1)) - returns est.+CV\%
-\item "OmSD"       - for omegas where you want to return SD only - returns estimate & SD; use this for additive omegas e.g. CL = THETA(1) + ETA(1)
-\item "logitOmSD"  - for omegas using logit transform - returns estimate & SD (calculated with logitnorm package); this option requires you provide the associated THETA separated with a "~"; e.g. "logitOmSD ~ THETA3"
-\item "addErr"     - for additive error terms (coded using SIGMA in $ERROR) - returns est.+ SD
-\item "propErr"    - for proportional error terms (coded using SIGMA in $ERROR) - returns est.+CV\%
-\item "addErrLogDV" - for additive error when DV modeled in log domain (still coded using SIGMA in $ERROR) - returns est.+CV\%
+\item \code{"none"} -   untransformed parameters, e.g. THETAs or off-diagonals
+\item \code{"logTrans"} -  THETAs estimated in the log domain
+\item \code{"logitTrans"} - THETAs estimated using a logit transform
+\item \code{"lognormalOm"}- for log-normal omegas e.g. \code{CL = THETA(1) * exp(ETA(1))} - returns est.+CV\%
+\item \code{"OmSD"}       - for omegas where you want to return SD only - returns estimate & SD; use this for additive omegas e.g. \code{CL = THETA(1) + ETA(1)}
+\item \code{"logitOmSD"}  - for omegas using logit transform - returns estimate & SD (calculated with \code{logitnorm} package); this option requires you provide the associated \code{THETA} separated with a "~"; e.g. \code{"logitOmSD ~ THETA3"}
+\item \code{"addErr"}     - for additive error terms (coded using \code{THETA} or \code{SIGMA} in \verb{$ERROR}) - returns est.+ SD
+\item \code{"propErr"}    - for proportional error terms (coded using \code{THETA} or \code{SIGMA} in \verb{$ERROR}) - returns est.+CV\%
+\item \code{"addErrLogDV"} - for an additive error term on log-transformed data (coded using \code{THETA} or \code{SIGMA} in \verb{$ERROR}) - returns est.+CV\%
 }
 }
 \section{YAML Example}{
