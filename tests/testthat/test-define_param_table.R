@@ -93,15 +93,21 @@ withr::with_options(list(bbr.bbi_exe_path = bbr::read_bbi_path()), {
     expect_true(is.na(PARAM_TAB_102$corr_SD[6]))
   })
 
-  test_that("define_param_table generates the confidence intervals for various inputs", {
-    PARAM_TAB_102_ci95 <- define_param_table(.estimates = PARAM_EST_102, .key = PARAM_KEY_DF, .ci = 95, .zscore = NULL)
-    PARAM_TAB_102_ci90 <- define_param_table(.estimates = PARAM_EST_102, .key = PARAM_KEY_DF, .ci = 90, .zscore = NULL)
+  test_that("define_param_table generates the confidence intervals for various CIs", {
+    PARAM_TAB_102_ci95 <- define_param_table(PARAM_EST_102, PARAM_KEY_DF, .ci = 95)
+    PARAM_TAB_102_ci90 <- define_param_table(PARAM_EST_102, PARAM_KEY_DF, .ci = 90)
+    PARAM_TAB_102_ci50 <- define_param_table(PARAM_EST_102, PARAM_KEY_DF, .ci = 50)
 
-    expect_equal(PARAM_TAB_102_ci90$lower[1], 0.33047798)
-    expect_equal(PARAM_TAB_102_ci90$upper[2], 4.1640688)
+    r_val <- function(val) round(val, 5)
 
-    expect_equal(PARAM_TAB_102_ci95$lower[4], 4.1721829)
-    expect_equal(PARAM_TAB_102_ci95$upper[7], 0.10195012)
+    expect_equal(r_val(PARAM_TAB_102_ci95$lower[1]), 0.31036)
+    expect_equal(r_val(PARAM_TAB_102_ci95$upper[2]), 4.17291)
+
+    expect_equal(r_val(PARAM_TAB_102_ci90$lower[1]), 0.33017)
+    expect_equal(r_val(PARAM_TAB_102_ci90$upper[2]), 4.16420)
+
+    expect_equal(r_val(PARAM_TAB_102_ci50$lower[1]), 0.39118)
+    expect_equal(r_val(PARAM_TAB_102_ci50$upper[2]), 4.13739)
   })
 
   test_that("define_param_table expected dataframe: respects yaml key order",{

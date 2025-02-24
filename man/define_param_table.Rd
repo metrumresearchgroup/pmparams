@@ -15,13 +15,13 @@ define_param_table(.estimates, .key, .ci = 95, .zscore = NULL)
 \item A data frame of the parameter estimates (e.g., output of \code{bbr::param_estimates()})
 }}
 
-\item{.key}{path to parameter key or data.frame of parameter key. Described
+\item{.key}{Path to parameter key or data.frame of parameter key. Described
 in more detail in \code{\link[pmparams]{param_key}}}
 
-\item{.ci}{confidence interval. Default is 95}
+\item{.ci}{Confidence interval. A value from 1 to 99 denoting the percent
+confidence interval. Default is \code{95}.}
 
-\item{.zscore}{z-score for the specified confidence interval. Only needed for
-confidence intervals that are \strong{not} 90 or 95 percent}
+\item{.zscore}{Deprecated. Please use the \code{.ci} argument.}
 }
 \description{
 Combines model output parameter estimates with information in parameter key. Performs
@@ -69,28 +69,15 @@ paramKey <-  file.path(model_dir, "pk-parameter-key-new.yaml")
 # Using a file path
 param_est_path <- file.path(model_dir, "param_est_102.csv")
 param_ests <- readr::read_csv(param_est_path)
-define_param_table(
- .estimates = param_ests,
- .key = paramKey,
- .ci = 95,
-)
 
-# To choose a confidence interval that is not 95 or 90, look up and provide the z-score
-define_param_table(
- .estimates = param_ests,
- .key = paramKey,
- .ci = 82,
- .zscore = 0.915
-)
+define_param_table(param_ests, paramKey, .ci = 95)
+
 
 # Using a `bbr` model
 \dontrun{
 mod <- bbr::read_model(file.path(model_dir, "102"))
-define_param_table(
- .estimates = mod,
- .key = paramKey,
- .ci = 95,
-)
+
+define_param_table(mod, paramKey, .ci = 95)
 }
 
 }
