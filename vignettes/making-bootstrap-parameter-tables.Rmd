@@ -119,12 +119,8 @@ head(boot_df)
 
 # Combine bootstrap and original model parameter estimates
 
-Start by creating both formatted parameter tables, and then join them together as seen below:
+Start by creating a parameter table for your _original model_, and then join it to the formatted bootstrap table (`boot_df`) we created above:
 ```{r, eval = eval_bbr_chunks}
-boot_df <- boot_ests %>%
-  define_boot_table(param_key, .ci = 95) %>% 
-  format_boot_table()
-
 param_df <- orig_mod %>%
   define_param_table(param_key, .ci = 95) %>% 
   format_param_table()
