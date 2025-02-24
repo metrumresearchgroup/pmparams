@@ -28,16 +28,12 @@
 #'
 #' 4. Select columns for final tables.
 #'
-#' @param .df parameter estimates output from [define_param_table()] with
-#'   modifications ready for formatting.
-#' @param .cleanup_cols logical (T/F). Defaults to `TRUE`, which selects the
+#' @inheritParams formatValues
+#' @param .cleanup_cols Logical (T/F). Defaults to `TRUE`, which selects the
 #'   following columns:
 #'   - `"type"`, `"abb"`, `"greek"`, `"desc"`, `"value"`, `"ci"`, `"shrinkage"`.
 #'   - Set to `FALSE` to return all columns.
-#' @param .prse logical (T/F). If `TRUE`, output `pRSE`. Default is `FALSE`.
-#' @param .digit number of significant digits. Default is three digits
-#' @param .maxex maximum number of significant digits before moving to scientific
-#'   notation. Default is NULL
+#' @param .prse Logical (T/F). If `TRUE`, output `pRSE`. Default is `FALSE`.
 #' @param .select_cols Deprecated. Please use `.cleanup_cols` instead.
 #'
 #' @examples
