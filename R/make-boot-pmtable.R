@@ -29,7 +29,7 @@
 #' - `"random"` (all rows with greek = "Omega" or type = "Resid").
 #' @param .width notes width. Defaults to 1.
 #'
-#' @seealso [make_pmtable()]
+#' @seealso [make_pmtable()], [boot_notes()]
 #' @examples
 #'
 #' \dontrun{

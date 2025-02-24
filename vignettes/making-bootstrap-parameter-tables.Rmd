@@ -132,9 +132,8 @@ head(boot_param_df)
 
 
 ```{r, eval = render_bbr_tables}
-# Define footnote
-footBoot <- glue::glue("CIs were determined from the 2.5th and 97.5th percentiles 
-                of the non-parametric bootstrap estimates (n ={nrow(boot_ests)}).")
+# Define bootstrap CI footnote
+footBoot <- boot_notes(.ci = 95, .n_run = nrow(boot_ests))
 
 # Render table
 tab <- boot_param_df %>%
@@ -142,7 +141,7 @@ tab <- boot_param_df %>%
   st_center(desc = col_ragged(5.5), abb = "l") %>% 
   st_notes(param_notes()$ci) %>%                   # add abbreviations
   st_notes_str() %>%                               # collapse all abbreviations to a string                        
-  st_notes(param_notes()$logTrans, footBoot) %>%   # customize other notes
+  st_notes(param_notes()$logTrans, footBoot$boot_ci) %>%   # customize other notes
   st_notes_detach(width = 1) %>% 
   st_files(output = "final-param-fixed-boot.tex") %>%
   stable(output_file = "deliv/mod106-boot-95-ci-fixed.tex")

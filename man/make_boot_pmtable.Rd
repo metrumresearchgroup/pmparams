@@ -88,5 +88,5 @@ make_boot_pmtable(.df = combine_df, .pmtype = "random") \%>\%
 }
 }
 \seealso{
-\code{\link[=make_pmtable]{make_pmtable()}}
+\code{\link[=make_pmtable]{make_pmtable()}}, \code{\link[=boot_notes]{boot_notes()}}
 }
