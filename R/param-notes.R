@@ -119,7 +119,7 @@ boot_notes <- function(.ci, .n_run){
 
   list(
     boot_ci = paste0(
-      "The confidence interval was determined from the ", lower, "th and ",
+      "The CI was determined from the ", lower, "th and ",
       upper, "th percentiles of the non-parametric bootstrap (n=", .n_run, ") estimates."
     )
   )
