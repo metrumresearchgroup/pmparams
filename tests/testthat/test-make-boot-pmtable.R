@@ -51,3 +51,68 @@ test_that("make_boot_pmtable: incorrect dataframe checks", {
     "No confidence intervals or percentiles for the bootstrap parameter estimates were detected"
   )
 })
+
+
+test_that("make_boot_pmtable formats spanned columns correctly", {
+  model_label = "model stuff"
+  boot_label = "bootstrap stuff"
+
+  pm_tibble <- make_boot_pmtable(
+    BOOT_PARAM_TAB_106,
+    .span_model_label = model_label,
+    .span_boot_label = boot_label
+  )
+
+  expect_equal(pm_tibble$span[[1]]$title, model_label)
+  expect_equal(
+    names(pm_tibble$data %>% dplyr::select(!!pm_tibble$span[[1]]$vars)),
+    c("value", "shrinkage")
+  )
+  expect_equal(pm_tibble$span[[2]]$title, boot_label)
+  expect_equal(
+    names(pm_tibble$data %>% dplyr::select(!!pm_tibble$span[[2]]$vars)),
+    c("Median", "95\\% CI")
+  )
+
+  # RSE % column is grouped when included
+  param_df <- format_param_table(PARAM_TAB_106, .prse = TRUE)
+  combine_df <- left_join(param_df, FMT_BOOT_TAB_106, by = c("abb", "desc"))
+  pm_tibble <- make_boot_pmtable(combine_df)
+  expect_equal(
+    names(pm_tibble$data %>% dplyr::select(!!pm_tibble$span[[1]]$vars)),
+    c("value", "shrinkage", "pRSE")
+  )
+
+  # CI column from original model is grouped when included
+  pm_tibble <- make_boot_pmtable(BOOT_PARAM_TAB_106, .drop_model_ci = FALSE)
+  expect_equal(
+    names(pm_tibble$data %>% dplyr::select(!!pm_tibble$span[[1]]$vars)),
+    c("value", "ci_95", "shrinkage")
+  )
+})
+
+
+test_that("make_boot_pmtable drops or renames ci_[x] columns", {
+  # Test dropping
+  pm_tibble <- make_boot_pmtable(BOOT_PARAM_TAB_106)
+  expect_false("ci_95" %in% names(pm_tibble))
+
+  # Test renaming
+  # - Renaming stored in pmtables object and only happens when rendering
+  # - This is to avoid having columns with the same name appear twice and error out
+  pm_tibble <- make_boot_pmtable(
+    BOOT_PARAM_TAB_106,
+    .drop_model_ci = FALSE
+  )
+  expect_true("ci_95" %in% names(pm_tibble))
+
+  expect_identical(
+    unname(pm_tibble$cols_rename),
+    c("value", "ci_95", "shrinkage", "pRSE")
+  )
+
+  expect_identical(
+    names(pm_tibble$cols_rename),
+    c("Estimate", "95\\% CI", "Shrinkage (\\%)", "RSE (\\%)")
+  )
+})
