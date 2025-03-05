@@ -51,3 +51,27 @@ test_that("make_boot_pmtable: incorrect dataframe checks", {
     "No confidence intervals or percentiles for the bootstrap parameter estimates were detected"
   )
 })
+
+
+test_that("make_boot_pmtable correctly filters with .pmtype", {
+  model_label = "model stuff"
+  boot_label = "bootstrap stuff"
+
+  pm_tibble <- make_boot_pmtable(
+    BOOT_PARAM_TAB_106,
+    .span_model_label = model_label,
+    .span_boot_label = boot_label
+  )
+
+  expect_equal(pm_tibble$span[[1]]$title, model_label)
+  expect_equal(
+    names(pm_tibble$data %>% dplyr::select(!!pm_tibble$span[[1]]$vars)),
+    c("value", "shrinkage")
+  )
+  expect_equal(pm_tibble$span[[2]]$title, boot_label)
+  expect_equal(
+    names(pm_tibble$data %>% dplyr::select(!!pm_tibble$span[[2]]$vars)),
+    c("Median", "95\\% CI")
+  )
+
+})

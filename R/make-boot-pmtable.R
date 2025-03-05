@@ -20,14 +20,19 @@
 #' If these `pmtables` settings do not work for your parameter table, you can
 #' overwrite them afterwards using desired `pmtables` commands.
 #'
-#' @param .df bootstrap parameter dataset and non-bootstrap parameter dataset combined.
-#' @param .pmtype parameter table type. Options include:
+#' @param .df Combined dataset of model and bootstrap parameter estimates. See
+#'  examples.
+#' @param .pmtype Parameter table type. Options include:
 #' - `"full"` (all rows in `.df` retained in pmtable). This is the default.
 #' - `"fixed"` (all rows with type = "Struct" or "effect"),
 #' - `"structural"` (all rows with type = "Struct"),
 #' - `"covariate"` (all rows with type = "effect"),
 #' - `"random"` (all rows with greek = "Omega" or type = "Resid").
-#' @param .width notes width. Defaults to 1.
+#' @param .span_model_label A label for the span above columns relating to the
+#'  model that was bootstrapped.
+#' @param .span_boot_label A label for the span above columns relating to the
+#'  confidence interval of bootstrap estimates.
+#' @param .width Notes width. Defaults to 1.
 #'
 #' @seealso [make_pmtable()], [boot_notes()]
 #' @examples
@@ -70,6 +75,8 @@
 make_boot_pmtable <- function(
     .df,
     .pmtype = c("full", "fixed", "structural", "covariate", "random"),
+    .span_model_label = "Full model",
+    .span_boot_label = "Non-parametric bootstrap",
     .width = 1
 ){
   checkmate::assert_numeric(.width)
@@ -118,24 +125,24 @@ make_boot_pmtable <- function(
         pmtables::st_new() %>%
         pmtables::st_panel("type") %>%
         pmtables::st_blank("abb", "greek", "desc") %>%
-        pmtables::st_span("Final model", value:shrinkage) %>%
-        pmtables::st_span("Non-parametric bootstrap", {{boot_names}})
+        pmtables::st_span(.span_model_label, value:shrinkage) %>%
+        pmtables::st_span(.span_boot_label, {{boot_names}})
     } else if (.pmtype %in% c("fixed", "structural", "covariate")){
       pm_tab0 %>%
         dplyr::select(-shrinkage) %>%
         pmtables::st_new() %>%
         pmtables::st_panel("type") %>%
         pmtables::st_blank("abb", "greek", "desc") %>%
-        pmtables::st_span("Final model", value) %>%
-        pmtables::st_span("Non-parametric bootstrap", {{boot_names}})
+        pmtables::st_span(.span_model_label, value) %>%
+        pmtables::st_span(.span_boot_label, {{boot_names}})
     } else if (.pmtype == "random"){
       pm_tab0 %>%
         dplyr::select(-desc) %>%
         pmtables::st_new() %>%
         pmtables::st_panel("type") %>%
         pmtables::st_blank("abb", "greek") %>%
-        pmtables::st_span("Final model", value:shrinkage) %>%
-        pmtables::st_span("Non-parametric bootstrap", {{boot_names}})
+        pmtables::st_span(.span_model_label, value:shrinkage) %>%
+        pmtables::st_span(.span_boot_label, {{boot_names}})
     }
 
 

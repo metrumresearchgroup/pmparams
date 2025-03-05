@@ -7,13 +7,16 @@
 make_boot_pmtable(
   .df,
   .pmtype = c("full", "fixed", "structural", "covariate", "random"),
+  .span_model_label = "Full model",
+  .span_boot_label = "Non-parametric bootstrap",
   .width = 1
 )
 }
 \arguments{
-\item{.df}{bootstrap parameter dataset and non-bootstrap parameter dataset combined.}
+\item{.df}{Combined dataset of model and bootstrap parameter estimates. See
+examples.}
 
-\item{.pmtype}{parameter table type. Options include:
+\item{.pmtype}{Parameter table type. Options include:
 \itemize{
 \item \code{"full"} (all rows in \code{.df} retained in pmtable). This is the default.
 \item \code{"fixed"} (all rows with type = "Struct" or "effect"),
@@ -22,7 +25,13 @@ make_boot_pmtable(
 \item \code{"random"} (all rows with greek = "Omega" or type = "Resid").
 }}
 
-\item{.width}{notes width. Defaults to 1.}
+\item{.span_model_label}{A label for the span above columns relating to the
+model that was bootstrapped.}
+
+\item{.span_boot_label}{A label for the span above columns relating to the
+confidence interval of bootstrap estimates.}
+
+\item{.width}{Notes width. Defaults to 1.}
 }
 \description{
 Generate a complete bootstrap parameter table ready for rendering via \code{pmtables}
