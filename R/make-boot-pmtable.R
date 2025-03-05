@@ -89,12 +89,12 @@ make_boot_pmtable <- function(
     stop(msg)
   }
 
-  # Extract bootstrap columns
-  boot_cols_keep <- names(.df)[grepl("boot_", names(.df))]
-  .df_new <- .df %>% dplyr::select(all_of(c(req_cols, boot_cols_keep)))
+  # Remove ci_[x] columns
+  ci_cols <- names(.df)[grepl("^ci_", names(.df))]
+  .df <- .df %>% dplyr::select(-any_of(ci_cols))
 
   # Rename CI and percent columns
-  .df_new <- rename_boot_cols(.df_new)
+  .df_new <- rename_boot_cols(.df)
   boot_names <- attributes(.df_new)$renamed_cols
 
   pm_tab0 <-
