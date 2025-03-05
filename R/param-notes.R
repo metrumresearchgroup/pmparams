@@ -51,7 +51,7 @@ param_notes <- function(.ci = 95, .zscore = NULL){
     rse = "RSE: relative standard error",
     se   = "SE: standard error",
     sd   = "SD: standard deviation",
-    ciEq =  paste0("CI = estimate $\\pm$ $\\mathcal{Z}_{\\alpha/2}$ $\\cdot$ SE, $\\alpha = ", alpha, "$"),
+    ciEq =  paste0("CI = estimate $\\pm$ $z_{\\alpha/2}$ $\\cdot$ SE, $\\alpha = ", alpha, "$"),
     cvOmegaEq = "CV\\% of log-normal omega = sqrt(exp(estimate) - 1) $\\cdot$ 100",
     cvSigmaEq = "CV\\% of sigma = sqrt(estimate) $\\cdot$ 100",
     logTrans = "Parameters estimated in the log domain were back-transformed for clarity",

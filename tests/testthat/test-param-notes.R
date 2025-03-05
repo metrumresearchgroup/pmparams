@@ -5,14 +5,14 @@ test_that("param_notes expected output: alpha",{
   alpha <- 0.05
   expect_equal(
     eq2$ciEq,
-    paste0("CI = estimate $\\pm$ $\\mathcal{Z}_{\\alpha/2}$ $\\cdot$ SE, $\\alpha = ", alpha, "$")
+    paste0("CI = estimate $\\pm$ $z_{\\alpha/2}$ $\\cdot$ SE, $\\alpha = ", alpha, "$")
   )
 
   alpha <- 0.5
   eq3 <- param_notes(.ci = 50)
   expect_equal(
     eq3$ciEq,
-    paste0("CI = estimate $\\pm$ $\\mathcal{Z}_{\\alpha/2}$ $\\cdot$ SE, $\\alpha = ", alpha, "$")
+    paste0("CI = estimate $\\pm$ $z_{\\alpha/2}$ $\\cdot$ SE, $\\alpha = ", alpha, "$")
   )
 })
 
