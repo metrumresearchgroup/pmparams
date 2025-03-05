@@ -1,4 +1,4 @@
-# pmparams 0.2.2.9000
+# pmparams 0.2.2.9001
 
 ## Changes
 - CI works how you expect on both regular and bootstrap tables. `.zscore` has been
