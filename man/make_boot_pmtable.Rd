@@ -7,7 +7,7 @@
 make_boot_pmtable(
   .df,
   .pmtype = c("full", "fixed", "structural", "covariate", "random"),
-  .span_model_label = "Full model",
+  .span_model_label = "Final model",
   .span_boot_label = "Non-parametric bootstrap",
   .drop_model_ci = TRUE,
   .width = 1
