@@ -60,6 +60,13 @@ make_pmtable <- function(
   checkmate::assert_numeric(.width)
   .pmtype <- match.arg(.pmtype)
 
+  # Check for utilized columns
+  req_cols <- c("type", "abb", "greek", "desc", "value", "shrinkage")
+  if (!all(req_cols %in% names(.df))) {
+    missing_cols <- paste(setdiff(req_cols, names(.df)), collapse = ", ")
+    stop(glue::glue("The following required columns are missing: {missing_cols}"))
+  }
+
   # Rename CI columns
   .df0 <- .df
   .ci_nam <- names(.df)[grepl("ci_", names(.df))]

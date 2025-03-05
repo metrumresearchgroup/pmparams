@@ -8,22 +8,29 @@
 well-formatted parameter tables to report NONMEM model results.
 }
 \details{
-\code{pmparams} creates parameter tables by leveraging a few intuitive functions designed to:
+\code{pmparams} creates parameter tables by leveraging a few intuitive
+functions designed to:
 \itemize{
 \item Describe your model parameters in a YAML file
 \item Read in your model parameters from various NONMEM output files
-\item Back-transform any parameters estimated in other domains (e.g., log- or logit-transformed variables)
-\item Calculate additional summary statistics (e.g., 95\% confidence intervals, coefficient of variation (CV), etc.)
+\item Back-transform any parameters estimated in other domains (e.g., log- or
+logit-transformed variables)
+\item Calculate additional summary statistics (e.g., 95\% confidence intervals,
+coefficient of variation (CV), etc.)
 }
 }
 \section{Key functions}{
 
 \itemize{
 \item \link[pmparams]{param_key} links to an example parameter key
-\item \code{\link[=define_param_table]{define_param_table()}} and \code{\link[=define_boot_table]{define_boot_table()}}: combines and formats model output parameter estimates with information in parameter key.
-\item \code{\link[=format_param_table]{format_param_table()}} and \code{\link[=format_boot_table]{format_boot_table()}}: format parameter estimate values and output selected columns to be shown in
-\item the parameter table
-\item \code{\link[=make_pmtable]{make_pmtable()}}: generates specific parameter tables by filtering and using \code{pmtables}
+\item \code{\link[=define_param_table]{define_param_table()}} and \code{\link[=define_boot_table]{define_boot_table()}}: combines and formats model
+output parameter estimates with information in parameter key.
+\item \code{\link[=format_param_table]{format_param_table()}} and \code{\link[=format_boot_table]{format_boot_table()}}: format parameter estimate
+values and output selected columns to be shown in the parameter table
+\item \code{\link[=make_pmtable]{make_pmtable()}} and \code{\link[=make_boot_pmtable]{make_boot_pmtable()}}: generate LaTeX-formatted
+parameter tables by filtering and using the \code{pmtables} package.
+\item \code{\link[=param_notes]{param_notes()}} and \code{\link[=boot_notes]{boot_notes()}}: generate a list of generic footnote
+equations, abbreviations, and notes to append to parameter tables.
 }
 }
 
