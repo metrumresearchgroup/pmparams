@@ -4,7 +4,7 @@
 \alias{boot_notes}
 \title{Generate footnotes for a bootstrap table}
 \usage{
-boot_notes(.ci, .n_run)
+boot_notes(.ci = NULL, .n_run = NULL)
 }
 \arguments{
 \item{.ci}{Confidence interval. A value from 1 to 99 denoting the percent

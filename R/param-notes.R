@@ -105,21 +105,31 @@ param_notes <- function(.ci = 95, .zscore = NULL){
 #' }
 #' @seealso [param_notes()]
 #' @export
-boot_notes <- function(.ci, .n_run){
-  if(!checkmate::test_integerish(.ci, lower = 1, upper = 99, len = 1)){
-    rlang::abort("`.ci` must be between 1 and 99")
+boot_notes <- function(.ci = NULL, .n_run = NULL){
+  if(is.null(.ci)){
+    lower <- "x"; upper <- "y"
+    rlang::warn(".ci was not provided, so a a placeholder will be used.")
+  }else{
+    if(!checkmate::test_integerish(.ci, lower = 1, upper = 99, len = 1)){
+      rlang::abort("`.ci` must be between 1 and 99")
+    }
+    lower <- (100 - .ci) / 2
+    upper <- 100 - lower
   }
 
-  if(!checkmate::test_integerish(.n_run, lower = 1, len = 1)){
-    rlang::abort("`.n_run` must be an integer greater than 1.")
+  if(is.null(.n_run)){
+    .n_run <- "xx"
+    rlang::warn(".n_run was not provided, so a a placeholder will be used.")
+  }else{
+    if(!checkmate::test_integerish(.n_run, lower = 1, len = 1)){
+      rlang::abort("`.n_run` must be an integer greater than 1.")
+    }
   }
 
-  lower <- (100 - .ci) / 2
-  upper <- 100 - lower
 
   list(
     boot_ci = paste0(
-      "The confidence interval was determined from the ", lower, "th and ",
+      "The CI was determined from the ", lower, "th and ",
       upper, "th percentiles of the non-parametric bootstrap (n=", .n_run, ") estimates."
     )
   )
