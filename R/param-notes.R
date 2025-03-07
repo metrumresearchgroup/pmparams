@@ -108,7 +108,7 @@ param_notes <- function(.ci = 95, .zscore = NULL){
 boot_notes <- function(.ci = NULL, .n_run = NULL){
   if(is.null(.ci)){
     lower <- "x"; upper <- "y"
-    rlang::warn(".ci was not provided, so a a placeholder will be used.")
+    rlang::warn(".ci was not provided, so a placeholder will be used.")
   }else{
     if(!checkmate::test_integerish(.ci, lower = 1, upper = 99, len = 1)){
       rlang::abort("`.ci` must be between 1 and 99")
@@ -119,7 +119,7 @@ boot_notes <- function(.ci = NULL, .n_run = NULL){
 
   if(is.null(.n_run)){
     .n_run <- "xx"
-    rlang::warn(".n_run was not provided, so a a placeholder will be used.")
+    rlang::warn(".n_run was not provided, so a placeholder will be used.")
   }else{
     if(!checkmate::test_integerish(.n_run, lower = 1, len = 1)){
       rlang::abort("`.n_run` must be an integer greater than 1.")
