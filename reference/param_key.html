@@ -21,9 +21,9 @@ trans = define how the parameter will be transformed. Current options include:
 "lognormalOm"- for log-normal omegas e.g. CL = THETA(1) * exp(ETA(1)) - returns est.+CV%
 "OmSD"       - for omegas where you want to return SD only - returns estimate &amp;amp; SD; use this for additive omegas e.g. CL = THETA(1) + ETA(1)
 "logitOmSD"  - for omegas using logit transform - returns estimate &amp;amp; SD (calculated with logitnorm package); this option requires you provide the associated THETA separated with a "~"; e.g. "logitOmSD ~ THETA3"
-"addErr"     - for additive error terms (coded using SIGMA in $ERROR) - returns est.+ SD
-"propErr"    - for proportional error terms (coded using SIGMA in $ERROR) - returns est.+CV%
-"addErrLogDV" - for additive error when DV modeled in log domain (still coded using SIGMA in $ERROR) - returns est.+CV%
+"addErr"     - for additive error terms (coded using THETA or SIGMA in $ERROR) - returns est.+ SD
+"propErr"    - for proportional error terms (coded using THETA or SIGMA in $ERROR) - returns est.+CV%
+"addErrLogDV" - for an additive error term on log-transformed data (coded using THETA or SIGMA in $ERROR) - returns est.+CV%
 
 '><meta property="og:image" content="https://metrumresearchgroup.github.io/pmparams/logo.png"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -43,7 +43,7 @@ trans = define how the parameter will be transformed. Current options include:
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmparams</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -94,21 +94,21 @@ It must contain the following:</p>
 <p><strong>abb</strong> = abbreviation you want to appear in the parameter table (use latex coding)</p>
 <p><strong>desc</strong> = description you want to appear in the parameter table</p>
 <p><strong>panel</strong> = indicate which panel each parameter should appear under.</p>
-<p>Current options include:</p><ul><li><p>panel=="struct" ~ "Structural model parameters"</p></li>
-<li><p>panel=="cov" ~ "Covariate effect parameters"</p></li>
-<li><p>panel=="IIV" ~ "Interindividual covariance parameters" (off-diagonals &lt;&lt; function takes care of this)</p></li>
-<li><p>panel=="IIV" ~ "Interindividual variance parameters" (diagonals &lt;&lt; function takes care of this)</p></li>
-<li><p>panel=="IOV"  ~ "Interoccasion variance parameters"</p></li>
-<li><p>panel=="RV" ~ "Residual variance"</p></li>
-</ul><p><strong>trans</strong> = define how the parameter will be transformed. Current options include:</p><ul><li><p>"none" -   untransformed parameters, e.g. THETAs or off-diagonals</p></li>
-<li><p>"logTrans" -  THETAs estimated in the log domain</p></li>
-<li><p>"logitTrans" - THETAs estimated using a logit transform</p></li>
-<li><p>"lognormalOm"- for log-normal omegas e.g. CL = THETA(1) * exp(ETA(1)) - returns est.+CV%</p></li>
-<li><p>"OmSD"       - for omegas where you want to return SD only - returns estimate &amp; SD; use this for additive omegas e.g. CL = THETA(1) + ETA(1)</p></li>
-<li><p>"logitOmSD"  - for omegas using logit transform - returns estimate &amp; SD (calculated with logitnorm package); this option requires you provide the associated THETA separated with a "~"; e.g. "logitOmSD ~ THETA3"</p></li>
-<li><p>"addErr"     - for additive error terms (coded using SIGMA in $ERROR) - returns est.+ SD</p></li>
-<li><p>"propErr"    - for proportional error terms (coded using SIGMA in $ERROR) - returns est.+CV%</p></li>
-<li><p>"addErrLogDV" - for additive error when DV modeled in log domain (still coded using SIGMA in $ERROR) - returns est.+CV%</p></li>
+<p>Current options include:</p><ul><li><p><code>panel=="struct"</code> ~ "Structural model parameters"</p></li>
+<li><p><code>panel=="cov"</code> ~ "Covariate effect parameters"</p></li>
+<li><p><code>panel=="IIV"</code> ~ "Interindividual covariance parameters" (off-diagonals &lt;&lt; function takes care of this)</p></li>
+<li><p><code>panel=="IIV"</code> ~ "Interindividual variance parameters" (diagonals &lt;&lt; function takes care of this)</p></li>
+<li><p><code>panel=="IOV"</code>  ~ "Interoccasion variance parameters"</p></li>
+<li><p><code>panel=="RV"</code> ~ "Residual variance"</p></li>
+</ul><p><strong>trans</strong> = define how the parameter will be transformed. Current options include:</p><ul><li><p><code>"none"</code> -   untransformed parameters, e.g. THETAs or off-diagonals</p></li>
+<li><p><code>"logTrans"</code> -  THETAs estimated in the log domain</p></li>
+<li><p><code>"logitTrans"</code> - THETAs estimated using a logit transform</p></li>
+<li><p><code>"lognormalOm"</code>- for log-normal omegas e.g. <code>CL = THETA(1) * exp(ETA(1))</code> - returns est.+CV%</p></li>
+<li><p><code>"OmSD"</code>       - for omegas where you want to return SD only - returns estimate &amp; SD; use this for additive omegas e.g. <code>CL = THETA(1) + ETA(1)</code></p></li>
+<li><p><code>"logitOmSD"</code>  - for omegas using logit transform - returns estimate &amp; SD (calculated with <code>logitnorm</code> package); this option requires you provide the associated <code>THETA</code> separated with a "~"; e.g. <code>"logitOmSD ~ THETA3"</code></p></li>
+<li><p><code>"addErr"</code>     - for additive error terms (coded using <code>THETA</code> or <code>SIGMA</code> in <code>$ERROR</code>) - returns est.+ SD</p></li>
+<li><p><code>"propErr"</code>    - for proportional error terms (coded using <code>THETA</code> or <code>SIGMA</code> in <code>$ERROR</code>) - returns est.+CV%</p></li>
+<li><p><code>"addErrLogDV"</code> - for an additive error term on log-transformed data (coded using <code>THETA</code> or <code>SIGMA</code> in <code>$ERROR</code>) - returns est.+CV%</p></li>
 </ul></div>
 
 

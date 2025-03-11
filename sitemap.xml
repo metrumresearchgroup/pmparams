@@ -9,15 +9,18 @@
 <url><loc>https://metrumresearchgroup.github.io/pmparams/reference/asNum.html</loc></url>
 <url><loc>https://metrumresearchgroup.github.io/pmparams/reference/backTrans_log.html</loc></url>
 <url><loc>https://metrumresearchgroup.github.io/pmparams/reference/backTrans_logit.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/boot_notes.html</loc></url>
 <url><loc>https://metrumresearchgroup.github.io/pmparams/reference/checkTransforms.html</loc></url>
 <url><loc>https://metrumresearchgroup.github.io/pmparams/reference/defineRows.html</loc></url>
 <url><loc>https://metrumresearchgroup.github.io/pmparams/reference/define_boot_table.html</loc></url>
 <url><loc>https://metrumresearchgroup.github.io/pmparams/reference/define_param_table.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/display_value.html</loc></url>
 <url><loc>https://metrumresearchgroup.github.io/pmparams/reference/formatGreekNames.html</loc></url>
 <url><loc>https://metrumresearchgroup.github.io/pmparams/reference/formatValues.html</loc></url>
 <url><loc>https://metrumresearchgroup.github.io/pmparams/reference/formatValuesBoot.html</loc></url>
 <url><loc>https://metrumresearchgroup.github.io/pmparams/reference/format_boot_table.html</loc></url>
 <url><loc>https://metrumresearchgroup.github.io/pmparams/reference/format_param_table.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/getBootPercentiles.html</loc></url>
 <url><loc>https://metrumresearchgroup.github.io/pmparams/reference/getCI.html</loc></url>
 <url><loc>https://metrumresearchgroup.github.io/pmparams/reference/getCV_propS.html</loc></url>
 <url><loc>https://metrumresearchgroup.github.io/pmparams/reference/getEvenNo.html</loc></url>
@@ -29,7 +32,7 @@
 <url><loc>https://metrumresearchgroup.github.io/pmparams/reference/index.html</loc></url>
 <url><loc>https://metrumresearchgroup.github.io/pmparams/reference/loadParamEstimates.html</loc></url>
 <url><loc>https://metrumresearchgroup.github.io/pmparams/reference/loadParamKey.html</loc></url>
-<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/lowerCI.html</loc></url>
+<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/make_boot_pmtable.html</loc></url>
 <url><loc>https://metrumresearchgroup.github.io/pmparams/reference/make_pmtable.html</loc></url>
 <url><loc>https://metrumresearchgroup.github.io/pmparams/reference/mathMode.html</loc></url>
 <url><loc>https://metrumresearchgroup.github.io/pmparams/reference/param_key.html</loc></url>
@@ -38,6 +41,5 @@
 <url><loc>https://metrumresearchgroup.github.io/pmparams/reference/pipe.html</loc></url>
 <url><loc>https://metrumresearchgroup.github.io/pmparams/reference/pmparams.html</loc></url>
 <url><loc>https://metrumresearchgroup.github.io/pmparams/reference/removePunc.html</loc></url>
-<url><loc>https://metrumresearchgroup.github.io/pmparams/reference/zscore_ci_msg.html</loc></url>
 </urlset>
 

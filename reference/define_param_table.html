@@ -18,7 +18,7 @@ some formatting of this combined data.frame."><meta property="og:image" content=
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmparams</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -84,17 +84,17 @@ some formatting of this combined data.frame.</p>
 
 
 <dt id="arg--key">.key<a class="anchor" aria-label="anchor" href="#arg--key"></a></dt>
-<dd><p>path to parameter key or data.frame of parameter key. Described
+<dd><p>Path to parameter key or data.frame of parameter key. Described
 in more detail in <code><a href="param_key.html">param_key</a></code></p></dd>
 
 
 <dt id="arg--ci">.ci<a class="anchor" aria-label="anchor" href="#arg--ci"></a></dt>
-<dd><p>confidence interval. Default is 95</p></dd>
+<dd><p>Confidence interval. A value from 1 to 99 denoting the percent
+confidence interval. Default is <code>95</code>.</p></dd>
 
 
 <dt id="arg--zscore">.zscore<a class="anchor" aria-label="anchor" href="#arg--zscore"></a></dt>
-<dd><p>z-score for the specified confidence interval. Only needed for
-confidence intervals that are <strong>not</strong> 90 or 95 percent</p></dd>
+<dd><p>Deprecated. Please use the <code>.ci</code> argument.</p></dd>
 
 </dl></div>
     <div id="details">
@@ -147,11 +147,8 @@ transformation rules were defined correctly. In addition, a series of <code>TRUE
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span>
-<span class="r-in"><span><span class="fu">define_param_table</span><span class="op">(</span></span></span>
-<span class="r-in"><span> .estimates <span class="op">=</span> <span class="va">param_ests</span>,</span></span>
-<span class="r-in"><span> .key <span class="op">=</span> <span class="va">paramKey</span>,</span></span>
-<span class="r-in"><span> .ci <span class="op">=</span> <span class="fl">95</span>,</span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">define_param_table</span><span class="op">(</span><span class="va">param_ests</span>, <span class="va">paramKey</span>, .ci <span class="op">=</span> <span class="fl">95</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 12 × 33</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    parameter_names estimate  stderr random_effect_sd random_effect_sdse fixed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span></span>
@@ -174,43 +171,12 @@ transformation rules were defined correctly. In addition, a series of <code>TRUE
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   addErrLogDV &lt;lgl&gt;, value &lt;dbl&gt;, se &lt;dbl&gt;, corr_SD &lt;dbl&gt;, lower &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   upper &lt;dbl&gt;, ci_level &lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># To choose a confidence interval that is not 95 or 90, look up and provide the z-score</span></span></span>
-<span class="r-in"><span><span class="fu">define_param_table</span><span class="op">(</span></span></span>
-<span class="r-in"><span> .estimates <span class="op">=</span> <span class="va">param_ests</span>,</span></span>
-<span class="r-in"><span> .key <span class="op">=</span> <span class="va">paramKey</span>,</span></span>
-<span class="r-in"><span> .ci <span class="op">=</span> <span class="fl">82</span>,</span></span>
-<span class="r-in"><span> .zscore <span class="op">=</span> <span class="fl">0.915</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 12 × 33</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    parameter_names estimate  stderr random_effect_sd random_effect_sdse fixed</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> THETA1            0.434  0.062<span style="text-decoration: underline;">9</span>            <span style="color: #BB0000;">NA</span>               <span style="color: #BB0000;">NA</span>       FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> THETA2            4.12   0.027<span style="text-decoration: underline;">6</span>            <span style="color: #BB0000;">NA</span>               <span style="color: #BB0000;">NA</span>       FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> THETA3            1.12   0.032<span style="text-decoration: underline;">8</span>            <span style="color: #BB0000;">NA</span>               <span style="color: #BB0000;">NA</span>       FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> THETA4            4.21   0.019<span style="text-decoration: underline;">2</span>            <span style="color: #BB0000;">NA</span>               <span style="color: #BB0000;">NA</span>       FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> THETA5            1.29   0.035<span style="text-decoration: underline;">4</span>            <span style="color: #BB0000;">NA</span>               <span style="color: #BB0000;">NA</span>       FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> OMEGA(1,1)        0.221  0.053<span style="text-decoration: underline;">0</span>             0.470            0.056<span style="text-decoration: underline;">4</span>  FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> OMEGA(2,2)        0.082<span style="text-decoration: underline;">7</span> 0.009<span style="text-decoration: underline;">83</span>            0.288            0.017<span style="text-decoration: underline;">1</span>  FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> OMEGA(3,3)        0.169  0.019<span style="text-decoration: underline;">7</span>             0.411            0.024<span style="text-decoration: underline;">0</span>  FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> OMEGA(2,1)        0.069<span style="text-decoration: underline;">0</span> 0.020<span style="text-decoration: underline;">0</span>             0.511            0.097<span style="text-decoration: underline;">5</span>  FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> OMEGA(3,1)        0.134  0.023<span style="text-decoration: underline;">6</span>             0.694            0.068<span style="text-decoration: underline;">6</span>  FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> OMEGA(3,2)        0.073<span style="text-decoration: underline;">5</span> 0.010<span style="text-decoration: underline;">5</span>             0.622            0.052<span style="text-decoration: underline;">4</span>  FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> SIGMA(1,1)        0.039<span style="text-decoration: underline;">9</span> 0.001<span style="text-decoration: underline;">23</span>            0.200            0.003<span style="text-decoration: underline;">07</span> FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 27 more variables: diag &lt;lgl&gt;, shrinkage &lt;dbl&gt;, name &lt;chr&gt;, abb &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   desc &lt;chr&gt;, panel &lt;chr&gt;, trans &lt;chr&gt;, nrow &lt;int&gt;, transTHETA &lt;lgl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   THETAERR &lt;lgl&gt;, TH &lt;lgl&gt;, OM &lt;lgl&gt;, S &lt;lgl&gt;, LOG &lt;lgl&gt;, LOGIT &lt;lgl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   lognormO &lt;lgl&gt;, Osd &lt;lgl&gt;, logitOsd &lt;lgl&gt;, propErr &lt;lgl&gt;, addErr &lt;lgl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   addErrLogDV &lt;lgl&gt;, value &lt;dbl&gt;, se &lt;dbl&gt;, corr_SD &lt;dbl&gt;, lower &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   upper &lt;dbl&gt;, ci_level &lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Using a `bbr` model</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">bbr</span><span class="fu">::</span><span class="fu"><a href="https://metrumresearchgroup.github.io/bbr/reference/read_model.html" class="external-link">read_model</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">model_dir</span>, <span class="st">"102"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">define_param_table</span><span class="op">(</span></span></span>
-<span class="r-in"><span> .estimates <span class="op">=</span> <span class="va">mod</span>,</span></span>
-<span class="r-in"><span> .key <span class="op">=</span> <span class="va">paramKey</span>,</span></span>
-<span class="r-in"><span> .ci <span class="op">=</span> <span class="fl">95</span>,</span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">define_param_table</span><span class="op">(</span><span class="va">mod</span>, <span class="va">paramKey</span>, .ci <span class="op">=</span> <span class="fl">95</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

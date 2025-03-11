@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmparams</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -104,9 +104,10 @@
 For more information how to effectively integrate <code>pmparams</code>
 into your workflow, visit the
 <a href="https://merge.metrumrg.com/expo/expo1-nonmem-foce/posts/parameter-tables.html" target="_blank" class="external-link">
-MeRGE Expo: Parameter Tables </a>..</p>
+MeRGE Expo: Parameter Tables</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://metrumresearchgroup.github.io/pmparams/">pmparams</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://metrumresearchgroup.github.io/bbr" class="external-link">bbr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/vubiostat/r-yaml/" class="external-link">yaml</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://metrumresearchgroup.github.io/pmtables" class="external-link">pmtables</a></span><span class="op">)</span></span></code></pre></div>
@@ -114,11 +115,23 @@ MeRGE Expo: Parameter Tables </a>..</p>
 <div class="section level2">
 <h2 id="data-requirements">Data requirements<a class="anchor" aria-label="anchor" href="#data-requirements"></a>
 </h2>
+<p>Before we get started, lets set some key variables we’ll use
+throughout this tutorial, including the original <code>bbr</code> model
+and the bootstrap run:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Model Directory</span></span>
+<span><span class="va">model_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"model/nonmem"</span>, package <span class="op">=</span> <span class="st">"pmparams"</span><span class="op">)</span></span>
+<span><span class="co"># Parameter Key</span></span>
+<span><span class="va">param_key</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">model_dir</span>, <span class="st">"pk-parameter-key-new.yaml"</span><span class="op">)</span></span>
+<span><span class="co"># Model we're bootstrapping</span></span>
+<span><span class="va">orig_mod</span> <span class="op">&lt;-</span> <span class="fu">bbr</span><span class="fu">::</span><span class="fu"><a href="https://metrumresearchgroup.github.io/bbr/reference/read_model.html" class="external-link">read_model</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">model_dir</span>, <span class="st">"106"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># Bootstrap model object</span></span>
+<span><span class="va">boot_run</span> <span class="op">&lt;-</span> <span class="fu">bbr</span><span class="fu">::</span><span class="fu"><a href="https://metrumresearchgroup.github.io/bbr/reference/read_model.html" class="external-link">read_model</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">model_dir</span>, <span class="st">"106-boot"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="parameter-key">Parameter key<a class="anchor" aria-label="anchor" href="#parameter-key"></a>
 </h3>
 <p>We begin by creating a parameter key that tells R how to interpret
-you parameter values. Our code require four arguments for each
+your parameter values. Our code requires four arguments for each
 parameter:</p>
 <ul>
 <li>abb - abbreviation for model parameter (we use latex coding)</li>
@@ -127,19 +140,17 @@ parameter:</p>
 <li>trans - definition of how the parameter should be transformed</li>
 </ul>
 <p>If you have a model that uses theta in the $ERROR block, make sure
-that the theta section’s panel is “RV” so that <code>pmparams</code>
-functions can properly identify it.</p>
-<p>It is recommended to use a parameter key yaml, but
-<code>pmparams</code> works for parameter key tibbles.</p>
+the theta panel label is “RV” so the <code>pmparams</code> functions can
+properly identify it.</p>
+<p>We recommend using a parameter key yaml, but <code>pmparams</code>
+works for parameter key tibbles.</p>
 <p>A more detailed walk-through of generating the parameter key is
 available here:
 <a href="https://merge.metrumrg.com/expo/expo1-nonmem-foce/posts/parameter-key.html" target="_blank" class="external-link">
 MeRGE Expo: Creating a Parameter Key </a>.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">MODEL_DIR</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"model/nonmem"</span>, package <span class="op">=</span> <span class="st">"pmparams"</span><span class="op">)</span></span>
-<span><span class="va">paramKeyPath</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">MODEL_DIR</span>, <span class="st">"pk-parameter-key-new.yaml"</span><span class="op">)</span></span>
-<span><span class="va">paramKey</span> <span class="op">&lt;-</span> <span class="fu">yaml</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/yaml/man/yaml.load.html" class="external-link">yaml.load_file</a></span><span class="op">(</span><span class="va">paramKeyPath</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">paramKey</span><span class="op">)</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">param_key_lst</span> <span class="op">&lt;-</span> <span class="fu">yaml</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/yaml/man/yaml.load.html" class="external-link">yaml.load_file</a></span><span class="op">(</span><span class="va">param_key</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">param_key_lst</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                             THETA1.abb                            THETA1.desc </span></span>
 <span><span class="co">#&gt;                             "KA (1/h)" "First order absorption rate constant" </span></span>
 <span><span class="co">#&gt;                           THETA1.panel                           THETA1.trans </span></span>
@@ -147,112 +158,165 @@ MeRGE Expo: Creating a Parameter Key </a>.</p>
 <span><span class="co">#&gt;                             THETA2.abb                            THETA2.desc </span></span>
 <span><span class="co">#&gt;                             "V2/F (L)"              "Apparent central volume"</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="non-boot-parameter-estimates">Non-boot Parameter estimates<a class="anchor" aria-label="anchor" href="#non-boot-parameter-estimates"></a>
-</h3>
-<p><code>pmparams</code> allows for different non-boot parameter
-estimate input types: * path to model directory * data.frame of bbr
-model_summary</p>
-<p>For this example, we will use the path to the model directory.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">nonboot_paramEstPath</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">MODEL_DIR</span>, <span class="st">"106"</span><span class="op">)</span></span></code></pre></div>
 </div>
+<div class="section level2">
+<h2 id="creating-a-parameter-table-bootstrap-estimates">Creating a parameter table bootstrap estimates<a class="anchor" aria-label="anchor" href="#creating-a-parameter-table-bootstrap-estimates"></a>
+</h2>
 <div class="section level3">
-<h3 id="boot-parameter-estimates">Boot parameter estimates<a class="anchor" aria-label="anchor" href="#boot-parameter-estimates"></a>
+<h3 id="define-format-bootstrap-parameter-table">Define &amp; format bootstrap parameter table<a class="anchor" aria-label="anchor" href="#define-format-bootstrap-parameter-table"></a>
 </h3>
-<p><code>pmparams</code> allows for different boot parameter estimate
-input types: * path to file * data.frame</p>
-<p>For this example, we will use the path to file.</p>
+<p>Parameter tables of bootstrap estimates are created by first passing
+your bootstrap estimates to the <code>pmparams</code>
+<code><a href="../reference/define_boot_table.html">define_boot_table()</a></code> function, which handles both the
+joining and creation of new confidence interval related columns.</p>
+<ul>
+<li>Note: this uses <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">dplyr::inner_join</a></code>, so only parameters
+included in the model output <em>and</em> parameter key will be kept in
+the table. This was done so that if your base and final model used the
+same structural THETAs and random parameters, the same parameter key
+could be used for both. The additional covariate THETAs defined in the
+parameter key YAML would simply be ignored when creating the base model
+parameter table.</li>
+</ul>
+<p>Bootstrap runs can be performed directly in <code>bbr</code> (version
+<code>1.11.0</code> or later), which tracks a bootstrap model object
+(<code>boot_run</code>). Once executed, the
+<code><a href="https://metrumresearchgroup.github.io/bbr/reference/summarize_bootstrap.html" class="external-link">bbr::bootstrap_estimates()</a></code> function can be used to easily
+read those estimates into a data frame that you can subsequently pass to
+the <code>pmparams</code> <code><a href="../reference/define_boot_table.html">define_boot_table()</a></code> function.</p>
+<div class="section level4">
+<h4 id="bootstrap-parameter-estimates-argument">Bootstrap parameter estimates argument<a class="anchor" aria-label="anchor" href="#bootstrap-parameter-estimates-argument"></a>
+</h4>
+<p>To support use cases outside of <code>bbr</code>, this function
+allows you to pass in those bootstrap estimates in a couple of
+formats:</p>
+<ul>
+<li>A <strong><em>path</em></strong> to a csv
+(<code>file.path(model_dir, "boot/data/boot-106.csv")</code>)</li>
+<li>A data.frame (like what’s returned from
+<code><a href="https://metrumresearchgroup.github.io/bbr/reference/summarize_bootstrap.html" class="external-link">bbr::bootstrap_estimates()</a></code>)</li>
+</ul>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">boot_paramEstPath</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">MODEL_DIR</span>, <span class="st">"boot"</span>, <span class="st">"data"</span>, <span class="st">"boot-106.csv"</span><span class="op">)</span></span></code></pre></div>
-</div>
-</div>
-<div class="section level2">
-<h2 id="define-boot-parameter-table">Define boot parameter table<a class="anchor" aria-label="anchor" href="#define-boot-parameter-table"></a>
-</h2>
-<p>We will now join parameter estimates and parameter key. Note: this is
-an inner_join, so only parameters included in the model output and
-parameter key will be kept in the table. This was done so that, if your
-base and final model used the same structural THETAs and random
-parameters, the same parameter key could be used for both. The
-additional covariate THETAs defined in the parameter key YAML would
-simply be ignored when creating the base model parameter table.</p>
-<p>Additionally, <code>define_param_table</code> performs checks and
-calculates confidence intervals.</p>
+<code class="sourceCode R"><span><span class="co"># Also accepted</span></span>
+<span> <span class="co"># boot_ests &lt;- file.path(model_dir, "boot/data/boot-106.csv")</span></span>
+<span> <span class="co"># boot_ests &lt;- readr::read_csv(file.path(model_dir, "boot/data/boot-106.csv"))</span></span>
+<span><span class="va">boot_ests</span> <span class="op">&lt;-</span> <span class="fu">bbr</span><span class="fu">::</span><span class="fu"><a href="https://metrumresearchgroup.github.io/bbr/reference/summarize_bootstrap.html" class="external-link">bootstrap_estimates</a></span><span class="op">(</span><span class="va">boot_run</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">boot_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/define_boot_table.html">define_boot_table</a></span><span class="op">(</span></span>
+<span>  .boot_estimates <span class="op">=</span> <span class="va">boot_ests</span>,</span>
+<span>  .key <span class="op">=</span> <span class="va">param_key</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">boot_df</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 23</span></span></span>
+<span><span class="co">#&gt;   parameter_names  lower  value  upper ci_level name   abb     desc  panel trans</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> THETA1           1.39   1.58   1.80        95 THETA1 KA (1/… Firs… stru… logT…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> THETA2          58.9   62.0   65.7         95 THETA2 V2/F (… Appa… stru… logT…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> THETA3           3.09   3.26   3.46        95 THETA3 CL/F (… Appa… stru… logT…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> THETA4          65.7   68.2   70.2         95 THETA4 V3/F (… Appa… stru… logT…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> THETA5           3.39   3.64   3.88        95 THETA5 Q/F (L… Appa… stru… logT…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> THETA6           0.403  0.483  0.568       95 THETA6 CL/F ~… eGFR… cov   none </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 13 more variables: transTHETA &lt;lgl&gt;, THETAERR &lt;lgl&gt;, TH &lt;lgl&gt;, OM &lt;lgl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   S &lt;lgl&gt;, LOG &lt;lgl&gt;, LOGIT &lt;lgl&gt;, lognormO &lt;lgl&gt;, Osd &lt;lgl&gt;, logitOsd &lt;lgl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   propErr &lt;lgl&gt;, addErr &lt;lgl&gt;, addErrLogDV &lt;lgl&gt;</span></span></span></code></pre></div>
+<p>Now we perform some house-keeping based on the new parameter key
+information and format the values for the report using
+<code><a href="../reference/format_boot_table.html">format_boot_table()</a></code>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/define_boot_table.html">define_boot_table</a></span><span class="op">(</span>.boot_estimates <span class="op">=</span> <span class="va">boot_paramEstPath</span>,</span>
-<span>                .nonboot_estimates <span class="op">=</span> <span class="va">nonboot_paramEstPath</span>,</span>
-<span>                .key <span class="op">=</span> <span class="va">paramKeyPath</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">boot_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/format_boot_table.html">format_boot_table</a></span><span class="op">(</span><span class="va">boot_df</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 25</span></span></span>
-<span><span class="co">#&gt;   parameter_names estimate  lower  upper name   abb      desc  panel trans  nrow</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> THETA1             0.449  1.39   1.78  THETA1 KA (1/h) Firs… stru… logT…     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> THETA2             4.12  58.3   65.1   THETA2 V2/F (L) Appa… stru… logT…     2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> THETA3             1.17   3.07   3.42  THETA3 CL/F (L… Appa… stru… logT…     3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> THETA4             4.21  65.0   69.8   THETA4 V3/F (L) Appa… stru… logT…     4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> THETA5             1.28   3.37   3.86  THETA5 Q/F (L/… Appa… stru… logT…     5</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> THETA6             0.484  0.408  0.558 THETA6 CL/F ~ … eGFR… cov   none      6</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 15 more variables: fixed &lt;lgl&gt;, value &lt;dbl&gt;, transTHETA &lt;lgl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   THETAERR &lt;lgl&gt;, TH &lt;lgl&gt;, OM &lt;lgl&gt;, S &lt;lgl&gt;, LOG &lt;lgl&gt;, LOGIT &lt;lgl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   lognormO &lt;lgl&gt;, Osd &lt;lgl&gt;, logitOsd &lt;lgl&gt;, propErr &lt;lgl&gt;, addErr &lt;lgl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   addErrLogDV &lt;lgl&gt;</span></span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">boot_df</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 4</span></span></span>
+<span><span class="co">#&gt;   abb         desc                                  boot_value boot_ci_95  </span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                 <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> KA (1/h)    First order absorption rate constant  1.58       1.39, 1.80  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> V2/F (L)    Apparent central volume               62.0       58.9, 65.7  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> CL/F (L/h)  Apparent clearance                    3.26       3.09, 3.46  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> V3/F (L)    Apparent peripheral volume            68.2       65.7, 70.2  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Q/F (L/h)   Apparent intercompartmental clearance 3.64       3.39, 3.88  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> CL/F ~ eGFR eGFR effect on CL/F                   0.483      0.403, 0.568</span></span></code></pre></div>
+</div>
+</div>
 </div>
 <div class="section level2">
-<h2 id="format-boot-parameter-table">Format boot parameter table<a class="anchor" aria-label="anchor" href="#format-boot-parameter-table"></a>
+<h2 id="combine-bootstrap-and-original-model-parameter-estimates">Combine bootstrap and original model parameter estimates<a class="anchor" aria-label="anchor" href="#combine-bootstrap-and-original-model-parameter-estimates"></a>
 </h2>
-<p>Now, we perform some house-keeping based on the new parameter key
-information, calculate any summary statistics (the 95% confidence
-intervals are calculated by default), and format the values for the
-report using <code>format_boot_table</code>.</p>
+<p>Start by creating a parameter table for your <em>original model</em>,
+and then join it to the formatted bootstrap table (<code>boot_df</code>)
+we created above:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/format_boot_table.html">format_boot_table</a></span><span class="op">(</span><span class="va">df1</span><span class="op">)</span></span></code></pre></div>
-<p>Usually <code>define_boot_table</code> and
-<code>format_boot_table</code> are run together in a single call like
-this:</p>
+<code class="sourceCode R"><span><span class="va">param_df</span> <span class="op">&lt;-</span> <span class="va">orig_mod</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/define_param_table.html">define_param_table</a></span><span class="op">(</span><span class="va">param_key</span>, .ci <span class="op">=</span> <span class="fl">95</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../reference/format_param_table.html">format_param_table</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="va">boot_param_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">param_df</span>, <span class="va">boot_df</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"abb"</span>, <span class="st">"desc"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">boot_param_df</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 9</span></span></span>
+<span><span class="co">#&gt;   type             abb   greek desc  value shrinkage ci_95 boot_value boot_ci_95</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;glu&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;glu&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Structural mode… KA (… $\ex… Firs… 1.57  -         1.38… 1.58       1.39, 1.80</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Structural mode… V2/F… $\ex… Appa… 62.1  -         58.8… 62.0       58.9, 65.7</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Structural mode… CL/F… $\ex… Appa… 3.26  -         3.08… 3.26       3.09, 3.46</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Structural mode… V3/F… $\ex… Appa… 68.1  -         65.6… 68.2       65.7, 70.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Structural mode… Q/F … $\ex… Appa… 3.63  -         3.39… 3.64       3.39, 3.88</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Covariate effec… CL/F… $\th… eGFR… 0.484 -         0.40… 0.483      0.403, 0.…</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/define_boot_table.html">define_boot_table</a></span><span class="op">(</span>.boot_estimates <span class="op">=</span> <span class="va">boot_paramEstPath</span>,</span>
-<span>                .nonboot_estimates <span class="op">=</span> <span class="va">nonboot_paramEstPath</span>,</span>
-<span>                .key <span class="op">=</span> <span class="va">paramKeyPath</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>        <span class="fu"><a href="../reference/format_boot_table.html">format_boot_table</a></span><span class="op">(</span><span class="op">)</span></span>
-<span>  </span>
+<code class="sourceCode R"><span><span class="co"># Define bootstrap CI footnote</span></span>
+<span><span class="va">footBoot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/boot_notes.html">boot_notes</a></span><span class="op">(</span>.ci <span class="op">=</span> <span class="fl">95</span>, .n_run <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">boot_ests</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df2</span><span class="op">)</span></span>
-<span><span class="co">#&gt;           abb                                  desc boot_value   boot_ci_95</span></span>
-<span><span class="co">#&gt; 1    KA (1/h)  First order absorption rate constant       1.57   1.39, 1.78</span></span>
-<span><span class="co">#&gt; 2    V2/F (L)               Apparent central volume       61.5   58.3, 65.1</span></span>
-<span><span class="co">#&gt; 3  CL/F (L/h)                    Apparent clearance       3.23   3.07, 3.42</span></span>
-<span><span class="co">#&gt; 4    V3/F (L)            Apparent peripheral volume       67.3   65.0, 69.8</span></span>
-<span><span class="co">#&gt; 5   Q/F (L/h) Apparent intercompartmental clearance       3.61   3.37, 3.86</span></span>
-<span><span class="co">#&gt; 6 CL/F ~ eGFR                   eGFR effect on CL/F      0.484 0.408, 0.558</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="make-parameter-table">Make parameter table<a class="anchor" aria-label="anchor" href="#make-parameter-table"></a>
-</h2>
-<p>We use <code>pmtables</code> to make formatted table.</p>
+<span><span class="co"># Render table</span></span>
+<span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="va">boot_param_df</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/make_boot_pmtable.html">make_boot_pmtable</a></span><span class="op">(</span>.pmtype <span class="op">=</span> <span class="st">"fixed"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/st_align.html" class="external-link">st_center</a></span><span class="op">(</span>desc <span class="op">=</span> <span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/col_fixed.html" class="external-link">col_ragged</a></span><span class="op">(</span><span class="fl">5.5</span><span class="op">)</span>, abb <span class="op">=</span> <span class="st">"l"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/st_notes.html" class="external-link">st_notes</a></span><span class="op">(</span><span class="fu"><a href="../reference/param_notes.html">param_notes</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">ci</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>                   <span class="co"># add abbreviations</span></span>
+<span>  <span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/st_notes_str.html" class="external-link">st_notes_str</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>                               <span class="co"># collapse all abbreviations to a string                        </span></span>
+<span>  <span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/st_notes.html" class="external-link">st_notes</a></span><span class="op">(</span><span class="fu"><a href="../reference/param_notes.html">param_notes</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">logTrans</span>, <span class="va">footBoot</span><span class="op">$</span><span class="va">boot_ci</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>   <span class="co"># customize other notes</span></span>
+<span>  <span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/st_notes_detach.html" class="external-link">st_notes_detach</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/st_files.html" class="external-link">st_files</a></span><span class="op">(</span>output <span class="op">=</span> <span class="st">"final-param-fixed-boot.tex"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/stable.html" class="external-link">stable</a></span><span class="op">(</span>output_file <span class="op">=</span> <span class="st">"deliv/mod106-boot-95-ci-fixed.tex"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">tab_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/stable_save_image.html" class="external-link">stable_save_image</a></span><span class="op">(</span><span class="va">tab</span>, format <span class="op">=</span> <span class="st">"png"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tableList</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#grab footnotes</span></span>
-<span><span class="va">footnote</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/param_notes.html">param_notes</a></span><span class="op">(</span>.ci <span class="op">=</span> <span class="fl">95</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/st_image_show.html" class="external-link">st_image_show</a></span><span class="op">(</span><span class="va">tab_out</span>, width <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span></span></code></pre></div>
+<p><img src="making-bootstrap-parameter-tables_files/figure-html/unnamed-chunk-8-1.png" width="520" style="display: block; margin: auto;"></p>
+<div class="section level3">
+<h3 id="complex-example">Complex example<a class="anchor" aria-label="anchor" href="#complex-example"></a>
+</h3>
+<p>To illustrate the flexibility of <code><a href="../reference/make_boot_pmtable.html">make_boot_pmtable()</a></code>,
+we’ll use a more complex example where we include two confidence
+intervals:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">tableList</span><span class="op">$</span><span class="va">bootstrap</span> <span class="op">&lt;-</span> <span class="va">df2</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>boot_ci_95 <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">boot_ci_95</span><span class="op">)</span>, <span class="st">"FIXED"</span>, <span class="va">boot_ci_95</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/st_new.html" class="external-link">st_new</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/st_panel.html" class="external-link">st_panel</a></span><span class="op">(</span><span class="st">"desc"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/st_rename.html" class="external-link">st_rename</a></span><span class="op">(</span>Value <span class="op">=</span> <span class="va">boot_value</span>,</span>
-<span>            <span class="st">"95% CI"</span> <span class="op">=</span> <span class="va">boot_ci_95</span>,</span>
-<span>            <span class="st">" "</span><span class="op">=</span> <span class="va">abb</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="co">#abbreviations</span></span>
-<span>  <span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/st_notes.html" class="external-link">st_notes</a></span><span class="op">(</span><span class="va">footnote</span><span class="op">$</span><span class="va">ci</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="co">#equations</span></span>
-<span>  <span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/st_notes.html" class="external-link">st_notes</a></span><span class="op">(</span><span class="va">footnote</span><span class="op">$</span><span class="va">ciEq</span><span class="op">)</span> </span>
+<code class="sourceCode R"><span><span class="co"># Two confidence intervals</span></span>
+<span><span class="va">boot_df</span> <span class="op">&lt;-</span> <span class="va">boot_ests</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/define_boot_table.html">define_boot_table</a></span><span class="op">(</span><span class="va">param_key</span>, .ci <span class="op">=</span> <span class="fl">95</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../reference/format_boot_table.html">format_boot_table</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">tableList</span><span class="op">$</span><span class="va">bootstrap</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/stable.html" class="external-link">stable</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/st_wrap.html" class="external-link">st_asis</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">boot_df2</span> <span class="op">&lt;-</span> <span class="va">boot_ests</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/define_boot_table.html">define_boot_table</a></span><span class="op">(</span><span class="va">param_key</span>, .ci <span class="op">=</span> <span class="fl">90</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../reference/format_boot_table.html">format_boot_table</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="va">boot_param_df</span> <span class="op">&lt;-</span> <span class="va">param_df</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">boot_df</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">boot_df2</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="va">boot_param_df</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/make_boot_pmtable.html">make_boot_pmtable</a></span><span class="op">(</span>.pmtype <span class="op">=</span> <span class="st">"fixed"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/st_align.html" class="external-link">st_center</a></span><span class="op">(</span>desc <span class="op">=</span> <span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/col_fixed.html" class="external-link">col_ragged</a></span><span class="op">(</span><span class="fl">5.5</span><span class="op">)</span>, abb <span class="op">=</span> <span class="st">"l"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/st_notes.html" class="external-link">st_notes</a></span><span class="op">(</span><span class="fu"><a href="../reference/param_notes.html">param_notes</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">ci</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>         <span class="co"># add abbreviations</span></span>
+<span>  <span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/st_notes_str.html" class="external-link">st_notes_str</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>                     <span class="co"># collapse all abbreviations to a string                        </span></span>
+<span>  <span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/st_notes.html" class="external-link">st_notes</a></span><span class="op">(</span><span class="fu"><a href="../reference/param_notes.html">param_notes</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">logTrans</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>   <span class="co"># customize other notes</span></span>
+<span>  <span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/st_notes_detach.html" class="external-link">st_notes_detach</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/st_files.html" class="external-link">st_files</a></span><span class="op">(</span>output <span class="op">=</span> <span class="st">"final-param-fixed-boot-multi-ci.tex"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/stable.html" class="external-link">stable</a></span><span class="op">(</span>output_file <span class="op">=</span> <span class="st">"deliv/mod106-boot-95-90-ci-fixed.tex"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">tab_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/stable_save_image.html" class="external-link">stable_save_image</a></span><span class="op">(</span><span class="va">tab</span>, format <span class="op">=</span> <span class="st">"png"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/st_image_show.html" class="external-link">st_image_show</a></span><span class="op">(</span><span class="va">tab_out</span>, width <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span></span></code></pre></div>
+<p><img src="making-bootstrap-parameter-tables_files/figure-html/unnamed-chunk-11-1.png" width="607" style="display: block; margin: auto;"></p>
+</div>
 </div>
   </div>
 

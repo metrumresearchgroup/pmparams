@@ -18,7 +18,7 @@ well-formatted parameter tables to report NONMEM model results."><meta property=
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmparams</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -70,20 +70,27 @@ well-formatted parameter tables to report NONMEM model results.</p>
 
     <div id="details">
     <h2>Details</h2>
-    <p><code>pmparams</code> creates parameter tables by leveraging a few intuitive functions designed to:</p><ul><li><p>Describe your model parameters in a YAML file</p></li>
+    <p><code>pmparams</code> creates parameter tables by leveraging a few intuitive
+functions designed to:</p><ul><li><p>Describe your model parameters in a YAML file</p></li>
 <li><p>Read in your model parameters from various NONMEM output files</p></li>
-<li><p>Back-transform any parameters estimated in other domains (e.g., log- or logit-transformed variables)</p></li>
-<li><p>Calculate additional summary statistics (e.g., 95% confidence intervals, coefficient of variation (CV), etc.)</p></li>
+<li><p>Back-transform any parameters estimated in other domains (e.g., log- or
+logit-transformed variables)</p></li>
+<li><p>Calculate additional summary statistics (e.g., 95% confidence intervals,
+coefficient of variation (CV), etc.)</p></li>
 </ul></div>
     <div id="key-functions">
     <h2>Key functions</h2>
 
 
 <ul><li><p><a href="param_key.html">param_key</a> links to an example parameter key</p></li>
-<li><p><code><a href="define_param_table.html">define_param_table()</a></code> and <code><a href="define_boot_table.html">define_boot_table()</a></code>: combines and formats model output parameter estimates with information in parameter key.</p></li>
-<li><p><code><a href="format_param_table.html">format_param_table()</a></code> and <code><a href="format_boot_table.html">format_boot_table()</a></code>: format parameter estimate values and output selected columns to be shown in</p></li>
-<li><p>the parameter table</p></li>
-<li><p><code><a href="make_pmtable.html">make_pmtable()</a></code>: generates specific parameter tables by filtering and using <code>pmtables</code></p></li>
+<li><p><code><a href="define_param_table.html">define_param_table()</a></code> and <code><a href="define_boot_table.html">define_boot_table()</a></code>: combines and formats model
+output parameter estimates with information in parameter key.</p></li>
+<li><p><code><a href="format_param_table.html">format_param_table()</a></code> and <code><a href="format_boot_table.html">format_boot_table()</a></code>: format parameter estimate
+values and output selected columns to be shown in the parameter table</p></li>
+<li><p><code><a href="make_pmtable.html">make_pmtable()</a></code> and <code><a href="make_boot_pmtable.html">make_boot_pmtable()</a></code>: generate LaTeX-formatted
+parameter tables by filtering and using the <code>pmtables</code> package.</p></li>
+<li><p><code><a href="param_notes.html">param_notes()</a></code> and <code><a href="boot_notes.html">boot_notes()</a></code>: generate a list of generic footnote
+equations, abbreviations, and notes to append to parameter tables.</p></li>
 </ul></div>
     <div id="see-also">
     <h2>See also</h2>
