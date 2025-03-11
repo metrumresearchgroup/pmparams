@@ -1,6 +1,6 @@
 Package: pmparams
 Title: R package for parameter tables
-Version: 0.2.2.9001
+Version: 0.3.0
 Authors@R: 
       c(person(given = "Katherine",
              family = "Kay",
