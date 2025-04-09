@@ -18,7 +18,7 @@ test_that("format_param_table expected dataframe: col names", {
   expect_equal(names(newDF3),  c("type", "abb", "greek", "desc", "value", "shrinkage", paste0("ci_", ci_name)))
 
   # all cols., no prse
-  expect_equal(length(names(newDF5)),  40)
+  expect_equal(length(names(newDF5)),  39)
 })
 
 test_that("format_param_table expected dataframe: prse col", {
@@ -26,7 +26,7 @@ test_that("format_param_table expected dataframe: prse col", {
   expect_equal(newDF4$pRSE[1],  "6.29")
   expect_true("pRSE" %in% names(newDF6))
 
-  expect_equal(length(names(newDF6)),  length(names(newDF5)))
+  expect_equal(length(names(newDF6)),  length(names(newDF5)) + 1)
   expect_true("pRSE" %in% names(newDF6))
 })
 
@@ -145,12 +145,12 @@ test_that("format_param_table: .digit produces expected significant digits", {
 
 test_that("format_param_table: .maxex produces expected scientific notation", {
 
-  newDF11 <- PARAM_TAB_102 %>%
+  param_df <- PARAM_TAB_102 %>%
     mutate(value = value*100,
            upper = upper*0.01,
            lower = lower*0.0001)
 
-  newDF12 <- format_param_table(newDF11)
+  newDF12 <- format_param_table(param_df)
   expect_equal(newDF12$value[1], "6.77e+18")
   expect_equal(newDF12$value[10], "13.4 [Corr=0.694]")
   expect_equal(newDF12$ci_95[10], "8.78e-06, 0.00180")
@@ -171,7 +171,7 @@ test_that("format_param_table: .select_cols works", {
     df2 <- format_param_table(PARAM_TAB_102, .select_cols = "ALL"),
     "is deprecated"
   )
-  expect_equal(setdiff(names(df2), names(PARAM_TAB_102)), c("cv", "pRSE", "sd", "text", "greek", "type", "type_f", "ci_95"))
+  expect_equal(setdiff(names(df2), names(PARAM_TAB_102)), c("cv", "sd", "text", "greek", "type", "type_f", "ci_95"))
 
   # Missing cols
   expect_error(
