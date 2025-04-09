@@ -14,7 +14,7 @@ formatValues <- function(.df,
   .df %>%
     backTrans_log() %>%
     backTrans_logit() %>%
-    getpCV() %>%
+    getpCV(.digit = .digit, .maxex = .maxex) %>%
     dplyr::mutate(
       ci = paste0(display_value(lower, .digit, .maxex), ', ', display_value(upper, .digit, .maxex)),
       ci = dplyr::if_else(fixed, "FIXED", ci),

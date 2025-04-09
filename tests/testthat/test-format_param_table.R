@@ -155,6 +155,21 @@ test_that("format_param_table: .maxex produces expected scientific notation", {
   expect_equal(newDF12$value[10], "13.4 [Corr=0.694]")
   expect_equal(newDF12$ci_95[10], "8.78e-06, 0.00180")
   expect_equal(newDF12$shrinkage[6], "18.2")
+
+  # Regression test: check that CV% and pRSE respect .maxex
+
+  # Check CV%
+  param_df <- PARAM_TAB_102 %>%
+    mutate(value = value*100, upper = upper*0.01, lower = lower*0.0001)
+
+  newDF13 <- format_param_table(param_df, .maxex = 2)
+  expect_equal(newDF13$value[6], "22.1 [CV\\%=6.17e+06]")
+
+  # Check pRSE
+  param_df <- PARAM_TAB_102 %>%
+    mutate(value = value*2, upper = upper*0.01, lower = lower*0.0001)
+  newDF13 <- format_param_table(param_df, .maxex = 2, .digit = 1, .prse = TRUE)
+  expect_equal(newDF13$pRSE[6], "1.e+01")
 })
 
 test_that("format_param_table: .select_cols works", {
