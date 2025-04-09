@@ -73,3 +73,18 @@ stop_if_missing_deps <- function(pkgs = "bbr") {
     ), call. = FALSE)
   }
 }
+
+
+#' Suppress a warning that matches `.regexpr`
+#' @param .expr Expression to run
+#' @param .regexpr Regex to match against any generated warning. Warning will be
+#'  suppressed if this matches the warning message.
+#' @noRd
+suppressSpecificWarning <- function(.expr, .regexpr) {
+  withCallingHandlers({
+    .expr
+  }, warning=function(w) {
+    if (stringr::str_detect(w$message, .regexpr))
+      invokeRestart("muffleWarning")
+  })
+}
