@@ -15,7 +15,6 @@ formatValues <- function(.df,
     backTrans_log() %>%
     backTrans_logit() %>%
     getpCV() %>%
-    getpRSE() %>%
     dplyr::mutate(
       ci = paste0(display_value(lower, .digit, .maxex), ', ', display_value(upper, .digit, .maxex)),
       ci = dplyr::if_else(fixed, "FIXED", ci),
@@ -35,7 +34,7 @@ formatValues <- function(.df,
         !diag & S ~ glue::glue("{value} {parensSQ_corr(corr_SD)}"),
         TRUE ~ value),
       shrinkage = dplyr::case_when(is.na(shrinkage) ~ "-", TRUE ~ display_value(shrinkage, .digit, .maxex))
-    )
+    ) %>% suppressSpecificWarning("NAs introduced by coercion")
 }
 
 
