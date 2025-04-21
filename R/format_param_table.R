@@ -83,7 +83,7 @@ format_param_table <- function(
   .ci_level <- unique(.df[["ci_level"]])
   .ci_final_nam <- paste0("ci_", .ci_level)
 
-  if (isTRUE(.prse)) .df <- getpRSE(.df)
+  if (isTRUE(.prse)) .df <- getpRSE(.df, .digit = .digit, .maxex = .maxex)
 
   # Create formatted table
   .df_out <-
