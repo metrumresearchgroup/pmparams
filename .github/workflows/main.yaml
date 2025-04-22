@@ -20,12 +20,14 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - os: ubuntu-20.04
+          - os: ubuntu-22.04
             r: 4.0.5
             # Latest magick requires R 4.1.
             magick_pkg: 'url::https://mpn.metworx.com/snapshots/stable/2025-02-26/src/contrib/magick_2.8.5.tar.gz'
-          - os: ubuntu-20.04
-            r: 4.1.3
+          - os: ubuntu-22.04
+            r: 4.3.3
+          - os: ubuntu-22.04
+            r: 4.4.2
           - os: ubuntu-latest
             r: release
     env:
