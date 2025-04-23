@@ -1,3 +1,9 @@
+# pmparams 0.3.1
+
+## Bug fixes
+ - `.digits` and `.maxex` were not previously getting passed to two internal
+ functions in `format_param_table`, affecting the display of CV% and pRSE output. (#107)
+
 # pmparams 0.3.0
 
 ## Changes
