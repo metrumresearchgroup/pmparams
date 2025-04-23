@@ -18,7 +18,7 @@ the parameter table."><meta property="og:image" content="https://metrumresearchg
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmparams</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.1</span>
       </span>
     </div>
 
@@ -174,7 +174,7 @@ below), but you can include additional panels as needed.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To include all columns:</span></span></span>
 <span class="r-in"><span><span class="fu">format_param_table</span><span class="op">(</span><span class="va">param_df</span>, .cleanup_cols <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 12 × 40</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 12 × 39</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    parameter_names estimate  stderr random_effect_sd random_effect_sdse fixed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> THETA1            0.434  0.062<span style="text-decoration: underline;">9</span>            <span style="color: #BB0000;">NA</span>               <span style="color: #BB0000;">NA</span>       FALSE</span>
@@ -189,13 +189,13 @@ below), but you can include additional panels as needed.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> OMEGA(3,1)        0.134  0.023<span style="text-decoration: underline;">6</span>             0.694            0.068<span style="text-decoration: underline;">6</span>  FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> OMEGA(3,2)        0.073<span style="text-decoration: underline;">5</span> 0.010<span style="text-decoration: underline;">5</span>             0.622            0.052<span style="text-decoration: underline;">4</span>  FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> SIGMA(1,1)        0.039<span style="text-decoration: underline;">9</span> 0.001<span style="text-decoration: underline;">23</span>            0.200            0.003<span style="text-decoration: underline;">07</span> FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 34 more variables: diag &lt;lgl&gt;, shrinkage &lt;chr&gt;, name &lt;chr&gt;, abb &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 33 more variables: diag &lt;lgl&gt;, shrinkage &lt;chr&gt;, name &lt;chr&gt;, abb &lt;chr&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   desc &lt;chr&gt;, panel &lt;chr&gt;, trans &lt;chr&gt;, nrow &lt;int&gt;, transTHETA &lt;lgl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   THETAERR &lt;lgl&gt;, TH &lt;lgl&gt;, OM &lt;lgl&gt;, S &lt;lgl&gt;, LOG &lt;lgl&gt;, LOGIT &lt;lgl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   lognormO &lt;lgl&gt;, Osd &lt;lgl&gt;, logitOsd &lt;lgl&gt;, propErr &lt;lgl&gt;, addErr &lt;lgl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   addErrLogDV &lt;lgl&gt;, value &lt;glue&gt;, se &lt;dbl&gt;, corr_SD &lt;chr&gt;, lower &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   upper &lt;dbl&gt;, cv &lt;chr&gt;, pRSE &lt;chr&gt;, sd &lt;chr&gt;, text &lt;chr&gt;, greek &lt;glue&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   type &lt;chr&gt;, type_f &lt;dbl&gt;, ci_95 &lt;chr&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   upper &lt;dbl&gt;, cv &lt;chr&gt;, sd &lt;chr&gt;, text &lt;chr&gt;, greek &lt;glue&gt;, type &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   type_f &lt;dbl&gt;, ci_95 &lt;chr&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Using a `bbr` model</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
