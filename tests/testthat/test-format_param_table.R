@@ -15,7 +15,7 @@ ci_name <- PARAM_TAB_102 %>% dplyr::distinct(ci_level) %>% dplyr::pull(ci_level)
 
 test_that("format_param_table expected dataframe: col names", {
   # default cols., no prse
-  expect_equal(names(newDF3),  c("type", "abb", "greek", "desc", "value", "shrinkage", paste0("ci_", ci_name)))
+  expect_equal(names(newDF3),  c("type", "abb", "greek", "desc", "value", paste0("ci_", ci_name), "shrinkage"))
 
   # all cols., no prse
   expect_equal(length(names(newDF5)),  39)

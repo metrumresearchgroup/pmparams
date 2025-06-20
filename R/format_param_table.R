@@ -119,7 +119,7 @@ format_param_table <- function(
     }
   } else {
     if (isTRUE(.cleanup_cols)) {
-      .select_cols <- c("type", "abb", "greek", "desc", "value", "shrinkage", .ci_final_nam)
+      .select_cols <- c("type", "abb", "greek", "desc", "value", .ci_final_nam, "shrinkage")
     } else {
       .select_cols <- names(.df_out)
     }
