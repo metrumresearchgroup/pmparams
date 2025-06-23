@@ -22,8 +22,12 @@ jobs:
         config:
           - os: ubuntu-22.04
             r: 4.0.5
+            # gh 1.5.0 requires R 4.1.
+            gh_pkg: 'url::https://mpn.metworx.com/snapshots/stable/2025-05-22/src/contrib/gh_1.4.1.tar.gz'
             # Latest magick requires R 4.1.
             magick_pkg: 'url::https://mpn.metworx.com/snapshots/stable/2025-02-26/src/contrib/magick_2.8.5.tar.gz'
+            # scales 1.4.0 requires R 4.1.
+            scales_pkg: 'url::https://mpn.metworx.com/snapshots/stable/2025-04-23/src/contrib/scales_1.3.0.tar.gz'
           - os: ubuntu-22.04
             r: 4.3.3
           - os: ubuntu-22.04
@@ -49,7 +53,9 @@ jobs:
           extra-packages: |
             any::pkgdown
             any::rcmdcheck
+            ${{ matrix.config.gh_pkg }}
             ${{ matrix.config.magick_pkg }}
+            ${{ matrix.config.scales_pkg }}
           upgrade: ${{ matrix.config.r == '4.0.5' && 'FALSE' || 'TRUE' }}
       - uses: r-lib/actions/check-r-package@v2
       - name: Check pkgdown
