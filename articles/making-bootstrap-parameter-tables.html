@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmparams</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.2</span>
       </span>
     </div>
 
@@ -254,14 +254,14 @@ we created above:</p>
 <span><span class="va">boot_param_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">param_df</span>, <span class="va">boot_df</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"abb"</span>, <span class="st">"desc"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">boot_param_df</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 9</span></span></span>
-<span><span class="co">#&gt;   type             abb   greek desc  value shrinkage ci_95 boot_value boot_ci_95</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;glu&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;glu&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Structural mode… KA (… $\ex… Firs… 1.57  -         1.38… 1.58       1.39, 1.80</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Structural mode… V2/F… $\ex… Appa… 62.1  -         58.8… 62.0       58.9, 65.7</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Structural mode… CL/F… $\ex… Appa… 3.26  -         3.08… 3.26       3.09, 3.46</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Structural mode… V3/F… $\ex… Appa… 68.1  -         65.6… 68.2       65.7, 70.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Structural mode… Q/F … $\ex… Appa… 3.63  -         3.39… 3.64       3.39, 3.88</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Covariate effec… CL/F… $\th… eGFR… 0.484 -         0.40… 0.483      0.403, 0.…</span></span></code></pre></div>
+<span><span class="co">#&gt;   type             abb   greek desc  value ci_95 shrinkage boot_value boot_ci_95</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;glu&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;glu&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Structural mode… KA (… $\ex… Firs… 1.57  1.38… -         1.58       1.39, 1.80</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Structural mode… V2/F… $\ex… Appa… 62.1  58.8… -         62.0       58.9, 65.7</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Structural mode… CL/F… $\ex… Appa… 3.26  3.08… -         3.26       3.09, 3.46</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Structural mode… V3/F… $\ex… Appa… 68.1  65.6… -         68.2       65.7, 70.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Structural mode… Q/F … $\ex… Appa… 3.63  3.39… -         3.64       3.39, 3.88</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Covariate effec… CL/F… $\th… eGFR… 0.484 0.40… -         0.483      0.403, 0.…</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Define bootstrap CI footnote</span></span>
 <span><span class="va">footBoot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/boot_notes.html">boot_notes</a></span><span class="op">(</span>.ci <span class="op">=</span> <span class="fl">95</span>, .n_run <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">boot_ests</span><span class="op">)</span><span class="op">)</span></span>

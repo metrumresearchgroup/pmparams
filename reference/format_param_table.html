@@ -18,7 +18,7 @@ the parameter table."><meta property="og:image" content="https://metrumresearchg
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmparams</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.2</span>
       </span>
     </div>
 
@@ -157,20 +157,20 @@ below), but you can include additional panels as needed.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">format_param_table</span><span class="op">(</span><span class="va">param_df</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 12 × 7</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    type                                  abb   greek desc  value shrinkage ci_95</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                 <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;glu&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;glu&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Structural model parameters           KA (… $\ex… Firs… 1.54  -         1.36…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> Structural model parameters           V2/F… $\ex… Appa… 61.5  -         58.2…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Structural model parameters           CL/F… $\ex… Appa… 3.05  -         2.86…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> Structural model parameters           V3/F… $\ex… Appa… 67.4  -         64.9…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Structural model parameters           Q/F … $\ex… Appa… 3.62  -         3.38…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> Interindividual variance parameters   IIV-… $\Om… Vari… 0.22… 18.2      0.11…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Interindividual variance parameters   IIV-… $\Om… Vari… 0.08… 6.32      0.06…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> Interindividual variance parameters   IIV-… $\Om… Vari… 0.16… 0.898     0.13…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Interindividual covariance parameters V2/F… $\Om… Cova… 0.06… -         0.02…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Interindividual covariance parameters CL/F… $\Om… Cova… 0.13… -         0.08…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> Interindividual covariance parameters CL/F… $\Om… Cova… 0.07… -         0.05…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> Residual variance                     Prop… $\Si… Vari… 0.03… 5.28      0.03…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    type                                  abb   greek desc  value ci_95 shrinkage</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                 <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;glu&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;glu&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Structural model parameters           KA (… $\ex… Firs… 1.54  1.36… -        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> Structural model parameters           V2/F… $\ex… Appa… 61.5  58.2… -        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Structural model parameters           CL/F… $\ex… Appa… 3.05  2.86… -        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> Structural model parameters           V3/F… $\ex… Appa… 67.4  64.9… -        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Structural model parameters           Q/F … $\ex… Appa… 3.62  3.38… -        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> Interindividual variance parameters   IIV-… $\Om… Vari… 0.22… 0.11… 18.2     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Interindividual variance parameters   IIV-… $\Om… Vari… 0.08… 0.06… 6.32     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> Interindividual variance parameters   IIV-… $\Om… Vari… 0.16… 0.13… 0.898    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Interindividual covariance parameters V2/F… $\Om… Cova… 0.06… 0.02… -        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Interindividual covariance parameters CL/F… $\Om… Cova… 0.13… 0.08… -        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> Interindividual covariance parameters CL/F… $\Om… Cova… 0.07… 0.05… -        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> Residual variance                     Prop… $\Si… Vari… 0.03… 0.03… 5.28     </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To include all columns:</span></span></span>
 <span class="r-in"><span><span class="fu">format_param_table</span><span class="op">(</span><span class="va">param_df</span>, .cleanup_cols <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>

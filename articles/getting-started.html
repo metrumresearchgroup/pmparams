@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmparams</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.2</span>
       </span>
     </div>
 
@@ -214,14 +214,14 @@ report using <code><a href="../reference/format_param_table.html">format_param_t
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">param_df</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 7</span></span></span>
-<span><span class="co">#&gt;   type                                abb      greek desc  value shrinkage ci_95</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;glu&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;glu&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Structural model parameters         KA (1/h) $\ex… Firs… 1.54  -         1.36…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Structural model parameters         V2/F (L) $\ex… Appa… 61.5  -         58.2…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Structural model parameters         CL/F (L… $\ex… Appa… 3.05  -         2.86…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Structural model parameters         V3/F (L) $\ex… Appa… 67.4  -         64.9…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Structural model parameters         Q/F (L/… $\ex… Appa… 3.62  -         3.38…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Interindividual variance parameters IIV-KA   $\Om… Vari… 0.22… 18.2      0.11…</span></span></code></pre></div>
+<span><span class="co">#&gt;   type                                abb      greek desc  value ci_95 shrinkage</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;glu&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;glu&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Structural model parameters         KA (1/h) $\ex… Firs… 1.54  1.36… -        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Structural model parameters         V2/F (L) $\ex… Appa… 61.5  58.2… -        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Structural model parameters         CL/F (L… $\ex… Appa… 3.05  2.86… -        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Structural model parameters         V3/F (L) $\ex… Appa… 67.4  64.9… -        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Structural model parameters         Q/F (L/… $\ex… Appa… 3.62  3.38… -        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Interindividual variance parameters IIV-KA   $\Om… Vari… 0.22… 0.11… 18.2</span></span></code></pre></div>
 <p>Usually <code>define_param_table</code> and
 <code>format_param_table</code> are run together in a single call like
 this:</p>
