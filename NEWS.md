@@ -1,3 +1,9 @@
+# pmparams 0.3.2
+
+## Changes
+ - Restored position of CI column after value column in `format_param_table`. (#112)
+ - Regenerated vignetted PNGs (#113)
+
 # pmparams 0.3.1
 
 ## Bug fixes
