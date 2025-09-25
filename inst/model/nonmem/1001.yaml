@@ -1,0 +1,17 @@
+model_type: nmbayes
+based_on:
+- '1000'
+tags:
+- two-compartment + absorption
+- ETA-CL
+- ETA-KA
+- ETA-V2
+- CLWT-allo
+- V2WT-allo
+- QWT-allo
+- V3WT-allo
+- proportional RUV
+- NUTS
+notes:
+- All diagnostics look reasonable
+description: Final base model
