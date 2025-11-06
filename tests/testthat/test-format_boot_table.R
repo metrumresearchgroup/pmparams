@@ -1,3 +1,4 @@
+
 newDF5 <- BOOT_TAB_106 %>%
   format_boot_table(.cleanup_cols = FALSE)
 
