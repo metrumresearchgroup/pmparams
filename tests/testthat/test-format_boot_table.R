@@ -1,4 +1,3 @@
-
 newDF5 <- BOOT_TAB_106 %>%
   format_boot_table(.cleanup_cols = FALSE)
 
@@ -117,4 +116,19 @@ test_that("format_boot_table: .select_cols works", {
     format_boot_table(df1, .select_cols = "other") %>% suppressWarnings(),
     "The following specified columns were not found: other"
   )
+})
+
+
+test_that("formatValuesBoot handles NA in lower/upper", {
+  test_df <- tibble::tibble(
+    value = c(1, 2),
+    lower = c(0.9, NA),
+    upper = c(1.1, NA),
+    ci_level = c(95, 95)
+  )
+
+  res <- pmparams:::formatValuesBoot(test_df, .digit = 2, .maxex = 5)
+
+  expect_equal(res$boot_ci_95[1], "0.90, 1.1")
+  expect_equal(gsub(" ", "", res$boot_ci_95[2]), "NA,NA")
 })
