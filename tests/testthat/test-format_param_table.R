@@ -150,6 +150,9 @@ test_that("format_param_table: format logit greek via .expit", {
 
   expect_equal(nrow(logit), 3)
   expect_match(logit$greek[3], "1 + \\exp", fixed = TRUE)
+
+  eq <- param_notes()$expitEq
+  expect_match(eq, "expit")
 })
 
 test_that("format_param_table: .digit produces expected significant digits", {

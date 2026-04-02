@@ -56,7 +56,7 @@ param_notes <- function(.ci = 95, .zscore = NULL){
     cvSigmaEq = "CV\\% of sigma = sqrt(estimate) $\\cdot$ 100",
     logTrans = "Parameters estimated in the log domain were back-transformed for clarity",
     logitTrans = "Parameters estimated in the logit domain were back-transformed for clarity",
-    expitEq = "$\\mathop{\\mathrm{expit}}(estimate)$ = $\\exp(estimate)/(1+\\exp(estimate))$
+    expitEq = "$\\mathop{\\mathrm{expit}}$(estimate) = $\\exp$(estimate)/(1+$\\exp(estimate)$)"
   )
 }
 
