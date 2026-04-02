@@ -4,7 +4,7 @@
 #' Format THETA/OMEGA/SIGMA values to display as greek letters with subscript numbers.
 #'
 #' @keywords internal
-formatGreekNames <- function(.df){
+formatGreekNames <- function(.df, .expit = TRUE){
 
   .df %>%
     dplyr::mutate(greekName = name) %>%
@@ -28,7 +28,7 @@ formatGreekNames <- function(.df){
         TRUE ~ tolower(text)),
       greek = dplyr::case_when(
         TH & LOG ~ expGreek(text, num2),
-        TH & LOGIT ~ logitGreek(text, num2),
+        TH & LOGIT ~ logitGreek(text, num2, .expit),
         TRUE ~ mathMode(greekNum(gtGreek(text), num2))
       )
     ) %>% dplyr::select(-"num2")

@@ -34,6 +34,8 @@
 #'   - `"type"`, `"abb"`, `"greek"`, `"desc"`, `"value"`, `"ci"`, `"shrinkage"`.
 #'   - Set to `FALSE` to return all columns.
 #' @param .prse Logical (T/F). If `TRUE`, output `pRSE`. Default is `FALSE`.
+#' @param .expit If `TRUE`, logit-trasformed parameters will be rendered as
+#  `expit(...)`; if `FALSE`, use `exp(...)/(1+exp(...))`.
 #' @param .select_cols Deprecated. Please use `.cleanup_cols` instead.
 #'
 #' @examples
@@ -70,6 +72,7 @@ format_param_table <- function(
     .df,
     .cleanup_cols = TRUE,
     .prse = FALSE,
+    .expit = TRUE,
     .digit = getOption("pmparams.dig"),
     .maxex = getOption("pmparams.maxex"),
     .select_cols = NULL
@@ -89,7 +92,7 @@ format_param_table <- function(
   .df_out <-
     .df %>%
     formatValues(.digit = .digit, .maxex = .maxex) %>%
-    formatGreekNames() %>%
+    formatGreekNames(.expit = .expit) %>%
     getPanelName() %>%
     dplyr::arrange(as.numeric(nrow))
 
