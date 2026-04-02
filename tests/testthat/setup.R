@@ -44,10 +44,7 @@ PARAM_TAB_102 <- define_param_table(PARAM_EST_102, PARAM_KEY_DF)
 FMT_PARAM_TAB_102 <- format_param_table(PARAM_TAB_102)
 FMT_PARAM_TAB_102_PRSE <- format_param_table(PARAM_TAB_102, .prse = TRUE)
 
-PARAM_TAB_EXPIT <- define_param_table(PARAM_EST_102, PARAM_KEY_PATH_LOGIT)
-FORMATTED_EXPIT <- format_param_table(PARAM_TAB_EXPIT)
 PARAM_TAB_LOGIT <- define_param_table(PARAM_EST_102, PARAM_KEY_PATH_LOGIT)
-FORMATTED_LOGIT <- format_param_table(PARAM_TAB_LOGIT, .expit = FALSE)
 
 ### Data for testing boot param table ###
 # parameter estimates
