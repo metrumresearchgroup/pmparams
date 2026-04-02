@@ -130,6 +130,12 @@ test_that("format_param_table: logit back transform large estimate returns 1", {
 })
 
 
+test_that("format_param_table: .expit produces the correct label", {
+  
+  newDF9 <- format_param_table(PARAM_TAB_102)
+  
+)
+
 test_that("format_param_table: .digit produces expected significant digits", {
 
   newDF9 <- format_param_table(PARAM_TAB_102)

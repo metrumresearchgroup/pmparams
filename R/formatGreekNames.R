@@ -28,7 +28,7 @@ formatGreekNames <- function(.df, .expit = TRUE){
         TRUE ~ tolower(text)),
       greek = dplyr::case_when(
         TH & LOG ~ expGreek(text, num2),
-        TH & LOGIT ~ logitGreek(text, num2, .expit),
+        TH & LOGIT ~ logitGreek(text, num2, .expit = .expit),
         TRUE ~ mathMode(greekNum(gtGreek(text), num2))
       )
     ) %>% dplyr::select(-"num2")
