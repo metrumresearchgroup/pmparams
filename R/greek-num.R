@@ -25,7 +25,7 @@ expGreek  <- function(.x, .y){
 #' @rdname mathMode
 #' @keywords internal
 logitGreek  <- function(.x, .y, .expit = TRUE){
-  if(isTRUE(expit)) {
+  if(isTRUE(.expit)) {
     code <- "$\\mathop{\\mathrm{expit}}(\\<<.x>>_{<<.y>>})$"
   } else {
     code <- "$\\exp(\\<<.x>>_{<<.y>>}) / \\newline(1 + \\exp(\\<<.x>>_{<<.y>>}))$"
