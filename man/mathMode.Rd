@@ -16,7 +16,7 @@ greekNum(.x, .y)
 
 expGreek(.x, .y)
 
-logitGreek(.x, .y)
+logitGreek(.x, .y, .expit = TRUE)
 }
 \description{
 Greek number helper functions
