@@ -27,7 +27,7 @@ following columns:
 
 \item{.prse}{Logical (T/F). If \code{TRUE}, output \code{pRSE}. Default is \code{FALSE}.}
 
-\item{.expit}{If \code{TRUE}, logit-trasformed parameters will be rendered as}
+\item{.expit}{If \code{TRUE}, logit-trasformed parameters are rendered as}
 
 \item{.digit}{Number of significant digits. Default is three digits}
 
