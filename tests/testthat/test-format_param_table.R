@@ -130,6 +130,28 @@ test_that("format_param_table: logit back transform large estimate returns 1", {
 })
 
 
+test_that("format_param_table: format logit greek via .expit", {
+
+  expect_true(formals(pmparams:::formatGreekNames)[[".expit"]])
+  expect_true(formals(pmparams:::logitGreek)[[".expit"]])
+  expect_true(formals(pmparams:::format_param_table)[[".expit"]])
+
+  expit <- pmparams:::logitGreek("theta", 5)
+  expect_equal(expit, "$\\mathop{\\mathrm{expit}}(\\theta_{5})$")
+
+  logit <- pmparams:::logitGreek("theta", 5, .expit = FALSE)
+  expect_equal(logit, "$\\exp(\\theta_{5}) / \\newline(1 + \\exp(\\theta_{5}))$")
+
+  expit <- format_param_table(PARAM_TAB_LOGIT)
+  logit <- format_param_table(PARAM_TAB_LOGIT, .expit = FALSE)
+
+  expect_equal(nrow(expit), 3)
+  expect_match(expit$greek[3], "\\mathrm{expit}", fixed = TRUE)
+
+  expect_equal(nrow(logit), 3)
+  expect_match(logit$greek[3], "1 + \\exp", fixed = TRUE)
+})
+
 test_that("format_param_table: .digit produces expected significant digits", {
 
   newDF9 <- format_param_table(PARAM_TAB_102)

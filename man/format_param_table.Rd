@@ -8,6 +8,7 @@ format_param_table(
   .df,
   .cleanup_cols = TRUE,
   .prse = FALSE,
+  .expit = TRUE,
   .digit = getOption("pmparams.dig"),
   .maxex = getOption("pmparams.maxex"),
   .select_cols = NULL
@@ -25,6 +26,8 @@ following columns:
 }}
 
 \item{.prse}{Logical (T/F). If \code{TRUE}, output \code{pRSE}. Default is \code{FALSE}.}
+
+\item{.expit}{If \code{TRUE}, logit-trasformed parameters are rendered as}
 
 \item{.digit}{Number of significant digits. Default is three digits}
 
