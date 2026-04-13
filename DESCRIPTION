@@ -26,7 +26,7 @@ Description: `pmparams` is a library written in R that generates clear, well-for
 URL: https://metrumresearchgroup.github.io/pmparams/, https://github.com/metrumresearchgroup/pmparams
 BugReports: https://github.com/metrumresearchgroup/pmparams/issues
 Depends:
-    R (>= 3.5)
+    R (>= 4.1)
 Imports:
     checkmate,
     dplyr (>= 1.0.0),
