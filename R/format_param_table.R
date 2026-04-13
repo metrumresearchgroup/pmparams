@@ -35,7 +35,7 @@
 #'   - Set to `FALSE` to return all columns.
 #' @param .prse Logical (T/F). If `TRUE`, output `pRSE`. Default is `FALSE`.
 #' @param .expit If `TRUE`, logit-trasformed parameters are rendered as
-#  `expit(...)`; if `FALSE`, use `exp(...)/(1+exp(...))`.
+#    `expit(...)`; if `FALSE`, use `exp(...)/(1+exp(...))`.
 #' @param .select_cols Deprecated. Please use `.cleanup_cols` instead.
 #'
 #' @examples
