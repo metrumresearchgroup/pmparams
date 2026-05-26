@@ -191,7 +191,12 @@ test_that("format_param_table: .maxex produces expected scientific notation", {
   param_df <- PARAM_TAB_102 %>%
     mutate(value = value*2, upper = upper*0.01, lower = lower*0.0001)
   newDF13 <- format_param_table(param_df, .maxex = 2, .digit = 1, .prse = TRUE)
-  expect_equal(newDF13$pRSE[6], "1.e+01")
+  if (packageVersion("pmtables") >= "0.11.0") {
+    prse_expect <- "10"
+  } else {
+    prse_expect <- "1.e+01"
+  }
+  expect_equal(newDF13$pRSE[6], prse_expect)
 })
 
 test_that("format_param_table: .select_cols works", {
