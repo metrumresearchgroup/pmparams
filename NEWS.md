@@ -4,6 +4,7 @@
  - Added `.expit` argument to `format_param_table()` for controlling formatting of
  logit-transformed parameters. (#119)
  - Adjust test expectation associated with recent `pmtables::sig()` refactor (#122)
+ - Bump R version requirement to R 4.1 (#119)
 
 
 # pmparams 0.3.2
