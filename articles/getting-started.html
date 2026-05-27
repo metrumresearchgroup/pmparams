@@ -6,12 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Getting Started with pmparams • pmparams</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
+<!-- favicons --><link rel="icon" type="image/png" sizes="48x48" href="../favicon-48x48.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
@@ -38,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmparams</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.3</span>
       </span>
     </div>
 
@@ -139,7 +138,7 @@ MeRGE Expo: Creating a Parameter Key </a>.</p>
 <code class="sourceCode R"><span><span class="va">model_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"model/nonmem"</span>, package <span class="op">=</span> <span class="st">"pmparams"</span><span class="op">)</span></span>
 <span><span class="va">paramKey</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">model_dir</span>, <span class="st">"pk-parameter-key-new.yaml"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">yaml</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/yaml/man/yaml.load.html" class="external-link">yaml.load_file</a></span><span class="op">(</span><span class="va">paramKey</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">yaml</span><span class="fu">::</span><span class="fu"><a href="https://yaml.r-lib.org/reference/yaml.load.html" class="external-link">yaml.load_file</a></span><span class="op">(</span><span class="va">paramKey</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                             THETA1.abb                            THETA1.desc </span></span>
 <span><span class="co">#&gt;                             "KA (1/h)" "First order absorption rate constant" </span></span>
 <span><span class="co">#&gt;                           THETA1.panel                           THETA1.trans </span></span>
@@ -255,7 +254,7 @@ easily add informative footnotes or notes.</p>
 <span>  <span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/stable_save_image.html" class="external-link">stable_save_image</a></span><span class="op">(</span>format <span class="op">=</span> <span class="st">"png"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/st_image_show.html" class="external-link">st_image_show</a></span><span class="op">(</span><span class="va">tab_fixed_out</span>, width <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span></span></code></pre></div>
-<p><img src="getting-started_files/figure-html/unnamed-chunk-9-1.png" width="390" style="display: block; margin: auto;"></p>
+<p><img src="getting-started_files/figure-html/unnamed-chunk-9-1.png" class="r-plt" alt="" width="390" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">##  RANDOM EFFECTS table ----------------------------</span></span>
 <span><span class="va">tab_random</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_pmtable.html">make_pmtable</a></span><span class="op">(</span><span class="va">param_df</span>, .pmtype <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
@@ -271,7 +270,7 @@ easily add informative footnotes or notes.</p>
 <span>  <span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/stable_save_image.html" class="external-link">stable_save_image</a></span><span class="op">(</span>format <span class="op">=</span> <span class="st">"png"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/st_image_show.html" class="external-link">st_image_show</a></span><span class="op">(</span><span class="va">tab_random_out</span>, width <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span></span></code></pre></div>
-<p><img src="getting-started_files/figure-html/unnamed-chunk-11-1.png" width="390" style="display: block; margin: auto;"></p>
+<p><img src="getting-started_files/figure-html/unnamed-chunk-11-1.png" class="r-plt" alt="" width="390" style="display: block; margin: auto;"></p>
 <p>If you want to add or overwrite pre-defined <code>pmtables</code>
 argument, simply pipe onto the <code>make_pmtable</code> tibble:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
@@ -284,7 +283,7 @@ argument, simply pipe onto the <code>make_pmtable</code> tibble:</p>
 <span>  <span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/stable_save_image.html" class="external-link">stable_save_image</a></span><span class="op">(</span>format <span class="op">=</span> <span class="st">"png"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://metrumresearchgroup.github.io/pmtables/reference/st_image_show.html" class="external-link">st_image_show</a></span><span class="op">(</span><span class="va">tab_random_out2</span>, width <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span></span></code></pre></div>
-<p><img src="getting-started_files/figure-html/unnamed-chunk-13-1.png" width="390" style="display: block; margin: auto;"></p>
+<p><img src="getting-started_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" alt="" width="390" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="other-functions">Other functions<a class="anchor" aria-label="anchor" href="#other-functions"></a>
@@ -310,7 +309,7 @@ estimates to parameter tables. See the
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer>
