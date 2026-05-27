@@ -1,3 +1,12 @@
+# pmparams 0.3.3
+
+## Changes
+ - Added `.expit` argument to `format_param_table()` for controlling formatting of
+ logit-transformed parameters. (#119)
+ 
+## Bug fixes
+ - Fix test expectation associated with recent `pmtables::sig()` refactor (#122)
+
 # pmparams 0.3.2
 
 ## Changes
